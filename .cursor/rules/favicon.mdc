@@ -106,7 +106,7 @@ Always use the brand accent colour (`brand.colors.accent` from `src/brand.ts`), 
 ## Do not
 
 - Update only `favicon.svg` and leave `.ico` / `apple-touch-icon.png` stale
-- Reference `logo.webp` (old R&C Roofing asset — deleted) anywhere in `config.yaml` or meta tags
+- Reference a deleted previous-client logo (`logo.webp`) anywhere in `config.yaml` or meta tags
 - Hardcode `#EDD974` or any non-brand colour in `mask-icon`
 - Use the Figma MCP localhost image server URLs in any production asset
 - Commit a 1024 × 124 logo as the OG image — OG cards must be 1200 × 630

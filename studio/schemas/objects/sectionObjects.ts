@@ -62,13 +62,12 @@ export const pageHero = defineType({
       type: 'string',
       description: 'Leave empty on informational pages (reviews, gallery) to hide the hero button.',
     }),
-    defineField({ name: 'ctaHref', title: 'Primary CTA URL', type: 'string', initialValue: '/contact' }),
+    defineField({ name: 'ctaHref', title: 'Primary CTA URL', type: 'string', initialValue: 'https://www.athenaclinic.com/contact/' }),
     defineField({ name: 'phoneCtaText', title: 'Phone CTA label', type: 'string', initialValue: 'Call Now' }),
     defineField({
       name: 'phoneCtaHref',
       title: 'Phone CTA URL',
       type: 'string',
-      initialValue: 'tel:+18088882524',
     }),
     defineField({
       name: 'image',

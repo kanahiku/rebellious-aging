@@ -110,7 +110,6 @@ Restyle the shared primitives in `src/components/ui/` so they match Figma. These
 |---|---|
 | Buttons | `src/components/ui/Button.astro` (`primary`, `secondary`, `ghost-light`, `ghost-dark`, `link`) |
 | Headings | `src/components/ui/Headline.astro` |
-| Form fields | `src/components/ui/Form.astro` |
 | Cards | `InfoCard`, `ServiceCard`, `CardWrapper` |
 | Icon + text | `IconPoint.astro` |
 
@@ -152,7 +151,7 @@ For each Figma page frame, top to bottom:
 
 Sanity CMS pages render through `src/pages/[...blog]/index.astro` — no new Astro file per CMS slug.
 
-Always-on routes (restyle, do not delete): `/contact`, `/reviews`, `/blog`, `/privacy-policy`, `/terms-of-service`, `/accessibility`.
+Always-on routes (restyle, do not delete): `/reviews`, `/blog`, `/privacy-policy`, `/terms-of-service`, `/accessibility`. `/contact` redirects to Athena Clinic.
 
 ---
 
@@ -161,7 +160,7 @@ Always-on routes (restyle, do not delete): `/contact`, `/reviews`, `/blog`, `/pr
 | System | Where |
 |---|---|
 | Sanity | `studio/`, `src/lib/content/`, catch-all pages, `/api/revalidate` |
-| Forms → Resend | `/contact` → `Form.astro` → Cloudflare Worker (`services/forms/`) → Resend |
+| Forms → Resend | `/form` checkup PDF → Cloudflare Worker (`services/forms/`) → Resend. `/contact` redirects to `https://www.athenaclinic.com/contact/` |
 | Turnstile | `PUBLIC_TURNSTILE_SITE_KEY` on the form; Worker secret `TURNSTILE_SECRET` |
 | GTM | `site.analytics.googleTagManagerId` → `Layout.astro` |
 | Search Console | `site.analytics.googleSiteVerificationId` |
@@ -200,7 +199,6 @@ Copy `.env.example` → `.env`. Set the same keys on Vercel (Production + Previe
 | `SANITY_PROJECT_ID` | Yes | Sanity → Settings → API |
 | `SANITY_DATASET` | Yes | Usually `production` |
 | `SANITY_API_TOKEN` | Yes | Viewer (read-only) token |
-| `SANITY_WRITE_TOKEN` | Migration only | Editor token |
 | `SANITY_REVALIDATE_SECRET` | Yes | `openssl rand -hex 32` — also paste on the Sanity webhook |
 | `ISR_BYPASS_TOKEN` | Yes | `openssl rand -hex 32` — Vercel ISR bypass |
 | `PUBLIC_FORM_ENDPOINT` | Yes | Worker `/submit` URL |
@@ -228,7 +226,7 @@ GTM and Search Console are **not** env vars — they go in `src/config/site.ts`.
 2. Fill `.env` and `studio/.env`.
 3. `npm run studio` and confirm it connects.
 4. Create the singletons (Home, Contact, Reviews, Navigation, Footer) plus any `servicePage` / blog documents the site needs.
-5. Optional seed from this repo: `npm run migrate:to-sanity` (needs `SANITY_WRITE_TOKEN`).
+5. Create and edit books, podcasts, testimonials, and page copy in Studio. The live site reads them from Sanity.
 
 Webhook (instant publish, no rebuild):
 
@@ -315,12 +313,12 @@ CNAME   www   cname.vercel-dns.com    DNS only
 - [ ] `src/config/site.ts`, `contact.ts`, `social.ts`, `cta.ts` filled
 - [ ] Logo + favicons replaced
 - [ ] `npm run build` succeeds
-- [ ] `/contact` submits; lead in D1; email arrives
+- [ ] `/form` checkup completes; `/contact` redirects to Athena Clinic
 - [ ] GTM container firing
 - [ ] Search Console verified; sitemap submitted
 - [ ] Reviews show (or empty-state if keys are not set yet)
 - [ ] JSON-LD looks right at [validator.schema.org](https://validator.schema.org)
-- [ ] Home, contact, blog, legal, mobile menu checked in the browser
+- [ ] Home, blog, legal, mobile menu checked in the browser
 
 ---
 

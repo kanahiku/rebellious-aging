@@ -65,8 +65,6 @@ const DEFAULT_ORIGIN_PATTERNS = [
   'http://localhost:*',
   'http://127.0.0.1:*',
   'https://*.vercel.app',
-  'https://roofinspectionhawaii.com',
-  'https://www.roofinspectionhawaii.com',
 ];
 
 export default {

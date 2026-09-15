@@ -5,6 +5,9 @@ export const PRIMARY_CTA_NOTE = '';
 export const PRIMARY_CTA_LABEL = 'Find your weakest link';
 export const PRIMARY_CTA_HREF  = '/form';
 
+/** External contact — this site has no /contact page. */
+export const ATHENA_CONTACT_HREF = 'https://www.athenaclinic.com/contact/';
+
 /** Footer assessment card (Figma node 2:1508). */
 export const FOOTER_CTA_EYEBROW = 'learn more';
 export const FOOTER_CTA_TITLE = 'Still here?<br />Go find your weakest link.';

@@ -5,6 +5,7 @@ import type {
   ContactPageContent,
   HomePageContent,
   NavigationContent,
+  NavLink,
   PodcastEpisode,
   PodcastPartGroup,
   ReviewsPageContent,
@@ -19,7 +20,6 @@ import {
   getSanityPodcastEpisodes,
   getSanityTestimonials,
   groupEpisodesByPart,
-  getSanityContactHelpOptions,
   getSanityContactPage,
   getSanityHomeContent,
   getSanityNavigationContent,
@@ -27,6 +27,7 @@ import {
   getSanityServicePage,
   getSanityServicePageSlugs,
 } from './sanity';
+import { ATHENA_CONTACT_HREF } from '~/config/cta';
 import { blogPosts as localBlogPosts } from '../../data/pages/blogPosts';
 /* contact page removed */
 import { navigationData } from '../../data/navigation';
@@ -75,12 +76,37 @@ function isHiddenNavLink(link: { text: string; href?: string }): boolean {
   );
 }
 
+function isInternalContactHref(href?: string): boolean {
+  if (!href) return false;
+  const path = href.split('?')[0]?.replace(/\/+$/, '') ?? '';
+  return path === '/contact';
+}
+
+function remapContactHref(href: string): string {
+  return isInternalContactHref(href) ? ATHENA_CONTACT_HREF : href;
+}
+
+function remapNavLink(link: NavLink): NavLink {
+  return {
+    ...link,
+    href: link.href ? remapContactHref(link.href) : link.href,
+    links: link.links?.map((item) => ({ ...item, href: remapContactHref(item.href) })),
+    columns: link.columns?.map((col) => ({
+      ...col,
+      links: col.links.map((item) => ({ ...item, href: remapContactHref(item.href) })),
+    })),
+  };
+}
+
 function hidePagesFromUi(nav: NavigationContent): NavigationContent {
   return {
     ...nav,
     header: {
       ...nav.header,
-      links: nav.header.links.filter((link) => !isHiddenNavLink(link)),
+      links: nav.header.links.filter((link) => !isHiddenNavLink(link)).map(remapNavLink),
+      actions: nav.header.actions.map((action) =>
+        action.href ? { ...action, href: remapContactHref(action.href) } : action
+      ),
     },
     footer: {
       ...nav.footer,
@@ -88,8 +114,14 @@ function hidePagesFromUi(nav: NavigationContent): NavigationContent {
         .filter((column) => column.title.toLowerCase() !== 'chapters')
         .map((column) => ({
           ...column,
-          links: column.links.filter((link) => !isHiddenNavLink(link)),
+          links: column.links
+            .filter((link) => !isHiddenNavLink(link))
+            .map((link) => ({ ...link, href: remapContactHref(link.href) })),
         })),
+      secondaryLinks: nav.footer.secondaryLinks.map((link) => ({
+        ...link,
+        href: remapContactHref(link.href),
+      })),
     },
   };
 }

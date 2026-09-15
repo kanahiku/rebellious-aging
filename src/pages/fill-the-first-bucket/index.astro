@@ -7,6 +7,7 @@ import CTABanner from '~/components/widgets/CTABanner.astro';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
 import fillBucketHero from '~/assets/images/fill-bucket-hero.png';
+import { ATHENA_CONTACT_HREF } from '~/config/cta';
 
 const metadata = {
   title: `Fill the First Bucket | ${site.name}`,
@@ -52,6 +53,6 @@ const header = navigationData.header;
     title="So where does your weakest link fit?"
     subtitle="It isn't a bucket. Finding your weakest link is free, takes an evening, and its job is to tell you two things: where inside bucket one to concentrate, and what to raise when you get to bucket two. It's the aiming device, not a rung on the ladder."
     ctaText="Find your weakest link"
-    ctaHref="/contact"
+    ctaHref={ATHENA_CONTACT_HREF}
   />
 </Layout>

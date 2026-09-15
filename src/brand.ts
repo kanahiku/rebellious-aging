@@ -123,7 +123,7 @@ export function rgb(hex: string, alpha?: number): string {
   return `rgb(${channels} / ${a})`;
 }
 
-/** Per-variant CTA colors matching COLOR-PALETTE.html. */
+/** Per-variant CTA colors from brand.colors. */
 function ctaButtonVars(c: Brand['colors']): string {
   // Primary: #2C4A5B → hover #1B2A32, white text
   const primary = `

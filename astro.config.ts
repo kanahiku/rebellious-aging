@@ -38,7 +38,9 @@ export default defineConfig({
     },
   }),
 
-  redirects: {},
+  redirects: {
+    '/contact': 'https://www.athenaclinic.com/contact/',
+  },
 
   // Prefetch links as they enter the viewport for snappier navigations
   // (works together with <ClientRouter />, which enables prefetch by default).
@@ -60,17 +62,6 @@ export default defineConfig({
     icon({
       include: {
         tabler: ['*'],
-        'flat-color-icons': [
-          'template',
-          'gallery',
-          'approval',
-          'document',
-          'advertising',
-          'currency-exchange',
-          'voice-presentation',
-          'business-contact',
-          'database',
-        ],
       },
     }),
 

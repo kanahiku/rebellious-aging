@@ -25,7 +25,7 @@ Build in this order. Do not compose full pages before tokens and atoms match Fig
 
 ## Always-on stack
 
-Keep Sanity, Resend/forms (`/contact`), GTM, Search Console, JSON-LD, reviews, blog, and legal routes. Fill client IDs in `src/config/site.ts`, `src/config/contact.ts`, and `.env` — do not delete the wiring. See `ONBOARDING.md`.
+Keep Sanity, Resend/forms (`/form` checkup PDF), GTM, Search Console, JSON-LD, reviews, blog, and legal routes. `/contact` redirects to Athena Clinic. Fill client IDs in `src/config/site.ts`, `src/config/contact.ts`, and `.env` — do not delete the wiring. See `ONBOARDING.md`.
 
 ## Do not
 

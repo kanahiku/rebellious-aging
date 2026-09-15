@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "name": "agency-web-patterns",
+  "name": "rebellious-aging-patterns",
   "description": "Inventory of reusable widgets. Restyle these after brand.ts and atoms; do not fork per page.",
   "sourceOfTruth": {
     "tokens": "src/brand.ts",
@@ -143,14 +143,6 @@
       "shape": "h2 + ordered steps + optional image",
       "component": "Timeline",
       "import": "~/components/ui/Timeline.astro"
-    },
-    {
-      "id": "P-09",
-      "name": "Gallery / projects",
-      "figmaNames": ["Gallery", "Projects", "Portfolio", "Work Grid"],
-      "shape": "grid of project cards",
-      "component": "ProjectCard / ProjectsSection",
-      "import": "~/components/widgets/ProjectsSection.astro"
     },
     {
       "id": "P-10",
@@ -332,22 +324,6 @@
         "headingHtml": "h2 HTML — supports <span class='text-secondary'> for accent words",
         "heading": "plain-text h2 fallback",
         "testimonials": "TestimonialItem[] — { testimonial, name, job? }",
-        "id": "section anchor"
-      },
-      "notes": "Figma node 2:1375. Uses Card variant='feature' (A-05). Left col: eyebrow+h2 header + stacked compact cards (ghost CTA). Right col: tall featured card (grey image placeholder + solid primary CTA). bg-feature-card (#F1F5F8) + border-card-border-light + rounded-[16px]. iconType='calendar' renders 40×40 bg-card-light tile + 14px calendar icon; iconType='book' renders 40×40 SVG with built-in tile bg."
-    },
-    {
-      "id": "P-25",
-      "name": "Written Work Section",
-      "figmaNames": ["The written work", "Books + sessions cards", "2:1375"],
-      "shape": "bg-page section. 2-col gap-8: left=header+stacked compact feature cards, right=tall featured card with image placeholder.",
-      "component": "WrittenWorkSection",
-      "import": "~/components/widgets/WrittenWorkSection.astro",
-      "props": {
-        "eyebrow": "section eyebrow label",
-        "heading": "h2 section heading",
-        "cards": "FeatureCardItem[] for left column stacked compact cards",
-        "featuredCard": "FeatureCardItem for right column tall featured card",
         "id": "section anchor"
       },
       "notes": "Figma node 2:1375. Uses Card variant='feature' (A-05). Left col: eyebrow+h2 header + stacked compact cards (ghost CTA). Right col: tall featured card (grey image placeholder + solid primary CTA). bg-feature-card (#F1F5F8) + border-card-border-light + rounded-[16px]. iconType='calendar' renders 40×40 bg-card-light tile + 14px calendar icon; iconType='book' renders 40×40 SVG with built-in tile bg."

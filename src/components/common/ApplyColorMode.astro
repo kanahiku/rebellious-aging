@@ -8,8 +8,7 @@ import { UI } from 'astrowind:config';
   // This runs inline in the <head> so the `.dark` class is set before first
   // paint (anti-FOUC — it must not be deferred/bundled). It also registers an
   // `astro:after-swap` listener so the theme is re-applied on client-side
-  // navigations with <ClientRouter />. Toggling the theme is owned by the
-  // <aw-theme-toggle> custom element (see ToggleTheme.astro).
+  // navigations with <ClientRouter />. Theme is resolved from config + localStorage.
   function applyTheme(theme) {
     document.documentElement.classList[theme === 'dark' ? 'add' : 'remove']('dark');
   }

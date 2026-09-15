@@ -66,7 +66,7 @@ export const contactPage = defineType({
           name: 'mapsQuery',
           title: 'Maps search query',
           type: 'string',
-          description: 'Used for the embed and Get Directions link, e.g. 3302 Campbell Ave, Honolulu, HI 96815',
+          description: 'Used for the embed and Get Directions link, e.g. Kailua, HI',
         }),
         defineField({ name: 'directionsLabel', title: 'Directions button label', type: 'string' }),
       ],

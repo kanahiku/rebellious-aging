@@ -4,7 +4,8 @@ const HOME: BreadcrumbItem = { name: 'Home', path: '/' };
 
 /**
  * Per-page schema.org data. Add an entry when Figma MCP creates a new route.
- * System routes below ship with every site (contact, reviews, blog, legal).
+ * System routes below ship with every site (reviews, blog, legal).
+ * Contact lives on Athena Clinic, not this site.
  */
 export const pages: PageSchema[] = [
   {
@@ -14,14 +15,6 @@ export const pages: PageSchema[] = [
     description: null,
     faq: [],
     breadcrumb: [HOME],
-  },
-  {
-    name: 'Contact',
-    path: '/contact',
-    schemaType: 'ContactPage',
-    description: null,
-    faq: [],
-    breadcrumb: [HOME, { name: 'Contact', path: '/contact' }],
   },
   {
     name: 'Reviews',

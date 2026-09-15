@@ -1,4 +1,4 @@
 TURNSTILE_SECRET=1x0000000000000000000000000000000AA
 RESEND_API_KEY=re_xxxxxxxx
-NOTIFY_EMAIL=info@safehomeservice.com
+# Do not set NOTIFY_EMAIL_OVERRIDE in production — each site uses D1 notify_email.
 # Daily notify cap lives in wrangler.toml as RESEND_DAILY_LIMIT (default 20 per site).
