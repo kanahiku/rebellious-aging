@@ -50,7 +50,7 @@ const isBleed = hasImage && imageFit === 'bleed';
       subtitle={subtitle}
       tagline={tagline}
       classes={{
-      title: 'text-[clamp(1.625rem,1.315vw+1.317rem,2.5rem)] font-normal leading-[110%] tracking-tighter font-heading',
+      title: 'text-h2 font-normal leading-[110%] tracking-tighter font-heading',
       subtitle: 'text-[clamp(1rem,0.094vw+0.965rem,1.0625rem)] font-normal leading-[160%] text-muted dark:text-slate-400',
       }}
     />
@@ -79,13 +79,13 @@ const isBleed = hasImage && imageFit === 'bleed';
       >
         {hasImage && title && (
           <h2
-            class={`text-[clamp(1.625rem,1.315vw+1.317rem,2.5rem)] font-normal leading-[110%] tracking-tighter mb-[20px] font-heading ${classes?.title ?? 'text-heading'}`}
+            class={`text-h2 font-normal leading-[110%] tracking-tighter mb-[20px] font-heading ${classes?.title ?? 'text-heading'}`}
             set:html={title}
           />
         )}
         {content && (
           <div
-            class="text-[16px] md:text-[17px] font-normal leading-[160%] dark:text-slate-400 mb-[30px] last:mb-0"
+            class="text-[16px] font-normal leading-[160%] dark:text-slate-400 mb-[30px] last:mb-0"
             set:html={content}
           />
         )}

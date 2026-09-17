@@ -25,9 +25,9 @@ const blocks = usePortableBody ? [] : getArticleBlocks(post);
 const unmatchedImages = usePortableBody ? [] : getUnmatchedInlineImages(post);
 const contentBlocks = post.contentBlocks ?? [];
 
-const paragraphClass = 'text-[16px] md:text-[17px] font-normal leading-[160%] text-muted';
+const paragraphClass = 'text-[16px] font-normal leading-[160%] text-muted';
 const headingClass =
-  'text-[clamp(1.625rem,1.315vw+1.317rem,2.5rem)] font-normal leading-[110%] tracking-tighter font-heading text-heading mb-5';
+  'text-h2 font-normal leading-[110%] tracking-tighter font-heading text-heading mb-5';
 
 function reviewSources(section: ServiceSection): ReviewSource[] {
   if (section._type === 'yelpReviewsSection') return ['yelp'];
@@ -352,7 +352,7 @@ const h3Class = 'text-[16px] md:text-[18px] font-sans font-medium leading-[130%]
                     {card.items.map((item) => (
                       <li class="flex items-start gap-3">
                         <Icon name="tabler:check" class="mt-0.5 shrink-0 w-5 h-5 text-primary" aria-hidden="true" />
-                        <span class="text-[16px] md:text-[17px] font-normal leading-[160%] text-muted">{item}</span>
+                        <span class="text-[16px] font-normal leading-[160%] text-muted">{item}</span>
                       </li>
                     ))}
                   </ul>

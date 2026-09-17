@@ -81,24 +81,24 @@
    Viewport range: 375 px (small phone) → 1440 px (wide desktop).
    Formula: clamp(min, slope·vw + intercept, max)
    No media-query breakpoint — text scales continuously at every width.
-   Sizes match brand.ts: h1 28→100 px, h2 26→52 px, h3 20→36 px, h4 18→28 px.
+   Sizes match brand.ts: h1 28→62 px, h2 26→46 px, h3 20→32 px, h4 18→28 px.
    ─────────────────────────────────────────────────────────────────────────── */
 
 @utility text-h1 {
-  /* 28 px (375 vw) → 100 px (1440 vw)   slope 6.76 vw, intercept 0.166 rem */
-  font-size: clamp(1.75rem, 6.76vw + 0.166rem, 6.25rem);
+  /* 28 px (375 vw) → 62 px (1440 vw)   slope 3.19 vw, intercept 1.002 rem */
+  font-size: clamp(1.75rem, 3.19vw + 1.002rem, 3.875rem);
   line-height: 1.05;
 }
 
 @utility text-h2 {
-  /* 26 px (375 vw) → 52 px (1440 vw)    slope 2.44 vw, intercept 1.053 rem */
-  font-size: clamp(1.625rem, 2.44vw + 1.053rem, 3.25rem);
+  /* 26 px (375 vw) → 46 px (1440 vw)    slope 1.88 vw, intercept 1.185 rem */
+  font-size: clamp(1.625rem, 1.88vw + 1.185rem, 2.875rem);
   line-height: 1.05;
 }
 
 @utility text-h3 {
-  /* 20 px (375 vw) → 36 px (1440 vw)    slope 1.5 vw, intercept 0.898 rem */
-  font-size: clamp(1.25rem, 1.5vw + 0.898rem, 2.25rem);
+  /* 20 px (375 vw) → 32 px (1440 vw)    slope 1.13 vw, intercept 0.986 rem */
+  font-size: clamp(1.25rem, 1.13vw + 0.986rem, 2rem);
   line-height: 1.1;
 }
 

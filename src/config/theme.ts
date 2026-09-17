@@ -38,8 +38,8 @@ export const THEME = {
       cardClass: 'border border-accent/60 bg-card-dark',
       classes: {
         headline: {
-          title: 'text-[26px] md:text-[40px] font-normal leading-[120%] text-heading',
-          subtitle: 'text-[16px] md:text-[17px] font-normal leading-[160%] text-muted',
+          title: 'text-h2 font-normal leading-[120%] text-heading',
+          subtitle: 'text-[16px] font-normal leading-[160%] text-muted',
         },
       },
     },

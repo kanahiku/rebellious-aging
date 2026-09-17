@@ -67,12 +67,12 @@ export const brand = {
      * Desktop `size` + phone `mobile` from Figma when the file has both.
      * Fallback (this file — desktop type only): h1 ~50%, h2 ~60%, h3 ~65%, h4 ~80%; body unchanged.
      */
-    h1: { size: '100px', mobile: '28px', lineHeight: '1', tracking: '0' },
-    h2: { size: '52px', mobile: '26px', lineHeight: '1', tracking: '0' },
-    h3: { size: '36px', mobile: '20px', lineHeight: '1', tracking: '0' },
+    h1: { size: '62px', mobile: '28px', lineHeight: '1', tracking: '0' },
+    h2: { size: '46px', mobile: '26px', lineHeight: '1', tracking: '0' },
+    h3: { size: '32px', mobile: '20px', lineHeight: '1', tracking: '0' },
     /** Card / subsection titles. */
     h4: { size: '28px', mobile: '18px', lineHeight: '1.2', tracking: '0' },
-    body: { size: '14px', lineHeight: '1.3', tracking: '0' },
+    body: { size: '16px', lineHeight: '1.3', tracking: '0' },
     bodyLg: { size: '16px', lineHeight: '1.3', tracking: '0' },
     button: { size: '14px', lineHeight: '1.25', tracking: '0' },
     eyebrow: { size: '14px', lineHeight: '1', tracking: '0.06em' },

@@ -125,7 +125,7 @@ function reviewSources(section: ServiceSection): ReviewSource[] {
             <Headline isDark={isDark} title={section.heading} classes={{ container: 'mb-[20px] text-left md:mx-0' }} />
             <div class="space-y-5">
               {section.paragraphs.map((paragraph) => (
-                <p class:list={['text-[16px] md:text-[17px] font-normal leading-[160%]', introColor]}>
+                <p class:list={['text-[16px] font-normal leading-[160%]', introColor]}>
                   {paragraph}
                 </p>
               ))}
@@ -141,7 +141,7 @@ function reviewSources(section: ServiceSection): ReviewSource[] {
             {hasIntro && (
               <p
                 class:list={[
-                  'text-[16px] md:text-[17px] font-normal leading-[160%] text-left max-w-3xl mb-[30px]',
+                  'text-[16px] font-normal leading-[160%] text-left max-w-3xl mb-[30px]',
                   introColor,
                 ]}
               >
@@ -296,7 +296,7 @@ function reviewSources(section: ServiceSection): ReviewSource[] {
                   aria-hidden="true"
                 />
                 <span
-                  class:list={['text-[16px] md:text-[17px] font-normal leading-[160%]', introColor]}
+                  class:list={['text-[16px] font-normal leading-[160%]', introColor]}
                 >
                   {item.text}
                 </span>
