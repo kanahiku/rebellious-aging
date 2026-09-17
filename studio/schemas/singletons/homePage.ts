@@ -50,7 +50,7 @@ export const homePage = defineType({
         }),
         defineField({
           name: 'subtitleParagraph1',
-          title: 'Subtitle — Paragraph 1',
+          title: 'Subtitle: Paragraph 1',
           type: 'text',
           rows: 3,
           validation: (r) => r.required(),

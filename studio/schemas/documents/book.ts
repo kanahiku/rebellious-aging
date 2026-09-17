@@ -111,7 +111,7 @@ export const book = defineType({
       name: 'podcastHref',
       title: 'Related podcast',
       type: 'string',
-      description: 'Deep-link to the matching episode on the podcast page. Use the episode slug as the anchor — e.g. /podcast#hair-scalp (where "hair-scalp" is the episode slug).',
+      description: 'Deep-link to the matching episode on the podcast page. Use the episode slug as the anchor: e.g. /podcast#hair-scalp (where "hair-scalp" is the episode slug).',
       validation: (r) =>
         r.uri({ scheme: ['http', 'https'], allowRelative: true }),
     }),

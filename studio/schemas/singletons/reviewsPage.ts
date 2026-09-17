@@ -38,7 +38,7 @@ export const reviewsPage = defineType({
       type: 'pageHero',
       group: 'hero',
       validation: (r) => r.required(),
-      description: 'Leave the hero CTA empty — this is an informational page. Google and Yelp reviews are fetched live.',
+      description: 'Leave the hero CTA empty. This is an informational page. Google and Yelp reviews are fetched live.',
     }),
     defineField({
       name: 'liveReviews',

@@ -1723,7 +1723,7 @@ function renderPrintable() {
   hdrRow.appendChild(el('span', 'rp-header-label', 'Clinical summary'));
   hdr.appendChild(hdrRow);
   const hdrMeta = el('div', 'rp-header-meta');
-  hdrMeta.textContent = 'Completed ' + new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' }) + ' · Self-reported · Not a diagnosis · Scores 0–9 per area (higher = more reported difficulty)';
+  hdrMeta.textContent = 'Completed ' + new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' }) + ' · Self-reported · Not a diagnosis · Scores 0-9 per area (higher = more reported difficulty)';
   hdr.appendChild(hdrMeta);
   w.appendChild(hdr);
 

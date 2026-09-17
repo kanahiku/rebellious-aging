@@ -24,7 +24,7 @@ export const blogPost = defineType({
       title: 'Slug',
       type: 'slug',
       group: 'content',
-      description: 'Used in the URL: /blog/your-slug. Publish to make the article live — no code deploy needed.',
+      description: 'Used in the URL: /blog/your-slug. Publish to make the article live, no code deploy needed.',
       options: { source: 'title' },
       validation: (r) => r.required(),
     }),
@@ -79,7 +79,7 @@ export const blogPost = defineType({
       type: 'array',
       group: 'content',
       description:
-        'Write the article in order. Use the image button in the toolbar to insert photos anywhere — as many as the story needs. Each image can have alt text and an optional caption.',
+        'Write the article in order. Use the image button in the toolbar to insert photos anywhere, as many as the story needs. Each image can have alt text and an optional caption.',
       of: [
         defineArrayMember({
           type: 'block',
@@ -157,7 +157,7 @@ export const blogPost = defineType({
               title: 'Column headers',
               type: 'array',
               of: [{ type: 'string' }],
-              description: 'Add 2–6 column headers. The first column is typically the row label.',
+              description: 'Add 2-6 column headers. The first column is typically the row label.',
               validation: (r) => r.min(2).max(6),
             }),
             defineField({

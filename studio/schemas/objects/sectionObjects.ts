@@ -215,7 +215,7 @@ export const linkedCardsSection = defineType({
       name: 'display',
       title: 'Display',
       type: 'string',
-      description: 'Card grid or stacked directory rows — match the Figma frame.',
+      description: 'Card grid or stacked directory rows, match the Figma frame.',
       options: {
         list: [
           { title: 'Card grid', value: 'cards' },
