@@ -371,15 +371,15 @@
       "id": "P-29",
       "name": "Duo Cards",
       "figmaNames": ["Start one.", "Activities directory", "Two cards", "64:1086"],
-      "shape": "2 equal promo cards, gap 32px. dark = navy→primary gradient + ghost CTA. outlined = 4px navy border + gradient h2 + primary CTA. rounded-[64px], p-48, CTA pinned mt-auto.",
+      "shape": "2 equal promo cards, gap 32px. dark = navy→primary gradient. outlined = 4px navy border + gradient h2. rounded-[64px], p-48, optional CTA pinned mt-auto.",
       "component": "DuoCards",
       "import": "~/components/widgets/DuoCards.astro",
       "props": {
-        "cards": "DuoCardItem[] — { variant: 'dark' | 'outlined', eyebrow?, heading, body, cta: { text, href } }",
+        "cards": "DuoCardItem[] — { variant: 'dark' | 'outlined', eyebrow?, heading, body, cta?: { text, href } }",
         "id": "section anchor"
       },
       "itemCount": [2],
-      "notes": "Figma node 64:1086 (Chapters). Uses Card variant='dark' | 'outlined' (A-05) plus Heading, Text, Button. Content always passed from the page file."
+      "notes": "Figma node 64:1086 (Chapters). Uses Card variant='dark' | 'outlined' (A-05) plus Heading, Text, optional Button. Content always passed from the page file."
     },
     {
       "id": "P-31",
@@ -652,6 +652,20 @@
         "title": "Page heading (Privacy Policy, Terms of Service)"
       },
       "notes": "System legal routes. Uses the same embedded Header as Hero2 page/overlay variants. Body sections are slotted from the page file."
+    },
+    {
+      "id": "P-48",
+      "name": "Full Width Image Band",
+      "figmaNames": ["Full width image", "Image band"],
+      "shape": "Full-bleed responsive image band with fixed visual height and object-cover fit",
+      "component": "FullWidthImageBand",
+      "import": "~/components/widgets/FullWidthImageBand.astro",
+      "props": {
+        "image": "local image metadata",
+        "alt": "accessible image description",
+        "id": "optional section anchor"
+      },
+      "notes": "Reusable single-image band. Used after the Fill the First Bucket rules/buckets section."
     }
   ]
 }

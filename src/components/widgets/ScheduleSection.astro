@@ -5,7 +5,7 @@
  * Visual spec:
  *   bg-page, p-[120px], gap-[64px] flex-col items-center.
  *   Header (2-col, gap-[120px]): eyebrow + h2 (left) | body text (right).
- *   Card grid: flex gap-[16px], 7 equal-width columns (one per day).
+ *   Card grid: equal-width columns that span the full container (one per day).
  *
  * Each day card (Card variant="schedule"):
  *   Header band: bg-card-light, calendar icon, day label (text-secondary, uppercase).
@@ -61,6 +61,17 @@ export interface Props {
 
 const { eyebrow, heading, body, days = [], id } = Astro.props;
 
+const lgCols: Record<number, string> = {
+  1: 'lg:grid-cols-1',
+  2: 'lg:grid-cols-2',
+  3: 'lg:grid-cols-3',
+  4: 'lg:grid-cols-4',
+  5: 'lg:grid-cols-5',
+  6: 'lg:grid-cols-6',
+  7: 'lg:grid-cols-7',
+};
+const dayCols = lgCols[days.length] ?? 'lg:grid-cols-7';
+
 // ── Inline icon SVGs (13×13) — Figma assets, uses currentColor ──
 const sunSvg = `<svg viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg" class="size-[13px] shrink-0"><circle cx="6.5" cy="6.5" r="2.825" fill="currentColor"/><path d="M6.5 2.678a.61.61 0 01-.61-.61V.739a.61.61 0 111.22 0v1.329a.61.61 0 01-.61.61ZM6.5 12.87a.61.61 0 01-.61-.61v-1.329a.61.61 0 111.22 0v1.329a.61.61 0 01-.61.61ZM9.633 3.976a.609.609 0 01-.431-1.04l.94-.94a.61.61 0 11.862.862l-.94.94a.606.606 0 01-.431.178ZM2.426 11.183a.609.609 0 01-.43-1.04l.939-.94a.61.61 0 11.862.862l-.94.94a.607.607 0 01-.431.178ZM12.261 7.109h-1.33a.61.61 0 110-1.22h1.33a.61.61 0 110 1.22ZM2.069 7.109H.739a.61.61 0 110-1.22h1.33a.61.61 0 110 1.22ZM10.574 11.183a.607.607 0 01-.431-.178l-.94-.94a.61.61 0 11.862-.862l.94.94a.609.609 0 01-.431 1.04ZM3.366 3.976a.607.607 0 01-.431-.178l-.94-.94A.61.61 0 113.857 2l.94.94a.609.609 0 01-.431 1.04Z" fill="currentColor"/></svg>`;
 
@@ -89,9 +100,9 @@ const moonSvg = `<svg viewBox="0 0 20 17.5" fill="none" xmlns="http://www.w3.org
 
   {/* ── Day cards grid ── */}
   {days.length > 0 && (
-    <div class="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-16 md:grid-cols-4 lg:grid-cols-7">
+    <div class:list={['mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-16', dayCols]}>
       {days.map((dayItem) => (
-        <Card variant="schedule" label={dayItem.day}>
+        <Card variant="schedule" label={dayItem.day} class="h-full w-full min-w-0">
           {dayItem.events.map((event) => (
             <div class="flex w-full flex-col gap-1.5 px-4">
               {/* Time row — muted / dimmed */}

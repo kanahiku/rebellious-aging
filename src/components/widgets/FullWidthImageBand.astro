@@ -1,0 +1,26 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+export interface Props {
+  image: ImageMetadata;
+  alt: string;
+  id?: string;
+  aspectRatio?: string;
+}
+
+const { image, alt, id, aspectRatio = '1440 / 511' } = Astro.props;
+---
+
+<section {...id ? { id } : {}} class="not-prose w-full py-8 md:py-16">
+  <Image
+    src={image}
+    alt={alt}
+    class="w-full object-cover"
+    style={`aspect-ratio: ${aspectRatio}; object-position: center center;`}
+    widths={[640, 828, 1200, 1440, 1920]}
+    sizes="100vw"
+    loading="lazy"
+    decoding="async"
+  />
+</section>

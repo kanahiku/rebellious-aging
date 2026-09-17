@@ -5,6 +5,7 @@
  * Visual spec:
  *   bg-page, px 120, pb 64. Two equal columns, gap 64px.
  *   LEFT  — icon + h3 + body rows, muted 2px dividers between items.
+ *            Vertically centered in its column on desktop.
  *   RIGHT — navy→primary gradient card (rounded-[32px]) overlapping a
  *            heading-coloured disclosure tab (rounded-b-[32px]).
  *            Optional ghost CTA ("Schedule a free visit") sits in the
@@ -53,10 +54,10 @@ const {
 ---
 
 <section {...id ? { id } : {}} class="not-prose w-full pt-[120px] pb-12 md:pb-16">
-  <div class="mx-auto flex w-full max-w-container flex-col items-start gap-12 px-5 sm:px-8 md:px-16 lg:flex-row lg:gap-16 lg:px-[120px]">
+  <div class="mx-auto grid w-full max-w-container grid-cols-1 gap-12 px-5 sm:px-8 md:px-16 lg:grid-cols-2 lg:gap-16 lg:px-[120px]">
 
     {/* ── LEFT — advice rows ── */}
-    <div class="flex min-w-0 flex-1 flex-col justify-center">
+    <div class="flex min-w-0 flex-col justify-center">
       {items.map((item, i) => (
         <div
           class:list={[
@@ -82,7 +83,7 @@ const {
     </div>
 
     {/* ── RIGHT — packages card + overlapping disclosure ── */}
-    <div class="relative isolate flex min-w-0 flex-1 flex-col">
+    <div class="relative isolate flex min-w-0 flex-col justify-center">
       <div
         class="relative z-[2] mb-[-34px] flex w-full flex-col items-start gap-8 overflow-hidden rounded-[32px] p-8 md:gap-8 md:p-12"
         style="background: linear-gradient(92.4deg, var(--aw-color-bg-section-dark) 5.27%, var(--aw-color-primary) 97.29%);"

@@ -608,8 +608,11 @@ const mobilePanelClass =
       const isActive = (href: string) => {
         const url = new URL(href, window.location.origin);
         if (norm(url.pathname) !== current) return false;
+        // Hash-only links still need an exact hash match. Path links stay
+        // active when an in-page autoscroll hash is present
+        // (e.g. /books vs /books#book-hair, /podcast vs /podcast#hair-scalp).
         if (url.hash) return url.hash === currentHash;
-        return !currentHash || currentHash === '#';
+        return true;
       };
 
       this.querySelectorAll<HTMLAnchorElement>('nav a[href]').forEach((a) => {

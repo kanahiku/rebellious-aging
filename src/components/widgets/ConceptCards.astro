@@ -43,7 +43,7 @@ const { cards = [], id } = Astro.props;
 ---
 
 <section {...id ? { id } : {}} class="not-prose w-full">
-  <div class="mx-auto grid w-full max-w-container grid-cols-1 gap-8 px-5 py-10 sm:grid-cols-2 sm:px-8 md:px-16 md:py-16 lg:grid-cols-4 lg:px-[120px] lg:py-[64px]">
+  <div class="mx-auto grid w-full max-w-container grid-cols-1 gap-8 px-5 py-10 sm:grid-cols-2 sm:px-8 md:px-16 md:py-16 lg:grid-cols-4 lg:px-[120px] lg:pt-[120px] lg:pb-[64px]">
     {cards.map((card) => (
       <Card
         variant="pillar"

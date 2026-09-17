@@ -5,7 +5,6 @@ import Header from '~/components/widgets/Header.astro';
 import ConceptSplit from '~/components/widgets/ConceptSplit.astro';
 import TextSplit from '~/components/widgets/TextSplit.astro';
 import Text from '~/components/ui/Text.astro';
-import Button from '~/components/ui/Button.astro';
 import Image from '~/components/common/Image.astro';
 import { getImage } from 'astro:assets';
 import whyUrgent from '~/assets/images/full-szie-graph.png';
@@ -106,19 +105,11 @@ const conceptCards = [
   <TextSplit
     heading="And then we stop."
     withImage
-    imagePlacement="under-heading"
     imageAspect="568 / 378.667"
   >
     <Text>
       There is a point past which this is medical care, and we do not deliver medical care. What we do is hand you a shorter, sharper list of things to raise with the person who does — including the ones almost nobody raises, like whether you still need every medication you are taking.
     </Text>
-    <Button
-      variant="primary"
-      text="What to ask your doctor"
-      href="/talk-to-your-doctor"
-      hideNote
-      class="mt-8 self-start"
-    />
     <Image
       slot="image"
       src={weStopImg}

@@ -5,10 +5,9 @@
  * Visual spec:
  *   Dark navy gradient pill (rounded-full), two-column layout.
  *   Left:  eyebrow (muted) + h2 heading (cream)
- *   Right: body text + frosted CTA box [ghost button + italic disclaimer]
+ *   Right: body text + standalone CTA button
  *
  *   Background: linear-gradient(100.7°, sectionDark → primary)
- *   CTA box: bg-page/5 p-3 rounded-[16px]
  *   Button: ghost/dark variant (bg-primary/20, border-cream, text-white) + backdrop-blur
  *
  * Usage:
@@ -16,9 +15,6 @@
  *     eyebrow="Know where to aim"
  *     title="Find your weakest link."
  *     subtitle="Ninety-six questions, one at a time, about ten minutes. …"
- *     ctaText="Understand the model"
- *     ctaHref="/start"
- *     disclaimer="Nothing you enter is sent anywhere. …"
  *   />
  *
  * Note: Old template props (showAfterHoursNote, license, extraLines) are accepted
@@ -28,6 +24,7 @@
 import Button from '~/components/ui/Button.astro';
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
+import { PRIMARY_CTA_HREF, PRIMARY_CTA_LABEL } from '~/config/cta';
 
 export interface Props {
   eyebrow?: string;
@@ -50,9 +47,6 @@ const {
   eyebrow,
   title,
   subtitle,
-  ctaText = 'Get started',
-  ctaHref = '/form',
-  disclaimer,
   id,
 } = Astro.props;
 ---
@@ -73,28 +67,20 @@ const {
         <Heading variant="h2" color="inherit" class="text-white">{title}</Heading>
       </div>
 
-      {/* ── RIGHT column: body + CTA container ── */}
+      {/* ── RIGHT column: body + standalone CTA ── */}
       <div class="flex min-w-0 flex-1 flex-col gap-8">
         {subtitle && (
           <Text color="inherit" class="text-white">{subtitle}</Text>
         )}
 
-        {/* Frosted CTA box */}
-        <div class="flex flex-col items-start gap-4 rounded-[var(--aw-radius-lg)] bg-page/5 p-3 sm:flex-row sm:items-center">
-          <Button
-            variant="ghost"
-            tone="dark"
-            text={ctaText}
-            href={ctaHref}
-            class="w-full shrink-0 backdrop-blur-[10px] sm:w-auto"
-            hideNote={true}
-          />
-          {disclaimer && (
-            <p class="font-sans text-[11px] italic leading-[1.3] text-white/60">
-              {disclaimer}
-            </p>
-          )}
-        </div>
+        <Button
+          variant="ghost"
+          tone="dark"
+          text={PRIMARY_CTA_LABEL}
+          href={PRIMARY_CTA_HREF}
+          class="w-auto shrink-0 self-start backdrop-blur-[10px]"
+          hideNote={true}
+        />
       </div>
 
     </div>

@@ -94,14 +94,16 @@ export const podcastEpisode = defineType({
       title: 'Spotify episode URL',
       type: 'url',
       group: 'links',
-      description: 'Leave empty until the episode is published.',
+      description:
+        'Direct episode link (open.spotify.com/episode/…), not the show/playlist URL. Leave empty until published.',
     }),
     defineField({
       name: 'youtubeUrl',
       title: 'YouTube episode URL',
       type: 'url',
       group: 'links',
-      description: 'Leave empty until the episode is published.',
+      description:
+        'Direct video link (youtube.com/watch?v=…), not the playlist URL. Leave empty until published.',
     }),
     defineField({
       name: 'guidebookHref',

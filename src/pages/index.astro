@@ -13,7 +13,7 @@ import Testimonials from '~/components/widgets/Testimonials.astro';
 import Text from '~/components/ui/Text.astro';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
-import { PRIMARY_CTA_LABEL, PRIMARY_CTA_HREF } from '~/config/cta';
+import { ATHENA_CONTACT_HREF, PRIMARY_CTA_LABEL, PRIMARY_CTA_HREF } from '~/config/cta';
 import { Image } from 'astro:assets';
 // Hero is served from pre-generated static WebP files in public/ — bypasses the
 // /_image Sharp endpoint so the browser gets the LCP image instantly without
@@ -138,7 +138,7 @@ const bucketOnePillars = [
     id="why-urgent"
     eyebrow="Why any of this is urgent"
     headingHtml="Everything peaks.<br />Then it <span class='text-accent'>slopes.</span>"
-    cta={{ text: 'Read the Whole Model', href: '/how-aging-works' }}
+    cta={{ text: 'Understand the modal', href: '/fill-the-first-bucket' }}
   >
     <Fragment slot="body">
       <Text>
@@ -253,10 +253,10 @@ const bucketOnePillars = [
       Do I still need all of these medications? A statin started at seventy takes years to pay off while the side effects start now. The risk-benefit that made sense a decade ago may not be the one you&rsquo;re living in.
     </Text>
     <a
-      href="/talk-to-your-doctor"
+      href={ATHENA_CONTACT_HREF}
       class="btn-link mt-[1.3em]"
     >
-      What to ask, and what to ask about first.
+      Schedule a free visit
     </a>
     <Image
       slot="image"

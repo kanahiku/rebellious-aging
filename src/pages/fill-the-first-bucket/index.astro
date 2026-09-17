@@ -3,11 +3,13 @@ import Layout from '~/layouts/PageLayout.astro';
 import Hero2 from '~/components/widgets/Hero2.astro';
 import Header from '~/components/widgets/Header.astro';
 import BucketsSection from '~/components/widgets/BucketsSection.astro';
+import FullWidthImageBand from '~/components/widgets/FullWidthImageBand.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
 import { getImage } from 'astro:assets';
 import fillBucketHero from '~/assets/images/fill-bucket-hero.png';
+import closedEyeLadyImg from '~/assets/images/closed-eye-lady.jpg';
 import { ATHENA_CONTACT_HREF } from '~/config/cta';
 
 const metadata = {
@@ -28,6 +30,7 @@ const heroPreload = await getImage({ src: fillBucketHero, width: 1920, format: '
     variant="page"
     overlapHeader={false}
     withImage
+    pageOverlay
     title="Fill the<br />first bucket."
     subtitle={`<p>Then the next one, and the one after that. The buckets do not hold health. They hold resources: your money, your time, your attention, your appointments, your willpower. All five are finite, and where you pour them is the most consequential decision you make about your own aging.</p><p>The order runs from the simplest and cheapest to the most complex and expensive. Do the basics before the fancy stuff.</p>`}
     image={{
@@ -46,6 +49,11 @@ const heroPreload = await getImage({ src: fillBucketHero, width: 1920, format: '
 
   {/* ── Three Buckets Section — Figma node 176:20 ── */}
   <BucketsSection />
+
+  <FullWidthImageBand
+    image={closedEyeLadyImg}
+    alt="Close-up portrait of an older woman with her eyes closed"
+  />
 
   {/* ── CTA Banner — Figma node 176:227 ── */}
   <CTABanner

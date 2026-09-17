@@ -8,6 +8,7 @@ import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
+import { ATHENA_CONTACT_HREF } from '~/config/cta';
 import { getImage } from 'astro:assets';
 import fourPillarHero from '~/assets/images/four-pillar-hero.png';
 
@@ -89,6 +90,7 @@ const pillarCards = [
     variant="page"
     overlapHeader={false}
     withImage
+    pageOverlay
     title="Four Pillars"
     subtitle="<p>Diet. Exercise. Sleep. Social interaction. Strongest evidence in the literature, lowest price tag in medicine, and the four things to do before you spend a dollar on anything else.</p><p>There is no order inside this bucket. Show up for any one, stay for all four. Start with whichever you can face on a Tuesday — then let the surplus flow.</p>"
     image={{
@@ -118,8 +120,8 @@ const pillarCards = [
     </Text>
     <Button
       variant="primary"
-      text="What to ask your doctor"
-      href="/talk-to-your-doctor"
+      text="Schedule a free visit"
+      href={ATHENA_CONTACT_HREF}
       hideNote
       class="mt-8 self-start"
     />

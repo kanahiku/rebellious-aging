@@ -220,6 +220,8 @@ export interface Hero extends Omit<Headline, 'classes'>, Omit<Widget, 'isDark' |
   stacked?: boolean;
   /** `variant="page"` only — full-bleed image under the title/lede. Pass `image` for the photo; otherwise a grey placeholder. */
   withImage?: boolean;
+  /** `variant="page"` + `withImage` only — render the image as the hero background with readable text overlay. */
+  pageOverlay?: boolean;
 }
 
 export interface Team extends Omit<Headline, 'classes'>, Widget {

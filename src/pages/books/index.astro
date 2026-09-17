@@ -5,7 +5,6 @@ import Header from '~/components/widgets/Header.astro';
 import BooksGrid from '~/components/widgets/BooksGrid.astro';
 import BookSeriesFeature from '~/components/widgets/BookSeriesFeature.astro';
 import GuideBookGrid from '~/components/widgets/GuideBookGrid.astro';
-import MediaAppearances from '~/components/widgets/MediaAppearances.astro';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
 import { getBooks, getPodcastEpisodes } from '~/lib/content';
@@ -18,6 +17,10 @@ const metadata = {
 };
 
 const header = navigationData.header;
+const booksHero = {
+  src: 'https://images.unsplash.com/photo-1546350882-6f047ea47789?auto=format&fit=crop&w=2400&q=85',
+  alt: 'An open book and coffee on a white surface',
+};
 const [books, allEpisodes] = await Promise.all([getBooks(), getPodcastEpisodes()]);
 
 // Build a reverse map: book slug → episode slug.
@@ -87,27 +90,22 @@ const guideBooks = guidebookBooks.map((book) => ({
   publisherNote: book.publisherNote,
   podcastHref: podcastLink(book),
 }));
-
-// ── Media appearances ─────────────────────────────────────────────────────────
-const mediaQuote = '"A comprehensive and accessible guide to integrated wellness that challenges conventional health wisdom."';
-const appearances = [
-  { quote: mediaQuote },
-  { quote: '"Dr. Peterson\'s approach to cognitive longevity represents a paradigm shift in how we think about aging and brain health."' },
-  { quote: mediaQuote },
-  { quote: '"An essential read for anyone who wants to understand the science behind healthy aging, and act on it."' },
-];
 ---
 
 <Layout metadata={metadata}>
+  <link slot="head" rel="preload" as="image" href={booksHero.src} fetchpriority="high" />
   <Fragment slot="header" />
 
-  <!-- Hero — gradient bg, "Books by Dr. Robert Peterson MD" -->
+  <!-- Hero — image background, "Books by Dr. Robert Peterson MD" -->
   <Hero2
     variant="page"
     stacked
     overlapHeader={false}
+    withImage
+    pageOverlay
     title="Books by <br />Dr. Robert Peterson MD"
     subtitle="Organized across three series: foundational textbooks, the Rebellious Aging Guidebooks, and Bargaining with Aging."
+    image={booksHero}
   >
     <Header
       slot="nav"
@@ -146,17 +144,6 @@ const appearances = [
     heading="Bargaining with Aging Series"
     description="Honest reckonings with the trade-offs, risks, and unknowns of growing older."
     book={bargainingBook}
-    roundedBottom
-  />
-
-  <!-- As Seen In — horizontal scroll media appearances -->
-  <MediaAppearances
-    id="media-appearances"
-    eyebrow="Media Appearances"
-    heading="As Seen In"
-    subtitle="Featured insights on longevity medicine and cognitive health"
-    appearances={appearances}
-    cta={{ text: 'View All Media Appearances', href: '#' }}
   />
 
 </Layout>

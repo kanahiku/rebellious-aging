@@ -32,6 +32,8 @@ import Testimonials from '~/components/widgets/Testimonials.astro';
 import Button from '~/components/ui/Button.astro';
 import Text from '~/components/ui/Text.astro';
 import { navigationData } from '~/data/navigation';
+import { chapterLocations } from '~/data/chapters';
+import { ATHENA_CONTACT_HREF } from '~/config/cta';
 import { Image, getImage } from 'astro:assets';
 import { formatTestimonialAttribution, getTestimonials } from '~/lib/content';
 
@@ -54,6 +56,7 @@ const heroPreload = await getImage({ src: ohanaheroImg, width: 1440, format: 'we
 
 const testimonials = await getTestimonials();
 const header = navigationData.header;
+const ohanaMeetupHref = chapterLocations[0]?.href ?? '/';
 
 // ── S3: Stats (Figma 310:1235) ──
 const ohanaStats = [
@@ -106,14 +109,12 @@ const duoCards = [
     eyebrow: 'The Other Three, Alone',
     heading: 'Willpower, on a schedule you set yourself.',
     body: 'Works for about six weeks. Then a Tuesday comes along when it rains, nothing is on the calendar, and nobody would know either way.',
-    cta: { text: 'Find a chapter', href: '/chapters' },
   },
   {
     variant: 'outlined' as const,
     eyebrow: 'The Other Three, Together',
     heading: 'A calendar, and thirty people who notice.',
     body: 'Members average three sessions a week and one feast. Not because they are more disciplined — because it is the easiest thing they do all week.',
-    cta: { text: 'View activities directory', href: '/fill-the-first-bucket' },
   },
 ];
 
@@ -177,8 +178,8 @@ const ohanaActivities = [
     </Text>
     <Button
       variant="primary"
-      text="Find your chapter"
-      href="/chapters"
+      text="Join an Ohana"
+      href={ohanaMeetupHref}
       hideNote
       class="mt-8"
     />
@@ -327,7 +328,7 @@ const ohanaActivities = [
   {/* S8 — Purpose banner + No chapter near you */}
   <PurposeBanner
     id="purpose"
-    noChapterCta={{ text: 'Start a Chapter', href: '/chapters' }}
+    noChapterCta={{ text: 'Join an Ohana', href: ohanaMeetupHref }}
   >
     <Image
       slot="bg"
@@ -392,7 +393,7 @@ const ohanaActivities = [
       an empty water bottle, and something to put lunch in.
     </Text>
     <div class="mt-8 flex flex-wrap gap-4">
-      <Button variant="primary" text="Book your free first visit" href="/chapters" hideNote />
+      <Button variant="primary" text="Schedule a visit" href={ATHENA_CONTACT_HREF} hideNote />
       <Button variant="ghost" tone="light" text="Find your weakest link" href="/form" hideNote />
     </div>
   </TextSplit>
