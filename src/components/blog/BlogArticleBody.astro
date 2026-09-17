@@ -27,7 +27,7 @@ const contentBlocks = post.contentBlocks ?? [];
 
 const paragraphClass = 'text-[16px] md:text-[17px] font-normal leading-[160%] text-muted';
 const headingClass =
-  'text-[26px] md:text-[40px] font-normal leading-[110%] tracking-tighter font-heading text-heading mb-5';
+  'text-[clamp(1.625rem,1.315vw+1.317rem,2.5rem)] font-normal leading-[110%] tracking-tighter font-heading text-heading mb-5';
 
 function reviewSources(section: ServiceSection): ReviewSource[] {
   if (section._type === 'yelpReviewsSection') return ['yelp'];

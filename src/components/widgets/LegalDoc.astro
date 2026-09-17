@@ -1,0 +1,32 @@
+---
+/**
+ * Legal document page chrome — glass nav (same as every other page) plus
+ * a compact display title and full-width body. Used by Privacy Policy,
+ * Terms of Service, and Accessibility.
+ */
+import Header from '~/components/widgets/Header.astro';
+import Heading from '~/components/ui/Heading.astro';
+import { navigationData } from '~/data/navigation';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+const header = navigationData.header;
+---
+
+<section class="relative not-prose w-full overflow-hidden rounded-b-hero bg-gradient-to-t from-transparent to-section-grey">
+  <div class="relative mx-auto flex w-full max-w-container flex-col px-5 py-6 pb-12 sm:px-8 md:px-16 md:pb-16 lg:px-[120px] lg:pt-8 lg:pb-[64px]">
+    <Header
+      embedded
+      isSticky={false}
+      links={header.links}
+      actions={header.actions}
+    />
+    <Heading variant="h1" class="mt-8 mb-12 md:mt-10 md:mb-16">{title}</Heading>
+    <div class="w-full space-y-10 md:space-y-12">
+      <slot />
+    </div>
+  </div>
+</section>

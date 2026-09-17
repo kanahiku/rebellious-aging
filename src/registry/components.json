@@ -640,6 +640,18 @@
         "no-chapter-body": "paragraphs for the right side of the bottom glass card"
       },
       "notes": "Figma node 310:1550 (The Ohana page). Bottom card uses backdrop-filter: blur(15px) + rgba(30,42,48,0.2) glass. Photo is a grey placeholder until asset is ready. Content always passed from the page file."
+    },
+    {
+      "id": "P-47",
+      "name": "Legal Document",
+      "figmaNames": ["Privacy Policy", "Terms of Service", "Accessibility"],
+      "shape": "Embedded glass nav + compact display title + full-width numbered legal sections",
+      "component": "LegalDoc",
+      "import": "~/components/widgets/LegalDoc.astro",
+      "props": {
+        "title": "Page heading (Privacy Policy, Terms of Service, Accessibility Statement)"
+      },
+      "notes": "System legal routes. Uses the same embedded Header as Hero2 page/overlay variants. Body sections are slotted from the page file."
     }
   ]
 }

@@ -77,39 +77,35 @@
   font-variation-settings: 'SOFT' 0, 'WONK' 1;
 }
 
+/* ── Fluid type utilities ───────────────────────────────────────────────────
+   Viewport range: 375 px (small phone) → 1440 px (wide desktop).
+   Formula: clamp(min, slope·vw + intercept, max)
+   No media-query breakpoint — text scales continuously at every width.
+   Sizes match brand.ts: h1 28→100 px, h2 26→52 px, h3 20→36 px, h4 18→28 px.
+   ─────────────────────────────────────────────────────────────────────────── */
+
 @utility text-h1 {
-  font-size: var(--aw-text-h1-mobile);
-  line-height: 1.2; /* relaxed on mobile — desktop tightens below */
-  @media (min-width: 768px) {
-    font-size: var(--aw-text-h1);
-    line-height: var(--aw-leading-h1);
-  }
+  /* 28 px (375 vw) → 100 px (1440 vw)   slope 6.76 vw, intercept 0.166 rem */
+  font-size: clamp(1.75rem, 6.76vw + 0.166rem, 6.25rem);
+  line-height: 1.05;
 }
 
 @utility text-h2 {
-  font-size: var(--aw-text-h2-mobile);
-  line-height: 1.2; /* relaxed on mobile */
-  @media (min-width: 768px) {
-    font-size: var(--aw-text-h2);
-    line-height: var(--aw-leading-h2);
-  }
+  /* 26 px (375 vw) → 52 px (1440 vw)    slope 2.44 vw, intercept 1.053 rem */
+  font-size: clamp(1.625rem, 2.44vw + 1.053rem, 3.25rem);
+  line-height: 1.05;
 }
 
 @utility text-h3 {
-  font-size: var(--aw-text-h3-mobile);
-  line-height: 1.25; /* relaxed on mobile */
-  @media (min-width: 768px) {
-    font-size: var(--aw-text-h3);
-    line-height: var(--aw-leading-h3);
-  }
+  /* 20 px (375 vw) → 36 px (1440 vw)    slope 1.5 vw, intercept 0.898 rem */
+  font-size: clamp(1.25rem, 1.5vw + 0.898rem, 2.25rem);
+  line-height: 1.1;
 }
 
 @utility text-h4 {
-  font-size: var(--aw-text-h4-mobile);
-  line-height: var(--aw-leading-h4); /* h4 already 1.2 — no change needed */
-  @media (min-width: 768px) {
-    font-size: var(--aw-text-h4);
-  }
+  /* 18 px (375 vw) → 28 px (1440 vw)    slope 0.94 vw, intercept 0.905 rem */
+  font-size: clamp(1.125rem, 0.94vw + 0.905rem, 1.75rem);
+  line-height: 1.2;
 }
 
 @utility text-body {

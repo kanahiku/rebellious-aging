@@ -1,179 +1,440 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
-import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
-import SectionBg from '~/components/ui/SectionBg.astro';
-import Hero2 from '~/components/widgets/Hero2.astro';
-import CTABanner from '~/components/widgets/CTABanner.astro';
+import LegalDoc from '~/components/widgets/LegalDoc.astro';
 import { CONTACT } from '~/config/contact';
-import { PRIMARY_CTA_LABEL } from '~/config/cta';
-import { siteHost } from '~/config/site';
+import { site, siteHost } from '~/config/site';
 
 const host = siteHost();
+const legalName = CONTACT.businessName;
+const dbaName = site.name;
+const entityLabel =
+  legalName === dbaName ? legalName : `${legalName} (doing business as ${dbaName})`;
+const governingState = CONTACT.address.state === 'HI' ? 'Hawaii' : CONTACT.address.state;
+const governingCounty = 'Honolulu';
 
 const metadata = {
-  title: `Terms of Service | ${CONTACT.businessName}`,
-  description: `Terms of Service for ${host}, operated by ${CONTACT.businessName}.`,
+  title: `Terms of Service | ${dbaName}`,
+  description: `Terms of Service for ${host}. These terms govern your use of the website and participation in ${dbaName} chapters, sessions, and activities.`,
   ignoreTitleTemplate: true,
 };
 
-const headingClass =
-  'text-[22px] md:text-[26px] font-normal leading-[130%] tracking-tight font-heading text-heading mb-4';
-const bodyClass = 'text-[16px] md:text-[17px] font-normal leading-[160%] text-muted';
+const headingClass = 'text-h4 font-heading font-normal text-heading mb-4';
+const bodyClass = 'text-body-lg font-normal leading-[160%] text-muted';
 const listClass = `${bodyClass} mt-4 space-y-1 list-disc pl-5`;
 const linkClass = 'btn-link';
 ---
 
 <Layout metadata={metadata}>
-  <Hero2>
-    <Fragment slot="title">Terms of Service</Fragment>
-    <Fragment slot="subtitle">
-      Last updated: September 8, 2026
-    </Fragment>
-    <Fragment slot="bg">
-      <SectionBg variant="hero" />
-    </Fragment>
-  </Hero2>
-
-  <WidgetWrapper containerClass="max-w-container mx-auto">
-    <div class="max-w-3xl space-y-10 md:space-y-14">
+  <Fragment slot="header" />
+  <LegalDoc title="Terms of Service">
       <section>
         <h2 class={headingClass}>1. Acceptance of these terms</h2>
         <p class={bodyClass}>
-          These Terms of Service govern your use of {host}, operated by {CONTACT.businessName}, referred to here as
-          "we," "us," or "our." By accessing or using this website, you agree to these terms. If you do not agree,
-          please do not use the site.
+          These Terms of Service govern your use of {host} and your participation in {dbaName} chapters, sessions, and
+          activities. They are provided by {entityLabel}, referred to here as "we," "us," or "our." By accessing this
+          website or taking part in any {dbaName} activity, you agree to these terms. If you do not agree, please do
+          not use the site or take part in our activities.
         </p>
       </section>
 
       <section>
-        <h2 class={headingClass}>2. About this website</h2>
+        <h2 class={headingClass}>2. About {dbaName}</h2>
         <p class={bodyClass}>
-          This website provides general information about our services and allows visitors to contact us. Using this
-          website, submitting a form, or communicating with us through the site does not by itself create a service
-          agreement. A relationship begins only when we and you sign a written agreement.
+          {dbaName} is a network of member-led chapters that offers in-person activities, educational sessions, books,
+          and a self-assessment focused on healthy aging. Using this website, submitting a form, or attending a session
+          does not by itself create a membership, a service agreement, or any other relationship beyond what these terms
+          describe. Any membership terms, dues, or chapter agreements are provided to you separately.
         </p>
       </section>
 
       <section>
         <h2 class={headingClass}>3. Use of this website</h2>
-        <p class={bodyClass}>You may use this website for lawful purposes. You agree not to:</p>
+        <p class={bodyClass}>
+          You may use this website for lawful purposes, to learn about {dbaName}, and to inquire about or take part in
+          our activities. You agree not to:
+        </p>
         <ul class={listClass}>
           <li>Use the site in a way that violates any applicable law or regulation</li>
           <li>Attempt to gain unauthorized access to the site, its servers, or any connected systems</li>
           <li>Introduce malware, or interfere with the normal operation or security of the site</li>
           <li>Copy, scrape, or republish site content for commercial purposes without our written permission</li>
-          <li>Submit false, misleading, or fraudulent information through any form on the site</li>
+          <li>
+            Submit false, misleading, or fraudulent information through any form on the site, including first-visit
+            bookings and chapter applications
+          </li>
         </ul>
         <p class={`${bodyClass} mt-4`}>
-          We may restrict or suspend access to the site at any time if we reasonably believe use of the site breaches
-          these terms.
+          We may restrict or suspend access to the site at any time, without notice, if we reasonably believe use of the
+          site breaches these terms.
         </p>
       </section>
 
       <section>
-        <h2 class={headingClass}>4. Service information, pricing, and estimates</h2>
+        <h2 class={headingClass}>4. Not medical advice</h2>
         <p class={bodyClass}>
-          We try to keep the information on this website accurate, but content may become out of date and may contain
-          errors. Descriptions of services, availability, timelines, and any pricing shown on this site are for general
-          information only and are not binding offers. Any estimate or quote becomes binding only when provided in
-          writing and signed by both parties.
+          {dbaName} does not provide medical care. The content on this website, in our books and podcasts, and at our
+          lectures, journal clubs, and chapter sessions is general educational information. It is not medical advice,
+          diagnosis, or treatment, and it is not a substitute for care from a qualified health professional who knows
+          your history.
+        </p>
+        <p class={`${bodyClass} mt-4`}>
+          No doctor-patient or other professional relationship is created between you and {dbaName}, Dr. Robert
+          Peterson, any lecturer, coach, chapter lead, or volunteer through your use of this website or your
+          participation in our activities. Information about tests, screenings, supplements, or medications is provided
+          so you can discuss it with your own physician. Do not start, stop, or change any medication or treatment based
+          on anything you read or hear through {dbaName} without first speaking to your physician.
+        </p>
+        <p class={`${bodyClass} mt-4`}>
+          Always seek the advice of your physician with any question about a medical condition, and never disregard
+          professional medical advice or delay seeking it because of something you read or heard through {dbaName}. If
+          you think you may have a medical emergency, call 911 or your local emergency number immediately.
         </p>
       </section>
 
       <section>
-        <h2 class={headingClass}>5. Contact forms and submissions</h2>
+        <h2 class={headingClass}>5. The self-assessment</h2>
         <p class={bodyClass}>
-          When you submit a form on this website, you are asking us to contact you about our services, and you agree
-          that we may respond by email, phone, or text using the details you provide. Please do not submit sensitive
-          personal information, payment details, or confidential documents through the site. Information you send us is
-          handled as described in our
+          The self-assessment on this website is an educational tool. It is not a medical test, a diagnosis, or a
+          substitute for an examination by a health professional. Its results depend entirely on the answers you give,
+          are not reviewed by any person, and may not reflect your actual health. Do not rely on your results to make
+          medical decisions without speaking to your physician.
+        </p>
+        <p class={`${bodyClass} mt-4`}>
+          The self-assessment is sponsored by Athena Clinic. How the self-assessment handles your answers is described
+          in our
           <a class={linkClass} href="/privacy-policy">Privacy Policy</a>.
         </p>
       </section>
 
       <section>
-        <h2 class={headingClass}>6. Text messages</h2>
+        <h2 class={headingClass}>6. Athena Clinic and disclosure of interest</h2>
         <p class={bodyClass}>
-          If you provide a mobile number and opt in, we may send text messages about your inquiry, appointment, or
-          project. Message and data rates may apply, and message frequency varies. Reply STOP to any message to opt out,
-          or HELP for assistance. Consent to receive text messages is not a condition of purchasing any service.
+          Athena Clinic is a separate medical practice owned by Dr. Robert Peterson, who is also the founder of{' '}
+          {dbaName}. Athena Clinic sponsors the self-assessment, and this website links to services offered by Athena
+          Clinic. Dr. Peterson has a financial interest in Athena Clinic. You are never required to use Athena Clinic to
+          take part in {dbaName}, and the information on this website can be used with any physician you choose.
+        </p>
+        <p class={`${bodyClass} mt-4`}>
+          Any assessment, session, consultation, package, test, or other service provided by Athena Clinic is offered
+          solely by Athena Clinic, under its own terms, patient policies, and privacy practices, and not by us. Athena
+          Clinic alone decides which of its services, if any, are offered at no charge, who is eligible, what is
+          included, and what fees apply. Any mention on this website of an Athena Clinic service or offer, including one
+          described as free or complimentary, is general information only, may change or end at any time without notice,
+          and does not create a commitment by us.
+        </p>
+        <p class={`${bodyClass} mt-4`}>
+          Before booking, confirm directly with Athena Clinic what a service includes, whether any charge applies, and
+          whether your insurance covers it. We are not responsible for Athena Clinic's services, fees, billing,
+          insurance determinations, scheduling, or any other matter between you and Athena Clinic.
         </p>
       </section>
 
       <section>
-        <h2 class={headingClass}>7. Third-party links and embedded content</h2>
+        <h2 class={headingClass}>7. Chapters, sessions, and activities</h2>
         <p class={bodyClass}>
-          This website may link to, or embed content from, third-party services such as maps, analytics, and review
-          platforms. We do not control those services and are not responsible for their content, availability, or
-          privacy practices. Your use of a third-party service is governed by that provider's own terms.
+          {dbaName} chapters are run largely by members and volunteers. Session schedules, locations, leaders, speakers,
+          and formats may change or be cancelled at any time, including because of weather, ocean conditions, or venue
+          availability. Any offer of free visits applies as described on the relevant chapter page and may be limited by
+          capacity, or changed or withdrawn at any time.
+        </p>
+        <p class={`${bodyClass} mt-4`}>
+          Before you take part in certain activities, you may be asked to sign a participation agreement, release, or
+          acknowledgment of risk. That document applies in addition to these terms. We may decline, limit, or end
+          anyone's participation in any activity or chapter where we reasonably believe it is necessary for the safety
+          or wellbeing of that person or others, or where these terms have been breached.
         </p>
       </section>
 
       <section>
-        <h2 class={headingClass}>8. Cookies</h2>
+        <h2 class={headingClass}>8. Your health and your participation</h2>
         <p class={bodyClass}>
-          This website may use cookies and similar technologies to operate the site, remember your preferences, and
-          understand how the site is used. You can control cookies through your browser settings. See our
-          <a class={linkClass} href="/privacy-policy">Privacy Policy</a> for more detail.
+          Many {dbaName} activities are physical, including strength training, balance and mobility work, walking,
+          hiking, ocean swimming, yoga, and volunteer work. Physical activity carries inherent risks, including falls,
+          muscle and joint injuries, heat illness, dehydration, strong currents and other ocean hazards, uneven terrain,
+          cardiac events, and in rare cases serious injury or death. These risks exist even when activities are led
+          carefully.
+        </p>
+        <p class={`${bodyClass} mt-4`}>By taking part, you agree that:</p>
+        <ul class={listClass}>
+          <li>
+            You will talk to your physician before starting any new exercise or activity, particularly if you have a
+            medical condition, take medication, or have recently been ill or injured
+          </li>
+          <li>
+            Your participation is voluntary, and you are responsible for deciding whether an activity is suitable for
+            you
+          </li>
+          <li>
+            You will take part within your own abilities, use modified versions of exercises where you need them, and
+            stop immediately if you feel pain, dizziness, shortness of breath, or discomfort
+          </li>
+          <li>
+            You will tell the session leader about anything that could affect your safety, to the extent you are
+            comfortable doing so
+          </li>
+          <li>
+            You are responsible for assessing trail, weather, and ocean conditions for yourself, and ocean activities
+            are not supervised by lifeguards unless a session description clearly states otherwise
+          </li>
+          <li>
+            Coaches, chapter leads, and volunteers are not providing medical care and are not responsible for monitoring
+            your health
+          </li>
+        </ul>
+        <p class={`${bodyClass} mt-4`}>
+          To the maximum extent permitted by applicable law, you knowingly assume the risks of taking part in {dbaName}
+          {' '}activities.
         </p>
       </section>
 
       <section>
-        <h2 class={headingClass}>9. Intellectual property</h2>
+        <h2 class={headingClass}>9. Food at gatherings</h2>
         <p class={bodyClass}>
-          Unless stated otherwise, the content on this website is owned by {CONTACT.businessName} or used with
-          permission. You may view and print pages for your own personal or internal business use. You may not
-          reproduce, distribute, or create derivative works from site content without our written permission.
+          Food at kitchen salons, potlucks, and other gatherings may be prepared by members, volunteers, or guests,
+          including in home kitchens. We cannot guarantee how any food was prepared, what it contains, or that it is
+          free of allergens such as nuts, shellfish, dairy, gluten, or eggs. If you have a food allergy or dietary
+          restriction, you are responsible for deciding what is safe for you to eat. Information about nutrition is
+          general education and is not individual dietary advice.
         </p>
       </section>
 
       <section>
-        <h2 class={headingClass}>10. Disclaimer of warranties</h2>
+        <h2 class={headingClass}>10. Volunteer and service activities</h2>
         <p class={bodyClass}>
-          To the maximum extent permitted by applicable law, this website and its content are provided on an "as is" and
-          "as available" basis, without warranties of any kind. Nothing in this section limits any warranty given in a
-          signed agreement for services we perform for you.
+          Some chapters take part in service activities organized with or by third parties, such as beach cleanups and
+          meal delivery programs. Those organizations may have their own requirements, rules, and waivers, which you
+          agree to follow. We are not responsible for the acts, omissions, or policies of those organizations.
         </p>
       </section>
 
       <section>
-        <h2 class={headingClass}>11. Limitation of liability</h2>
+        <h2 class={headingClass}>11. Community conduct</h2>
         <p class={bodyClass}>
-          To the maximum extent permitted by applicable law, {CONTACT.businessName} and its owners, employees, and
-          contractors will not be liable for any indirect, incidental, special, consequential, or punitive damages
-          arising out of your use of this website. Where liability cannot be excluded, our total liability relating to
-          this website is limited to one hundred United States dollars (USD 100).
+          {dbaName} depends on members treating each other with respect. When you take part in any chapter, session, or
+          online space connected to {dbaName}, you agree not to:
+        </p>
+        <ul class={listClass}>
+          <li>Harass, threaten, demean, or discriminate against any member, guest, volunteer, or speaker</li>
+          <li>Share personal or health information another person has shared in a session without their permission</li>
+          <li>Sell, promote, or solicit products, services, or investments to members</li>
+          <li>
+            Present yourself as giving professional medical, legal, or financial advice unless you are appropriately
+            licensed and the setting clearly allows it
+          </li>
+          <li>Attend while impaired in a way that puts yourself or others at risk</li>
+        </ul>
+        <p class={`${bodyClass} mt-4`}>
+          We and our chapter leads may remove anyone from a session, chapter, or online space for conduct that breaches
+          these terms.
         </p>
       </section>
 
       <section>
-        <h2 class={headingClass}>12. Changes to these terms</h2>
+        <h2 class={headingClass}>12. Photographs and recordings</h2>
         <p class={bodyClass}>
-          We may update these terms from time to time. The current version is always posted on this page. Continued use
-          of the site after an update means you accept the revised terms.
+          Sessions, lectures, and gatherings may be photographed, filmed, or recorded, and those materials may be used
+          on this website, in podcasts, and in other {dbaName} materials. If you do not want to appear in photographs or
+          recordings, tell the session leader before the session begins, and we will make reasonable efforts to respect
+          your request. Where required, we will ask for your permission before featuring you by name.
         </p>
       </section>
 
       <section>
-        <h2 class={headingClass}>13. Contact</h2>
+        <h2 class={headingClass}>13. Lectures and educational content</h2>
+        <p class={bodyClass}>
+          Lecturers, moderators, and guest speakers are independent. Their views are their own and do not necessarily
+          reflect ours. References to research, trials, and published studies are provided for education and discussion,
+          and research findings may not apply to your individual circumstances. Session summaries and recordings may be
+          edited for length and clarity.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>14. Starting a chapter</h2>
+        <p class={bodyClass}>
+          Submitting an application or inquiry about starting a chapter does not create a chapter, an affiliation, a
+          partnership, or any right to use the {dbaName} name, materials, or support. A chapter is established only
+          under a separate written agreement signed by us.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>15. Membership and dues</h2>
+        <p class={bodyClass}>
+          Where a chapter charges membership dues, the amount, frequency, and payment method will be disclosed to you
+          before you join. If dues renew automatically, we will tell you before you join and you may cancel at any time
+          using the method described in your membership terms, effective at the end of the current period. Except where
+          stated in your membership terms or required by law, dues already paid are not refundable.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>16. Books and other products</h2>
+        <p class={bodyClass}>
+          Books and related products may be sold through third-party publishers and retailers, including Lulu. Purchases
+          made through those services are governed by their terms, including their pricing, payment, shipping, and
+          return policies, and we are not responsible for their fulfillment. Where we sell products directly, the price,
+          availability, and any shipping and return terms will be shown before you complete your purchase. Product
+          descriptions are general and may contain errors, and prices and availability may change without notice.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>17. Forms and submissions</h2>
+        <p class={bodyClass}>
+          When you submit a form on this website, such as a first-visit booking, a waitlist request, a chapter
+          application, or a general inquiry, you are asking us to contact you, and you agree that we or the relevant
+          chapter lead may respond by email, phone, or text using the details you provide. Please do not submit detailed
+          medical information, medical records, payment details, or confidential documents through the site. Information
+          you send us is handled as described in our
+          <a class={linkClass} href="/privacy-policy">Privacy Policy</a>.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>18. Text messages</h2>
+        <p class={bodyClass}>
+          If you provide a mobile number and opt in, we or your chapter may send text messages about your inquiry, visit,
+          or chapter activities. Message and data rates may apply, and message frequency varies. Reply STOP to any
+          message to opt out, or HELP for assistance. Consent to receive text messages is not a condition of joining a
+          chapter or making any purchase.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>19. Third-party links and embedded content</h2>
+        <p class={bodyClass}>
+          This website may link to, or embed content from, third-party services such as Athena Clinic, publishers and
+          retailers, podcast platforms, maps, and video services. We do not control those services and are not
+          responsible for their content, availability, accuracy, fees, or privacy practices. Your use of a third-party
+          service is governed by that provider's own terms.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>20. Cookies</h2>
+        <p class={bodyClass}>
+          This website may use cookies and similar technologies to operate the site and understand how it is used. You
+          can control cookies through your browser settings. See our
+          <a class={linkClass} href="/privacy-policy">Privacy Policy</a> for more detail, including how the
+          self-assessment is handled.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>21. Intellectual property</h2>
+        <p class={bodyClass}>
+          Unless stated otherwise, the content on this website and in {dbaName} materials, including text, frameworks,
+          the self-assessment, images, graphics, recordings, layout, and design, is owned by {legalName}, Dr. Robert
+          Peterson, or our licensors, and is protected by copyright and other intellectual property laws. You may view,
+          print, and save pages and your own self-assessment results for personal, non-commercial use. You may not
+          reproduce, distribute, modify, sell, or create derivative works from this content, or use it to run programs,
+          classes, or groups of your own, without our written permission.
+        </p>
+        <p class={`${bodyClass} mt-4`}>
+          Third-party names, trademarks, and logos, including those of research institutions, publishers, and service
+          organizations, remain the property of their respective owners and are used only to identify them.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>22. Copyright complaints</h2>
+        <p class={bodyClass}>
+          If you believe content on this website infringes your copyright, contact us at
+          <a class={linkClass} href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+          with a description of the work, the location of the material on our site, your contact details, a statement
+          that you believe the use is unauthorized, and a statement that the information in your notice is accurate. We
+          will review the notice and remove or disable access to the material where appropriate. If material of yours
+          was removed in error, you may contact us at the same address to respond.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>23. Disclaimer of warranties</h2>
+        <p class={bodyClass}>
+          To the maximum extent permitted by applicable law, this website, its content, the self-assessment, and all{' '}
+          {dbaName} activities are provided on an "as is" and "as available" basis, without warranties of any kind,
+          whether express or implied, including implied warranties of merchantability, fitness for a particular purpose,
+          and non-infringement. We do not warrant that the site will be uninterrupted, secure, or free of errors, or
+          that any information is complete, accurate, or current.
+        </p>
+        <p class={`${bodyClass} mt-4`}>
+          We make no promise of any health outcome. Member stories and testimonials describe individual experiences, are
+          not typical or guaranteed results, and your results may differ.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>24. Limitation of liability</h2>
+        <p class={bodyClass}>
+          To the maximum extent permitted by applicable law, {legalName}, Dr. Robert Peterson, and our owners,
+          employees, chapter leads, coaches, volunteers, and speakers will not be liable for any indirect, incidental,
+          special, consequential, or punitive damages, or for any loss of profits, revenue, data, or goodwill, arising
+          out of or relating to your use of this website, the self-assessment, or your participation in {dbaName}{' '}
+          activities. Where liability cannot be excluded, our total liability relating to this website is limited to one
+          hundred United States dollars (USD 100).
+        </p>
+        <p class={`${bodyClass} mt-4`}>
+          Nothing in these terms excludes or limits liability that cannot be excluded or limited under applicable law,
+          including liability for gross negligence or willful misconduct. Some jurisdictions do not allow certain
+          limitations of liability, so parts of this section may not apply to you.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>25. Indemnification</h2>
+        <p class={bodyClass}>
+          You agree to indemnify and hold harmless {legalName}, Dr. Robert Peterson, and our owners, employees, chapter
+          leads, coaches, volunteers, and speakers from any claims, losses, liabilities, and reasonable legal fees
+          arising from your misuse of this website, your conduct at any {dbaName} activity, or your breach of these
+          terms.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>26. Changes to these terms</h2>
+        <p class={bodyClass}>
+          We may update these terms from time to time. The current version is always posted on this page with its
+          effective date. Continued use of the site or participation in our activities after an update means you accept
+          the revised terms.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>27. Governing law and venue</h2>
+        <p class={bodyClass}>
+          These terms are governed by the laws of the State of {governingState}, without regard to its conflict of laws
+          rules. Any dispute relating to these terms, this website, or {dbaName} activities will be brought in the state
+          or federal courts located in {governingCounty} County, {governingState}, and you consent to the jurisdiction
+          of those courts.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>28. General</h2>
+        <p class={bodyClass}>
+          If any provision of these terms is found unenforceable, the remaining provisions stay in effect. Our failure
+          to enforce any provision is not a waiver of it. These terms, together with any participation agreement,
+          membership terms, or other written agreement between us, form the entire agreement regarding their subject
+          matter. Where a signed agreement conflicts with these terms, the signed agreement controls.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>29. Contact</h2>
         <p class={bodyClass}>
           Questions about these terms can be sent to:<br /><br />
-          {CONTACT.businessName}<br />
-          {CONTACT.address.street}<br />
+          {legalName}<br />
+          {CONTACT.address.street && (
+            <>
+              {CONTACT.address.street}
+              <br />
+            </>
+          )}
           {CONTACT.address.cityLine}<br />
           Email: <a class={linkClass} href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a><br />
           Phone: <a class={linkClass} href={CONTACT.phone.href}>{CONTACT.phone.display}</a>
         </p>
       </section>
-    </div>
-    <Fragment slot="bg">
-      <SectionBg variant="grey" />
-    </Fragment>
-  </WidgetWrapper>
-
-  <CTABanner
-    title="Questions?"
-    subtitle={`If you have questions about these terms or about working with ${CONTACT.businessName}, contact us.`}
-    ctaText={PRIMARY_CTA_LABEL}
-  />
+  </LegalDoc>
 </Layout>

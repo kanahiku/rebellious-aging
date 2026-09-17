@@ -1,146 +1,254 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
-import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
-import SectionBg from '~/components/ui/SectionBg.astro';
-import Hero2 from '~/components/widgets/Hero2.astro';
-import CTABanner from '~/components/widgets/CTABanner.astro';
+import LegalDoc from '~/components/widgets/LegalDoc.astro';
 import { CONTACT } from '~/config/contact';
-import { PRIMARY_CTA_LABEL } from '~/config/cta';
+import { site, siteHost } from '~/config/site';
+
+const host = siteHost();
+const legalName = CONTACT.businessName;
+const dbaName = site.name;
+const entityLabel =
+  legalName === dbaName ? legalName : `${legalName} (doing business as ${dbaName})`;
+
+const analyticsProviders = [
+  site.analytics.googleTagManagerId.trim() && 'Google Tag Manager',
+  site.analytics.googleAnalyticsId.trim() && 'Google Analytics',
+].filter(Boolean);
+const analyticsProviderSentence = analyticsProviders.length
+  ? `The analytics tools currently in use are ${analyticsProviders.join(' and ')}.`
+  : 'No third-party analytics tools are currently configured.';
 
 const metadata = {
-  title: `Privacy Policy | ${CONTACT.businessName}`,
-  description: `How ${CONTACT.businessName} collects, uses, and protects information from the website, contact form, and messaging programs.`,
+  title: `Privacy Policy | ${dbaName}`,
+  description: `How ${dbaName} collects, uses, and protects information from the website, forms, chapters, and the self-assessment.`,
   ignoreTitleTemplate: true,
 };
 
-const headingClass =
-  'text-[22px] md:text-[26px] font-normal leading-[130%] tracking-tight font-heading text-heading mb-4';
-const bodyClass = 'text-[16px] md:text-[17px] font-normal leading-[160%] text-muted';
+const headingClass = 'text-h4 font-heading font-normal text-heading mb-4';
+const bodyClass = 'text-body-lg font-normal leading-[160%] text-muted';
 const listClass = `${bodyClass} mt-4 space-y-1 list-disc pl-5`;
 const linkClass = 'btn-link';
 ---
 
 <Layout metadata={metadata}>
-  <Hero2>
-    <Fragment slot="title">Privacy Policy</Fragment>
-    <Fragment slot="subtitle">
-      {CONTACT.businessName} values your privacy and is committed to handling customer information and communications
-      responsibly. This Privacy Policy explains how we collect, use, and protect your information when you visit our
-      website, submit a contact form, or opt into our messaging programs.
-    </Fragment>
-    <Fragment slot="bg">
-      <SectionBg variant="hero" />
-    </Fragment>
-  </Hero2>
-
-  <WidgetWrapper containerClass="max-w-container mx-auto">
-    <div class="max-w-3xl space-y-10 md:space-y-14">
+  <Fragment slot="header" />
+  <LegalDoc title="Privacy Policy">
       <section>
-        <h2 class={headingClass}>Information We Collect</h2>
+        <h2 class={headingClass}>1. Who we are and what this policy covers</h2>
         <p class={bodyClass}>
-          When you contact us through our website, we collect personal information that you voluntarily provide. This
-          information includes:
+          This Privacy Policy explains how {entityLabel}, referred to here as "we," "us," or "our," collects, uses, and
+          shares information through {host}, our forms and communications, and our chapters and activities.
         </p>
+        <p class={`${bodyClass} mt-4`}>
+          This policy does not cover Athena Clinic, Lulu, or any other third-party service we link to. Those
+          organizations have their own privacy practices. Athena Clinic is a medical practice, and information you give
+          Athena Clinic is handled under its own privacy notices, not this policy.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>2. The self-assessment</h2>
+        <p class={bodyClass}>
+          The self-assessment runs entirely in your web browser. Your answers and your results are not sent to us,
+          stored by us, or shared with Athena Clinic, our analytics providers, or anyone else. Although Athena Clinic
+          sponsors the self-assessment, Athena Clinic does not receive your answers or results through this website.
+        </p>
+        <p class={`${bodyClass} mt-4`}>
+          We may record that the self-assessment pages were visited, in the same way we record visits to other pages,
+          but we do not record the answers you enter or the result you receive. Your answers are cleared when you close
+          or reload the page. If you print or save your results, that copy is yours to keep. If you later choose to
+          share your results with a chapter, a physician, or Athena Clinic, that information is handled by whoever you
+          give it to.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>3. Information we collect</h2>
+        <p class={bodyClass}>
+          <strong class="font-medium text-heading">Information you give us.</strong> When you book a first visit, join a
+          waitlist, apply to start a chapter, contact a chapter, or send us an inquiry, we collect the details you
+          provide, such as your name, email address, phone number, the chapter or session you are interested in, and
+          anything you choose to include in a message.
+        </p>
+        <p class={`${bodyClass} mt-4`}>
+          <strong class="font-medium text-heading">Information collected at activities.</strong> When you attend a
+          session, a chapter may collect sign-in details, signed participation agreements, and emergency contact
+          information. Sessions may also be photographed or recorded.
+        </p>
+        <p class={`${bodyClass} mt-4`}>
+          <strong class="font-medium text-heading">Information collected automatically.</strong> When you visit the
+          website, we and our service providers may automatically collect limited technical information, such as your IP
+          address, browser and device type, the pages you visit, the date and time of your visit, and the site that
+          referred you.
+        </p>
+        <p class={`${bodyClass} mt-4`}>
+          <strong class="font-medium text-heading">Payment information.</strong> If we collect dues or sell products
+          directly, payments are handled by a third-party payment processor. We do not receive or store your full card
+          number.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>4. Health information</h2>
+        <p class={bodyClass}>
+          We do not ask you to provide health information through this website. Some people choose to tell us about an
+          injury, condition, or limitation, for example in a message field, so that a session can be adapted for them.
+          If you do, we use that information only to arrange your participation, share it only with the chapter lead or
+          session leader who needs it, and do not use it for marketing. Please do not send detailed medical information
+          or medical records through the website or by email.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>5. How we use information</h2>
+        <p class={bodyClass}>We use the information we collect to:</p>
         <ul class={listClass}>
-          <li>Name</li>
-          <li>Email address</li>
-          <li>Phone number</li>
-          <li>ZIP code</li>
+          <li>Respond to your inquiries and arrange your first visit</li>
+          <li>Connect you with the right chapter and keep you informed about sessions you asked about</li>
+          <li>Run chapters and activities, including safety and emergency arrangements</li>
+          <li>Review chapter applications</li>
+          <li>Send updates or newsletters you have signed up for</li>
+          <li>Understand how the website is used and improve it</li>
+          <li>Protect the security of the website and prevent misuse</li>
+          <li>Comply with legal obligations and enforce our terms</li>
         </ul>
       </section>
 
       <section>
-        <h2 class={headingClass}>How We Use Your Information</h2>
-        <p class={bodyClass}>
-          The information you provide is used to fulfill your requests and facilitate our services. We use this data to
-          respond to your inquiries, provide estimates, schedule visits, and communicate with you about your project.
-        </p>
-      </section>
-
-      <section>
-        <h2 class={headingClass}>Cookies and Website Analytics</h2>
-        <p class={bodyClass}>
-          Our website uses cookies and standard web analytics tools (including Google Tag Manager when configured) to
-          help us understand how visitors interact with our site. These tools may collect non-identifying information
-          such as your browser type, device information, and page views. You can manage or disable cookies through your
-          web browser settings.
-        </p>
-      </section>
-
-      <section>
-        <h2 class={headingClass}>Privacy Commitment and Data Sharing</h2>
-        <p class={bodyClass}>
-          End-user information, including personal details and phone numbers collected through our website, will not be
-          shared with, sold to, or traded with third parties or affiliates for marketing or promotional purposes.
-          Information is only used for the purposes described in this policy and in connection with the services you
-          request from us.
-        </p>
-      </section>
-
-      <section>
-        <h2 class={headingClass}>SMS Messaging Consent</h2>
-        <p class={bodyClass}>
-          By agreeing to receive SMS messages from {CONTACT.businessName}, you consent to receive text messages that may
-          include:
-        </p>
+        <h2 class={headingClass}>6. How we share information</h2>
+        <p class={bodyClass}>We share information only as described here:</p>
         <ul class={listClass}>
-          <li>Appointment-related communications</li>
-          <li>Customer service communications</li>
-          <li>Billing-related communications</li>
-          <li>Marketing communications</li>
-          <li>Other communications related to your interaction with {CONTACT.businessName}</li>
+          <li>
+            With chapter leads and volunteers, who receive the details you submit about their chapter so they can
+            respond to you and arrange your visit. They may use only that information for {dbaName} purposes
+          </li>
+          <li>
+            With service providers that help us operate the website and our communications, such as hosting, form
+            handling, email, text messaging, and analytics providers, who may use the information only to provide
+            services to us
+          </li>
+          <li>With Athena Clinic, only if you ask us to share your information with them</li>
+          <li>
+            When required by law, or when we believe in good faith that disclosure is needed to protect the safety,
+            rights, or property of any person
+          </li>
+          <li>
+            In connection with a reorganization, merger, or transfer of {dbaName}, subject to this policy
+          </li>
+          <li>With your consent</li>
         </ul>
         <p class={`${bodyClass} mt-4`}>
-          Message frequency may vary depending on the type of communication and your interaction with us.
+          We do not sell your personal information, and we do not share it for targeted advertising.
         </p>
       </section>
 
       <section>
-        <h2 class={headingClass}>How to Opt Out of SMS Messages</h2>
+        <h2 class={headingClass}>7. Cookies and analytics</h2>
         <p class={bodyClass}>
-          You can cancel the SMS messaging service at any time. Reply STOP to the number that sent you the message.
-          After sending STOP, you will receive a confirmation and will no longer receive SMS messages from that
-          messaging program. You may opt in again later through the applicable sign-up process.
+          The website may use cookies and similar technologies that are needed for the site to work, and analytics tools
+          that tell us how the site is used in aggregate, such as which pages are visited. {analyticsProviderSentence}{' '}
+          We do not use analytics tools to capture what you type into the self-assessment. You can control or delete
+          cookies through your browser settings. Where required by law, we honor browser signals such as Global Privacy
+          Control.
         </p>
       </section>
 
       <section>
-        <h2 class={headingClass}>Carrier and Message Cost Disclosures</h2>
+        <h2 class={headingClass}>8. Emails and text messages</h2>
         <p class={bodyClass}>
-          Wireless carriers are not responsible for delayed or undelivered messages. Message and data rates may apply to
-          messages sent to or received from {CONTACT.businessName}. For questions about your text messaging or data
-          plan, contact your wireless service provider.
+          You can unsubscribe from our emails using the link in any message. You can stop text messages by replying
+          STOP. We may still contact you about a request you have made, such as a visit you booked.
         </p>
       </section>
 
       <section>
-        <h2 class={headingClass}>Questions About Your Privacy</h2>
-        <div class={`${bodyClass} space-y-5`}>
-          <p>
-            If you are experiencing an issue with our messaging program, reply HELP to any text message for assistance.
-          </p>
-          <p>
-            If you have questions about how your information is handled, or need to update your contact preferences,
-            please contact us:
-          </p>
-          <p>
-            {CONTACT.businessName}<br />
-            {CONTACT.address.street}<br />
-            {CONTACT.address.cityLine}<br />
-            Email: <a class={linkClass} href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a><br />
-            Phone: <a class={linkClass} href={CONTACT.phone.href}>{CONTACT.phone.display}</a>
-          </p>
-        </div>
+        <h2 class={headingClass}>9. Photographs and recordings</h2>
+        <p class={bodyClass}>
+          Photographs and recordings from sessions may be published on the website, in podcasts, and in other {dbaName}{' '}
+          materials. If you do not want to appear, tell the session leader before the session begins. If you appear in
+          published material and would like it removed, contact us and we will make reasonable efforts to do so.
+        </p>
       </section>
-    </div>
-    <Fragment slot="bg">
-      <SectionBg variant="grey" />
-    </Fragment>
-  </WidgetWrapper>
 
-  <CTABanner
-    title="Questions?"
-    subtitle={`If you have questions about this policy or about working with ${CONTACT.businessName}, contact us.`}
-    ctaText={PRIMARY_CTA_LABEL}
-  />
+      <section>
+        <h2 class={headingClass}>10. How long we keep information</h2>
+        <p class={bodyClass}>
+          We keep personal information only as long as we need it for the purposes described in this policy, including
+          to respond to you, run chapters and activities, and meet legal, insurance, and record-keeping obligations.
+          Signed participation agreements may be kept for longer periods where needed for legal or insurance reasons.
+          When information is no longer needed, we delete it or de-identify it.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>11. Security</h2>
+        <p class={bodyClass}>
+          We use reasonable administrative, technical, and physical measures to protect the information we hold. No
+          website, email, or storage system is completely secure, and we cannot guarantee the security of information
+          you send us.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>12. Your choices and rights</h2>
+        <p class={bodyClass}>
+          You can ask us to access, correct, or delete the personal information we hold about you, or to stop contacting
+          you, by emailing
+          <a class={linkClass} href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>. Depending on where you live, you
+          may have additional rights under state law, such as the right to know how your information is used or to
+          appeal a decision about your request. We will verify your identity before acting on a request and will not
+          treat you differently for making one.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>13. Children</h2>
+        <p class={bodyClass}>
+          This website and our activities are intended for adults. We do not knowingly collect personal information from
+          children under 13. If you believe a child has given us personal information, contact us and we will delete it.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>14. Links to other websites</h2>
+        <p class={bodyClass}>
+          This website links to other websites, including Athena Clinic, Lulu, and podcast and map services. We are not
+          responsible for their privacy practices, and we encourage you to read their privacy policies before sharing
+          information with them.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>15. Where information is processed</h2>
+        <p class={bodyClass}>
+          We are based in the United States, and information we collect is stored and processed in the United States.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>16. Changes to this policy</h2>
+        <p class={bodyClass}>
+          We may update this policy from time to time. The current version is always posted on this page with its
+          effective date. If we make a significant change to how we handle personal information, we will make that clear
+          on this page or contact you directly where required.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={headingClass}>17. Contact</h2>
+        <p class={bodyClass}>
+          Questions or requests about this policy can be sent to:<br /><br />
+          {legalName}<br />
+          {CONTACT.address.street && (
+            <>
+              {CONTACT.address.street}
+              <br />
+            </>
+          )}
+          {CONTACT.address.cityLine}<br />
+          Email: <a class={linkClass} href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a><br />
+          Phone: <a class={linkClass} href={CONTACT.phone.href}>{CONTACT.phone.display}</a>
+        </p>
+      </section>
+  </LegalDoc>
 </Layout>
