@@ -406,6 +406,14 @@ const mobilePanelClass =
       display: flex;
     }
 
+    [data-nav="embedded"] [data-mobile-panel] {
+      position: fixed;
+      top: 72px;
+      right: 12px;
+      left: 12px;
+      z-index: 999;
+    }
+
     [data-aw-toggle-dropdown][aria-expanded='true'] :global(svg) {
       transform: rotate(180deg);
     }

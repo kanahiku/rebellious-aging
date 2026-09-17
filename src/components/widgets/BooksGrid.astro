@@ -48,24 +48,24 @@ const tabs: FilterTab[] = [
       {books.map((book) => (
         <a
           href={`#book-${book.slug}`}
-          class="group block"
+          class="group block overflow-hidden rounded-[8px] bg-section-grey"
+          style="aspect-ratio: 190 / 284;"
           aria-label={`Jump to ${book.title}`}
         >
           {book.image?.src ? (
             <Image
               src={book.image.src}
               alt={book.image.alt || book.title}
-              class="w-full rounded-[8px] object-cover"
+              class="h-full w-full object-cover"
               width={190}
               height={284}
-              layout="none"
+              layout="cover"
               widths={[190, 380, 570]}
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 190px"
             />
           ) : (
             <div
-              class="w-full rounded-[8px] bg-section-grey"
-              style="aspect-ratio: 190 / 284;"
+              class="h-full w-full bg-section-grey"
               aria-hidden="true"
             />
           )}

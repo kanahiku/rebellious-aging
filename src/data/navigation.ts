@@ -6,6 +6,7 @@ export const navigationData: NavigationContent = {
     links: [
       { text: 'How Aging Works', href: '/how-aging-works' },
       { text: 'Four Pillars', href: '/four-pillars' },
+      { text: 'Ask Your Doctor', href: '/talk-to-your-doctor' },
       { text: 'Books', href: '/books' },
       { text: 'Podcasts', href: '/podcast' },
       { text: 'Ohana', href: '/ohana' },
@@ -21,6 +22,7 @@ export const navigationData: NavigationContent = {
         links: [
           { text: 'How Aging Works', href: '/how-aging-works' },
           { text: 'Four Pillars', href: '/four-pillars' },
+          { text: 'Ask Your Doctor', href: '/talk-to-your-doctor' },
           { text: 'Books', href: '/books' },
           { text: 'Podcasts', href: '/podcast' },
           { text: 'Ohana', href: '/ohana' },

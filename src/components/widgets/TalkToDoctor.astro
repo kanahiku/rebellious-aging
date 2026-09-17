@@ -34,7 +34,7 @@ export interface Props {
   clinicHeading?: string;
   packages: PackageStep[];
   addOnNote?: string;
-  cta?: { text: string; href: string };
+  cta?: { text: string; href: string; target?: '_blank' | '_self' | '_parent' | '_top' };
   disclosureEyebrow?: string;
   disclosure?: string;
   id?: string;
@@ -136,6 +136,7 @@ const {
                 tone="dark"
                 text={cta.text}
                 href={cta.href}
+                target={cta.target}
                 hideNote
                 class="self-start"
               />

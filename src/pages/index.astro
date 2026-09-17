@@ -11,6 +11,7 @@ import PillarSection from '~/components/widgets/PillarSection.astro';
 import ScheduleSection from '~/components/widgets/ScheduleSection.astro';
 import Testimonials from '~/components/widgets/Testimonials.astro';
 import Text from '~/components/ui/Text.astro';
+import Button from '~/components/ui/Button.astro';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
 import { ATHENA_CONTACT_HREF, PRIMARY_CTA_LABEL, PRIMARY_CTA_HREF } from '~/config/cta';
@@ -98,7 +99,7 @@ const bucketOnePillars = [
     title="Finding your weakest link<br />to buy more years<br />of independent living!"
     actions={[
       { variant: 'primary', text: PRIMARY_CTA_LABEL, href: PRIMARY_CTA_HREF },
-      { variant: 'ghost', text: 'How aging works', href: '/how-aging-works' },
+      { variant: 'ghost', text: 'Schedule a free visit', href: ATHENA_CONTACT_HREF, target: '_blank' },
     ]}
   >
     <!-- Static WebP hero — bypasses /_image endpoint for near-instant LCP.
@@ -227,8 +228,9 @@ const bucketOnePillars = [
     eyebrow="Know where to aim"
     title="Start the Assessment."
     subtitle="Ninety-six questions, one at a time, about ten minutes. At the end you get the system closest to its floor, and three honest routes to doing something about it."
-    ctaText="Understand the model"
-    ctaHref="/how-aging-works"
+    ctaText="Schedule a free visit"
+    ctaHref={ATHENA_CONTACT_HREF}
+    ctaTarget="_blank"
     disclaimer="Nothing you enter is sent anywhere. It runs entirely in your browser. No account, no email required, no record kept, including by us."
   />
 
@@ -252,12 +254,14 @@ const bucketOnePillars = [
     <Text variant="body" class="mt-[1.3em] text-default">
       Do I still need all of these medications? A statin started at seventy takes years to pay off while the side effects start now. The risk-benefit that made sense a decade ago may not be the one you&rsquo;re living in.
     </Text>
-    <a
+    <Button
+      variant="primary"
+      text="Schedule a free visit"
       href={ATHENA_CONTACT_HREF}
-      class="btn-link mt-[1.3em]"
-    >
-      Schedule a free visit
-    </a>
+      target="_blank"
+      hideNote
+      class="mt-[1.3em] self-start"
+    />
     <Image
       slot="image"
       src={talkToDoctorImg}

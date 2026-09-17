@@ -39,7 +39,7 @@ const { cards = [], id, noPadY = false } = Astro.props;
         return (
           <Card
             variant={isDark ? 'dark' : 'outlined'}
-            class={`h-full min-h-[440px] sm:min-h-[380px] lg:min-h-[355px] ${isDark ? 'border-4 border-transparent' : ''}`}
+            class={`h-full min-h-0 sm:min-h-[300px] lg:min-h-[355px] ${isDark ? 'border-4 border-transparent' : ''}`}
           >
             <div class="flex w-full flex-1 flex-col items-start gap-4">
               {card.eyebrow && (

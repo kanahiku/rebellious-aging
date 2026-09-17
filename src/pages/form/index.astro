@@ -260,18 +260,19 @@ const metadata = {
     line-height: 1;
   }
 
-  /* Progress bar: filled = light (#7ba3bd), remaining/default = dark (#2c4a5b) */
+  /* Progress bar: filled = theme blue, remaining/default = soft grey */
   .quiz-progress-track {
     display: flex;
     align-items: flex-start;
     width: 100%;
     height: 4px;
+    background: rgba(27,42,50,0.12);
     border-radius: 300px;
     overflow: clip;
   }
   .quiz-progress-fill {
     height: 4px;
-    background: #7ba3bd; /* light — grows as questions are answered */
+    background: #567f9b;
     transition: width 0.3s ease;
     flex-shrink: 0;
   }
@@ -279,7 +280,7 @@ const metadata = {
     flex: 1;
     min-width: 1px;
     height: 4px;
-    background: #2c4a5b; /* dark — the default/unfilled state */
+    background: rgba(27,42,50,0.12);
   }
 
   /* ══════════════════════════════════════════
@@ -494,15 +495,15 @@ const metadata = {
     align-items: center;
     justify-content: center;
     gap: 6px;
-    background: rgba(27,42,50,0.05);
-    border: 1px solid rgba(27,42,50,0.12);
+    background: rgba(86,127,155,0.12);
+    border: 1px solid #567f9b;
     border-radius: 8px;
     padding: 8px 14px;
     font-size: 10px;
-    font-weight: 500;
+    font-weight: 700;
     letter-spacing: 0.07em;
     text-transform: uppercase;
-    color: rgba(27,42,50,0.45);
+    color: #567f9b;
   }
   .quiz-home-sponsor svg {
     flex-shrink: 0;
@@ -980,15 +981,15 @@ const metadata = {
     gap: 6px;
     margin: 10px auto 0;
     max-width: 680px;
-    background: rgba(27,42,50,0.05);
-    border: 1px solid rgba(27,42,50,0.12);
+    background: rgba(86,127,155,0.12);
+    border: 1px solid #567f9b;
     border-radius: 8px;
     padding: 6px 14px;
     font-size: 10px;
-    font-weight: 500;
+    font-weight: 700;
     letter-spacing: 0.07em;
     text-transform: uppercase;
-    color: rgba(27,42,50,0.45);
+    color: #567f9b;
   }
   .quiz-sponsor-card svg {
     flex-shrink: 0;
@@ -1558,6 +1559,20 @@ function buildResults() {
   buildHandoff();
 }
 
+function createAppointmentCta() {
+  const book = el('div', 'quiz-book-cta');
+  const copy = el('div', 'quiz-book-cta-copy');
+  copy.appendChild(el('p', 'quiz-book-cta-title', 'Not sure about these questions?'));
+  copy.appendChild(el('p', 'quiz-book-cta-sub', 'Skip them and book an appointment with Athena Clinic.'));
+  const bookBtn = el('a', 'quiz-book-cta-btn', 'Book an appointment');
+  bookBtn.href = 'https://www.athenaclinic.com/contact/';
+  bookBtn.target = '_blank';
+  bookBtn.rel = 'noopener noreferrer';
+  book.appendChild(copy);
+  book.appendChild(bookBtn);
+  return book;
+}
+
 function buildMeasured() {
   const me = document.getElementById('pane-measured');
   me.innerHTML = '';
@@ -1586,17 +1601,7 @@ function buildMeasured() {
   me.appendChild(mc);
 
   /* Book-an-appointment bar — Figma 160:609 */
-  const book = el('div', 'quiz-book-cta');
-  const copy = el('div', 'quiz-book-cta-copy');
-  copy.appendChild(el('p', 'quiz-book-cta-title', 'Not sure about these questions?'));
-  copy.appendChild(el('p', 'quiz-book-cta-sub', 'Skip them and book an appointment with Athena Clinic.'));
-  const bookBtn = el('a', 'quiz-book-cta-btn', 'Book an appointment');
-  bookBtn.href = 'https://www.athenaclinic.com/contact/';
-  bookBtn.target = '_blank';
-  bookBtn.rel = 'noopener noreferrer';
-  book.appendChild(copy);
-  book.appendChild(bookBtn);
-  me.appendChild(book);
+  me.appendChild(createAppointmentCta());
 }
 
 function buildHandoff() {
@@ -1661,6 +1666,7 @@ function buildHandoff() {
   mv.appendChild(el('h3', 'quiz-card-subheading', 'If you want the measurements done properly'));
   mv.appendChild(el('p', 'quiz-small', 'Athena Clinic in Honolulu runs a free twenty-minute measurement visit: grip strength, walking speed, chair rises, balance and blood pressure. No charge and nothing to sign up for. rebelliousaging.org/measure'));
   h.appendChild(mv);
+  h.appendChild(createAppointmentCta());
 }
 
 function summaryText() {

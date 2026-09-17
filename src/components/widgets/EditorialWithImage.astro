@@ -70,8 +70,8 @@ const { heading, headingHtml, pullQuote, id } = Astro.props;
         <div class="min-w-0 flex-1 flex flex-col gap-[1lh]">
           <slot name="caption" />
         </div>
-        <div class="min-w-0 flex-1">
-          <Heading variant="h2">{pullQuote}</Heading>
+        <div class="flex min-w-0 flex-1 justify-end">
+          <Heading variant="h2" class="text-right">{pullQuote}</Heading>
         </div>
       </div>
     </div>

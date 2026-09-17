@@ -133,9 +133,9 @@ const {
                     <Button
                       variant="ghost"
                       tone="light"
-                      tone="light"
                       text={btn.label}
                       href={btn.href ?? '#'}
+                      target={btn.href ? '_blank' : undefined}
                       hideNote={true}
                       class="min-w-0 flex-1 whitespace-nowrap"
                     />

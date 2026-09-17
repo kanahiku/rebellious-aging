@@ -32,6 +32,7 @@ export interface Props {
   subtitle?: string;
   ctaText?: string;
   ctaHref?: string;
+  ctaTarget?: '_blank' | '_self' | '_parent' | '_top';
   disclaimer?: string;
   id?: string;
 
@@ -47,6 +48,9 @@ const {
   eyebrow,
   title,
   subtitle,
+  ctaText = PRIMARY_CTA_LABEL,
+  ctaHref = PRIMARY_CTA_HREF,
+  ctaTarget,
   id,
 } = Astro.props;
 ---
@@ -76,8 +80,9 @@ const {
         <Button
           variant="ghost"
           tone="dark"
-          text={PRIMARY_CTA_LABEL}
-          href={PRIMARY_CTA_HREF}
+          text={ctaText}
+          href={ctaHref}
+          target={ctaTarget}
           class="w-auto shrink-0 self-start backdrop-blur-[10px]"
           hideNote={true}
         />
