@@ -63,10 +63,9 @@ export async function getReviewsPage(): Promise<ReviewsPageContent | null> {
 const LEGAL_FOOTER_LINKS = [
   { text: 'Privacy Policy', href: '/privacy-policy' },
   { text: 'Terms of Service', href: '/terms-of-service' },
-  { text: 'Accessibility', href: '/accessibility' },
 ];
 
-const HIDDEN_NAV_HREFS = new Set(['/chapters', '/guidebooks']);
+const HIDDEN_NAV_HREFS = new Set(['/chapters', '/guidebooks', '/accessibility']);
 const HIDDEN_NAV_LABELS = new Set(['chapters', 'guidebooks', 'guidebook series']);
 
 function isHiddenNavLink(link: { text: string; href?: string }): boolean {
@@ -118,10 +117,12 @@ function hidePagesFromUi(nav: NavigationContent): NavigationContent {
             .filter((link) => !isHiddenNavLink(link))
             .map((link) => ({ ...link, href: remapContactHref(link.href) })),
         })),
-      secondaryLinks: nav.footer.secondaryLinks.map((link) => ({
-        ...link,
-        href: remapContactHref(link.href),
-      })),
+      secondaryLinks: nav.footer.secondaryLinks
+        .filter((link) => !isHiddenNavLink(link))
+        .map((link) => ({
+          ...link,
+          href: remapContactHref(link.href),
+        })),
     },
   };
 }
@@ -188,7 +189,6 @@ const STATIC_PATHS = [
   '/reviews',
   '/privacy-policy',
   '/terms-of-service',
-  '/accessibility',
 ];
 
 export async function getPublicContentPaths(): Promise<string[]> {

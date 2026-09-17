@@ -48,12 +48,4 @@ export const pages: PageSchema[] = [
     faq: [],
     breadcrumb: [HOME, { name: 'Terms of Service', path: '/terms-of-service' }],
   },
-  {
-    name: 'Accessibility',
-    path: '/accessibility',
-    schemaType: 'WebPage',
-    description: null,
-    faq: [],
-    breadcrumb: [HOME, { name: 'Accessibility', path: '/accessibility' }],
-  },
 ];

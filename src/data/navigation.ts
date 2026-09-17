@@ -29,7 +29,6 @@ export const navigationData: NavigationContent = {
     secondaryLinks: [
       { text: 'Privacy Policy', href: '/privacy-policy' },
       { text: 'Terms of Service', href: '/terms-of-service' },
-      { text: 'Accessibility', href: '/accessibility' },
     ],
     socialLinks: SOCIAL.nav as unknown as NavigationContent['footer']['socialLinks'],
     footNote: `&copy; ${new Date().getFullYear()} ${CONTACT.businessName}. All rights reserved.`,
