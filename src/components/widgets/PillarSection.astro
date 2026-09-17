@@ -93,7 +93,7 @@ const { eyebrow, heading, bodyHtml, cards = [], id } = Astro.props;
   {cards.length > 0 && (
     <div class="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
       {cards.map((card) => (
-        <Card variant="pillar" label={card.label} iconBg={card.iconBg ?? false}>
+        <Card variant="pillar" surface="white" label={card.label} iconBg={card.iconBg ?? false}>
           <Fragment slot="icon" set:html={card.iconSvg} />
           <Heading variant="h4" color="inherit" class="text-primary" as="p">
             {card.heading}

@@ -1,0 +1,398 @@
+---
+/*
+ * The Ohana page — Figma node 310:926
+ *
+ * SECTION MAP
+ * S1  310:927  Hero2 variant="title"
+ * S2  310:941  TextSplit — "You get old alone." + body + CTA
+ * S3  310:1235 StatsBand — 3 stats
+ * S4  310:1292 EditorialWithImage — "Loneliness…" + full-bleed img + "Three of the nine."
+ * S5  310:1319 ImageCardGrid — Belong / Loved Ones First / Right Tribe
+ * S6a 310:1416 TextSplit — "Okinawa calls it a moai." (heading left, body right)
+ * S6b 310:1424 TextSplit reversed — body left + "Information is not an adherence mechanism." right
+ * S6c 310:1430 DuoCards — "The other three, alone" + "The other three, together"
+ * S7  310:1447 OhanaActivities — "What an ohana actually does."
+ * S8  310:1550 PurposeBanner — "Purpose is a longevity drug." + "No chapter near you?"
+ * S9  310:1562 Testimonials tone="light" — "From the ohana"
+ * S10 310:1601 TextSplit — "Come home." + body + 2 CTAs
+ * S11 310:1019 Footer
+ */
+
+import Layout from '~/layouts/PageLayout.astro';
+import Hero2 from '~/components/widgets/Hero2.astro';
+import Header from '~/components/widgets/Header.astro';
+import TextSplit from '~/components/widgets/TextSplit.astro';
+import StatsBand from '~/components/widgets/StatsBand.astro';
+import EditorialWithImage from '~/components/widgets/EditorialWithImage.astro';
+import ImageCardGrid from '~/components/widgets/ImageCardGrid.astro';
+import DuoCards from '~/components/widgets/DuoCards.astro';
+import OhanaActivities from '~/components/widgets/OhanaActivities.astro';
+import PurposeBanner from '~/components/widgets/PurposeBanner.astro';
+import Testimonials from '~/components/widgets/Testimonials.astro';
+import Button from '~/components/ui/Button.astro';
+import Text from '~/components/ui/Text.astro';
+import { navigationData } from '~/data/navigation';
+import { formatTestimonialAttribution, getTestimonials } from '~/lib/content';
+
+// ── Images (exported from Figma) ──
+import ohanaheroImg from '~/assets/images/ohana-hero.png';
+import ohanaLonelinessImg from '~/assets/images/ohana-loneliness.png';
+import ohanaBelongImg from '~/assets/images/ohana-belong.png';
+import ohanaLovedOnesImg from '~/assets/images/ohana-loved-ones.png';
+import ohanaRightTribeImg from '~/assets/images/ohana-right-tribe.png';
+import ohanaActivitiesImg from '~/assets/images/ohana-activities.png';
+import ohanaPurposeImg from '~/assets/images/ohana-purpose.png';
+
+const metadata = {
+  title: 'The Ohana',
+  description:
+    'The fourth pillar is not really one of four — it is the mechanism by which the other three happen at all. Find your ohana.',
+};
+
+const testimonials = await getTestimonials();
+const header = navigationData.header;
+
+// ── S3: Stats (Figma 310:1235) ──
+const ohanaStats = [
+  {
+    number: '3 of 9',
+    label: 'Items in the Blue Zones Power 9 that are about other people',
+  },
+  {
+    number: '15',
+    label: 'Cigarettes a day — the cardiovascular comparison for chronic isolation',
+  },
+  {
+    number: '699',
+    label: 'Members across seven ohana',
+  },
+];
+
+// ── S5: Blue Zones image cards (Figma 310:1319) ──
+const blueZonesCards = [
+  {
+    eyebrow: 'Belong',
+    heading: 'Showing up somewhere, regularly',
+    body: 'In the Blue Zones research this is usually a faith community. The mechanism is not theology — it is a standing weekly appointment with people who notice your absence.',
+    imageAspect: '378 / 252',
+    image: ohanaBelongImg,
+    imageAlt: 'Hands joined together in a circle, showing community and belonging',
+  },
+  {
+    eyebrow: 'Loved Ones First',
+    heading: 'Proximity and commitment',
+    body: 'Family kept close, and obligations honoured. In Hawaiʻi this needs no translation at all.',
+    imageAspect: '378 / 252',
+    image: ohanaLovedOnesImg,
+    imageAlt: 'Family playing together in the ocean water',
+  },
+  {
+    eyebrow: 'Right Tribe',
+    heading: 'The company you keep while you do everything else',
+    body: 'Habits travel through social networks. The people around you are, in effect, deciding what is normal — which makes choosing them a health intervention.',
+    imageAspect: '378 / 252',
+    image: ohanaRightTribeImg,
+    imageAlt: 'Group of people cheering and high-fiving outdoors',
+  },
+];
+
+// ── S6c: DuoCards (Figma 310:1430) ──
+const duoCards = [
+  {
+    variant: 'dark' as const,
+    eyebrow: 'The Other Three, Alone',
+    heading: 'Willpower, on a schedule you set yourself.',
+    body: 'Works for about six weeks. Then a Tuesday comes along when it rains, nothing is on the calendar, and nobody would know either way.',
+    cta: { text: 'Find a chapter', href: '/chapters' },
+  },
+  {
+    variant: 'outlined' as const,
+    eyebrow: 'The Other Three, Together',
+    heading: 'A calendar, and thirty people who notice.',
+    body: 'Members average three sessions a week and one feast. Not because they are more disciplined — because it is the easiest thing they do all week.',
+    cta: { text: 'View activities directory', href: '/fill-the-first-bucket' },
+  },
+];
+
+// ── S7: Ohana activities (Figma 310:1447) ──
+const ohanaActivities = [
+  {
+    frequency: 'Weekly',
+    title: 'Story circles',
+    body: 'People over sixty are carrying most of the interesting material in any room. Somebody should be asking.',
+  },
+  {
+    frequency: 'Weekly',
+    title: 'Buddy check-ins',
+    body: 'One person whose job it is to notice. Not a programme — a name and a phone number.',
+  },
+  {
+    frequency: 'Fridays',
+    title: 'The potluck',
+    body: 'Bring a dish. The long-life table is loud, crowded and full of olive oil, and it doubles as the diet pillar.',
+  },
+  {
+    frequency: 'Always',
+    title: 'The intake',
+    body: 'An intake process that guarantees no one walks in as a stranger twice. Somebody is expecting you and will introduce you to three people before anything starts.',
+  },
+];
+---
+
+<Layout metadata={metadata}>
+  <Fragment slot="header" />
+
+  {/* S1 — Hero: full-bleed photo, centered "The Ohana" title */}
+  <Hero2
+    id="ohana-hero"
+    variant="title"
+    title="The Ohana"
+    overlapHeader={false}
+    image={{
+      ...ohanaheroImg,
+      alt: 'Group of people standing in a circle with arms around each other outdoors',
+    }}
+  >
+    <Header
+      slot="nav"
+      embedded
+      isSticky={false}
+      links={header.links}
+      actions={header.actions}
+    />
+  </Hero2>
+
+  {/* S2 — Intro text split: heading left, body + CTA right */}
+  <TextSplit
+    id="ohana-intro"
+    heading="You get old alone. You grow long in company."
+  >
+    <Text>
+      Three of the four pillars ask you to go and do something by yourself. This one is
+      different, and it is the one most people get wrong — not because they disagree, but
+      because there is nothing to buy and no obvious place to start. So we built the place
+      to start. We call it an ohana.
+    </Text>
+    <Button
+      variant="primary"
+      text="Find your chapter"
+      href="/chapters"
+      hideNote
+      class="mt-8"
+    />
+  </TextSplit>
+
+  {/* S3 — Stats band: 3 of 9 / 15 / 699 */}
+  <StatsBand id="ohana-stats" stats={ohanaStats} />
+
+  {/* S4 — Editorial with full-bleed image */}
+  <EditorialWithImage
+    id="loneliness"
+    heading="Loneliness is an inflammatory disease."
+    pullQuote="Three of the nine."
+  >
+    <Fragment slot="body">
+      <Text>
+        This is not a figure of speech, and it is not a comment about how loneliness feels.
+        Chronic disconnection runs through the IL-6 inflammatory pathway and the HPA axis —
+        the same machinery that stress, poor sleep and visceral fat run through. It shows up
+        in blood work. It shows up in cardiovascular outcomes. It appears to move the
+        biological aging clock.
+      </Text>
+      <Text>
+        The comparison most people have heard — that chronic isolation carries a
+        cardiovascular cost on the order of smoking fifteen cigarettes a day — is startling
+        enough that it tends to get repeated without the study attached. We attach the study.
+        What we do not claim: that friendship treats a diagnosis, or that a potluck replaces
+        a cardiologist. What the evidence supports is narrower and more useful — that
+        connection is a modifiable risk factor, that it is measurable, and that almost nobody
+        is treating it like one.
+      </Text>
+    </Fragment>
+    <Fragment slot="caption">
+      <Text>
+        The most-cited framework in longevity is the Blue Zones Power 9 — nine habits common
+        to the world's longest-lived populations. Move naturally. Downshift. The 80% rule.
+        Plant slant. Wine at five. And then three that almost nobody counts together: Belong.
+        Loved Ones First. Right Tribe.
+      </Text>
+      <Text>
+        A third of the list is other people. Not diet, not exercise, not stress — who you
+        see, who you are committed to, and who you are surrounded by while you do everything
+        else. It is the least commercial third and therefore the least discussed.
+      </Text>
+    </Fragment>
+    <img
+      slot="image"
+      src={ohanaLonelinessImg.src}
+      width={ohanaLonelinessImg.width}
+      height={ohanaLonelinessImg.height}
+      alt="Three people laughing and sitting together on grass in the sunshine"
+      class="w-full object-cover"
+      style="aspect-ratio: 1440 / 511; object-position: center 30%;"
+      loading="lazy"
+      decoding="async"
+    />
+  </EditorialWithImage>
+
+  {/* S5 — Blue Zones: Belong / Loved Ones First / Right Tribe */}
+  <ImageCardGrid
+    id="blue-zones"
+    cards={blueZonesCards}
+    footerNote="Framework and terminology: Blue Zones / Dan Buettner. We borrow it to make a point — we are not a chapter of it."
+  />
+
+  {/* S6 — Moai + Adherence + DuoCards — Figma bg-[#e7dfd1] wraps all three
+       Wrapper owns all vertical spacing: py-120px outer, gap-72px between sections */}
+  <div class="bg-[#e7dfd1]">
+    <div class="flex flex-col gap-12 py-12 md:gap-16 md:py-16 lg:gap-[72px] lg:py-[120px]">
+
+    {/* S6a — Moai: heading left, body right */}
+    <TextSplit
+      id="moai"
+      noPadY
+      headingHtml="Okinawa calls it a <span class='text-accent'>moai.</span>"
+    >
+      <Text>
+        On Okinawa — one of the longest-lived populations ever studied — children were
+        traditionally placed into a moai: a small group of about five, committed to each other
+        for life. They met regularly for decades. They pooled money. They turned up when
+        someone was ill, widowed or broke. Some moai have run for ninety years.
+      </Text>
+      <Text class="mt-[1lh]">
+        Blue Zones describes the arrangement plainly: if you get sick, or a spouse dies, or
+        you run out of money, we know someone will step in and help. It is not a social club.
+        It is infrastructure.
+      </Text>
+      <Text class="mt-[1lh]">
+        Most of us were not placed in one at five years old. That is the whole problem, and it
+        is a solvable one — the moai is not magic, it is structure: a small group, a fixed
+        rhythm, and a commitment that outlasts anyone's motivation. An ohana is that structure,
+        built deliberately and built late. Ours meet weekly instead of for ninety years, and
+        nobody is assigning you to one at birth. You just have to walk in once.
+      </Text>
+    </TextSplit>
+
+    {/* S6b — Information: body left, large heading right (reversed) */}
+    <TextSplit
+      id="adherence"
+      noPadY
+      headingHtml="Information is not an <span class='text-accent'>adherence mechanism.</span>"
+      reversed
+    >
+      <Text>
+        This is Dr. Peterson's line and it is the most useful sentence on this page. Telling
+        someone to eat better and move more does not help them eat better and move more.
+        Everyone already knows. Knowing has never once been the bottleneck.
+      </Text>
+      <Text class="mt-[1lh]">
+        What actually changes behaviour over years is embarrassingly low-tech: a standing time,
+        a specific place, and people who notice when you do not turn up. Social pressure, in
+        the good direction, for a change.
+      </Text>
+      <Text class="mt-[1lh]">
+        Which means the fourth pillar is not really one of four. It is the mechanism by which
+        the other three happen at all.
+      </Text>
+    </TextSplit>
+
+    {/* S6c — DuoCards: alone vs together */}
+    <DuoCards id="alone-vs-together" cards={duoCards} noPadY />
+
+    </div>
+  </div>
+
+  {/* S7 — What an ohana actually does */}
+  <OhanaActivities
+    id="ohana-activities"
+    heading="What an ohana actually does."
+    subtitle="None of this is elaborate. It is the same handful of things, every week, for years — which is the only reason it works."
+    activities={ohanaActivities}
+  >
+    <img
+      slot="image"
+      src={ohanaActivitiesImg.src}
+      width={ohanaActivitiesImg.width}
+      height={ohanaActivitiesImg.height}
+      alt="Group of people gardening together, planting in raised garden beds"
+      class="w-full rounded-[16px] object-cover"
+      style="aspect-ratio: 568 / 368;"
+      loading="lazy"
+      decoding="async"
+    />
+  </OhanaActivities>
+
+  {/* S8 — Purpose banner + No chapter near you */}
+  <PurposeBanner
+    id="purpose"
+    noChapterCta={{ text: 'Start a Chapter', href: '/chapters' }}
+  >
+    <img
+      slot="bg"
+      src={ohanaPurposeImg.src}
+      width={ohanaPurposeImg.width}
+      height={ohanaPurposeImg.height}
+      alt="Older men sitting together outdoors at a cafe, talking and enjoying each other's company"
+      class="absolute inset-0 size-full object-cover"
+      loading="lazy"
+      decoding="async"
+    />
+    <Fragment slot="purpose-body">
+      <Text>
+        The other half of this pillar is not company, it is being needed. Every chapter
+        adopts causes — beach restoration, mentorship programmes, meal delivery for homebound
+        kūpuna, literacy tutoring. Purpose lowers cortisol, raises meaning, and keeps a
+        calendar full of reasons to be somewhere on a Tuesday morning.
+      </Text>
+      <Text class="mt-[1lh]">
+        It is also the only part of this that runs in the opposite direction. Everything else
+        on this site is something you do for yourself. This is the part where somebody is
+        waiting on you — which, it turns out, is considerably more motivating.
+      </Text>
+    </Fragment>
+    <Fragment slot="no-chapter-body">
+      <Text color="inherit" class="text-page/80">
+        Then build the structure yourself, because the structure is the active ingredient —
+        not us. Three or four people. One fixed time a week that does not move. One thing you
+        do together that would be slightly harder alone. Somebody whose job it is to notice
+        when a person misses two in a row.
+      </Text>
+      <Text color="inherit" class="mt-[1lh] text-page/80">
+        That is a moai. That is an ohana. It does not require our name on it, and the
+        literature does not care whose logo is on the door.
+      </Text>
+      <Text color="inherit" class="mt-[1lh] text-page/80">
+        If you would rather not start from scratch, we will help.
+      </Text>
+    </Fragment>
+  </PurposeBanner>
+
+  {/* S9 — Testimonials: light tone, "From the ohana" */}
+  <Testimonials
+    id="from-the-ohana"
+    eyebrow="The Community"
+    heading="From the ohana"
+    tone="light"
+    testimonials={testimonials.map((item) => ({
+      testimonial: item.quote,
+      name: formatTestimonialAttribution(item),
+    }))}
+  />
+
+  {/* S10 — Come home CTA — Figma: py-[64px], two buttons side by side */}
+  <TextSplit
+    id="come-home"
+    heading="Come home."
+    compact
+  >
+    <Text>
+      Seven chapters across the islands. First three visits are always free. Bring a friend,
+      an empty water bottle, and something to put lunch in.
+    </Text>
+    <div class="mt-8 flex flex-wrap gap-4">
+      <Button variant="primary" text="Book your free first visit" href="/chapters" hideNote />
+      <Button variant="ghost" tone="light" text="Find your weakest link" href="/form" hideNote />
+    </div>
+  </TextSplit>
+
+</Layout>

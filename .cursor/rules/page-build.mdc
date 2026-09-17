@@ -1,0 +1,141 @@
+---
+description: Build full pages and entire sites in one uninterrupted batch from Figma. Always use grey placeholder boxes for images.
+alwaysApply: true
+---
+
+# Page build protocol — batch mode
+
+**Never pause between sections for approval. Build the complete page in one shot.**
+
+---
+
+## Phase A — Full page scan (zero code yet)
+
+1. Call Figma MCP on the target page frame and get **ALL direct children at once**.
+   Do not request sections one by one. One call, full list.
+2. Take a full-scroll screenshot of the page for visual reference.
+3. Write a **SECTION MAP** before touching any file — list every section:
+
+   ```
+   Section 1 · [Figma frame name] · node [id] → P-01 Hero2 (variant=overlay)
+   Section 2 · [Figma frame name] · node [id] → P-18 HowAgingWorks
+   Section 3 · [Figma frame name] · node [id] → ⚠️  NO MATCH — new widget needed
+   Section 4 · [Figma frame name] · node [id] → P-19 EverythingPeaks
+   ```
+
+   Match against `src/registry/components.json` using `figmaNames` and `shape`.
+   Flag every unmatched section ⚠️ **before writing any code**.
+
+---
+
+## Phase B — Gap handling (new widgets only)
+
+For every ⚠️ flagged section:
+
+1. Screenshot that section in Figma for close inspection.
+2. Build `src/components/widgets/[NewName].astro` to match Figma exactly.
+   - Use brand tokens from `src/brand.ts` — never hardcode hex.
+   - Use existing atoms (`Button`, `Heading`, `Text`, `Card`, …) — never duplicate them.
+3. Register the new widget in `src/registry/components.json`:
+   ```json
+   {
+     "id": "P-XX",
+     "name": "Descriptive Name",
+     "figmaNames": ["Figma Frame Name", "Figma node id"],
+     "shape": "one-line description of the layout shape",
+     "component": "NewName",
+     "import": "~/components/widgets/NewName.astro",
+     "props": { "…": "…" },
+     "notes": "Figma node [id]. …"
+   }
+   ```
+4. Mark it ✅ in the section map and **immediately continue** — do not wait for approval.
+
+All gap widgets must be resolved **before** the page file is started.
+
+---
+
+## Phase C — Compose the full page (one shot)
+
+Write `src/pages/[route]/index.astro` completely in a **single edit**:
+
+### Structure
+
+```astro
+---
+// 1. Framework + widget imports
+import Layout from '~/layouts/PageLayout.astro';
+import Hero2 from '~/components/widgets/Hero2.astro';
+// …all widgets listed in section map
+
+// 2. Config / data imports
+import { site } from '~/config/site';
+import { PRIMARY_CTA_LABEL, PRIMARY_CTA_HREF } from '~/config/cta';
+
+// 3. Inline data (SVGs, arrays, objects) — all data at the top, never inline in JSX
+const items = [ … ];
+
+// 4. Metadata
+const metadata = { title: '…', description: '…' };
+---
+
+<Layout metadata={metadata}>
+  <!-- widgets composed top-to-bottom matching section map -->
+</Layout>
+```
+
+### Rules during composition
+
+- **One widget per section** — never paste raw markup into the page file.
+- **Data before layout** — define all arrays, SVGs, and objects in the frontmatter block.
+- **Props inline** — pass data as widget props; keep page file readable.
+- Follow the `tokens` rule: use `text-heading`, `bg-section-grey`, `text-accent`, etc. No hex.
+
+---
+
+## Image placeholders — ALWAYS
+
+Every place Figma shows a photo, illustration, chart, or background image:
+
+```astro
+<!-- TODO: replace with <Image> when asset is ready -->
+<div
+  class="w-full rounded-[32px] bg-section-grey"
+  style="aspect-ratio: 16 / 9;"
+  aria-hidden="true"
+/>
+```
+
+- Read the exact aspect ratio from the Figma frame (e.g. `507 / 657`, `1200 / 630`).
+- Match `rounded-*` to the Figma corner radius.
+- Use `bg-section-grey` always — never a real image, never a Figma MCP localhost URL.
+- This applies to **every** image slot, including hero backgrounds, split images, card covers, and OG thumbnails.
+- Do not skip this for "obvious" images. Every image = grey box until the asset pass.
+
+---
+
+## Multi-page site builds (20–30 pages)
+
+When building an entire site from Figma:
+
+1. **List all pages** and their Figma node IDs upfront in a plan comment.
+2. Run Phase A → B → C for **page 1**, then **immediately continue to page 2** without pausing.
+3. Reuse widgets built in Phase B — do not rebuild the same pattern for a later page.
+4. Only stop between pages if a structural decision affects the design system or atoms
+   (e.g. a new atom needed in `src/components/ui/`). Fix it, then resume.
+5. **Run `npm run build` once** after all pages are complete. Fix all errors together.
+   Do not build after each individual page.
+
+---
+
+## Do not
+
+- Stop after a section and say "shall I continue?" or "here is section 1, let me know if you want me to proceed"
+- Start writing a page file before the full section map is done
+- Start Phase C before all ⚠️ gaps are resolved
+- Create a new widget without adding it to `src/registry/components.json`
+- Import or embed real image files from any source during a page build
+- Use Figma MCP localhost image URLs anywhere in production code
+- Hardcode hex colours (`#1B2A32`, `#E5DDCF`, …) in widgets or pages
+- Fork a section per route (`HomeFAQ.astro`, `AboutHero.astro`, `ServicesCTA.astro`)
+- Run `npm run build` after every page on a multi-page build

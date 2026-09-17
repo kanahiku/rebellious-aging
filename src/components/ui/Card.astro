@@ -7,9 +7,11 @@
  *                         coloured header band. Used for numbered bucket cards,
  *                         testimonials, service cards, etc.
  *
- *   pillar    — cream bg + rounded + single drop-shadow. Has a label+icon header row
- *               (icon floats to the top-right corner), and a body below. Used for
- *               the "Four Pillars" feature cards (Figma node 2:316).
+ *   pillar    — rounded + single drop-shadow. Has a label+icon header row
+ *               (icon floats to the top-right corner), and a body below.
+ *               surface='white' (default) — white fill; Four Pillars (64:845),
+ *               homepage buckets (2:316), credentials.
+ *               surface='page' — cream bg-page fill; How Aging Works (62:71).
  *
  *   schedule  — card-light bg + rounded + flat mist offset shadow. Has a calendar-
  *               icon+day-label header band, then a body of event rows from the default
@@ -67,6 +69,10 @@
  *     <Fragment slot="icon"><svg>…</svg></Fragment>
  *     <p class="font-heading text-h4 …">Heading</p>
  *     <p class="font-sans text-[12px] …">Description</p>
+ *   </Card>
+ *
+ *   <Card variant="pillar" surface="page" label="the mechanism">
+ *     …
  *   </Card>
  *
  *   <Card variant="pillar" label="SLEEP" iconBg={true}>
@@ -143,6 +149,18 @@ export interface Props {
    * already carry their own background, like the Movement / Food SVGs).
    */
   iconBg?: boolean;
+  /**
+   * Tailwind class for the icon tile background when iconBg=true.
+   * Default: 'bg-cta' (tan, matches the homepage Bucket section).
+   * Pass 'bg-section-grey' for cards on a white/page background (e.g. Four Pillars page).
+   */
+  iconBgClass?: string;
+  /**
+   * Pillar card fill. 'white' (default) pops off cream/tan sections
+   * (Four Pillars, homepage buckets). 'page' is the cream page colour —
+   * How Aging Works (Figma 62:71).
+   */
+  surface?: 'white' | 'page';
 }
 
 const {
@@ -151,6 +169,8 @@ const {
   labelBg = 'bg-card-mist',
   labelTextColor = 'text-secondary',
   iconBg = false,
+  iconBgClass = 'bg-cta',
+  surface = 'white',
   quote,
   title,
   description,
@@ -171,10 +191,12 @@ const borderedBase =
   'bg-card rounded-xl overflow-hidden shadow-card flex flex-col gap-4 items-start pb-4';
 
 // ── pillar ──
-// Single soft drop-shadow (no coloured offset), cream bg, overflow-hidden so
+// Single soft drop-shadow (no coloured offset), overflow-hidden so
 // the icon's rounded-bl-[12px] corner clips properly at the card edge.
+// White fill on tan/cream sections; page (cream) fill on How Aging Works.
+const pillarBg = surface === 'page' ? 'bg-page' : 'bg-white';
 const pillarBase =
-  'bg-page rounded-[var(--aw-radius-lg)] overflow-hidden flex flex-col items-end shadow-[4px_4px_30px_0px_rgba(0,0,0,0.05)]';
+  `${pillarBg} rounded-[var(--aw-radius-lg)] overflow-hidden flex flex-col items-end shadow-[4px_4px_30px_0px_rgba(0,0,0,0.05)]`;
 
 // ── schedule ──
 // Flat mist-color offset shadow, card-light bg (slightly off-white), overflow-hidden.
@@ -267,7 +289,7 @@ const peopleSvg = `<svg viewBox="0 0 16 16" fill="currentColor" class="size-4 sh
 
       {hasPillarIcon && (
         iconBg ? (
-          <div class:list={['flex items-center justify-center rounded-bl-[8px] bg-cta sm:rounded-bl-[12px]', pillarIconTile, iconBgGlyph]}>
+          <div class:list={['flex items-center justify-center rounded-bl-[8px] sm:rounded-bl-[12px]', iconBgClass, pillarIconTile, iconBgGlyph]}>
             <slot name="icon" />
           </div>
         ) : (

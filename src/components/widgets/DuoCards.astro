@@ -25,12 +25,13 @@ export interface DuoCardItem {
 export interface Props {
   cards: DuoCardItem[];
   id?: string;
+  noPadY?: boolean;
 }
 
-const { cards = [], id } = Astro.props;
+const { cards = [], id, noPadY = false } = Astro.props;
 ---
 
-<section {...id ? { id } : {}} class="not-prose w-full pb-12 md:pb-16">
+<section {...id ? { id } : {}} class:list={['not-prose w-full', noPadY ? '' : 'pb-12 md:pb-16']}>
   <div class="mx-auto w-full max-w-container px-5 sm:px-8 md:px-16 lg:px-[120px]">
     <div class="flex flex-col items-stretch gap-8 lg:flex-row">
       {cards.map((card) => {

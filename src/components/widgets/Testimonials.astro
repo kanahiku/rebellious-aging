@@ -39,6 +39,12 @@ export interface Props {
   heading?: string;
   testimonials?: TestimonialItem[];
   id?: string;
+  /**
+   * "dark" (default) — navy→teal gradient, white text, white glass cards.
+   * "light" — bg-section-grey, rounded-tl/tr-[64px], dark text, cream cards.
+   * Used on The Ohana page ("From the ohana", Figma 310:1562).
+   */
+  tone?: 'dark' | 'light';
 }
 
 const {
@@ -47,53 +53,99 @@ const {
   heading,
   testimonials = [],
   id,
+  tone = 'dark',
 } = Astro.props;
+
+const isLight = tone === 'light';
 
 // Duplicate cards for seamless loop: translate -50% = one full set → perfect join
 const doubled = [...testimonials, ...testimonials];
 ---
 
-<section
-  {...id ? { id } : {}}
-  class="not-prose relative w-full overflow-hidden py-16 md:py-24"
-  style="background: linear-gradient(95.38deg, var(--aw-color-bg-section-dark) 5.27%, var(--aw-color-primary) 97.29%)"
->
+{isLight ? (
+  /* ── LIGHT TONE: px-[120px] outer, gradient inner block ── */
+  /* Figma 310:1562 — white cards, gradient bg from transparent → #d2e1ea, rounded-tl/tr-[64px] */
+  <section {...id ? { id } : {}} class="not-prose relative w-full overflow-hidden pt-8 md:pt-[64px]">
+    <div class="mx-auto w-full max-w-container px-5 sm:px-8 md:px-16 lg:px-[120px]">
+      <div
+        class="flex flex-col gap-[48px] rounded-tl-[64px] rounded-tr-[64px] p-8 md:gap-[64px] md:p-[64px]"
+        style="background: linear-gradient(180deg, #d2e1ea 0%, rgba(210,225,234,0) 100%);"
+      >
+        {/* Header */}
+        <div class="flex flex-col items-start gap-4">
+          {eyebrow && (
+            <p class="font-sans text-[14px] uppercase tracking-[0.06em] text-eyebrow">{eyebrow}</p>
+          )}
+          {headingHtml
+            ? <Heading variant="h2" color="inherit" class="text-heading" html={headingHtml} />
+            : heading && <Heading variant="h2" color="inherit" class="text-heading">{heading}</Heading>
+          }
+        </div>
 
-  {/* ── Centered header ── */}
-  <div class="mx-auto w-full max-w-container px-5 sm:px-8 md:px-16 lg:px-[120px]">
-    <div class="flex flex-col items-center gap-4 text-center">
-      {eyebrow && (
-        <Heading variant="eyebrow" color="white">{eyebrow}</Heading>
-      )}
-      {headingHtml
-        ? <Heading variant="h2" color="inherit" class="text-page" html={headingHtml} />
-        : heading && (
-            <Heading variant="h2" color="inherit" class="text-page">{heading}</Heading>
-          )
-      }
-    </div>
-  </div>
-
-  {/* ── Marquee track with edge fade mask ── */}
-  {doubled.length > 0 && (
-    <div class="testimonials-mask mt-10 md:mt-16"
-      aria-hidden="false"
-    >
-      <div class="testimonials-track flex items-stretch gap-4">
-        {doubled.map((item) => (
-          <div class="testimonials-slide shrink-0 w-[min(20rem,calc(100vw-2.5rem))] md:w-[512px]">
-            <Card
-              variant="testimonial"
-              quote={item.testimonial}
-              label={item.name}
-            />
+        {/* Cards row — overflow scroll, 360px fixed */}
+        {doubled.length > 0 && (
+          <div class="testimonials-mask-light" aria-hidden="false">
+            <div class="testimonials-track-light flex items-stretch gap-6">
+              {doubled.map((item) => (
+                <div class="testimonials-slide-light shrink-0 w-[min(20rem,calc(100vw-4rem))] md:w-[360px]">
+                  <div class="flex h-full flex-col gap-4 rounded-[16px] bg-white p-4 shadow-[4px_4px_30px_0px_rgba(0,0,0,0.05)]">
+                    {/* Quote mark SVG — dark colour for light bg */}
+                    <svg viewBox="0 0 19 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="19" height="16" aria-hidden="true" class="shrink-0 text-primary opacity-20"><path d="M4.761 8.312C6.307 8.312 7.477 8.701 8.273 9.479C9.068 10.258 9.466 11.254 9.466 12.467C9.466 13.795 8.989 14.882 8.034 15.729C7.08 16.577 5.909 17 4.523 17C2.932 17 1.614 16.428 0.568 15.283C-0.477 14.138 -1 12.341 -1 9.891C-1 7.579 -0.568 5.599 0.295 3.95C1.182 2.279 2.284 0.951 3.602 -0.033C4.92 -1.018 6.239 -1.647 7.557 -1.922C8.057 -2.036 8.455 -2.025 8.75 -1.888C9.045 -1.773 9.216 -1.556 9.261 -1.235C9.329 -0.938 9.261 -0.651 9.057 -0.377C8.852 -0.125 8.432 0.127 7.795 0.379C6.659 0.814 5.682 1.398 4.864 2.13C4.045 2.84 3.42 3.618 2.989 4.465C2.58 5.29 2.375 6.091 2.375 6.869C2.375 7.327 2.489 7.682 2.716 7.934C2.966 8.186 3.409 8.312 4.045 8.312H4.761ZM18.295 8.312C19.841 8.312 21.011 8.701 21.807 9.479C22.602 10.235 23 11.231 23 12.467C23 13.795 22.523 14.882 21.568 15.729C20.614 16.577 19.443 17 18.057 17C16.466 17 15.148 16.428 14.102 15.283C13.057 14.115 12.534 12.318 12.534 9.891C12.534 7.579 12.966 5.599 13.829 3.95C14.716 2.279 15.818 0.951 17.136 -0.033C18.455 -1.018 19.773 -1.647 21.091 -1.922C21.591 -2.036 21.989 -2.025 22.284 -1.888C22.58 -1.773 22.75 -1.556 22.795 -1.235C22.864 -0.96 22.795 -0.686 22.591 -0.411C22.386 -0.136 21.966 0.127 21.329 0.379C20.193 0.814 19.216 1.398 18.398 2.13C17.58 2.84 16.966 3.618 16.557 4.465C16.148 5.29 15.943 6.091 15.943 6.869C15.943 7.327 16.057 7.682 16.284 7.934C16.511 8.186 16.943 8.312 17.58 8.312H18.295Z" fill="currentColor"/></svg>
+                    <p class="flex-1 font-heading text-[24px] leading-[1.2] text-primary md:text-[28px]">
+                      {item.testimonial}
+                    </p>
+                    {item.name && (
+                      <p class="font-sans text-[14px] uppercase tracking-[0.06em] text-eyebrow">
+                        {item.name}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        ))}
+        )}
       </div>
     </div>
-  )}
+  </section>
+) : (
+  /* ── DARK TONE (default): full-width gradient, marquee ── */
+  <section
+    {...id ? { id } : {}}
+    class="not-prose relative w-full overflow-hidden py-16 md:py-24"
+    style="background: linear-gradient(95.38deg, var(--aw-color-bg-section-dark) 5.27%, var(--aw-color-primary) 97.29%)"
+  >
+    {/* Centered header */}
+    <div class="mx-auto w-full max-w-container px-5 sm:px-8 md:px-16 lg:px-[120px]">
+      <div class="flex flex-col items-center gap-4 text-center">
+        {eyebrow && (
+          <Heading variant="eyebrow" color="white">{eyebrow}</Heading>
+        )}
+        {headingHtml
+          ? <Heading variant="h2" color="inherit" class="text-page" html={headingHtml} />
+          : heading && <Heading variant="h2" color="inherit" class="text-page">{heading}</Heading>
+        }
+      </div>
+    </div>
 
-</section>
+    {/* Marquee track with edge fade mask */}
+    {doubled.length > 0 && (
+      <div class="testimonials-mask mt-10 md:mt-16" aria-hidden="false">
+        <div class="testimonials-track flex items-stretch gap-4">
+          {doubled.map((item) => (
+            <div class="testimonials-slide shrink-0 w-[min(20rem,calc(100vw-2.5rem))] md:w-[512px]">
+              <Card
+                variant="testimonial"
+                quote={item.testimonial}
+                label={item.name}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+  </section>
+)}
 
 <style>
   /* Edge fade mask */
@@ -158,6 +210,31 @@ const doubled = [...testimonials, ...testimonials];
     flex-direction: column;
   }
   .testimonials-slide > * {
+    flex: 1;
+  }
+
+  /* ── Light-tone marquee ── */
+  .testimonials-mask-light {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent 0, black 24px, black calc(100% - 24px), transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, black 24px, black calc(100% - 24px), transparent 100%);
+  }
+
+  .testimonials-track-light {
+    width: max-content;
+    animation: marquee 50s linear infinite;
+  }
+
+  .testimonials-mask-light:hover .testimonials-track-light {
+    animation-play-state: paused;
+  }
+
+  .testimonials-slide-light {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .testimonials-slide-light > * {
     flex: 1;
   }
 </style>

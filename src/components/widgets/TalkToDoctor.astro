@@ -7,11 +7,14 @@
  *   LEFT  — icon + h3 + body rows, muted 2px dividers between items.
  *   RIGHT — navy→primary gradient card (rounded-[32px]) overlapping a
  *            heading-coloured disclosure tab (rounded-b-[32px]).
+ *            Optional ghost CTA ("Schedule a free visit") sits in the
+ *            disclosure tab, below the copy — not in the packages card.
  *
  * Content is passed from the page file — never baked in.
  */
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
+import Button from '~/components/ui/Button.astro';
 
 export interface AdviceItem {
   iconSvg: string;
@@ -30,6 +33,7 @@ export interface Props {
   clinicHeading?: string;
   packages: PackageStep[];
   addOnNote?: string;
+  cta?: { text: string; href: string };
   disclosureEyebrow?: string;
   disclosure?: string;
   id?: string;
@@ -41,6 +45,7 @@ const {
   clinicHeading = '3 packages',
   packages = [],
   addOnNote,
+  cta,
   disclosureEyebrow = 'disclosure',
   disclosure,
   id,
@@ -114,14 +119,26 @@ const {
       </div>
 
       {disclosure && (
-        <div class="relative z-[1] flex w-full items-start rounded-b-[32px] bg-heading px-8 pb-6 pt-16 backdrop-blur-[10px]">
-          <div class="flex min-w-0 flex-1 flex-col items-start gap-1.5">
-            {disclosureEyebrow && (
-              <Heading variant="eyebrow">{disclosureEyebrow}</Heading>
+        <div class="relative z-[1] flex w-full items-start rounded-b-[32px] bg-heading px-8 pb-8 pt-16 backdrop-blur-[10px]">
+          <div class="flex min-w-0 flex-1 flex-col items-start gap-6">
+            <div class="flex w-full flex-col items-start gap-1.5">
+              {disclosureEyebrow && (
+                <Heading variant="eyebrow">{disclosureEyebrow}</Heading>
+              )}
+              <Text variant="small" color="inherit" class="text-page/80">
+                {disclosure}
+              </Text>
+            </div>
+            {cta && (
+              <Button
+                variant="ghost"
+                tone="dark"
+                text={cta.text}
+                href={cta.href}
+                hideNote
+                class="self-start"
+              />
             )}
-            <Text variant="small" color="inherit" class="text-page/80">
-              {disclosure}
-            </Text>
           </div>
         </div>
       )}

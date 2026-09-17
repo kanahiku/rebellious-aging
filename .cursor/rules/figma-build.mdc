@@ -20,8 +20,12 @@ Build in this order. Do not compose full pages before tokens and atoms match Fig
 2. Extract tokens first (see the `tokens` rule) into `src/brand.ts`. Copy desktop **and** mobile type from Figma when both exist. Fill `src/config/site.ts` + `contact.ts`.
 3. Restyle atoms (`Button`, `Headline`, inputs, cards) until they match Figma components.
 4. Restyle or add **one** section widget per repeating pattern. Register new widgets (see `components` rule).
-5. Walk each page frame top to bottom: screenshot + structure. Compose the page from those widgets (backgrounds, type, spacing, image side, item counts from Figma).
-6. After page work, run `npm run build` and fix errors before finishing.
+5. **Follow the `page-build` rule exactly** for every page:
+   - Phase A: scan the full page frame in one Figma MCP call → write the section map.
+   - Phase B: build any missing widgets + register them in `components.json`.
+   - Phase C: compose the complete `index.astro` in one shot — never section-by-section.
+   - Every image slot = grey `<div>` placeholder (see `images` rule). No real images during build.
+6. For multi-page sites: chain all pages without pausing between them. Run `npm run build` **once** after all pages are done.
 
 ## Always-on stack
 

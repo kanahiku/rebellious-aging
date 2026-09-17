@@ -1,13 +1,17 @@
 ---
 /**
- * EverythingPeaks — reusable gradient-card split section (Figma node 2:229 and recurrences).
+ * EverythingPeaks — gradient-card section (Figma node 2:229 and recurrences).
  *
- * Visual spec (Figma):
- *   bg-page outer, px-[120px] py-[64px].
+ * Visual spec (Figma 2:229):
+ *   Outer: bg-page, px-[120px] py-[64px].
  *   Inner card: bg-gradient-to-t from-transparent to-section-grey,
- *               rounded-tl-[64px] rounded-tr-[64px], p-[64px], gap-[32px], items-center.
- *   LEFT  flex-1 — eyebrow + h2 + body slot + primary CTA button
- *   RIGHT flex-1 — image slot (or grey placeholder via <slot name="image" />)
+ *               rounded-tl-[64px] rounded-tr-[64px], p-[64px], flex-col, gap-[64px].
+ *
+ *   TOP ROW — 2 equal columns, gap-[32px], items-start:
+ *     LEFT  flex-1 — eyebrow + h2 heading
+ *     RIGHT flex-1 — body slot + primary CTA button (stacked, gap-[32px])
+ *
+ *   BOTTOM — full-width image slot, aspect 1695/928, rounded-[32px]
  *
  * Usage:
  *   <EverythingPeaks
@@ -19,10 +23,7 @@
  *       <Text>First paragraph…</Text>
  *       <Text class="mt-[1lh]">Second paragraph…</Text>
  *     </Fragment>
- *     <Fragment slot="image">
- *       <!-- grey placeholder or <Image> when ready -->
- *       <div class="w-full rounded-[32px] bg-section-grey" style="aspect-ratio:1695/928" aria-hidden="true" />
- *     </Fragment>
+ *     <img slot="image" src={…} … />
  *   </EverythingPeaks>
  *
  * Props:
@@ -45,17 +46,24 @@ export interface Props {
 }
 
 const { eyebrow, heading, headingHtml, cta, id } = Astro.props;
+
+const hasImage = Astro.slots.has('image');
 ---
 
-<section {...id ? { id } : {}} class="not-prose w-full py-8 md:py-16">
+<section {...id ? { id } : {}} class="not-prose w-full py-8 md:py-[64px]">
   <div class="mx-auto w-full max-w-container px-5 sm:px-8 md:px-16 lg:px-[120px]">
-    <div class="flex w-full flex-col items-center gap-8 rounded-t-[32px] bg-gradient-to-t from-transparent to-section-grey p-6 md:rounded-t-[64px] md:p-16 lg:flex-row lg:items-center lg:gap-8 lg:p-[64px]">
 
-      {/* ── LEFT ── */}
-      <div class="flex min-w-0 flex-1 flex-col gap-8">
+    {/* Inner card — gradient top-rounded */}
+    <div
+      class="flex w-full flex-col gap-8 rounded-tl-[32px] rounded-tr-[32px] p-6 md:gap-[64px] md:rounded-tl-[64px] md:rounded-tr-[64px] md:p-[64px]"
+      style="background: linear-gradient(to top, rgba(210,225,234,0) 0%, #d2e1ea 100%);"
+    >
 
-        {/* Eyebrow + heading */}
-        <div class="flex flex-col gap-4">
+      {/* ── TOP ROW: heading LEFT, body+CTA RIGHT ── */}
+      <div class="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-8">
+
+        {/* LEFT — eyebrow + h2 */}
+        <div class="flex min-w-0 flex-1 flex-col gap-4">
           {eyebrow && <Heading variant="eyebrow">{eyebrow}</Heading>}
           {headingHtml
             ? <Heading variant="h2" html={headingHtml} />
@@ -63,16 +71,19 @@ const { eyebrow, heading, headingHtml, cta, id } = Astro.props;
           }
         </div>
 
-        {/* Body — caller supplies paragraphs via slot="body" */}
-        <slot name="body" />
+        {/* RIGHT — body + CTA */}
+        <div class="flex min-w-0 flex-1 flex-col gap-8">
+          <slot name="body" />
+          {cta && (
+            <Button variant="primary" text={cta.text} href={cta.href} hideNote class="self-start" />
+          )}
+        </div>
 
-        {cta && <Button variant="primary" text={cta.text} href={cta.href} />}
       </div>
 
-      {/* ── RIGHT — image slot (placeholder or real asset) ── */}
-      <div class="min-w-0 flex-1">
+      {/* ── BOTTOM: full-width image ── */}
+      <div class="w-full">
         <slot name="image">
-          {/* Default: grey placeholder — replace when asset is ready */}
           <!-- TODO: replace with <Image> when asset is ready -->
           <div
             class="w-full rounded-[32px] bg-section-grey"

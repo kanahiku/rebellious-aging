@@ -49,7 +49,8 @@
         "labelBg": "CSS class for header bg — e.g. bg-card-mist | bg-cta-pink",
         "labelTextColor": "CSS class for header text — e.g. text-secondary | text-cta-pink",
         "class": "override shadow utility: shadow-card (default) | shadow-card-mist | shadow-card-pink",
-        "tone": "light (default) | dark — only applies when variant=podcast"
+        "tone": "light (default) | dark — only applies when variant=podcast",
+        "surface": "white (default) | page — pillar fill. white on Four Pillars/homepage; page (cream) on How Aging Works"
       },
       "notes": "Shell only for bordered/pillar/dark/outlined — body in the default slot. variant='feature' also accepts title, description, cta, iconType, featured, and speaker (session body: people row + CTA bottom-right, Figma 64:1201). variant='podcast' is the episode card (Figma 121:916 / 121:1286): cream bg-page, tan tag, dark type, two grey listen placeholders, ghost-light CTA. Same card on tan and page sections."
     },
@@ -79,7 +80,7 @@
       "import": "~/components/widgets/Hero2.astro",
       "props": { "variant": "overlay | split | words | page | title" },
       "slots": ["title", "subtitle", "content", "image", "bg", "nav"],
-      "notes": "Overlay: full-bleed photo, glass nav slot, headline + CTAs left, lede right. Words: full-bleed photo, glass nav, three positioned h1 words (Figma 62:3 Peak / Slope / Floor). Page: light section-grey→transparent gradient, glass nav, h1 left + 28px Fraunces lede right (Figma 64:829 / 176:115). withImage adds a 1200×400 rx-32 band under the title/lede. Title: photo + centered h1 (Figma 64:935 Chapters)."
+      "notes": "Overlay: full-bleed photo, glass nav slot, headline + CTAs left, lede right. Words: full-bleed photo, glass nav, three positioned h1 words (Figma 62:3 Peak / Slope / Floor). Page: light section-grey→transparent gradient, glass nav, h1 left + 14px lede right, items-start, gap 72px (Figma 64:829 / 176:115 / 264:74). Long titles wrap in the left column; <br> titles stay nowrap. stacked=true is Books-only (121:15). withImage adds a 1200×400 rx-32 band under the title/lede. Title: photo + centered h1 (Figma 64:935 Chapters)."
     },
     {
       "id": "P-02",
@@ -350,7 +351,7 @@
         "default": "right-column intro body (Text atoms)",
         "image": "image or grey placeholder — defaults to bg-section-grey, aspect 1695/928, rounded-[32px]"
       },
-      "notes": "Figma nodes 62:71 (frame), 62:553 (intro), 62:77 (cards + image). Uses Card variant='pillar' (A-05) without icons. Content always passed from the page file."
+      "notes": "Figma nodes 62:71 (frame), 62:553 (intro), 62:77 (cards + image). Uses Card variant='pillar' surface='page' (cream, Figma 62:78). Content always passed from the page file. No bottom padding — the following section supplies the 120px gap."
     },
     {
       "id": "P-28",
@@ -364,7 +365,7 @@
         "id": "section anchor"
       },
       "itemCount": [4],
-      "notes": "Figma node 64:845 (Four Pillars). Same Card variant='pillar' as ConceptSplit, laid out as a full-width 4-up row with no intro or image. Content always passed from the page file."
+      "notes": "Figma node 64:845 (Four Pillars). Same Card variant='pillar' as ConceptSplit, surface='white'. Laid out as a full-width 4-up row with no intro or image. Content always passed from the page file."
     },
     {
       "id": "P-29",
@@ -551,10 +552,94 @@
         "clinicHeading": "h2 on the packages card",
         "packages": "PackageStep[] — { number, body }",
         "addOnNote": "right-aligned muted note under the steps",
+        "cta": "{ text, href } optional ghost CTA in the disclosure tab (e.g. Schedule a free visit)",
         "disclosureEyebrow": "uppercase label on the overlapping tab",
         "disclosure": "small disclosure copy"
       },
       "notes": "Figma nodes 176:243 (page hero via Hero2 variant=page) and 176:259 (this widget). Content always passed from the page file."
+    },
+    {
+      "id": "P-42",
+      "name": "Stats Band",
+      "figmaNames": ["Stats band", "Frame 16", "310:1235"],
+      "shape": "3 equal-width cards in a row, each: large Fraunces number + muted label. bg-page.",
+      "component": "StatsBand",
+      "import": "~/components/widgets/StatsBand.astro",
+      "props": {
+        "stats": "StatItem[] — { number, label }",
+        "id": "section anchor"
+      },
+      "itemCount": [3],
+      "notes": "Figma node 310:1235 (The Ohana page). Cards are bg-card rounded-[16px] shadow-card. Numbers render in Fraunces at clamp(36px, 4.5vw, 62px). Content always passed from the page file."
+    },
+    {
+      "id": "P-43",
+      "name": "Editorial With Image",
+      "figmaNames": ["Editorial with full-bleed image", "Frame 49", "310:1292"],
+      "shape": "TOP 2-col (h2 left | body right) + MIDDLE full-bleed image + BOTTOM 2-col (caption left | pull-quote h2 right).",
+      "component": "EditorialWithImage",
+      "import": "~/components/widgets/EditorialWithImage.astro",
+      "props": {
+        "heading": "h2 in the top-left column",
+        "headingHtml": "HTML string — takes precedence over heading",
+        "pullQuote": "large h2 in the bottom-right column",
+        "id": "section anchor"
+      },
+      "slots": {
+        "body": "paragraphs for the top-right column",
+        "image": "full-bleed image — defaults to bg-section-grey, 1440/511 ratio",
+        "caption": "paragraphs for the bottom-left column"
+      },
+      "notes": "Figma node 310:1292 (The Ohana page). The bottom half is reversed from a standard TextSplit: body caption LEFT, pull-quote heading RIGHT. Content always passed from the page file."
+    },
+    {
+      "id": "P-44",
+      "name": "Image Card Grid",
+      "figmaNames": ["Blue Zones cards", "Frame 50", "310:1319"],
+      "shape": "3-col grid of cards: image placeholder top (rounded via overflow-hidden) + eyebrow + h3 + small body. No CTA. Optional footer note.",
+      "component": "ImageCardGrid",
+      "import": "~/components/widgets/ImageCardGrid.astro",
+      "props": {
+        "cards": "ImageCardItem[] — { eyebrow, heading, body, imageAspect? }",
+        "footerNote": "optional muted attribution line below the grid",
+        "id": "section anchor"
+      },
+      "itemCount": [3],
+      "notes": "Figma node 310:1319 (The Ohana page). Cards have no CTA — use ServiceCard (P-05) when cards need links. Content always passed from the page file."
+    },
+    {
+      "id": "P-45",
+      "name": "Ohana Activities",
+      "figmaNames": ["What an ohana actually does", "Frame 52", "310:1447"],
+      "shape": "2-col: heading+subtitle+image placeholder left / activity list right (eyebrow + h4 + small body rows with hairline dividers).",
+      "component": "OhanaActivities",
+      "import": "~/components/widgets/OhanaActivities.astro",
+      "props": {
+        "heading": "h2 heading (left column)",
+        "subtitle": "optional body line under heading",
+        "activities": "ActivityItem[] — { frequency, title, body }",
+        "id": "section anchor"
+      },
+      "notes": "Figma node 310:1447 (The Ohana page). Image placeholder is aspect 568/368, rounded-[16px]. Activity rows are divided by hairlines; last row has no bottom hairline. Content always passed from the page file."
+    },
+    {
+      "id": "P-46",
+      "name": "Purpose Banner",
+      "figmaNames": ["Purpose is a longevity drug", "No chapter near you", "Frame 182", "310:1550"],
+      "shape": "Full-bleed photo bg (absolute). Flex-col justify-between: TOP cream card (h2 + body slot, 2-col) / SPACER (photo shows through) / BOTTOM dark glass card (h2 + primary CTA left | body slot right, 2-col).",
+      "component": "PurposeBanner",
+      "import": "~/components/widgets/PurposeBanner.astro",
+      "props": {
+        "purposeHeading": "h2 in the top cream card (default: 'Purpose is a longevity drug.')",
+        "noChapterHeading": "h2 in the bottom dark glass card (default: 'No chapter near you?')",
+        "noChapterCta": "{ text, href } primary button in the bottom card",
+        "id": "section anchor"
+      },
+      "slots": {
+        "purpose-body": "paragraphs for the right side of the top cream card",
+        "no-chapter-body": "paragraphs for the right side of the bottom glass card"
+      },
+      "notes": "Figma node 310:1550 (The Ohana page). Bottom card uses backdrop-filter: blur(15px) + rgba(30,42,48,0.2) glass. Photo is a grey placeholder until asset is ready. Content always passed from the page file."
     }
   ]
 }

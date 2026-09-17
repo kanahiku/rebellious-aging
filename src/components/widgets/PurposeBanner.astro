@@ -1,0 +1,96 @@
+---
+/**
+ * PurposeBanner — full-bleed photo + purpose card + "No chapter" dark glass card
+ * (Figma node 310:1514, The Ohana page).
+ *
+ * Visual spec (from Figma):
+ *   Full-section photo placeholder (absolute bg), p-[64px] inside.
+ *   Inner content capped at max-w-container, flex-col justify-between, min-h ~900px:
+ *     TOP:    bg-page (#f5f4ef) rounded-[32px] p-[48px], 2-col gap-[32px] —
+ *             h2 "Purpose is a longevity drug." (shrink-0) + body slot (flex-1 right).
+ *     SPACER: photo visible in middle.
+ *     BOTTOM: backdrop-blur glass card (rgba 30,42,48 / 20%) rounded-[32px] p-[48px],
+ *             2-col gap-[64px]:
+ *             left = h2 "No chapter near you?" + primary CTA (stacked, flex-col, gap-[32px])
+ *             right = body text (white).
+ *
+ * Props:
+ *   purposeHeading   — h2 in the top cream card
+ *   noChapterHeading — h2 in the bottom dark card
+ *   noChapterCta     — { text, href } CTA button
+ *   id               — section anchor
+ *
+ * Slots:
+ *   bg               — background image
+ *   purpose-body     — paragraphs for the right of the top card
+ *   no-chapter-body  — paragraphs for the right of the bottom glass card
+ */
+
+import Heading from '~/components/ui/Heading.astro';
+import Button from '~/components/ui/Button.astro';
+
+export interface Props {
+  purposeHeading?: string;
+  noChapterHeading?: string;
+  noChapterCta?: { text: string; href: string };
+  id?: string;
+}
+
+const {
+  purposeHeading = 'Purpose is a longevity drug.',
+  noChapterHeading = 'No chapter near you?',
+  noChapterCta = { text: 'Start a Chapter', href: '/chapters' },
+  id,
+} = Astro.props;
+---
+
+<section {...id ? { id } : {}} class="not-prose relative w-full overflow-hidden">
+
+  {/* Full-bleed photo background */}
+  <slot name="bg">
+    <!-- TODO: replace with <Image> when asset is ready -->
+    <div class="absolute inset-0 bg-section-grey" aria-hidden="true" />
+  </slot>
+
+  {/* Content — max-width container, sits above the photo */}
+  <div class="relative z-10 mx-auto w-full max-w-container px-5 sm:px-8 md:px-16 lg:px-[120px]">
+    <div class="flex min-h-[700px] flex-col items-stretch justify-between gap-[64px] py-[64px] lg:min-h-[900px]">
+
+      {/* TOP: purpose card — cream (#f5f4ef) bg */}
+      <div class="flex w-full flex-col items-start gap-6 rounded-[32px] bg-page p-6 md:flex-row md:items-center md:gap-8 md:p-[48px]">
+        <h2 class="font-heading text-[clamp(28px,3.6vw,52px)] leading-none text-heading shrink-0 lg:max-w-[420px]">
+          {purposeHeading}
+        </h2>
+        <div class="min-w-0 flex-1 flex flex-col gap-[1lh]">
+          <slot name="purpose-body" />
+        </div>
+      </div>
+
+      {/* SPACER: photo shows through */}
+      <div class="flex-1" aria-hidden="true" />
+
+      {/* BOTTOM: "no chapter" dark glass card */}
+      <div
+        class="flex w-full flex-col items-start gap-8 rounded-[32px] p-6 md:flex-row md:items-center md:gap-[64px] md:p-[48px]"
+        style="backdrop-filter: blur(15px); background: rgba(30, 42, 48, 0.2);"
+      >
+        <div class="flex shrink-0 flex-col items-start gap-6 md:gap-8 lg:w-[45%]">
+          <h2 class="font-heading text-[clamp(24px,3.6vw,52px)] leading-none text-page">
+            {noChapterHeading}
+          </h2>
+          <Button
+            variant="primary"
+            text={noChapterCta.text}
+            href={noChapterCta.href}
+            class="w-full"
+            hideNote
+          />
+        </div>
+        <div class="min-w-0 flex-1 flex flex-col gap-[1lh]">
+          <slot name="no-chapter-body" />
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

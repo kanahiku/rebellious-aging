@@ -1,0 +1,80 @@
+---
+/**
+ * EditorialWithImage — 2-col editorial + full-bleed image + reversed 2-col editorial
+ * (Figma node 310:1292, The Ohana page).
+ *
+ * Visual spec (from Figma):
+ *   Outer: py-[64px], px-[120px]. The three blocks (top split / image / bottom split)
+ *   are separated by gap-[72px].
+ *   TOP    h2 heading LEFT + body slot RIGHT,  gap-[32px] between columns.
+ *   MIDDLE full-bleed image, 1440 × 511.
+ *   BOTTOM body/caption slot LEFT + pull-quote h2 RIGHT, gap-[32px] between columns.
+ *
+ * Props:
+ *   heading      — main h2 (top-left)
+ *   headingHtml  — raw HTML takes precedence over heading
+ *   pullQuote    — large h2 in the bottom-right column
+ *   id           — section anchor
+ *
+ * Slots:
+ *   body    — paragraphs for the top-right column
+ *   image   — full-bleed image (defaults to grey placeholder)
+ *   caption — paragraphs for the bottom-left column
+ */
+
+import Heading from '~/components/ui/Heading.astro';
+
+export interface Props {
+  heading?: string;
+  headingHtml?: string;
+  pullQuote: string;
+  id?: string;
+}
+
+const { heading, headingHtml, pullQuote, id } = Astro.props;
+---
+
+<section {...id ? { id } : {}} class="not-prose w-full bg-page">
+  <div class="flex flex-col gap-[48px] py-12 lg:gap-[72px] lg:py-[64px]">
+
+    {/* TOP: h2 left + body right — gap-[32px] */}
+    <div class="mx-auto w-full max-w-container px-5 sm:px-8 md:px-16 lg:px-[120px]">
+      <div class="flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-8">
+        <div class="min-w-0 flex-1">
+          {headingHtml
+            ? <Heading variant="h2" html={headingHtml} />
+            : heading && <Heading variant="h2">{heading}</Heading>
+          }
+        </div>
+        <div class="min-w-0 flex-1 flex flex-col gap-[1lh]">
+          <slot name="body" />
+        </div>
+      </div>
+    </div>
+
+    {/* MIDDLE: full-bleed image */}
+    <div class="w-full">
+      <slot name="image">
+        <!-- TODO: replace with <Image> when asset is ready -->
+        <div
+          class="w-full bg-section-grey"
+          style="aspect-ratio: 1440 / 511;"
+          aria-hidden="true"
+        />
+      </slot>
+    </div>
+
+    {/* BOTTOM: caption/body left + pull-quote right — gap-[32px] */}
+    <div class="mx-auto w-full max-w-container px-5 sm:px-8 md:px-16 lg:px-[120px]">
+      <div class="flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-8">
+        <div class="min-w-0 flex-1 flex flex-col gap-[1lh]">
+          <slot name="caption" />
+        </div>
+        <div class="min-w-0 flex-1">
+          <Heading variant="h2">{pullQuote}</Heading>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

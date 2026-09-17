@@ -5,6 +5,7 @@ import Header from '~/components/widgets/Header.astro';
 import TalkToDoctor from '~/components/widgets/TalkToDoctor.astro';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
+import { ATHENA_CONTACT_HREF } from '~/config/cta';
 import talkToDoctorHero from '~/assets/images/talk-to-doctor-hero.png';
 
 const metadata = {
@@ -43,7 +44,7 @@ const adviceItems = [
 const packages = [
   {
     number: '1',
-    body: 'Bring your self-assessment in. Basic physiological measurements, and an honest read of where you stand, limited to what is observable.',
+    body: 'Bring your self-assessment in. Basic physiological measurements, and an honest read of where you stand — limited to what is observable.',
   },
   {
     number: '2',
@@ -85,6 +86,7 @@ const packages = [
     items={adviceItems}
     packages={packages}
     addOnNote="Add-ons exist for whole-body MRI and multi-cancer detection. Read the warning above first."
+    cta={{ text: 'Schedule a free visit', href: ATHENA_CONTACT_HREF }}
     disclosure="Dr. Peterson owns Athena Clinic. Everything on this page works exactly as well with your own physician, and we would rather you went to whoever knows your history. If you want it done by his team, that option is below."
   />
 </Layout>

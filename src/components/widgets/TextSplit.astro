@@ -27,6 +27,7 @@
  *   headingHtml     — raw HTML heading string (takes precedence over heading)
  *   id              — section anchor id
  *   compact         — true = 64px vertical padding (Figma 64:983); default is 120px
+ *   noPadY          — true = no vertical padding (used when a wrapper owns the py)
  *   withImage       — true = include the image column / placeholder
  *   imageAspect     — CSS aspect-ratio for the default placeholder (Figma frame size)
  *   imagePlacement  — "end" (image opposite the text stack) or "under-heading"
@@ -44,6 +45,14 @@ export interface Props {
   withImage?: boolean;
   imageAspect?: string;
   imagePlacement?: 'end' | 'under-heading';
+  /**
+   * reversed — text-only split only. Swaps column order:
+   *   false (default): heading LEFT, body slot RIGHT.
+   *   true:            body slot LEFT, heading RIGHT.
+   * Used on The Ohana page for "Information is not an adherence mechanism." (Figma 310:1424).
+   */
+  reversed?: boolean;
+  noPadY?: boolean;
   class?: string;
 }
 
@@ -53,9 +62,11 @@ const {
   headingHtml,
   id,
   compact = false,
+  noPadY = false,
   withImage = false,
   imageAspect = '507 / 657.445',
   imagePlacement = 'end',
+  reversed = false,
   class: className = '',
 } = Astro.props;
 
@@ -73,8 +84,8 @@ const useNarrowGap = imageUnderHeading || (imageAside && isLandscape);
 <section {...id ? { id } : {}} class:list={['not-prose w-full', className]}>
   <div
     class:list={[
-      'mx-auto w-full max-w-container px-5 py-12 sm:px-8 md:px-16 md:py-16 lg:px-[120px]',
-      compact ? 'lg:py-16' : 'lg:py-[120px]',
+      'mx-auto w-full max-w-container px-5 sm:px-8 md:px-16 lg:px-[120px]',
+      noPadY ? '' : compact ? 'py-12 md:py-16 lg:py-16' : 'py-12 md:py-16 lg:py-[120px]',
     ]}
   >
     <div
@@ -84,35 +95,50 @@ const useNarrowGap = imageUnderHeading || (imageAside && isLandscape);
       ]}
     >
 
-      {/* ── LEFT — heading; body when image is aside; image when under-heading ── */}
-      <div class:list={['flex min-w-0 flex-1 flex-col', hasImage ? 'gap-8' : 'gap-4']}>
-        <div class="flex flex-col gap-4">
-          {eyebrow && <Heading variant="eyebrow">{eyebrow}</Heading>}
-          {headingHtml
-            ? <Heading variant="h2" html={headingHtml} />
-            : heading && <Heading variant="h2">{heading}</Heading>
-          }
-        </div>
-        {imageUnderHeading && (
-          <div class="w-full min-w-0">
-            {customImageHtml ? (
-              <div class="contents" set:html={customImageHtml} />
-            ) : (
-              <>
-                <!-- TODO: replace with <Image> when asset is ready -->
-                <div
-                  class="w-full rounded-[32px] bg-section-grey"
-                  style={`aspect-ratio: ${imageAspect};`}
-                  aria-hidden="true"
-                />
-              </>
-            )}
+      {/* ── LEFT — body slot when reversed (text-only); heading otherwise ── */}
+      {(!hasImage && reversed) ? (
+        <div class="flex min-w-0 flex-1 flex-col" set:html={bodyHtml} />
+      ) : (
+        <div class:list={['flex min-w-0 flex-1 flex-col', hasImage ? 'gap-8' : 'gap-4']}>
+          <div class="flex flex-col gap-4">
+            {eyebrow && <Heading variant="eyebrow">{eyebrow}</Heading>}
+            {headingHtml
+              ? <Heading variant="h2" html={headingHtml} />
+              : heading && <Heading variant="h2">{heading}</Heading>
+            }
           </div>
-        )}
-        {imageAside && <div class="flex flex-col" set:html={bodyHtml} />}
-      </div>
+          {imageUnderHeading && (
+            <div class="w-full min-w-0">
+              {customImageHtml ? (
+                <div class="contents" set:html={customImageHtml} />
+              ) : (
+                <>
+                  <!-- TODO: replace with <Image> when asset is ready -->
+                  <div
+                    class="w-full rounded-[32px] bg-section-grey"
+                    style={`aspect-ratio: ${imageAspect};`}
+                    aria-hidden="true"
+                  />
+                </>
+              )}
+            </div>
+          )}
+          {imageAside && <div class="flex flex-col" set:html={bodyHtml} />}
+        </div>
+      )}
 
-      {imageAside ? (
+      {/* ── RIGHT — heading when reversed (text-only); image or body otherwise ── */}
+      {(!hasImage && reversed) ? (
+        <div class="flex min-w-0 flex-1 flex-col gap-4">
+          <div class="flex flex-col gap-4">
+            {eyebrow && <Heading variant="eyebrow">{eyebrow}</Heading>}
+            {headingHtml
+              ? <Heading variant="h2" html={headingHtml} />
+              : heading && <Heading variant="h2">{heading}</Heading>
+            }
+          </div>
+        </div>
+      ) : imageAside ? (
         <div
           class:list={[
             'w-full min-w-0 flex-1',

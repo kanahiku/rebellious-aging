@@ -14,8 +14,8 @@ import Text from '~/components/ui/Text.astro';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
 import { PRIMARY_CTA_LABEL, PRIMARY_CTA_HREF } from '~/config/cta';
-import heroHome from '~/assets/images/home-hero.png';
-import whyUrgentImg from '~/assets/images/why-urgent.png';
+import heroHome from '~/assets/images/people-walking.png';
+import whyUrgentImg from '~/assets/images/full-szie-graph.png';
 import locationBgImg from '~/assets/images/location-bg.png';
 import halfProblemImg from '~/assets/images/half-problem.png';
 import talkToDoctorImg from '~/assets/images/talk-to-doctor.png';
@@ -82,15 +82,15 @@ const bucketOnePillars = [
     id="home-hero"
     variant="overlay"
     overlapHeader={false}
-    title="Rebellious Aging:<br />Finding your weakest link<br />to buy more years<br />of independent living!"
-    subtitle="The interventions with the strongest evidence in longevity medicine are also the cheapest, and almost nobody does them, because there is nothing to sell. Start by finding out where you actually stand. Then fill the first bucket. Everything else can wait its turn."
+    tagline="Rebellious Aging"
+    title="Finding your weakest link<br />to buy more years<br />of independent living!"
     actions={[
       { variant: 'primary', text: PRIMARY_CTA_LABEL, href: PRIMARY_CTA_HREF },
       { variant: 'ghost', text: 'How aging works', href: '/how-aging-works' },
     ]}
     image={{
       ...heroHome,
-      alt: 'A person standing on a rocky ridge with arms open toward a stormy sky',
+      alt: 'Two people jogging together on a sunlit forest trail',
     }}
   >
     <Header
@@ -256,36 +256,3 @@ const bucketOnePillars = [
   />
 </Layout>
 
-{/* Scope h1 size override to the home hero only — all other pages keep 100px */}
-<style is:global>
-  /* ── Home hero heading: fluid, never overflows ── */
-  #home-hero h1 {
-    font-size: clamp(40px, 3.8vw, 72px);
-    line-height: 1.1;
-    max-width: 100%; /* never wider than its column */
-  }
-  @media (max-width: 767px) {
-    #home-hero h1 {
-      font-size: clamp(22px, 6vw, 28px);
-      line-height: 1.2;
-    }
-  }
-
-  /* ── At 1024–1279px: stack hero content in a single column ─────────────
-     The two-column row (h1 ~580px + gap 64px + subtitle 418px = 1062px)
-     overflows the 1040px container at 1280px, so we keep it stacked until
-     there is enough room. At xl (1280px) the subtitle is allowed to shrink.  */
-  @media (min-width: 1024px) and (max-width: 1279px) {
-    #home-hero .lg\:flex-row {
-      flex-direction: column !important;
-    }
-  }
-
-  /* ── At 1280px+: two-column — subtitle shrinks to whatever fits ── */
-  @media (min-width: 1280px) {
-    #home-hero .lg\:shrink-0 {
-      flex-shrink: 1;
-      min-width: 240px;
-    }
-  }
-</style>

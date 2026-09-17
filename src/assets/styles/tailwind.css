@@ -79,31 +79,34 @@
 
 @utility text-h1 {
   font-size: var(--aw-text-h1-mobile);
-  line-height: var(--aw-leading-h1);
+  line-height: 1.2; /* relaxed on mobile — desktop tightens below */
   @media (min-width: 768px) {
     font-size: var(--aw-text-h1);
+    line-height: var(--aw-leading-h1);
   }
 }
 
 @utility text-h2 {
   font-size: var(--aw-text-h2-mobile);
-  line-height: var(--aw-leading-h2);
+  line-height: 1.2; /* relaxed on mobile */
   @media (min-width: 768px) {
     font-size: var(--aw-text-h2);
+    line-height: var(--aw-leading-h2);
   }
 }
 
 @utility text-h3 {
   font-size: var(--aw-text-h3-mobile);
-  line-height: var(--aw-leading-h3);
+  line-height: 1.25; /* relaxed on mobile */
   @media (min-width: 768px) {
     font-size: var(--aw-text-h3);
+    line-height: var(--aw-leading-h3);
   }
 }
 
 @utility text-h4 {
   font-size: var(--aw-text-h4-mobile);
-  line-height: var(--aw-leading-h4);
+  line-height: var(--aw-leading-h4); /* h4 already 1.2 — no change needed */
   @media (min-width: 768px) {
     font-size: var(--aw-text-h4);
   }

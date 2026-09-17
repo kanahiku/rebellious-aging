@@ -9,41 +9,72 @@ import Button from '~/components/ui/Button.astro';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
 import fourPillarHero from '~/assets/images/four-pillar-hero.png';
-import weStopImg from '~/assets/images/we-stop.png';
 
 const metadata = {
   title: `Four Pillars | ${site.name}`,
   description:
-    'Not the introduction. The first treatment. Movement, food, sleep, and connection: the four things to do before you spend a dollar on anything else.',
+    'Diet. Exercise. Sleep. Social interaction. Strongest evidence in the literature, lowest price tag in medicine, and the four things to do before you spend a dollar on anything else.',
   ignoreTitleTemplate: true,
 };
 
 const header = navigationData.header;
 
-const conceptCards = [
+// ── Icon SVGs (20×20, stroke-based, #2C4A5B) ──────────────────────────────
+// All 4 use iconBg=true with bg-section-grey tile (blue-grey, matches Figma 64:845)
+
+const dietSvg = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M6.5 2.5V8M6.5 8a2 2 0 004 0V2.5M8.5 10V17.5" stroke="#2C4A5B" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M13.5 2.5V17.5" stroke="#2C4A5B" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M11.5 4.5C12.5 4.5 15 5.5 15 8.5" stroke="#2C4A5B" stroke-width="1.5" stroke-linecap="round"/>
+</svg>`;
+
+const exerciseSvg = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="4.5" cy="14" r="2.5" stroke="#2C4A5B" stroke-width="1.5"/>
+  <circle cx="15.5" cy="14" r="2.5" stroke="#2C4A5B" stroke-width="1.5"/>
+  <path d="M4.5 14L8.5 7.5H12L15.5 14M8.5 7.5L10 4.5M12 7.5H10.5M10.5 4.5H13" stroke="#2C4A5B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;
+
+const sleepSvg = `<svg viewBox="0 0 20 17.5" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.2811 17.5015H4.14057C2.98824 17.5015 1.99529 17.1957 1.26834 16.6172C0.438667 15.9562 0 14.9761 0 13.7828C0 12.6328 0.472258 11.6637 1.36717 10.9805C1.83982 10.6188 2.42965 10.3489 3.05972 10.1973C3.17364 10.1691 3.27732 10.1094 3.35891 10.0251C3.44049 9.94077 3.49668 9.83515 3.52105 9.72036C3.80034 8.44927 4.39018 7.35752 5.25268 6.52707C6.27601 5.54273 7.64247 4.99557 9.06239 5.00169C10.3253 5.00169 11.4901 5.41769 12.4311 6.2044C13.0581 6.73298 13.5604 7.39382 13.9018 8.13952C13.9421 8.22773 14.0023 8.30536 14.0777 8.36636C14.153 8.42732 14.2415 8.47007 14.3361 8.49107C15.2736 8.69498 16.1103 9.10748 16.7431 9.68482C17.647 10.5094 18.1248 11.6352 18.1248 12.9391C18.1248 14.2223 17.6119 15.3949 16.6795 16.2406C15.7853 17.0539 14.5779 17.5015 13.2811 17.5015Z" fill="#2C4A5B"/><path d="M19.9424 6.94598C19.9868 6.84707 20.0052 6.73852 19.9959 6.63057C19.9867 6.52257 19.9502 6.41873 19.8879 6.32718C19.8255 6.23564 19.7439 6.15988 19.6488 6.10563C19.5018 6.01998 19.33 5.99013 19.1633 6.02135C17.4994 6.32978 15.8627 5.46682 15.1729 3.96732C14.483 2.46782 14.897 0.697098 16.1658 -0.00195312C16.1658 -0.00195312 16.3519 -0.0980924 16.3616 -0.106484C16.5072 -0.202344 16.5945 -0.356641 16.5945 -0.523047C16.5945 -0.689453 16.5056 -0.844531 16.3601 -0.940391C16.2146 -1.03625 16.0357 -1.05977 15.8676 -1.0043L15.8423 -0.995906C14.1158 -0.37832 12.8635 1.12157 12.6476 2.87313C12.4317 4.6247 13.2978 6.34907 14.8231 7.24001C15.8519 7.83735 17.0633 8.01673 18.2251 7.74626L19.9424 6.94598Z" fill="#2C4A5B"/></svg>`;
+
+const socialSvg = `<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.1248 9.9995C12.3217 9.9995 11.5452 9.64092 10.9374 8.99012C10.3463 8.35537 9.98542 7.50892 9.92175 6.60738C9.85379 5.64567 10.1471 4.76129 10.7475 4.11677C11.3479 3.47225 12.1873 3.12459 13.1248 3.12459C14.0557 3.12459 14.8975 3.4785 15.4959 4.12145C16.1002 4.77067 16.3943 5.65346 16.3263 6.60696C16.2611 7.50971 15.9006 8.35579 15.3107 8.98975C14.7045 9.64092 13.9283 9.9995 13.1248 9.9995Z" fill="#2C4A5B"/><path d="M18.2738 16.8745H7.97513C7.80954 16.8754 7.646 16.8383 7.497 16.766C7.34804 16.6938 7.21758 16.5883 7.11575 16.4577C7.00775 16.3162 6.93317 16.152 6.89758 15.9776C6.862 15.8031 6.86633 15.6229 6.91029 15.4503C7.23921 14.1296 8.05404 13.0343 9.2665 12.2832C10.3427 11.6168 11.7126 11.2496 13.1243 11.2496C14.5637 11.2496 15.8977 11.6012 16.9801 12.2672C18.1953 13.0144 19.0113 14.116 19.3386 15.4527C19.3821 15.6253 19.3859 15.8056 19.3499 15.98C19.314 16.1543 19.2391 16.3103 19.1313 16.4409C19.0295 16.564 18.9006 16.663 18.7549 16.7298C18.6091 16.7965 18.4503 16.8294 18.2899 16.8257L18.2738 16.8745Z" fill="#2C4A5B"/><path d="M5.62512 10.6254C4.96262 10.6254 4.31387 10.4317 3.76013 10.0692C3.2064 9.70669 2.77174 9.19172 2.51005 8.5897C2.24836 7.98769 2.18104 7.32537 2.31636 6.68746C2.45168 6.04956 2.78341 5.46494 3.2689 5.01201C3.7544 4.55908 4.36188 4.25769 5.01796 4.14599C5.67403 4.03428 6.34889 4.11724 6.9587 4.38449C7.56851 4.65175 8.08546 5.09138 8.44435 5.64871C8.80324 6.20604 8.98775 6.85657 8.97512 7.51912" stroke="#2C4A5B" stroke-width="1.25" stroke-linecap="round"/><path d="M1.66699 16.8745H5.21949" stroke="#2C4A5B" stroke-width="1.25" stroke-linecap="round"/><path d="M1.04199 14.5622C1.27778 13.6068 1.84559 12.7613 2.64699 12.1629C3.14618 11.792 3.71655 11.5308 4.32132 11.3965" stroke="#2C4A5B" stroke-width="1.25" stroke-linecap="round"/></svg>`;
+
+// ── Four pillar cards (Figma 64:845) ──────────────────────────────────────
+const pillarCards = [
   {
-    label: 'the mechanism',
-    title: 'Trajectories',
+    label: 'diet',
+    title: 'Cook like you plan to be here a while.',
     description:
-      'Peak, slope, floor, reserve. What the average rate of decline looks like per system, and how to work out where you sit on your own curves. Failure modes: some systems fail by gradual attrition, others go off a cliff.',
+      'The Mediterranean pattern — not a diet, a pattern — adapted for island kitchens and what actually grows here. Twice-monthly kitchen salons; you leave with containers.',
+    iconSvg: dietSvg,
+    iconBg: true,
+    iconBgClass: 'bg-section-grey',
   },
   {
-    label: 'the strategy',
-    title: 'The Weakest Link',
+    label: 'exercise',
+    title: 'The body is a rebellion. Train it like one.',
     description:
-      'Put disproportionate effort into the system closest to its floor, not the one that is already strong. And watch the interlinkage. Lose your hearing and you hasten dementia; damage your vasculature and it pulls your muscles, brain, eyes and kidneys down with it.',
+      'Strength, zone 2, VO₂ max work and balance — what the dose actually is after sixty, and the strength circles that deliver it twice a week.',
+    iconSvg: exerciseSvg,
+    iconBg: true,
+    iconBgClass: 'bg-section-grey',
   },
   {
-    label: 'the sequence',
-    title: 'The Buckets',
+    label: 'sleep',
+    title: 'The pillar nobody can sell you.',
     description:
-      'Do the basics first, then earn your way to the fancy stuff. The price goes up as the evidence goes down, which is why bucket one is free and bucket three costs thousands.',
+      'Glymphatic clearance, deep sleep after sixty, and the dementia evidence. The intervention with no product attached, which is exactly why you have not been sold it.',
+    iconSvg: sleepSvg,
+    iconBg: true,
+    iconBgClass: 'bg-section-grey',
   },
   {
-    label: 'the philosophy',
-    title: 'Accept vs. Change',
+    label: 'social interaction',
+    title: 'You get old alone. You grow long in company.',
     description:
-      'Your eyes will stiffen no matter what you do. Accept it. Your kidney function falling from unmanaged blood pressure is not the same thing at all. The wisdom to know the difference is the whole product.',
+      'Isolation carries a cardiovascular-scale risk, and company is the only reliable adherence mechanism anyone has found. This is the pillar the ohana exists to solve.',
+    iconSvg: socialSvg,
+    iconBg: true,
+    iconBgClass: 'bg-section-grey',
   },
 ];
 ---
@@ -56,7 +87,7 @@ const conceptCards = [
     overlapHeader={false}
     withImage
     title="Four Pillars"
-    subtitle={`<p>Not the introduction. The first treatment. Once you know your weakest link, these are the four things to do before you spend a dollar on anything else. They carry the strongest evidence in the literature and cost, between them, almost nothing.</p><p>Fill the first bucket. Let the surplus flow.</p>`}
+    subtitle="<p>Diet. Exercise. Sleep. Social interaction. Strongest evidence in the literature, lowest price tag in medicine, and the four things to do before you spend a dollar on anything else.</p><p>There is no order inside this bucket. Show up for any one, stay for all four. Start with whichever you can face on a Tuesday — then let the surplus flow.</p>"
     image={{
       ...fourPillarHero,
       alt: 'A cairn of balanced stones on a beach with ocean behind it',
@@ -71,16 +102,13 @@ const conceptCards = [
     />
   </Hero2>
 
-  <ConceptCards cards={conceptCards} />
+  <ConceptCards cards={pillarCards} />
 
   <TextSplit
     heading="What this framework deliberately leaves out."
-    withImage
-    imagePlacement="under-heading"
-    imageAspect="568 / 378.667"
   >
     <Text>
-      Peptides. Infusions. Hyperbaric chambers. Proprietary blends. Full-body MRI. A supplement subscription. Most of what the longevity industry sells is a conversation for after the four buckets are full, and almost nobody's are.
+      Peptides. Infusions. Hyperbaric chambers. Proprietary blends. Full-body MRI. A supplement subscription. Most of what the longevity industry sells is a conversation for after the four buckets are full — and almost nobody's are.
     </Text>
     <Text class="mt-4">
       We are not against any of it on principle. Dr. Peterson calls it recreational anti-aging, and files it with a weekend in Las Vegas: if you enjoy it and can afford it, help yourself. We are against buying the fifth thing before you have done the first four, which are free.
@@ -91,17 +119,6 @@ const conceptCards = [
       href="/talk-to-your-doctor"
       hideNote
       class="mt-8 self-start"
-    />
-    <img
-      slot="image"
-      src={weStopImg.src}
-      width={weStopImg.width}
-      height={weStopImg.height}
-      alt="Hands typing on a laptop with a stethoscope on the desk"
-      class="w-full rounded-[32px] object-cover"
-      style="aspect-ratio: 568 / 378.667;"
-      loading="lazy"
-      decoding="async"
     />
   </TextSplit>
 </Layout>

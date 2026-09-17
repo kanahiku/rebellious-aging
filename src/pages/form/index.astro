@@ -1,10 +1,6 @@
 ---
 import Layout from '~/layouts/Layout.astro';
-import { getImage } from 'astro:assets';
-import heroPng from '~/assets/images/home-hero.png';
 import { EMAIL_SUMMARY_ENDPOINT, SITE_SLUG, TURNSTILE_SITE_KEY } from '~/lib/forms';
-
-const heroImg = await getImage({ src: heroPng, format: 'webp', quality: 85 });
 
 const metadata = {
   title: 'Rebellious Aging Check-up',
@@ -17,9 +13,6 @@ const metadata = {
 <Layout metadata={metadata}>
   <!-- Full-screen immersive quiz — no site nav -->
   <div id="quiz-root">
-    <!-- Background photo -->
-    <div class="quiz-bg" aria-hidden="true" style={`background-image: url('${heroImg.src}')`}></div>
-    <div class="quiz-overlay" aria-hidden="true"></div>
 
     <!-- ═══════════════════════════════════ PROGRESS HEADER ═══════════════════════════════════ -->
     <!-- Sits outside <main> so it's always above compositing layers from backdrop-filter cards -->
@@ -34,6 +27,11 @@ const metadata = {
           <div class="quiz-progress-fill" id="prog-fill"></div>
           <div class="quiz-progress-remaining" id="prog-remaining"></div>
         </div>
+      </div>
+      <!-- Sponsor card — visible on every step, anchored to the top -->
+      <div class="quiz-sponsor-card">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Paid for by Athena Clinic
       </div>
     </header>
 
@@ -136,38 +134,7 @@ const metadata = {
 
         <!-- Share card removed per request -->
 
-        <!-- Email reminder card -->
-        <div class="quiz-card">
-          <h3 class="quiz-card-subheading">A reminder in twelve months</h3>
-          <p class="quiz-small" style="opacity:0.75;margin-bottom:16px">One set of answers puts you on a curve. Two give it a slope. If you would like a reminder, give us an email address. It is stored on its own and is never joined to anything you answered here.</p>
-          <div class="quiz-field">
-            <label class="quiz-field-label">First name (optional)</label>
-            <input type="text" id="optin-name" placeholder="Your first name…" autocomplete="given-name" class="quiz-input">
-          </div>
-          <div class="quiz-field">
-            <label class="quiz-field-label">Email</label>
-            <input type="email" id="optin-email" placeholder="your@email.com" autocomplete="email" inputmode="email" class="quiz-input">
-          </div>
-          <button class="quiz-btn-primary" id="btn-optin" type="button">Remind me in a year</button>
-          <p class="quiz-small" id="optin-msg" style="margin-top:8px;opacity:0.6"></p>
-        </div>
-
-        <!-- Delete card -->
-        <div class="quiz-card quiz-delete-card">
-          <div class="quiz-delete-inner">
-            <div>
-              <h3 class="quiz-card-subheading">Delete everything?</h3>
-              <p class="quiz-small" style="opacity:0.75">Removes every answer from this device. Nothing was sent anywhere else.</p>
-            </div>
-            <button class="quiz-delete-btn" id="btn-erase" type="button">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
-              Delete
-            </button>
-          </div>
-          <p class="quiz-small" id="erase-msg" style="margin-top:8px;opacity:0.6"></p>
-        </div>
-
-        <p class="quiz-small" style="text-align:center;opacity:0.35;margin-top:20px;padding-bottom:80px" id="buildid"></p>
+        <p style="padding-bottom:80px"></p>
       </section>
 
     </main>
@@ -206,7 +173,7 @@ const metadata = {
 <style is:global>
   /* Override Layout body styles for the immersive quiz */
   body:has(#quiz-root) {
-    background: #0a1318;
+    background: #0d1c25;
     overflow: hidden;
     padding: 0;
     margin: 0;
@@ -221,25 +188,10 @@ const metadata = {
     overflow: hidden;
     font-family: var(--aw-font-sans, 'Hanken Grotesk', sans-serif);
     color: #f5f4ef;
+    background: linear-gradient(160deg, #0d1c25 0%, #1b2a32 100%);
   }
 
-  /* Background photo */
-  .quiz-bg {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center 30%;
-    background-repeat: no-repeat;
-    z-index: 0;
-  }
-  .quiz-overlay {
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(to bottom, rgba(10,19,24,0.55) 0%, rgba(10,19,24,0.35) 40%, rgba(10,19,24,0.65) 100%),
-      linear-gradient(to right, rgba(0,0,0,0.25), rgba(0,0,0,0));
-    z-index: 1;
-  }
+  /* Solid background — no photo */
 
   /* ══════════════════════════════════════════
      PROGRESS HEADER — Figma node 128-3043
@@ -251,8 +203,8 @@ const metadata = {
     left: 0;
     right: 0;
     z-index: 200;
-    /* Solid dark tint — no backdrop-filter, avoids compositing layer conflicts */
-    background: rgba(10, 19, 24, 0.82);
+    background: #0d1c25;
+    border-bottom: 1px solid rgba(245,244,239,0.08);
     padding: 14px 20px 12px;
   }
   .quiz-header.hidden { display: none; }
@@ -304,27 +256,26 @@ const metadata = {
     line-height: 1;
   }
 
-  /* Progress bar: two divs — filled (#2c4a5b) + remaining (#7ba3bd) */
+  /* Progress bar: filled = light (#7ba3bd), remaining/default = dark (#2c4a5b) */
   .quiz-progress-track {
     display: flex;
     align-items: flex-start;
     width: 100%;
     height: 4px;
     border-radius: 300px;
-    overflow: clip; /* Figma: overflow-clip */
+    overflow: clip;
   }
   .quiz-progress-fill {
     height: 4px;
-    background: #2c4a5b;
+    background: #7ba3bd; /* light — grows as questions are answered */
     transition: width 0.3s ease;
     flex-shrink: 0;
-    /* starts at 0, grows via inline width style */
   }
   .quiz-progress-remaining {
     flex: 1;
     min-width: 1px;
     height: 4px;
-    background: #7ba3bd;
+    background: #2c4a5b; /* dark — the default/unfilled state */
   }
 
   /* ══════════════════════════════════════════
@@ -365,10 +316,8 @@ const metadata = {
   .quiz-home-card {
     width: 100%;
     max-width: 620px;
-    background: rgba(0,0,0,0.4);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255,255,255,0.12);
+    background: #1a2d3a;
+    border: 1px solid rgba(255,255,255,0.1);
     border-radius: 32px;
     padding: 40px 36px 32px;
     display: flex;
@@ -547,10 +496,8 @@ const metadata = {
      QUESTION CARDS
   ══════════════════════════════════════════ */
   .quiz-system-card {
-    background: rgba(0,0,0,0.35);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.1);
+    background: #1b2d3b;
+    border: 1px solid rgba(255,255,255,0.09);
     border-radius: 24px;
     padding: 20px 16px 20px;
     margin-bottom: 12px;
@@ -679,10 +626,8 @@ const metadata = {
      SHARED CARD
   ══════════════════════════════════════════ */
   .quiz-card {
-    background: rgba(0,0,0,0.35);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.1);
+    background: #1b2d3b;
+    border: 1px solid rgba(255,255,255,0.09);
     border-radius: 24px;
     padding: 24px;
     margin-bottom: 12px;
@@ -913,38 +858,6 @@ const metadata = {
   }
   .quiz-book-cta-btn:hover { background: rgba(245,244,239,0.16); }
 
-  /* ══════════════════════════════════════════
-     DELETE CARD
-  ══════════════════════════════════════════ */
-  .quiz-delete-card {
-    border-color: rgba(163,35,27,0.3);
-    background: linear-gradient(149deg, rgba(163,35,27,0.1), rgba(163,35,27,0.03)), rgba(0,0,0,0.2);
-  }
-  .quiz-delete-inner {
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .quiz-delete-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    white-space: nowrap;
-    flex-shrink: 0;
-    border: 1px solid rgba(255,255,255,0.25);
-    background: transparent;
-    border-radius: 10px;
-    padding: 10px 14px;
-    font-family: inherit;
-    font-size: 12px;
-    font-weight: 500;
-    color: #fff;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .quiz-delete-btn:hover { background: rgba(163,35,27,0.2); }
-  .quiz-delete-btn.armed { background: #a3231b; border-color: #a3231b; }
 
   /* ══════════════════════════════════════════
      SMALL TEXT
@@ -977,10 +890,8 @@ const metadata = {
     z-index: 15;
     padding: 14px 20px;
     padding-bottom: max(14px, env(safe-area-inset-bottom));
-    background: rgba(0,0,0,0.5);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border-top: 1px solid rgba(255,255,255,0.08);
+    background: #0d1c25;
+    border-top: 1px solid rgba(255,255,255,0.1);
   }
   .quiz-nav-inner {
     display: flex;
@@ -1031,6 +942,32 @@ const metadata = {
   }
   .quiz-nav-continue:hover { background: #3a5f73; }
   a.quiz-nav-continue { text-decoration: none; box-sizing: border-box; }
+
+  /* ══════════════════════════════════════════
+     SPONSOR CARD — top of every step (inside header)
+  ══════════════════════════════════════════ */
+  .quiz-sponsor-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin: 10px auto 0;
+    max-width: 680px;
+    background: rgba(228, 237, 242, 0.07);
+    border: 1px solid rgba(228, 237, 242, 0.15);
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: rgba(245,244,239,0.4);
+  }
+  .quiz-sponsor-card svg {
+    flex-shrink: 0;
+    color: #7ba3bd;
+    opacity: 0.6;
+  }
 
   /* ══════════════════════════════════════════
      RESPONSIVE
@@ -1345,7 +1282,6 @@ const DATA = {"domains":["Movement and structure","Heart, lungs and vessels","Se
 const RLAB = ['I do this easily', 'I do it differently or less', 'I no longer do this'];
 const KEY = 'ra_fleet_v1';
 const BUILD = 'v2.3 · 2026-09-02';
-const OPTIN_ENDPOINT = '/api/subscribe';
 const BANDTXT = ['Nothing flagged', 'Worth mentioning', 'Worth discussing'];
 
 /* ═════════════════════════════ STATE ═════════════════════════════ */
@@ -1878,15 +1814,6 @@ function renderPrintable() {
 const PDF_FILENAME = 'rebellious-aging-check-up.pdf';
 const HTML2PDF_SRC = 'https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js';
 
-function mailConfig() {
-  const node = document.getElementById('quiz-mail-config');
-  return {
-    endpoint: (node && node.getAttribute('data-endpoint')) || '',
-    site: (node && node.getAttribute('data-site')) || '',
-    turnstileSitekey: (node && node.getAttribute('data-turnstile-sitekey')) || '',
-  };
-}
-
 function loadHtml2Pdf() {
   if (window.html2pdf) return Promise.resolve(window.html2pdf);
   return new Promise(function(resolve, reject) {
@@ -1909,6 +1836,50 @@ function loadHtml2Pdf() {
     script.addEventListener('error', function() { reject(new Error('html2pdf failed to load')); }, { once: true });
     document.head.appendChild(script);
   });
+}
+
+function downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(function() { URL.revokeObjectURL(url); }, 3000);
+}
+
+async function makePdfBlob() {
+  renderPrintable();
+  const node = document.getElementById('printable');
+  const html2pdf = await loadHtml2Pdf();
+  node.classList.add('pdf-capture');
+  try {
+    const source = node.querySelector('.rp-wrap') || node;
+    return await html2pdf()
+      .set({
+        margin: 10,
+        filename: PDF_FILENAME,
+        image: { type: 'jpeg', quality: 0.92 },
+        html2canvas: { scale: 1.5, useCORS: true, backgroundColor: '#ffffff' },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak: { mode: ['css', 'legacy'] },
+      })
+      .from(source)
+      .outputPdf('blob');
+  } finally {
+    node.classList.remove('pdf-capture');
+  }
+}
+
+/* ═════════════════════════════ EMAIL-PDF FUNCTIONS ═════════════════════════════ */
+function mailConfig() {
+  const node = document.getElementById('quiz-mail-config');
+  return {
+    endpoint: (node && node.getAttribute('data-endpoint')) || '',
+    site: (node && node.getAttribute('data-site')) || '',
+    turnstileSitekey: (node && node.getAttribute('data-turnstile-sitekey')) || '',
+  };
 }
 
 function loadTurnstile() {
@@ -1958,40 +1929,6 @@ function blobToBase64(blob) {
     reader.onerror = reject;
     reader.readAsDataURL(blob);
   });
-}
-
-function downloadBlob(blob, filename) {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(function() { URL.revokeObjectURL(url); }, 3000);
-}
-
-async function makePdfBlob() {
-  renderPrintable();
-  const node = document.getElementById('printable');
-  const html2pdf = await loadHtml2Pdf();
-  node.classList.add('pdf-capture');
-  try {
-    const source = node.querySelector('.rp-wrap') || node;
-    return await html2pdf()
-      .set({
-        margin: 10,
-        filename: PDF_FILENAME,
-        image: { type: 'jpeg', quality: 0.92 },
-        html2canvas: { scale: 1.5, useCORS: true, backgroundColor: '#ffffff' },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak: { mode: ['css', 'legacy'] },
-      })
-      .from(source)
-      .outputPdf('blob');
-  } finally {
-    node.classList.remove('pdf-capture');
-  }
 }
 
 async function emailSummaryPdf() {
@@ -2192,18 +2129,6 @@ function syncNav() {
   nextBtn.innerHTML = (cur === 'priority' ? 'See my results' : 'Next') + ' ' + NAV_ARROW;
 }
 
-/* Opt-in */
-function submitOptIn() {
-  const email = document.getElementById('optin-email').value.trim();
-  const name = document.getElementById('optin-name').value.trim();
-  const msg = document.getElementById('optin-msg');
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { msg.textContent = 'That does not look like an email address.'; return; }
-  const payload = { email, first_name: name || null, source: 'direct', consent_at: new Date().toISOString() };
-  msg.textContent = 'Sending…';
-  fetch(OPTIN_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
-    .then(r => { msg.textContent = r.ok ? 'Thank you. We will remind you in twelve months.' : 'That did not send. Your answers are still safe on this device.'; })
-    .catch(() => { msg.textContent = 'That did not send. Your answers are still safe on this device.'; });
-}
 
 /* ═════════════════════════════ BOOT ═════════════════════════════ */
 /* Fire on both hard load and Astro view-transition navigation */
@@ -2261,9 +2186,6 @@ function boot() {
     document.getElementById('btn-resume').classList.remove('hidden');
   }
 
-  /* Opt-in */
-  document.getElementById('btn-optin').onclick = submitOptIn;
-
   /* Step indicator dots are non-clickable — navigation is via main Back / Next buttons */
 
   /* Page prev/next */
@@ -2281,30 +2203,6 @@ function boot() {
     } catch(e) { say('Could not save automatically. Use Print instead.'); }
   }
 
-  /* Delete / erase — two-step confirm */
-  const eraseBtn = document.getElementById('btn-erase');
-  const eraseMsg = document.getElementById('erase-msg');
-  let armed = false, armTimer = null;
-  function disarm() {
-    armed = false;
-    eraseBtn.classList.remove('armed');
-    eraseBtn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z" stroke="white" stroke-width="2" stroke-linecap="round"/></svg> Delete';
-    eraseMsg.textContent = '';
-  }
-  eraseBtn.onclick = function() {
-    if (!armed) {
-      armed = true; eraseBtn.classList.add('armed');
-      eraseBtn.textContent = 'Tap again to confirm';
-      eraseMsg.textContent = 'This cannot be undone.';
-      clearTimeout(armTimer); armTimer = setTimeout(disarm, 8000); return;
-    }
-    clearTimeout(armTimer);
-    try { localStorage.removeItem('ra_fleet_v1'); } catch(e) {}
-    location.reload();
-  };
-
-  /* Build ID */
-  document.getElementById('buildid').textContent = 'Build ' + BUILD;
 
   show(0);
 }
