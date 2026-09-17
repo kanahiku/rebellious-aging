@@ -19,6 +19,7 @@ const footer = navigationData.footer;
 ---
 
 <Layout metadata={metadata}>
+  <slot name="head" slot="head" />
   <slot name="header">
     <Header links={nav.header.links} actions={nav.header.actions} phone={nav.header.phone} isSticky />
   </slot>

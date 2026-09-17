@@ -10,6 +10,7 @@
  * About page only — do not reuse for other sections (image fade gradient is unique).
  */
 import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 
@@ -31,12 +32,12 @@ const { id, image, imageAlt = '' } = Astro.props;
     {/* Left: image */}
     <div class="relative w-full shrink-0 overflow-hidden rounded-bl-[32px] rounded-tl-[32px] sm:w-auto sm:flex-1" style="aspect-ratio: 545 / 564;">
       {image ? (
-        <img
-          src={image.src}
-          width={image.width}
-          height={image.height}
+        <Image
+          src={image}
           alt={imageAlt}
           class="absolute inset-0 h-full w-full rounded-bl-[32px] rounded-tl-[32px] object-cover"
+          widths={[400, 545, 818]}
+          sizes="(max-width: 640px) 100vw, 50vw"
           loading="lazy"
           decoding="async"
         />

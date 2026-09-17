@@ -6,6 +6,7 @@ import BucketsSection from '~/components/widgets/BucketsSection.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
+import { getImage } from 'astro:assets';
 import fillBucketHero from '~/assets/images/fill-bucket-hero.png';
 import { ATHENA_CONTACT_HREF } from '~/config/cta';
 
@@ -17,12 +18,12 @@ const metadata = {
 };
 
 const header = navigationData.header;
+const heroPreload = await getImage({ src: fillBucketHero, width: 1920, format: 'webp' });
 ---
 
 <Layout metadata={metadata}>
+  <link slot="head" rel="preload" as="image" href={heroPreload.src} fetchpriority="high" />
   <Fragment slot="header" />
-
-  {/* ── Hero — Figma node 176:115 ── */}
   <Hero2
     variant="page"
     overlapHeader={false}

@@ -10,6 +10,7 @@
  * Atoms used: Heading, Text, CTAActions.
  */
 import Image from '~/components/common/Image.astro';
+import { Image as AstroImage } from 'astro:assets';
 import ArtDirectedImage from '~/components/ui/ArtDirectedImage.astro';
 import CTAActions from '~/components/ui/CTAActions.astro';
 import Text from '~/components/ui/Text.astro';
@@ -85,7 +86,8 @@ const isLocalPageImage =
   isChrome ? (
     <section
       class:list={[
-        'relative not-prose overflow-hidden rounded-b-hero flex flex-col w-full',
+        'relative not-prose overflow-hidden flex flex-col w-full',
+        !(isPage && withImage) && 'rounded-b-hero',
         isPage && 'bg-gradient-to-t from-transparent to-section-grey',
         isWords && 'min-h-[520px] md:h-[579px] md:min-h-[579px]',
         isTitle && 'min-h-[320px] md:h-[450px] md:min-h-[450px]',
@@ -101,14 +103,12 @@ const isLocalPageImage =
           {bg ? <Fragment set:html={bg} /> : null}
         </slot>
         {isLocalOverlayImage ? (
-          <img
-            src={image.src}
-            alt={'alt' in image && typeof image.alt === 'string' ? image.alt : ''}
-            width={typeof image.width === 'number' ? image.width : 1440}
-            height={typeof image.height === 'number' ? image.height : 800}
-            class:list={[
-              'absolute inset-0 h-full w-full object-cover object-center',
-            ]}
+          <AstroImage
+            src={image as Parameters<typeof AstroImage>[0]['src']}
+            alt={'alt' in (image as object) && typeof (image as any).alt === 'string' ? (image as any).alt : ''}
+            class="absolute inset-0 h-full w-full object-cover object-center"
+            widths={[640, 828, 1200, 1440, 1920, 2160]}
+            sizes="100vw"
             loading="eager"
             fetchpriority="high"
             decoding="async"
@@ -136,12 +136,15 @@ const isLocalPageImage =
             aria-hidden="true"
           />
         ) : !bg ? (
-          <img
-            src={overlayImage.src}
+          <AstroImage
+            src={overlayImage}
             alt=""
             class="absolute inset-0 h-full w-full object-cover object-center"
+            widths={[640, 828, 1200, 1440, 1920]}
+            sizes="100vw"
             loading="eager"
             fetchpriority="high"
+            decoding="async"
           />
         ) : null}
         {isTitle ? (
@@ -166,6 +169,7 @@ const isLocalPageImage =
         class:list={[
           'relative z-[2] flex flex-1 flex-col w-full max-w-container mx-auto px-5 py-6 sm:px-8 md:px-16 lg:px-[120px] lg:py-8',
           isSplitDark ? 'gap-16' : isOverlay && !isWords && !isTitle ? 'justify-between' : 'gap-2.5',
+          isPage && withImage && 'pb-0 lg:pb-0',
         ]}
       >
         <slot name="nav" />
@@ -201,8 +205,8 @@ const isLocalPageImage =
         ) : isPage ? (
           <div
             class:list={[
-              'flex w-full flex-1 flex-col py-16 md:py-[120px]',
-              withImage ? 'items-stretch gap-[72px]' : 'items-start',
+              'flex w-full flex-1 flex-col',
+              withImage ? 'items-stretch pt-16 pb-[72px] md:pt-[120px]' : 'items-start py-16 md:py-[120px]',
             ]}
           >
             <div
@@ -231,26 +235,6 @@ const isLocalPageImage =
                 />
               )}
             </div>
-            {withImage && (
-              isLocalPageImage ? (
-                <img
-                  src={image.src}
-                  alt={'alt' in image && typeof image.alt === 'string' ? image.alt : ''}
-                  width={typeof image.width === 'number' ? image.width : 1200}
-                  height={typeof image.height === 'number' ? image.height : 400}
-                  class="w-full rounded-[32px] object-cover"
-                  style="aspect-ratio: 1200 / 400;"
-                  loading="eager"
-                  decoding="async"
-                />
-              ) : (
-                <div
-                  class="w-full rounded-[32px] bg-section-grey"
-                  style="aspect-ratio: 1200 / 400;"
-                  aria-hidden="true"
-                />
-              )
-            )}
           </div>
         ) : isSplitDark ? (
         <div class="flex flex-1 flex-col lg:flex-row lg:items-end gap-0 lg:gap-[48px] pb-0">
@@ -278,13 +262,13 @@ const isLocalPageImage =
               <div class="relative w-full h-full overflow-hidden rounded-tl-[32px] rounded-tr-[32px]">
                 {typeof image === 'string' ? (
                   <Fragment set:html={image} />
-                ) : image && typeof image === 'object' && 'src' in image ? (
-                  <img
-                    src={(image as any).src}
+                ) : image && typeof image === 'object' && 'src' in image && 'width' in image ? (
+                  <AstroImage
+                    src={image as Parameters<typeof AstroImage>[0]['src']}
                     alt={(image as any).alt ?? ''}
-                    width={typeof (image as any).width === 'number' ? (image as any).width : undefined}
-                    height={typeof (image as any).height === 'number' ? (image as any).height : undefined}
                     class="w-full h-full object-cover object-top"
+                    widths={[400, 640, 828, 1080]}
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                     loading="eager"
                     decoding="async"
                   />
@@ -338,6 +322,26 @@ const isLocalPageImage =
         </div>
         )}
       </div>
+
+      {isPage && withImage && (
+        isLocalPageImage ? (
+          <AstroImage
+            src={image as Parameters<typeof AstroImage>[0]['src']}
+            alt={'alt' in (image as object) && typeof (image as any).alt === 'string' ? (image as any).alt : ''}
+            class="relative z-[2] w-full h-[550px] object-cover object-center"
+            widths={[640, 828, 1200, 1440, 1920]}
+            sizes="100vw"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        ) : (
+          <div
+            class="relative z-[2] w-full h-[550px] bg-section-grey"
+            aria-hidden="true"
+          />
+        )
+      )}
 
       {hasStats && (
         <div class="relative bg-[rgb(14_13_7_/_0.1)] backdrop-blur-[15px]">

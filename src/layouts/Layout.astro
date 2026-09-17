@@ -37,15 +37,36 @@ const fonts = brandFontConfig();
     <GoogleTagManager placement="head" />
     <CommonMeta />
     <Favicons />
-    {fonts.map((font) => <Font cssVariable={font.cssVariable} preload />)}
+
+    <!-- LCP image preload must come FIRST — before fonts and CSS — so the
+         browser's preload scanner fetches the hero immediately at TTFB.
+         Pages inject their hero preload via this slot. -->
+    <slot name="head" />
+
+    {fonts.map((font) => (
+      <Font
+        cssVariable={font.cssVariable}
+        preload={[
+          // Preload all variants visible in the first viewport:
+          //   • Fraunces 400 normal + italic (hero h1, <em> in heading)
+          //   • Hanken 300 normal (hero content slot "96 questions…" uses !font-light)
+          //   • Hanken 400 normal + italic (body paragraphs)
+          //   • Hanken 500 normal (header nav links use font-medium)
+          //   • Hanken 600 normal (CTA buttons)
+          { weight: '300', style: 'normal' },
+          { weight: '400', style: 'normal' },
+          { weight: '400', style: 'italic' },
+          { weight: '500', style: 'normal' },
+          { weight: '600', style: 'normal' },
+        ]}
+      />
+    ))}
     <CustomStyles />
     <ApplyColorMode />
     <Metadata {...metadata} />
     <SiteVerification />
     <Analytics />
     <JsonLd />
-
-    <link rel="preconnect" href="https://images.unsplash.com" />
 
     <!-- Comment the line below to disable View Transitions -->
     <ClientRouter fallback="swap" />

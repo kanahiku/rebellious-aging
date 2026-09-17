@@ -25,6 +25,7 @@ import {
   FOOTER_CTA_LABEL,
   FOOTER_CTA_TITLE,
 } from '~/config/cta';
+import { Image } from 'astro:assets';
 import footerBg from '~/assets/images/footer-bg.png';
 
 interface Link {
@@ -57,12 +58,12 @@ const {
 
 <footer class="relative not-prose w-full overflow-hidden">
   <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
-    <img
-      src={footerBg.src}
+    <Image
+      src={footerBg}
       alt=""
-      width={footerBg.width}
-      height={footerBg.height}
       class="absolute inset-0 h-full w-full object-cover object-center"
+      widths={[640, 828, 1200, 1440]}
+      sizes="100vw"
       loading="lazy"
       decoding="async"
     />

@@ -39,10 +39,11 @@ interface Props extends Omit<HTMLAttributes<'img'>, 'src' | 'width' | 'height'> 
   height?: number | string;
   widths?: number[];
   format?: Format;
+  quality?: number;
   layout?: Layout;
 }
 
-const { src, alt, width, height, widths, format, layout = 'constrained', ...rest } = Astro.props;
+const { src, alt, width, height, widths, format, quality, layout = 'constrained', ...rest } = Astro.props;
 
 // --- Accessibility ---------------------------------------------------------
 if (alt === undefined || alt === null) {
@@ -241,6 +242,7 @@ const cdnSrcSet =
           alt,
           widths,
           format,
+          quality,
           layout: nativeLayout,
           style: localStyle,
         } as unknown as Parameters<typeof AstroImage>[0])}

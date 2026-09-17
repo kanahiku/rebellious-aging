@@ -80,7 +80,7 @@
       "import": "~/components/widgets/Hero2.astro",
       "props": { "variant": "overlay | split | words | page | title" },
       "slots": ["title", "subtitle", "content", "image", "bg", "nav"],
-      "notes": "Overlay: full-bleed photo, glass nav slot, headline + CTAs left, lede right. Words: full-bleed photo, glass nav, three positioned h1 words (Figma 62:3 Peak / Slope / Floor). Page: light section-grey→transparent gradient, glass nav, h1 left + 14px lede right, items-start, gap 72px (Figma 64:829 / 176:115 / 264:74). Long titles wrap in the left column; <br> titles stay nowrap. stacked=true is Books-only (121:15). withImage adds a 1200×400 rx-32 band under the title/lede. Title: photo + centered h1 (Figma 64:935 Chapters)."
+      "notes": "Overlay: full-bleed photo, glass nav slot, headline + CTAs left, lede right. Words: full-bleed photo, glass nav, three positioned h1 words (Figma 62:3 Peak / Slope / Floor). Page: light section-grey→transparent gradient, glass nav, h1 left + 14px lede right, items-start, gap 72px (Figma 64:829 / 176:115 / 264:74). Long titles wrap in the left column; <br> titles stay nowrap. stacked=true is Books-only (121:15). withImage adds a full-bleed photo band under the title/lede. Title: photo + centered h1 (Figma 64:935 Chapters)."
     },
     {
       "id": "P-02",

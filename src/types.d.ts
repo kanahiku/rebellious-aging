@@ -218,7 +218,7 @@ export interface Hero extends Omit<Headline, 'classes'>, Omit<Widget, 'isDark' |
   overlapHeader?: boolean;
   /** `variant="page"` only — stack title and subtitle vertically (flex-col) instead of side-by-side. Figma node 121:15 Books hero. */
   stacked?: boolean;
-  /** `variant="page"` only — full-width 1200×400 image under the title/lede (Figma 176:115). Pass `image` for the photo; otherwise a grey placeholder. */
+  /** `variant="page"` only — full-bleed image under the title/lede. Pass `image` for the photo; otherwise a grey placeholder. */
   withImage?: boolean;
 }
 

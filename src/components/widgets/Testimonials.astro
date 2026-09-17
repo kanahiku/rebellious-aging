@@ -58,8 +58,12 @@ const {
 
 const isLight = tone === 'light';
 
+// Cap at 8 items before doubling — 8×2=16 slides is enough for a seamless loop
+// on any viewport without bloating the DOM with 20+ duplicate nodes.
+const capped = testimonials.slice(0, 8);
+
 // Duplicate cards for seamless loop: translate -50% = one full set → perfect join
-const doubled = [...testimonials, ...testimonials];
+const doubled = [...capped, ...capped];
 ---
 
 {isLight ? (

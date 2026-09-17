@@ -6,6 +6,7 @@ import PodcastFilter from '~/components/widgets/PodcastFilter.astro';
 import PodcastEpisodes from '~/components/widgets/PodcastEpisodes.astro';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
+import { getImage } from 'astro:assets';
 import podcastHero from '~/assets/images/podcast-hero.png';
 import { getPodcastEpisodes, groupEpisodesByPart } from '~/lib/content';
 
@@ -17,6 +18,7 @@ const metadata = {
 };
 
 const header = navigationData.header;
+const heroPreload = await getImage({ src: podcastHero, width: 1920, format: 'webp' });
 
 // ── Fetch from Sanity ─────────────────────────────────────────────────────────
 const allEpisodes = await getPodcastEpisodes();
@@ -41,6 +43,7 @@ const tones: Array<'dark' | 'light'> = ['dark', 'light', 'dark', 'light', 'dark'
 ---
 
 <Layout metadata={metadata}>
+  <link slot="head" rel="preload" as="image" href={heroPreload.src} fetchpriority="high" />
   <Fragment slot="header" />
 
   <Hero2

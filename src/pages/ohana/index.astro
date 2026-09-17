@@ -32,6 +32,7 @@ import Testimonials from '~/components/widgets/Testimonials.astro';
 import Button from '~/components/ui/Button.astro';
 import Text from '~/components/ui/Text.astro';
 import { navigationData } from '~/data/navigation';
+import { Image, getImage } from 'astro:assets';
 import { formatTestimonialAttribution, getTestimonials } from '~/lib/content';
 
 // ── Images (exported from Figma) ──
@@ -48,6 +49,8 @@ const metadata = {
   description:
     'The fourth pillar is not really one of four — it is the mechanism by which the other three happen at all. Find your ohana.',
 };
+
+const heroPreload = await getImage({ src: ohanaheroImg, width: 1440, format: 'webp' });
 
 const testimonials = await getTestimonials();
 const header = navigationData.header;
@@ -140,9 +143,8 @@ const ohanaActivities = [
 ---
 
 <Layout metadata={metadata}>
+  <link slot="head" rel="preload" as="image" href={heroPreload.src} fetchpriority="high" />
   <Fragment slot="header" />
-
-  {/* S1 — Hero: full-bleed photo, centered "The Ohana" title */}
   <Hero2
     id="ohana-hero"
     variant="title"
@@ -222,14 +224,14 @@ const ohanaActivities = [
         else. It is the least commercial third and therefore the least discussed.
       </Text>
     </Fragment>
-    <img
+    <Image
       slot="image"
-      src={ohanaLonelinessImg.src}
-      width={ohanaLonelinessImg.width}
-      height={ohanaLonelinessImg.height}
+      src={ohanaLonelinessImg}
       alt="Three people laughing and sitting together on grass in the sunshine"
       class="w-full object-cover"
       style="aspect-ratio: 1440 / 511; object-position: center 30%;"
+      widths={[640, 828, 1200, 1440]}
+      sizes="100vw"
       loading="lazy"
       decoding="async"
     />
@@ -309,14 +311,14 @@ const ohanaActivities = [
     subtitle="None of this is elaborate. It is the same handful of things, every week, for years — which is the only reason it works."
     activities={ohanaActivities}
   >
-    <img
+    <Image
       slot="image"
-      src={ohanaActivitiesImg.src}
-      width={ohanaActivitiesImg.width}
-      height={ohanaActivitiesImg.height}
+      src={ohanaActivitiesImg}
       alt="Group of people gardening together, planting in raised garden beds"
       class="w-full rounded-[16px] object-cover"
       style="aspect-ratio: 568 / 368;"
+      widths={[400, 568, 828, 1024]}
+      sizes="(max-width: 768px) 100vw, 568px"
       loading="lazy"
       decoding="async"
     />
@@ -327,13 +329,13 @@ const ohanaActivities = [
     id="purpose"
     noChapterCta={{ text: 'Start a Chapter', href: '/chapters' }}
   >
-    <img
+    <Image
       slot="bg"
-      src={ohanaPurposeImg.src}
-      width={ohanaPurposeImg.width}
-      height={ohanaPurposeImg.height}
+      src={ohanaPurposeImg}
       alt="Older men sitting together outdoors at a cafe, talking and enjoying each other's company"
       class="absolute inset-0 size-full object-cover"
+      widths={[640, 828, 1200, 1440]}
+      sizes="100vw"
       loading="lazy"
       decoding="async"
     />

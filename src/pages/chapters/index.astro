@@ -9,6 +9,7 @@ import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
+import { getImage } from 'astro:assets';
 import locationBgImg from '~/assets/images/location-bg.png';
 import chaptersHero from '~/assets/images/chapters-hero.png';
 import { chapterLocations } from '~/data/chapters';
@@ -17,6 +18,8 @@ const CHAPTERS_PAGE_HIDDEN = true;
 if (CHAPTERS_PAGE_HIDDEN) {
   return Astro.redirect('/');
 }
+
+const heroPreload = await getImage({ src: chaptersHero, width: 1440, format: 'webp' });
 
 const metadata = {
   title: `Chapters | ${site.name}`,
@@ -29,6 +32,7 @@ const header = navigationData.header;
 ---
 
 <Layout metadata={metadata}>
+  <link slot="head" rel="preload" as="image" href={heroPreload.src} fetchpriority="high" />
   <Fragment slot="header" />
 
   <Hero2

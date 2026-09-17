@@ -7,6 +7,7 @@ import TextSplit from '~/components/widgets/TextSplit.astro';
 import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
 import Image from '~/components/common/Image.astro';
+import { getImage } from 'astro:assets';
 import whyUrgent from '~/assets/images/full-szie-graph.png';
 import weStopImg from '~/assets/images/we-stop.png';
 import { site } from '~/config/site';
@@ -22,6 +23,8 @@ const metadata = {
 };
 
 const header = navigationData.header;
+
+const heroPreload = await getImage({ src: howAgingHero, width: 1440, format: 'webp' });
 
 const conceptCards = [
   {
@@ -52,6 +55,7 @@ const conceptCards = [
 ---
 
 <Layout metadata={metadata}>
+  <link slot="head" rel="preload" as="image" href={heroPreload.src} fetchpriority="high" />
   <Fragment slot="header" />
 
   <Hero2
@@ -92,9 +96,10 @@ const conceptCards = [
       slot="image"
       src={whyUrgent}
       alt="Function vs age chart: managed vs unmanaged decline"
-      class="w-full rounded-[32px] object-cover"
+      class="w-full rounded-[32px]"
       widths={[480, 900, 1695]}
       sizes="(max-width: 768px) 100vw, (max-width: 1280px) 60vw, 1695px"
+      quality={90}
     />
   </ConceptSplit>
 
@@ -114,14 +119,14 @@ const conceptCards = [
       hideNote
       class="mt-8 self-start"
     />
-    <img
+    <Image
       slot="image"
-      src={weStopImg.src}
-      width={weStopImg.width}
-      height={weStopImg.height}
+      src={weStopImg}
       alt="Hands typing on a laptop with a stethoscope on the desk"
       class="w-full rounded-[32px] object-cover"
       style="aspect-ratio: 568 / 378.667;"
+      widths={[400, 568, 852]}
+      sizes="(max-width: 768px) 100vw, 568px"
       loading="lazy"
       decoding="async"
     />

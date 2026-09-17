@@ -8,6 +8,7 @@ import CredentialsSection from '~/components/widgets/CredentialsSection.astro';
 import PublicationsSection from '~/components/widgets/PublicationsSection.astro';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
+import { getImage } from 'astro:assets';
 import robertImg from '~/assets/images/robert.png';
 import microscopeImg from '~/assets/images/microscope.png';
 
@@ -18,13 +19,14 @@ const metadata = {
   ignoreTitleTemplate: true,
 };
 
+const heroPreload = await getImage({ src: robertImg, width: 1080, format: 'webp' });
+
 const header = navigationData.header;
 ---
 
 <Layout metadata={metadata}>
+  <link slot="head" rel="preload" as="image" href={heroPreload.src} fetchpriority="high" />
   <Fragment slot="header" />
-
-  {/* ── Hero: dark split with portrait ── */}
   <Hero2
     variant="split-dark"
     overlapHeader={false}
