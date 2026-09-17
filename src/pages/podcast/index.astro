@@ -8,7 +8,7 @@ import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
 import { getImage } from 'astro:assets';
 import podcastHero from '~/assets/images/podcast-hero.png';
-import { getPodcastEpisodes, groupEpisodesByPart } from '~/lib/content';
+import { getPodcastEpisodes, getBooks, groupEpisodesByPart } from '~/lib/content';
 
 const metadata = {
   title: `Podcast | ${site.name}`,
@@ -21,8 +21,31 @@ const header = navigationData.header;
 const heroPreload = await getImage({ src: podcastHero, width: 1920, format: 'webp' });
 
 // ── Fetch from Sanity ─────────────────────────────────────────────────────────
-const allEpisodes = await getPodcastEpisodes();
+const [allEpisodes, allBooks] = await Promise.all([getPodcastEpisodes(), getBooks()]);
 const partGroups = groupEpisodesByPart(allEpisodes);
+
+// Build a set of guidebook slugs so we can auto-derive book deep-links for
+// episodes whose guidebookHref field hasn't been filled in Sanity yet.
+const guidebookSlugs = new Set(
+  allBooks.filter((b) => b.series === 'guidebook').map((b) => b.slug)
+);
+
+/** Return the /books deep-link for an episode.
+ *  Priority: Sanity value (normalised) → auto-derived from slug match → bare /books.
+ *
+ *  Normalisation: GuideBookGrid sets id="book-{slug}" on every card, but Sanity
+ *  editors sometimes store the anchor without the "book-" prefix
+ *  (e.g. /books#hair instead of /books#book-hair). We fix that here. */
+function guidebookLink(epSlug: string, sanityHref?: string): string {
+  if (sanityHref?.startsWith('/books#')) {
+    const anchor = sanityHref.slice('/books#'.length);
+    // Ensure the "book-" prefix that GuideBookGrid uses for element IDs
+    return anchor.startsWith('book-') ? sanityHref : `/books#book-${anchor}`;
+  }
+  if (sanityHref) return sanityHref; // non-/books# href — trust it as-is
+  if (guidebookSlugs.has(epSlug)) return `/books#book-${epSlug}`;
+  return '/books';
+}
 
 // ── Filter tabs (derived from parts) ─────────────────────────────────────────
 const partSlugMap: Record<number, string> = {
@@ -87,7 +110,7 @@ const tones: Array<'dark' | 'light'> = ['dark', 'light', 'dark', 'light', 'dark'
         tag: group.partName,
         description: ep.description,
         ctaText: 'Read the guidebook',
-        ctaHref: ep.guidebookHref ?? '/books',
+        ctaHref: guidebookLink(ep.slug, ep.guidebookHref),
         status: ep.status,
         spotifyUrl: ep.spotifyUrl,
         youtubeUrl: ep.youtubeUrl,

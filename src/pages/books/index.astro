@@ -8,7 +8,7 @@ import GuideBookGrid from '~/components/widgets/GuideBookGrid.astro';
 import MediaAppearances from '~/components/widgets/MediaAppearances.astro';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
-import { getBooks } from '~/lib/content';
+import { getBooks, getPodcastEpisodes } from '~/lib/content';
 
 const metadata = {
   title: `Books | ${site.name}`,
@@ -18,7 +18,42 @@ const metadata = {
 };
 
 const header = navigationData.header;
-const books = await getBooks();
+const [books, allEpisodes] = await Promise.all([getBooks(), getPodcastEpisodes()]);
+
+// Build a reverse map: book slug → episode slug.
+// Episodes store guidebookHref = "/books#<book-slug>" (e.g. "/books#hair").
+// We invert that so we can answer "which episode goes with book slug X?"
+// This is the canonical cross-reference because editors maintain it on the
+// episode side, and it's where the correct book slug lives.
+const episodeByBookSlug = new Map<string, string>();
+for (const ep of allEpisodes) {
+  if (ep.guidebookHref?.startsWith('/books#')) {
+    const anchor = ep.guidebookHref.slice('/books#'.length);
+    // anchor may or may not have the "book-" prefix — strip it for comparison
+    const bookSlug = anchor.startsWith('book-') ? anchor.slice('book-'.length) : anchor;
+    episodeByBookSlug.set(bookSlug, ep.slug);
+  }
+}
+
+// Direct episode slug set for the simple-match fallback
+const episodeSlugs = new Set(allEpisodes.map((ep) => ep.slug));
+
+/** Return the podcast deep-link for a book.
+ *  Priority:
+ *   1. Reverse-lookup via episode's guidebookHref (most reliable — editors set this)
+ *   2. Sanity's podcastHref on the book (kept for edge cases but often has wrong slug)
+ *   3. Direct slug match fallback */
+function podcastLink(book: (typeof books)[number]): string | undefined {
+  // 1. Reverse lookup: find the episode that claims this book
+  const epSlug = episodeByBookSlug.get(book.slug);
+  if (epSlug) return `/podcast#${epSlug}`;
+  // 2. Sanity's podcastHref (may have an incorrect episode slug set by editors)
+  if (book.podcastHref) return book.podcastHref;
+  // 3. Direct slug match (same slug on both sides)
+  if (episodeSlugs.has(book.slug)) return `/podcast#${book.slug}`;
+  return undefined;
+}
+
 const guidebookBooks = books.filter((book) => book.series === 'guidebook');
 const textbook = books.find((book) => book.series === 'textbook');
 const bargaining = books.find((book) => book.series === 'bargaining');
@@ -34,7 +69,7 @@ const toFeature = (book?: (typeof books)[number]) =>
         tags: book.badges,
         buyButtons: book.ctas,
         publisherNote: book.publisherNote,
-        podcastHref: book.podcastHref,
+        podcastHref: podcastLink(book),
       }
     : undefined;
 
@@ -50,7 +85,7 @@ const guideBooks = guidebookBooks.map((book) => ({
   tags: book.badges,
   buyButtons: book.ctas,
   publisherNote: book.publisherNote,
-  podcastHref: book.podcastHref,
+  podcastHref: podcastLink(book),
 }));
 
 // ── Media appearances ─────────────────────────────────────────────────────────
