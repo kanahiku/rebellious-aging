@@ -14,7 +14,7 @@
  * Each card item:
  *   label        — eyebrow category (e.g. "MOVEMENT")
  *   heading      — card title (~28px Fraunces, text-primary)
- *   description  — body text (12px Hanken Grotesk, text-muted)
+ *   description  — body text (14px Hanken Grotesk, text-muted)
  *   iconSvg      — full SVG markup string for the icon (set:html)
  *   iconBg       — when true, wraps icon in bg-cta rounded-bl-[12px] container
  *                  (use for small standalone icons; false for SVGs with built-in bg)
@@ -98,7 +98,7 @@ const { eyebrow, heading, bodyHtml, cards = [], id } = Astro.props;
           <Heading variant="h4" color="inherit" class="text-primary" as="p">
             {card.heading}
           </Heading>
-          <Text variant="small">{card.description}</Text>
+          <p class="font-sans text-[14px] leading-[1.45] text-muted">{card.description}</p>
         </Card>
       ))}
     </div>

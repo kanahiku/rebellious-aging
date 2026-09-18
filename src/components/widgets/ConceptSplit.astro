@@ -61,7 +61,7 @@ const { heading, cta, cards = [], id } = Astro.props;
               <Heading variant="h4" color="inherit" class="text-primary" as="p">
                 {card.title}
               </Heading>
-              <Text variant="small">{card.description}</Text>
+              <p class="font-sans text-[14px] leading-[1.45] text-muted">{card.description}</p>
             </Card>
           ))}
         </div>

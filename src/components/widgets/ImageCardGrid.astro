@@ -10,7 +10,7 @@
  *         overflow-hidden.
  *   Image: top of card, aspect from Figma (2070/1380 ≈ 3/2), full-width.
  *   Text block: p-[16px], gap-[16px] — eyebrow (#567f9b, 12px, uppercase, tracking)
- *               → h3 (#2c4a5b, 28px Fraunces) → body (#45555d, 12px).
+ *               → h3 (#2c4a5b, 28px Fraunces) → body (#45555d, 14px).
  *   Optional footer note: centered muted small text below the grid.
  */
 
@@ -71,7 +71,7 @@ const { cards = [], footerNote, id } = Astro.props;
             <h3 class="font-heading text-[28px] leading-[1.2] text-primary">
               {card.heading}
             </h3>
-            <p class="font-sans text-[12px] leading-[1.3] text-muted">{card.body}</p>
+            <p class="font-sans text-[14px] leading-[1.45] text-muted">{card.body}</p>
           </div>
         </div>
       ))}
