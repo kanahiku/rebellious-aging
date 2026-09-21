@@ -1607,19 +1607,30 @@ function buildMeasured() {
 function buildHandoff() {
   const h = document.getElementById('pane-handoff');
   h.innerHTML = '';
-  const out = el('div', 'quiz-card');
-  out.appendChild(el('h3', 'quiz-card-subheading', 'A summary for your clinician'));
-  out.appendChild(el('p', 'quiz-small', 'Download or print stays on this device. Emailing the PDF sends it to you. We do not keep a copy of the file or of your answers.'));
+
+  /* ── Card 1: Download / Print — always visible ── */
+  const dlCard = el('div', 'quiz-card');
+  dlCard.id = 'handoff-dl-card';
+  dlCard.appendChild(el('h3', 'quiz-card-subheading', 'A summary for your clinician'));
+  dlCard.appendChild(el('p', 'quiz-small', 'Stays on your device. Nothing is sent to a server.'));
   const printBtn = el('button', 'quiz-btn-primary', 'Download / Print this page');
   printBtn.type = 'button';
   printBtn.style.cssText = 'width:100%;margin-top:8px';
   printBtn.onclick = function() { renderPrintable(); window.print(); };
-  out.appendChild(printBtn);
+  dlCard.appendChild(printBtn);
+  h.appendChild(dlCard);
 
-  /* ── Email PDF field hidden per request ── */
+  /* ── Card 2: Email PDF — shows sent state on success ── */
+  const mailCard = el('div', 'quiz-card');
+  mailCard.id = 'handoff-mail-card';
+
+  const mailHeading = el('h3', 'quiz-card-subheading', 'Email this PDF to me');
+  mailCard.appendChild(mailHeading);
+  mailCard.appendChild(el('p', 'quiz-small', 'We send it to you and do not keep a copy.'));
+
   const mailField = el('div', 'quiz-field');
-  mailField.style.cssText = 'display:none;margin-top:18px';
-  const mailLabel = el('label', 'quiz-field-label', 'Email this PDF to me');
+  mailField.style.cssText = 'margin-top:14px';
+  const mailLabel = el('label', 'quiz-field-label', 'Your email');
   mailLabel.setAttribute('for', 'handoff-email');
   const mailInput = document.createElement('input');
   mailInput.type = 'email';
@@ -1630,28 +1641,27 @@ function buildHandoff() {
   mailInput.className = 'quiz-input';
   mailField.appendChild(mailLabel);
   mailField.appendChild(mailInput);
-  out.appendChild(mailField);
+  mailCard.appendChild(mailField);
 
   const tsSlot = el('div');
   tsSlot.id = 'handoff-turnstile';
-  tsSlot.style.cssText = 'display:none;margin:8px 0 12px';
-  out.appendChild(tsSlot);
+  tsSlot.style.cssText = 'margin:8px 0 12px';
+  mailCard.appendChild(tsSlot);
 
   const mailBtn = el('button', 'quiz-btn-ghost', 'Email me this PDF');
   mailBtn.type = 'button';
   mailBtn.id = 'btn-email-pdf';
-  mailBtn.style.cssText = 'display:none;width:100%';
+  mailBtn.style.cssText = 'width:100%';
   mailBtn.onclick = function() { emailSummaryPdf(); };
-  out.appendChild(mailBtn);
+  mailCard.appendChild(mailBtn);
 
   const mailMsg = el('p', 'quiz-small');
   mailMsg.id = 'handoff-mail-msg';
-  mailMsg.style.cssText = 'display:none;margin-top:8px;opacity:0.6';
-  out.appendChild(mailMsg);
+  mailMsg.style.cssText = 'display:none;margin-top:8px';
+  mailCard.appendChild(mailMsg);
 
-  h.appendChild(out);
-  /* renderHandoffTurnstile hidden with email field */
-  // renderHandoffTurnstile(tsSlot);
+  h.appendChild(mailCard);
+  renderHandoffTurnstile(tsSlot);
 
   const prev = el('div', 'quiz-card');
   prev.appendChild(el('h3', 'quiz-card-subheading', 'What it will contain'));
@@ -1974,30 +1984,30 @@ async function emailSummaryPdf() {
   const email = (emailInput && emailInput.value || '').trim();
 
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
-    if (msg) msg.textContent = 'That does not look like an email address.';
+    showMailMsg(msg, 'error', 'That does not look like an email address.');
     return;
   }
   if (!cfg.endpoint || !cfg.site) {
-    if (msg) msg.textContent = 'Email is not configured. Download or print instead.';
+    showMailMsg(msg, 'error', 'Email is not configured. Download or print instead.');
     return;
   }
 
   const turnstile = window.turnstile;
   const token = handoffTurnstileId && turnstile ? turnstile.getResponse(handoffTurnstileId) : '';
   if (!token) {
-    if (msg) msg.textContent = 'Complete the spam check first.';
+    showMailMsg(msg, 'error', 'Complete the spam check first.');
     return;
   }
 
   if (btn) btn.disabled = true;
-  if (msg) msg.textContent = 'Preparing PDF…';
+  showMailMsg(msg, 'loading', 'Preparing your PDF…');
 
   let downloaded = false;
   try {
     const blob = await makePdfBlob();
     downloadBlob(blob, PDF_FILENAME);
     downloaded = true;
-    if (msg) msg.textContent = 'Sending…';
+    showMailMsg(msg, 'loading', 'Sending…');
     const pdf = await blobToBase64(blob);
     const res = await fetch(cfg.endpoint, {
       method: 'POST',
@@ -2012,7 +2022,7 @@ async function emailSummaryPdf() {
     });
     const payload = await res.json().catch(function() { return null; });
     if (res.ok && payload && payload.ok) {
-      if (msg) msg.textContent = 'Sent. A copy also downloaded to this device. We did not keep the file.';
+      showEmailSentCard(email);
     } else {
       throw new Error((payload && payload.error) || 'send failed');
     }
@@ -2021,9 +2031,10 @@ async function emailSummaryPdf() {
     const detail = err && err.message ? String(err.message) : '';
     const known = /limit|spam|valid email|too large|Missing PDF/i.test(detail);
     if (msg) {
-      if (known) msg.textContent = detail;
-      else if (downloaded) msg.textContent = 'Could not email it. The PDF still downloaded. Attach that, or use Download / Print.';
-      else msg.textContent = 'Could not build the PDF. Use Download / Print instead.';
+      const text = known ? detail
+        : downloaded ? 'Could not email it. The PDF still downloaded — attach that, or use Download / Print.'
+        : 'Could not build the PDF. Use Download / Print instead.';
+      showMailMsg(msg, 'error', text);
     }
   } finally {
     if (btn) btn.disabled = false;
@@ -2031,6 +2042,44 @@ async function emailSummaryPdf() {
       try { window.turnstile.reset(handoffTurnstileId); } catch (e) {}
     }
   }
+}
+
+function showMailMsg(el, type, text) {
+  if (!el) return;
+  el.style.display = 'block';
+  el.style.opacity = '1';
+  el.style.marginTop = '8px';
+  if (type === 'error') {
+    el.style.color = '#b91c1c';
+  } else if (type === 'loading') {
+    el.style.color = 'rgba(27,42,50,0.55)';
+    el.style.fontStyle = 'italic';
+  } else {
+    el.style.color = 'inherit';
+  }
+  el.textContent = text;
+}
+
+function showEmailSentCard(email) {
+  /* Flip only the email card — download card stays untouched */
+  const mailCard = document.getElementById('handoff-mail-card');
+  if (!mailCard) return;
+  mailCard.innerHTML = '';
+  mailCard.style.cssText = 'background:#f0faf4;border-color:rgba(22,163,74,0.3);text-align:center;padding:28px 24px;';
+
+  /* Check icon */
+  const icon = document.createElement('div');
+  icon.innerHTML = '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#16a34a" opacity="0.12"/><circle cx="12" cy="12" r="11" stroke="#16a34a" stroke-width="1.5"/><path d="M7 12.5l3.5 3.5 6.5-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  icon.style.cssText = 'display:flex;justify-content:center;margin-bottom:14px;';
+  mailCard.appendChild(icon);
+
+  const heading = el('h3', 'quiz-card-subheading', 'PDF sent');
+  heading.style.cssText = 'color:#15803d;margin-bottom:6px;font-size:18px;';
+  mailCard.appendChild(heading);
+
+  const sub = el('p', 'quiz-small', 'Check your inbox at ' + email);
+  sub.style.cssText = 'opacity:1;color:#166534;margin-bottom:0;font-size:14px;';
+  mailCard.appendChild(sub);
 }
 
 /* ═════════════════════════════ NAVIGATION ═════════════════════════════ */

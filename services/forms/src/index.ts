@@ -21,6 +21,8 @@ interface SiteRow {
   from_email: string;
   from_name: string;
   allowed_origins: string;
+  /** NULL = use global RESEND_DAILY_LIMIT. 0 = no cap. Positive = per-site override. */
+  pdf_daily_limit: number | null;
 }
 
 interface Submission {
@@ -207,15 +209,21 @@ async function handleEmailSummary(request: Request, env: Env, origin: string, pa
       return withCors(origin, allowed, json({ ok: false, error: 'Spam check failed' }, 400));
     }
 
-    const dailyLimit = parseDailyLimit(env.RESEND_DAILY_LIMIT);
-    const sentToday = await outboundSentToday(env.DB, site.slug, PDF_KIND, utcDayStartIso());
+    const dailyLimit = site.pdf_daily_limit === 0
+      ? Infinity
+      : site.pdf_daily_limit != null
+        ? site.pdf_daily_limit
+        : parseDailyLimit(env.RESEND_DAILY_LIMIT);
 
-    if (sentToday >= dailyLimit) {
-      return withCors(
-        origin,
-        allowed,
-        json({ ok: false, error: 'Daily email limit reached. Download or print instead.' }, 429)
-      );
+    if (isFinite(dailyLimit)) {
+      const sentToday = await outboundSentToday(env.DB, site.slug, PDF_KIND, utcDayStartIso());
+      if (sentToday >= dailyLimit) {
+        return withCors(
+          origin,
+          allowed,
+          json({ ok: false, error: 'Daily email limit reached. Download or print instead.' }, 429)
+        );
+      }
     }
 
     const from = env.RESEND_FROM || site.from_email;

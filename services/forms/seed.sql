@@ -6,7 +6,7 @@ VALUES (
   'rebellious-aging',
   'Rebellious Aging',
   'hello@rebelliousaging.org',
-  'Rebellious Aging <onboarding@resend.dev>',
+  'Rebellious Aging <hello@rebelliousaging.org>',
   'Rebellious Aging',
   '["http://localhost:4321","https://*.vercel.app","https://rebelliousaging.org","https://www.rebelliousaging.org"]'
 );
