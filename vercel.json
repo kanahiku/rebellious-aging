@@ -28,11 +28,11 @@
       "missing": [
         {
           "type": "host",
-          "value": "example.com"
+          "value": "rebelliousaging.org"
         },
         {
           "type": "host",
-          "value": "www.example.com"
+          "value": "www.rebelliousaging.org"
         }
       ],
       "headers": [

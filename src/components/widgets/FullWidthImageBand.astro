@@ -20,6 +20,8 @@ const { image, alt, id, aspectRatio = '1440 / 511' } = Astro.props;
     style={`aspect-ratio: ${aspectRatio}; object-position: center center;`}
     widths={[640, 828, 1200, 1440, 1920]}
     sizes="100vw"
+    format="webp"
+    quality={82}
     loading="lazy"
     decoding="async"
   />

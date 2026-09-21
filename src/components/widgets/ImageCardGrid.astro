@@ -54,6 +54,8 @@ const { cards = [], footerNote, id } = Astro.props;
               style={`aspect-ratio: ${card.imageAspect ?? '2070 / 1380'};`}
               widths={[400, 540, 720]}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 380px"
+              format="webp"
+              quality={82}
               loading="lazy"
               decoding="async"
             />

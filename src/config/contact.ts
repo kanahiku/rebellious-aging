@@ -13,15 +13,15 @@ export const CONTACT = {
 
   phone: {
     /** Human-readable label — used in nav, footer, CTABanner, CTA buttons. */
-    display: '(555) 000-0000',
+    display: '',
     /** HTML tel: href — used in all anchor href attributes. */
-    href: 'tel:+15550000000',
+    href: '',
     /** E.164 format — used in schema.org telephone field. */
-    schema: '+1-555-000-0000',
+    schema: '',
   },
 
   /** Primary contact email shown in legal pages and schema.org. */
-  email: 'hello@example.com',
+  email: 'hello@rebelliousaging.org',
 
   address: {
     street: '',

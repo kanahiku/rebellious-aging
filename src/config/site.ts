@@ -12,7 +12,7 @@
  */
 export const site = {
   name: 'Rebellious Aging',
-  url: 'https://example.com',
+  url: 'https://rebelliousaging.org',
   description:
     'Member-led clubs across the Hawaiian Islands teaching the basics of longevity: how aging works, and what you can do about it.',
   footerTagline:

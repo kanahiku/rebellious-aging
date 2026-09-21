@@ -11,7 +11,7 @@ export const business: BusinessSchema = {
   idFragment: 'localbusiness',
   name: CONTACT.businessName,
   businessType: 'Organization',
-  telephone: CONTACT.phone.schema,
+  ...(CONTACT.phone.schema ? { telephone: CONTACT.phone.schema } : {}),
   email: CONTACT.email,
   priceRange: '$$',
   address: {

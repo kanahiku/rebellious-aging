@@ -31,6 +31,7 @@ const {
   imageMobile,
   variant = 'split',
   words = [],
+  height = 'default',
   isReversed = false,
   overlapHeader = true,
   withImage = false,
@@ -99,79 +100,82 @@ const isLocalPageImage =
         !(isPage && withImage && !isPageOverlay) && 'rounded-b-hero',
         isPage && !isPageOverlay && 'bg-gradient-to-t from-transparent to-section-grey',
         isWords && 'min-h-[520px] md:h-[579px] md:min-h-[579px]',
-        isTitle && 'min-h-[320px] md:h-[450px] md:min-h-[450px]',
+        isTitle &&
+          (height === 'page' ? 'min-h-[480px] md:min-h-[629px]' : 'min-h-[320px] md:h-[450px] md:min-h-[450px]'),
         isPage && 'min-h-[480px] md:min-h-[629px]',
         isOverlay && !isWords && !isTitle && 'min-h-[90vh]',
         isSplitDark && 'bg-section-dark min-h-[560px] md:min-h-[740px]',
       ]}
-      {...id ? { id } : {}}
+      {...(id ? { id } : {})}
     >
       {isOverlay && (
-      <div class="absolute inset-0 pointer-events-none z-0" aria-hidden="true">
-        <slot name="bg">
-          {bg ? <Fragment set:html={bg} /> : null}
-        </slot>
-        {isLocalOverlayImage ? (
-          <AstroImage
-            src={image as ImageMetadata}
-            alt={'alt' in (image as object) && typeof (image as any).alt === 'string' ? (image as any).alt : ''}
-            class="absolute inset-0 h-full w-full object-cover object-center"
-            widths={[640, 828, 1200, 1440, 1920, 2160]}
-            sizes="100vw"
-            loading="eager"
-            fetchpriority="high"
-            decoding="async"
-          />
-        ) : hasOverlayPhoto ? (
-          <ArtDirectedImage
-            desktop={overlayDesktop}
-            mobile={overlayMobile}
-            class="absolute inset-0 h-full w-full object-cover object-center"
-            widths={[768, 1200, 1600, 1920]}
-            mobileWidths={[400, 640, 828, 1080]}
-            sizes="100vw"
-            mobileSizes="100vw"
-            loading="eager"
-            fetchpriority="high"
-            width={1920}
-            layout="cover"
-            format="webp"
-          />
-        ) : isWords || isTitle ? (
-          /* TODO: replace with <Image> when asset is ready */
-          <div
-            class="absolute inset-0 bg-section-grey"
-            style={isTitle ? 'aspect-ratio: 1440 / 450;' : 'aspect-ratio: 1440 / 579;'}
-            aria-hidden="true"
-          />
-        ) : !bg ? (
-          <AstroImage
-            src={overlayImage}
-            alt=""
-            class="absolute inset-0 h-full w-full object-cover object-center"
-            widths={[640, 828, 1200, 1440, 1920]}
-            sizes="100vw"
-            loading="eager"
-            fetchpriority="high"
-            decoding="async"
-          />
-        ) : null}
-        {isTitle ? (
-          /* Figma 310:927 — simple 30% black scrim over the photo */
-          <div class="absolute inset-0 z-[1] bg-black/30" />
-        ) : isWords ? (
-          <div class="absolute inset-0 z-[1] bg-heading/10" />
-        ) : (
-          <>
-            {/* Mobile: full scrim so stacked text is always readable */}
-            <div class="absolute inset-0 z-[1] bg-black/50 md:hidden" />
-            {/* Desktop: Figma 309:528 — left-to-right: black/60 at left edge → fully transparent at 60% */}
-            <div class="absolute inset-0 z-[1] hidden md:block bg-[linear-gradient(to_right,rgba(0,0,0,0.60)_0%,transparent_60%)]" />
-            {/* Bottom cream fade — transitions into the next section */}
-            <div class="absolute inset-0 z-[1] bg-[linear-gradient(to_bottom,transparent_88%,rgba(245,244,239,0.35)_100%)]" />
-          </>
-        )}
-      </div>
+        <div class="absolute inset-0 pointer-events-none z-0" aria-hidden="true">
+          <slot name="bg">{bg ? <Fragment set:html={bg} /> : null}</slot>
+          {isLocalOverlayImage ? (
+            <AstroImage
+              src={image as ImageMetadata}
+              alt={'alt' in (image as object) && typeof (image as any).alt === 'string' ? (image as any).alt : ''}
+              class="absolute inset-0 h-full w-full object-cover object-center"
+              widths={[640, 828, 1200, 1440, 1920, 2160]}
+              sizes="100vw"
+              format="webp"
+              quality={85}
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+            />
+          ) : hasOverlayPhoto ? (
+            <ArtDirectedImage
+              desktop={overlayDesktop}
+              mobile={overlayMobile}
+              class="absolute inset-0 h-full w-full object-cover object-center"
+              widths={[768, 1200, 1600, 1920]}
+              mobileWidths={[400, 640, 828, 1080]}
+              sizes="100vw"
+              mobileSizes="100vw"
+              loading="eager"
+              fetchpriority="high"
+              width={1920}
+              layout="cover"
+              format="webp"
+            />
+          ) : isWords || isTitle ? (
+            /* TODO: replace with <Image> when asset is ready */
+            <div
+              class="absolute inset-0 bg-section-grey"
+              style={isTitle ? 'aspect-ratio: 1440 / 450;' : 'aspect-ratio: 1440 / 579;'}
+              aria-hidden="true"
+            />
+          ) : !bg ? (
+            <AstroImage
+              src={overlayImage}
+              alt=""
+              class="absolute inset-0 h-full w-full object-cover object-center"
+              widths={[640, 828, 1200, 1440, 1920]}
+              sizes="100vw"
+              format="webp"
+              quality={85}
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+            />
+          ) : null}
+          {isTitle ? (
+            /* Figma 310:927 — simple 30% black scrim over the photo */
+            <div class="absolute inset-0 z-[1] bg-black/30" />
+          ) : isWords ? (
+            <div class="absolute inset-0 z-[1] bg-heading/10" />
+          ) : (
+            <>
+              {/* Mobile: full scrim so stacked text is always readable */}
+              <div class="absolute inset-0 z-[1] bg-black/50 md:hidden" />
+              {/* Desktop: Figma 309:528 — left-to-right: black/60 at left edge → fully transparent at 60% */}
+              <div class="absolute inset-0 z-[1] hidden md:block bg-[linear-gradient(to_right,rgba(0,0,0,0.60)_0%,transparent_60%)]" />
+              {/* Bottom cream fade — transitions into the next section */}
+              <div class="absolute inset-0 z-[1] bg-[linear-gradient(to_bottom,transparent_88%,rgba(245,244,239,0.35)_100%)]" />
+            </>
+          )}
+        </div>
       )}
 
       {isPageOverlay && (
@@ -183,6 +187,8 @@ const isLocalPageImage =
               class="absolute inset-0 h-full w-full object-cover object-center"
               widths={[640, 828, 1200, 1440, 1920, 2160]}
               sizes="100vw"
+              format="webp"
+              quality={85}
               loading="eager"
               fetchpriority="high"
               decoding="async"
@@ -257,11 +263,7 @@ const isLocalPageImage =
                   : 'items-start py-16 md:py-[120px]',
             ]}
           >
-            <div
-              class:list={[
-                'flex w-full flex-1 flex-col items-start gap-8 md:gap-10',
-              ]}
-            >
+            <div class:list={['flex w-full flex-1 flex-col items-start gap-8 md:gap-10']}>
               {title && (
                 <h1
                   class:list={[
@@ -287,111 +289,94 @@ const isLocalPageImage =
             </div>
           </div>
         ) : isSplitDark ? (
-        <div class="flex flex-1 flex-col lg:flex-row lg:items-center lg:justify-between gap-0 lg:gap-[48px] pb-0">
-          {/* left: text column */}
-          <div class="flex flex-col items-start gap-6 lg:gap-[32px] shrink-0 lg:max-w-[628px] pb-8 pt-4 lg:py-0">
-            {tagline && (
-              <Heading variant="eyebrow" color="white" class="opacity-60" html={tagline} />
-            )}
-            {title && (
-              <h1
-                class="font-heading text-h1 font-normal leading-none text-white"
-                set:html={title}
-              />
-            )}
-            {content && (
-              <div
-                class="font-sans text-body leading-[1.3] text-white/60 max-w-[520px]"
-                set:html={content}
-              />
-            )}
-          </div>
-          {/* right: image column — visible on all screen sizes */}
-          <div class="w-full h-[280px] sm:h-[360px] lg:h-[620px] lg:flex-[0_1_42%] lg:min-w-0 lg:self-end">
-            {hasImage ? (
-              <div class="relative w-full h-full overflow-hidden rounded-tl-[32px] rounded-tr-[32px]">
-                {typeof image === 'string' ? (
-                  <Fragment set:html={image} />
-                ) : image && typeof image === 'object' && 'src' in image && 'width' in image ? (
-                  <AstroImage
-                    src={image as ImageMetadata}
-                    alt={(image as any).alt ?? ''}
-                    class="w-full h-full object-cover object-top"
-                    widths={[400, 640, 828, 1080]}
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    loading="eager"
-                    decoding="async"
-                  />
-                ) : null}
-                <div class="absolute inset-0 bg-gradient-to-b from-transparent from-[62%] to-section-dark" />
-              </div>
-            ) : (
-              /* TODO: replace with <Image> when asset is ready */
-              <div
-                class="w-full h-full min-h-[400px] rounded-tl-[32px] rounded-tr-[32px] bg-section-grey"
-                aria-hidden="true"
-              />
-            )}
-          </div>
-        </div>
-        ) : (
-        <div class="flex min-h-0 flex-1 flex-col items-start justify-center gap-12 pb-12 md:pb-16">
-          <div class="flex w-full flex-col items-start gap-8">
-            {tagline && (
-              <Heading
-                variant="h4"
-                as="p"
-                color="inherit"
-                style="font-size: clamp(1.375rem, 0.94vw + 1.155rem, 2rem); line-height: 1;"
-                class="text-page mix-blend-overlay"
-                html={tagline}
-              />
-            )}
-            {title && (
-              <h1
-                class="font-heading text-h1 font-normal leading-none text-page"
-                set:html={title}
-              />
-            )}
-          </div>
-
-          <div class="flex w-full max-w-[434px] flex-col items-start gap-8">
-            {actions &&
-              (Array.isArray(actions) ? (
-                <CTAActions actions={actions} noteTone="onDark" />
+          <div class="flex flex-1 flex-col lg:flex-row lg:items-center lg:justify-between gap-0 lg:gap-[48px] pb-0">
+            {/* left: text column */}
+            <div class="flex flex-col items-start gap-6 lg:gap-[32px] shrink-0 lg:max-w-[628px] pb-8 pt-4 lg:py-0">
+              {tagline && <Heading variant="eyebrow" color="white" class="opacity-60" html={tagline} />}
+              {title && <h1 class="font-heading text-h1 font-normal leading-none text-white" set:html={title} />}
+              {content && (
+                <div class="font-sans text-body leading-[1.3] text-white/60 max-w-[520px]" set:html={content} />
+              )}
+            </div>
+            {/* right: image column — visible on all screen sizes */}
+            <div class="w-full h-[280px] sm:h-[360px] lg:h-[620px] lg:flex-[0_1_42%] lg:min-w-0 lg:self-end">
+              {hasImage ? (
+                <div class="relative w-full h-full overflow-hidden rounded-tl-[32px] rounded-tr-[32px]">
+                  {typeof image === 'string' ? (
+                    <Fragment set:html={image} />
+                  ) : image && typeof image === 'object' && 'src' in image && 'width' in image ? (
+                    <AstroImage
+                      src={image as ImageMetadata}
+                      alt={(image as any).alt ?? ''}
+                      class="w-full h-full object-cover object-top"
+                      widths={[400, 640, 828, 1080]}
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                      format="webp"
+                      quality={85}
+                      loading="eager"
+                      decoding="async"
+                    />
+                  ) : null}
+                  <div class="absolute inset-0 bg-gradient-to-b from-transparent from-[62%] to-section-dark" />
+                </div>
               ) : (
-                <Fragment set:html={actions} />
-              ))}
-            {content && (
-              <Text variant="body-lg" color="white" class="!font-light leading-[1.3]" html={content} />
-            )}
-            {subtitle && (
-              <Text variant="body-lg" color="white" class="!font-light leading-[1.3]" html={subtitle} />
-            )}
+                /* TODO: replace with <Image> when asset is ready */
+                <div
+                  class="w-full h-full min-h-[400px] rounded-tl-[32px] rounded-tr-[32px] bg-section-grey"
+                  aria-hidden="true"
+                />
+              )}
+            </div>
           </div>
-        </div>
+        ) : (
+          <div class="flex min-h-0 flex-1 flex-col items-start justify-center gap-12 pb-12 md:pb-16">
+            <div class="flex w-full flex-col items-start gap-8">
+              {tagline && (
+                <Heading
+                  variant="h4"
+                  as="p"
+                  color="inherit"
+                  style="font-size: clamp(1.375rem, 0.94vw + 1.155rem, 2rem); line-height: 1;"
+                  class="text-page mix-blend-overlay"
+                  html={tagline}
+                />
+              )}
+              {title && <h1 class="font-heading text-h1 font-normal leading-none text-page" set:html={title} />}
+            </div>
+
+            <div class="flex w-full max-w-[434px] flex-col items-start gap-8">
+              {actions &&
+                (Array.isArray(actions) ? (
+                  <CTAActions actions={actions} noteTone="onDark" />
+                ) : (
+                  <Fragment set:html={actions} />
+                ))}
+              {content && <Text variant="body-lg" color="white" class="!font-light leading-[1.3]" html={content} />}
+              {subtitle && <Text variant="body-lg" color="white" class="!font-light leading-[1.3]" html={subtitle} />}
+            </div>
+          </div>
         )}
       </div>
 
-      {isPage && withImage && !isPageOverlay && (
-        isLocalPageImage ? (
+      {isPage &&
+        withImage &&
+        !isPageOverlay &&
+        (isLocalPageImage ? (
           <AstroImage
             src={image as ImageMetadata}
             alt={'alt' in (image as object) && typeof (image as any).alt === 'string' ? (image as any).alt : ''}
             class="relative z-[2] w-full h-[550px] object-cover object-center"
             widths={[640, 828, 1200, 1440, 1920]}
             sizes="100vw"
+            format="webp"
+            quality={85}
             loading="eager"
             fetchpriority="high"
             decoding="async"
           />
         ) : (
-          <div
-            class="relative z-[2] w-full h-[550px] bg-section-grey"
-            aria-hidden="true"
-          />
-        )
-      )}
+          <div class="relative z-[2] w-full h-[550px] bg-section-grey" aria-hidden="true" />
+        ))}
 
       {hasStats && (
         <div class="relative bg-[rgb(14_13_7_/_0.1)] backdrop-blur-[15px]">
@@ -402,14 +387,9 @@ const isLocalPageImage =
       )}
     </section>
   ) : (
-    <section
-      class:list={['relative not-prose', overlapHeader && 'md:-mt-[76px]']}
-      {...id ? { id } : {}}
-    >
+    <section class:list={['relative not-prose', overlapHeader && 'md:-mt-[76px]']} {...(id ? { id } : {})}>
       <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <slot name="bg">
-          {bg ? <Fragment set:html={bg} /> : null}
-        </slot>
+        <slot name="bg">{bg ? <Fragment set:html={bg} /> : null}</slot>
       </div>
       <div class:list={['relative max-w-container mx-auto', !isSplitImage && 'px-4 sm:px-6']}>
         {!isSplitImage && overlapHeader && <div class="pt-0 md:pt-[76px] pointer-events-none" />}

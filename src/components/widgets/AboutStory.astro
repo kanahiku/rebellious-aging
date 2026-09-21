@@ -38,6 +38,8 @@ const { id, image, imageAlt = '' } = Astro.props;
           class="absolute inset-0 h-full w-full rounded-bl-[32px] rounded-tl-[32px] object-cover"
           widths={[400, 545, 818]}
           sizes="(max-width: 640px) 100vw, 50vw"
+          format="webp"
+          quality={82}
           loading="lazy"
           decoding="async"
         />

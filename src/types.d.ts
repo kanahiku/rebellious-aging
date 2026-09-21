@@ -212,6 +212,8 @@ export interface Hero extends Omit<Headline, 'classes'>, Omit<Widget, 'isDark' |
   variant?: 'split' | 'overlay' | 'words' | 'page' | 'title' | 'split-dark';
   /** Three-word overlay hero (e.g. Peak. Slope. Floor.). Used when `variant="words"`. */
   words?: HeroWord[];
+  /** Optional height preset. `page` matches the standard image-led page hero height. */
+  height?: 'default' | 'page';
   /** Image on the left when `variant="split"`. Default is image right. */
   isReversed?: boolean;
   /** Pull hero under the sticky header. Disable when another block sits above the hero. */

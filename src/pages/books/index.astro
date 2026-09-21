@@ -94,7 +94,7 @@ const guideBooks = guidebookBooks.map((book) => ({
 
 <Layout metadata={metadata}>
   <link slot="head" rel="preload" as="image" href={booksHero.src} fetchpriority="high" />
-  <Fragment slot="header" />
+  <Fragment slot="header"></Fragment>
 
   <!-- Hero — image background, "Books by Dr. Robert Peterson MD" -->
   <Hero2
@@ -107,13 +107,7 @@ const guideBooks = guidebookBooks.map((book) => ({
     subtitle="Organized across three series: foundational textbooks, the Rebellious Aging Guidebooks, and Bargaining with Aging."
     image={booksHero}
   >
-    <Header
-      slot="nav"
-      embedded
-      isSticky={false}
-      links={header.links}
-      actions={header.actions}
-    />
+    <Header slot="nav" embedded isSticky={false} links={header.links} actions={header.actions} />
   </Hero2>
 
   <!-- Books with filter tabs + grid -->
@@ -145,7 +139,6 @@ const guideBooks = guidebookBooks.map((book) => ({
     description="Honest reckonings with the trade-offs, risks, and unknowns of growing older."
     book={bargainingBook}
   />
-
 </Layout>
 
 <script>
@@ -161,11 +154,11 @@ const guideBooks = guidebookBooks.map((book) => ({
   }
 
   // Hard load
-  window.addEventListener('load', () => requestAnimationFrame(() => requestAnimationFrame(scrollToHash)), { once: true });
+  window.addEventListener('load', () => requestAnimationFrame(() => requestAnimationFrame(scrollToHash)), {
+    once: true,
+  });
 
   // Astro view-transition: double-rAF ensures layout is fully calculated
   // after the DOM swap before we measure element positions.
-  document.addEventListener('astro:after-swap', () =>
-    requestAnimationFrame(() => requestAnimationFrame(scrollToHash))
-  );
+  document.addEventListener('astro:after-swap', () => requestAnimationFrame(() => requestAnimationFrame(scrollToHash)));
 </script>

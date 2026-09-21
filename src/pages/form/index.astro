@@ -1616,8 +1616,9 @@ function buildHandoff() {
   printBtn.onclick = function() { renderPrintable(); window.print(); };
   out.appendChild(printBtn);
 
+  /* ── Email PDF field hidden per request ── */
   const mailField = el('div', 'quiz-field');
-  mailField.style.marginTop = '18px';
+  mailField.style.cssText = 'display:none;margin-top:18px';
   const mailLabel = el('label', 'quiz-field-label', 'Email this PDF to me');
   mailLabel.setAttribute('for', 'handoff-email');
   const mailInput = document.createElement('input');
@@ -1633,23 +1634,24 @@ function buildHandoff() {
 
   const tsSlot = el('div');
   tsSlot.id = 'handoff-turnstile';
-  tsSlot.style.margin = '8px 0 12px';
+  tsSlot.style.cssText = 'display:none;margin:8px 0 12px';
   out.appendChild(tsSlot);
 
   const mailBtn = el('button', 'quiz-btn-ghost', 'Email me this PDF');
   mailBtn.type = 'button';
   mailBtn.id = 'btn-email-pdf';
-  mailBtn.style.cssText = 'width:100%';
+  mailBtn.style.cssText = 'display:none;width:100%';
   mailBtn.onclick = function() { emailSummaryPdf(); };
   out.appendChild(mailBtn);
 
   const mailMsg = el('p', 'quiz-small');
   mailMsg.id = 'handoff-mail-msg';
-  mailMsg.style.cssText = 'margin-top:8px;opacity:0.6';
+  mailMsg.style.cssText = 'display:none;margin-top:8px;opacity:0.6';
   out.appendChild(mailMsg);
 
   h.appendChild(out);
-  renderHandoffTurnstile(tsSlot);
+  /* renderHandoffTurnstile hidden with email field */
+  // renderHandoffTurnstile(tsSlot);
 
   const prev = el('div', 'quiz-card');
   prev.appendChild(el('h3', 'quiz-card-subheading', 'What it will contain'));

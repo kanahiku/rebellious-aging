@@ -45,7 +45,7 @@ export interface BusinessSchema {
   idFragment: string;
   name: string;
   businessType: string;
-  telephone: string;
+  telephone?: string;
   email: string;
   priceRange: string;
   address: PostalAddress;

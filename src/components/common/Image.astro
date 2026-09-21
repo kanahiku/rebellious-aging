@@ -43,7 +43,7 @@ interface Props extends Omit<HTMLAttributes<'img'>, 'src' | 'width' | 'height'> 
   layout?: Layout;
 }
 
-const { src, alt, width, height, widths, format, quality, layout = 'constrained', ...rest } = Astro.props;
+const { src, alt, width, height, widths, format = 'webp', quality = 82, layout = 'constrained', ...rest } = Astro.props;
 
 // --- Accessibility ---------------------------------------------------------
 if (alt === undefined || alt === null) {

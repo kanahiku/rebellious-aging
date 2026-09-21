@@ -6,7 +6,7 @@ import { getPublicContentPaths } from '~/lib/content';
 
 /**
  * Sanity webhook (Manage → API → Webhooks):
- * URL: https://YOUR_DOMAIN/api/revalidate
+ * URL: https://rebelliousaging.org/api/revalidate
  * Method: POST
  * Header: Authorization: Bearer <SANITY_REVALIDATE_SECRET>
  * Trigger: Create / Update / Delete
@@ -29,9 +29,7 @@ function bearerToken(request: Request) {
   const match = header.match(/^Bearer\s+(.+)$/i);
   if (match?.[1]) return match[1].trim();
   return (
-    request.headers.get('x-revalidate-secret')?.trim() ||
-    new URL(request.url).searchParams.get('secret')?.trim() ||
-    ''
+    request.headers.get('x-revalidate-secret')?.trim() || new URL(request.url).searchParams.get('secret')?.trim() || ''
   );
 }
 

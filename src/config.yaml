@@ -3,7 +3,7 @@
 
 site:
   name: Rebellious Aging
-  site: 'https://rebelliousaging.com'
+  site: 'https://rebelliousaging.org'
   base: '/'
   trailingSlash: false
   googleSiteVerificationId: ''
