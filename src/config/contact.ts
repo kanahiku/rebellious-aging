@@ -13,21 +13,21 @@ export const CONTACT = {
 
   phone: {
     /** Human-readable label — used in nav, footer, CTABanner, CTA buttons. */
-    display: '',
+    display: '(808) 944-8551',
     /** HTML tel: href — used in all anchor href attributes. */
-    href: '',
+    href: 'tel:+18089448551',
     /** E.164 format — used in schema.org telephone field. */
-    schema: '',
+    schema: '+18089448551',
   },
 
   /** Primary contact email shown in legal pages and schema.org. */
   email: 'hello@rebelliousaging.org',
 
   address: {
-    street: '',
-    city: 'Kailua',
+    street: '1319 Punahou St, Suite 1070',
+    city: 'Honolulu',
     state: 'HI',
-    zip: '',
+    zip: '96826',
     country: 'US',
     /** "City, ST ZIP" — used in footer and CTABanner one-liner. */
     get cityLine() {
