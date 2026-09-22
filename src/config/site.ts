@@ -24,11 +24,11 @@ export const site = {
 
   analytics: {
     /** Google Tag Manager container. Empty until the client GTM is created. */
-    googleTagManagerId: '',
+    googleTagManagerId: 'GTM-N4CGNX9G',
     /** Optional. Leave empty when tags are installed through GTM. */
     googleAnalyticsId: '',
     /** Search Console HTML-tag verification (`content=` value only). */
-    googleSiteVerificationId: '',
+    googleSiteVerificationId: 'cuxaYtV6gaONHoLqJjHW4OJuHxg6k_qJk6JWi0i3AH0',
   },
 } as const;
 
