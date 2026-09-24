@@ -20,7 +20,8 @@
     "fix": "npm run fix:eslint && npm run fix:prettier",
     "fix:eslint": "eslint --fix .",
     "fix:prettier": "prettier -w .",
-    "studio": "cd studio && npm run dev"
+    "studio": "cd studio && npm run dev",
+    "forms:dev": "npm run dev --prefix services/forms"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",

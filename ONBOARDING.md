@@ -160,8 +160,8 @@ Always-on routes (restyle, do not delete): `/reviews`, `/blog`, `/privacy-policy
 | System | Where |
 |---|---|
 | Sanity | `studio/`, `src/lib/content/`, catch-all pages, `/api/revalidate` |
-| Forms → Resend | `/form` checkup PDF → Cloudflare Worker (`services/forms/`) → Resend. `/contact` redirects to `https://www.athenaclinic.com/contact/` |
-| Turnstile | `PUBLIC_TURNSTILE_SITE_KEY` on the form; Worker secret `TURNSTILE_SECRET` |
+| Forms → Resend | `/form` checkup PDF → shared Worker `https://massic-forms.kanahiku.workers.dev` → Resend. `/contact` redirects to `https://www.athenaclinic.com/contact/` |
+| Turnstile | `PUBLIC_TURNSTILE_SITE_KEY` on the form; shared-Worker secret `TURNSTILE_SECRET_REBELLIOUS_AGING` |
 | GTM | `site.analytics.googleTagManagerId` → `Layout.astro` |
 | Search Console | `site.analytics.googleSiteVerificationId` |
 | JSON-LD | `src/config/schema/` + `JsonLd.astro` |
@@ -212,7 +212,7 @@ Copy `.env.example` → `.env`. Set the same keys on Vercel (Production + Previe
 | `YELP_BUSINESS_ID` | Optional | |
 | `YELP_REVIEWS_URL` | Optional | |
 
-**Never put `RESEND_API_KEY` or `TURNSTILE_SECRET` on Vercel.** Those belong on the Worker.
+**Never put `RESEND_API_KEY` or any Turnstile secret on Vercel.** Those belong on the shared Worker.
 
 `studio/.env`: `SANITY_STUDIO_PROJECT_ID`, `SANITY_STUDIO_DATASET`, `SANITY_STUDIO_HOSTNAME`.
 
@@ -244,39 +244,15 @@ Webhook (instant publish, no rebuild):
 
 Leads go to the agency Cloudflare Worker + D1, then Resend. They do not go in Sanity.
 
-From `services/forms/`:
+The production Worker is **`massic-forms`**, already deployed at `https://massic-forms.kanahiku.workers.dev`. It is **not** maintained in this repository. Do **not** run `wrangler deploy`, `wrangler secret put`, or remote D1 from `services/forms/` — that can overwrite the live API for other sites.
 
-```bash
-npx wrangler login
-npx wrangler d1 execute massic-forms --remote --file=./schema.sql   # first time only
-```
+`services/forms/` is a **local `wrangler dev` stub** only (`name = massic-forms-rebellious-aging-dev`). Copy `.dev.vars.example` → `.dev.vars` and use Cloudflare’s dummy secret as `TURNSTILE_SECRET_REBELLIOUS_AGING`.
 
-Insert one D1 row per client (`slug` = `PUBLIC_SITE_SLUG`):
-
-```sql
-INSERT OR REPLACE INTO sites (slug, name, notify_email, from_email, from_name, allowed_origins)
-VALUES (
-  'client-slug',
-  'Client Legal Name',
-  'hello@client.com',
-  'Client Name <onboarding@resend.dev>',
-  'Client Legal Name',
-  '["http://localhost:4321","https://*.vercel.app","https://clientdomain.com","https://www.clientdomain.com"]'
-);
-```
-
-Worker secrets (once per Worker, not per Vercel project):
-
-```bash
-npx wrangler secret put TURNSTILE_SECRET
-npx wrangler secret put RESEND_API_KEY
-npx wrangler secret put NOTIFY_EMAIL
-npx wrangler deploy
-```
+Site / D1 / Turnstile secret changes for production belong on the shared Worker, not here. This site’s slug is `rebellious-aging`. Render Turnstile with `action` set to that slug.
 
 Until the client domain is verified in Resend, send **from** `onboarding@resend.dev` **to** the Resend account inbox.
 
-Local: `PUBLIC_FORM_ENDPOINT=http://localhost:8787/submit` and `npm run dev` inside `services/forms/`.
+Local: `PUBLIC_FORM_ENDPOINT=http://localhost:8787/submit` and `npm run forms:dev`. Point local/preview at the live Worker only when you intend to write production D1 and send real mail.
 
 ---
 

@@ -1,6 +1,7 @@
 export interface Env {
   DB: D1Database;
-  TURNSTILE_SECRET: string;
+  /** Per-site secret on the shared Worker. Dummy value is fine for `wrangler dev` only. */
+  TURNSTILE_SECRET_REBELLIOUS_AGING: string;
   RESEND_API_KEY: string;
   /** Optional. If set, every site's contact notify is forced here (Resend sandbox testing only). */
   NOTIFY_EMAIL?: string;
@@ -129,7 +130,12 @@ async function handleSubmit(request: Request, env: Env, origin: string, patterns
       return json({ ok: false, error: 'Origin not allowed' }, 403);
     }
 
-    const turnstileOk = await verifyTurnstile(parsed.turnstileToken, env.TURNSTILE_SECRET, request);
+    const turnstileOk = await verifyTurnstile(
+      parsed.turnstileToken,
+      env.TURNSTILE_SECRET_REBELLIOUS_AGING,
+      request,
+      site.slug
+    );
     if (!turnstileOk) {
       return withCors(origin, allowed, json({ ok: false, error: 'Spam check failed' }, 400));
     }
@@ -204,7 +210,12 @@ async function handleEmailSummary(request: Request, env: Env, origin: string, pa
       return json({ ok: false, error: 'Origin not allowed' }, 403);
     }
 
-    const turnstileOk = await verifyTurnstile(parsed.turnstileToken, env.TURNSTILE_SECRET, request);
+    const turnstileOk = await verifyTurnstile(
+      parsed.turnstileToken,
+      env.TURNSTILE_SECRET_REBELLIOUS_AGING,
+      request,
+      site.slug
+    );
     if (!turnstileOk) {
       return withCors(origin, allowed, json({ ok: false, error: 'Spam check failed' }, 400));
     }
@@ -396,7 +407,12 @@ function parseOrigins(raw: string): string[] {
   }
 }
 
-async function verifyTurnstile(token: string, secret: string, request: Request): Promise<boolean> {
+async function verifyTurnstile(
+  token: string,
+  secret: string,
+  request: Request,
+  expectedAction: string
+): Promise<boolean> {
   if (!secret) return false;
   const ip = request.headers.get('CF-Connecting-IP') || '';
   const body = new URLSearchParams({ secret, response: token });
@@ -407,8 +423,11 @@ async function verifyTurnstile(token: string, secret: string, request: Request):
     body,
   });
   if (!res.ok) return false;
-  const data = (await res.json()) as { success?: boolean };
-  return data.success === true;
+  const data = (await res.json()) as { success?: boolean; action?: string };
+  if (!data.success) return false;
+  // Dummy Turnstile keys may omit `action`. The live Worker requires it to match the site slug.
+  if (typeof data.action === 'string' && data.action !== expectedAction) return false;
+  return true;
 }
 
 function parseDailyLimit(raw?: string): number {

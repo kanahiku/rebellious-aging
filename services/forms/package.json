@@ -4,11 +4,11 @@
   "type": "module",
   "scripts": {
     "dev": "wrangler dev --port 8787",
-    "deploy": "wrangler deploy",
+    "deploy": "echo 'Refusing: do not deploy this local copy. Production massic-forms is maintained elsewhere.' && exit 1",
     "db:migrate:local": "wrangler d1 execute massic-forms --local --file=./schema.sql",
     "db:seed:local": "wrangler d1 execute massic-forms --local --file=./seed.sql",
-    "db:migrate": "wrangler d1 execute massic-forms --remote --file=./schema.sql",
-    "db:seed": "wrangler d1 execute massic-forms --remote --file=./seed.sql"
+    "db:migrate": "echo 'Refusing: do not run remote D1 from this repo. Use db:migrate:local.' && exit 1",
+    "db:seed": "echo 'Refusing: do not seed production D1 from this repo. Use db:seed:local.' && exit 1"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20260828.1",
