@@ -13,7 +13,6 @@ const metadata = {
 <Layout metadata={metadata}>
   <!-- Full-screen immersive quiz — no site nav -->
   <div id="quiz-root">
-
     <!-- ═══════════════════════════════════ PROGRESS HEADER ═══════════════════════════════════ -->
     <!-- Sits outside <main> so it's always above compositing layers from backdrop-filter cards -->
     <header class="quiz-header hidden" id="quiz-header">
@@ -29,14 +28,11 @@ const metadata = {
         </div>
       </div>
       <!-- Sponsor card — visible on every step, anchored to the top -->
-      <div class="quiz-sponsor-card">
-        Paid for by Athena Clinic
-      </div>
+      <div class="quiz-sponsor-card">Paid for by Athena Clinic</div>
     </header>
 
     <!-- ═══════════════════════════════════ SCREENS ══════════════════════════════════ -->
     <main class="quiz-main" id="quiz-main">
-
       <!-- HOME SCREEN -->
       <section class="quiz-screen on quiz-home-screen" id="sc-home">
         <div class="quiz-home-card">
@@ -45,23 +41,46 @@ const metadata = {
           <!-- Heading -->
           <h1 class="quiz-home-heading">Nobody ages all at once.</h1>
           <!-- Body -->
-          <p class="quiz-home-body">You have thirty-two biological ages and they disagree. This asks about the things you can already notice, and the things you have quietly stopped mentioning.</p>
+          <p class="quiz-home-body">
+            You have thirty-two biological ages and they disagree. This asks about the things you can already notice,
+            and the things you have quietly stopped mentioning.
+          </p>
 
           <!-- Start CTA -->
           <button class="quiz-btn-start" id="btn-start" disabled>
             Start the Checkup
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+              ><path
+                d="M5 12h14M12 5l7 7-7 7"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path></svg
+            >
           </button>
           <button class="quiz-btn-resume hidden" id="btn-resume">Continue where I left off</button>
 
           <!-- Feature pills -->
           <div class="quiz-home-features">
             <span class="quiz-home-feature">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+                ><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"></circle><path
+                  d="M12 6v6l4 2"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"></path></svg
+              >
               15 mins
             </span>
             <span class="quiz-home-feature">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+                ><path
+                  d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"></path></svg
+              >
               Print ready results for clinicians
             </span>
           </div>
@@ -90,17 +109,20 @@ const metadata = {
 
           <!-- Acknowledgement checkbox -->
           <label class="quiz-ack-row">
-            <input type="checkbox" id="ack" class="quiz-checkbox">
-            <span>I have read the list above, none of it applies to me right now, and I understand this is a check-up and not a diagnosis.</span>
+            <input type="checkbox" id="ack" class="quiz-checkbox" />
+            <span
+              >I have read the list above, none of it applies to me right now, and I understand this is a check-up and
+              not a diagnosis.</span
+            >
           </label>
 
           <!-- Disclaimer -->
-          <p class="quiz-home-disclaimer">No account. No server. No analytics. You can delete everything with one button at the end.</p>
+          <p class="quiz-home-disclaimer">
+            No account. No server. No analytics. You can delete everything with one button at the end.
+          </p>
 
           <!-- Sponsor banner — same as the one in the progress header -->
-          <div class="quiz-home-sponsor">
-            Paid for by Athena Clinic
-          </div>
+          <div class="quiz-home-sponsor">Paid for by Athena Clinic</div>
         </div>
       </section>
 
@@ -115,7 +137,10 @@ const metadata = {
       <!-- RADIUS SECTION -->
       <section class="quiz-screen" id="sc-radius">
         <div class="quiz-section-intro">
-          <p class="quiz-small" style="opacity:0.75">Everyone adjusts how they do things over time. Tell us where you are now. There are no wrong answers here. <strong>Answer from memory. Please do not try any of these out to find out, and never on your own.</strong></p>
+          <p class="quiz-small" style="opacity:0.75">
+            Everyone adjusts how they do things over time. Tell us where you are now. There are no wrong answers here. <strong
+              >Answer from memory. Please do not try any of these out to find out, and never on your own.</strong>
+          </p>
         </div>
         <div id="radlist"></div>
       </section>
@@ -140,27 +165,46 @@ const metadata = {
 
         <p style="padding-bottom:80px"></p>
       </section>
-
     </main>
 
     <!-- ═══════════════════════════════════ BOTTOM NAV ════════════════════════════════ -->
     <nav class="quiz-nav hidden" id="nav" aria-label="Quiz navigation">
       <div class="quiz-nav-inner">
         <button class="quiz-nav-back hidden" id="btn-back" type="button">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+            ><path
+              d="M19 12H5M12 5l-7 7 7 7"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path></svg
+          >
           Back
         </button>
         <a class="quiz-nav-continue hidden" id="btn-home" href="/">
           Home
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1v-9.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+            ><path
+              d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1v-9.5z"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path></svg
+          >
         </a>
         <button class="quiz-nav-continue" id="btn-next" type="button">
           Next
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+            ><path
+              d="M5 12h14M12 5l7 7-7 7"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path></svg
+          >
         </button>
       </div>
     </nav>
-
   </div>
 
   <!-- Print-only summary — outside quiz-root so it is not hidden by it -->
@@ -171,13 +215,14 @@ const metadata = {
     data-endpoint={EMAIL_SUMMARY_ENDPOINT}
     data-site={SITE_SLUG}
     data-turnstile-sitekey={TURNSTILE_SITE_KEY}
-  ></div>
+  >
+  </div>
 </Layout>
 
 <style is:global>
   /* Override Layout body styles for the immersive quiz */
   body:has(#quiz-root) {
-    background: #F5F3EE;
+    background: #f5f3ee;
     overflow: hidden;
     padding: 0;
     margin: 0;
@@ -191,8 +236,8 @@ const metadata = {
     inset: 0;
     overflow: hidden;
     font-family: var(--aw-font-sans, 'Hanken Grotesk', sans-serif);
-    color: #1B2A32;
-    background: #F5F3EE;
+    color: #1b2a32;
+    background: #f5f3ee;
   }
 
   /* Solid background — no photo */
@@ -207,11 +252,13 @@ const metadata = {
     left: 0;
     right: 0;
     z-index: 200;
-    background: #F5F3EE;
-    border-bottom: 1px solid rgba(27,42,50,0.1);
+    background: #f5f3ee;
+    border-bottom: 1px solid rgba(27, 42, 50, 0.1);
     padding: 14px 20px 12px;
   }
-  .quiz-header.hidden { display: none; }
+  .quiz-header.hidden {
+    display: none;
+  }
   .quiz-header-inner {
     max-width: 680px;
     margin: 0 auto;
@@ -233,7 +280,7 @@ const metadata = {
     font-weight: 400;
     letter-spacing: 0.06em; /* 0.72px / 12px */
     text-transform: uppercase;
-    color: rgba(27,42,50,0.45);
+    color: rgba(27, 42, 50, 0.45);
     line-height: 1;
   }
   /* Center: "Movement and structure" — 14px, medium, white, tracking 0.84px */
@@ -243,7 +290,7 @@ const metadata = {
     font-weight: 500;
     letter-spacing: 0.06em; /* 0.84px / 14px */
     text-transform: uppercase;
-    color: #1B2A32;
+    color: #1b2a32;
     text-align: center;
     white-space: nowrap;
     line-height: 1;
@@ -255,7 +302,7 @@ const metadata = {
     font-weight: 400;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: rgba(27,42,50,0.45);
+    color: rgba(27, 42, 50, 0.45);
     text-align: right;
     line-height: 1;
   }
@@ -266,7 +313,7 @@ const metadata = {
     align-items: flex-start;
     width: 100%;
     height: 4px;
-    background: rgba(27,42,50,0.12);
+    background: rgba(27, 42, 50, 0.12);
     border-radius: 300px;
     overflow: clip;
   }
@@ -280,7 +327,7 @@ const metadata = {
     flex: 1;
     min-width: 1px;
     height: 4px;
-    background: rgba(27,42,50,0.12);
+    background: rgba(27, 42, 50, 0.12);
   }
 
   /* ══════════════════════════════════════════
@@ -301,7 +348,9 @@ const metadata = {
     margin: 0 auto;
     padding: 16px 20px 32px;
   }
-  .quiz-screen.on { display: block; }
+  .quiz-screen.on {
+    display: block;
+  }
 
   /* ══════════════════════════════════════════
      HOME SCREEN
@@ -321,8 +370,8 @@ const metadata = {
   .quiz-home-card {
     width: 100%;
     max-width: 620px;
-    background: #FFFFFF;
-    border: 1px solid rgba(27,42,50,0.12);
+    background: #ffffff;
+    border: 1px solid rgba(27, 42, 50, 0.12);
     border-radius: 32px;
     padding: 40px 36px 32px;
     display: flex;
@@ -334,7 +383,7 @@ const metadata = {
     font-weight: 400;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: rgba(27,42,50,0.5);
+    color: rgba(27, 42, 50, 0.5);
     margin: 0 0 16px;
     text-align: center;
   }
@@ -343,14 +392,14 @@ const metadata = {
     font-size: clamp(36px, 7vw, 62px);
     font-weight: 300;
     line-height: 1.1;
-    color: #1B2A32;
+    color: #1b2a32;
     margin: 0 0 16px;
     text-align: center;
   }
   .quiz-home-body {
     font-size: 16px;
     line-height: 1.6;
-    color: rgba(27,42,50,0.8);
+    color: rgba(27, 42, 50, 0.8);
     text-align: center;
     margin: 0 0 28px;
   }
@@ -371,11 +420,18 @@ const metadata = {
     font-size: 16px;
     font-weight: 500;
     cursor: pointer;
-    transition: background 0.15s, opacity 0.15s;
+    transition:
+      background 0.15s,
+      opacity 0.15s;
     margin-bottom: 10px;
   }
-  .quiz-btn-start:hover:not(:disabled) { background: #3a5f73; }
-  .quiz-btn-start:disabled { opacity: 0.4; cursor: default; }
+  .quiz-btn-start:hover:not(:disabled) {
+    background: #3a5f73;
+  }
+  .quiz-btn-start:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
 
   /* Resume button */
   .quiz-btn-resume {
@@ -384,10 +440,10 @@ const metadata = {
     justify-content: center;
     width: 100%;
     min-height: 48px;
-    border: 1px solid rgba(27,42,50,0.3);
+    border: 1px solid rgba(27, 42, 50, 0.3);
     border-radius: 12px;
     background: transparent;
-    color: #1B2A32;
+    color: #1b2a32;
     font-family: inherit;
     font-size: 15px;
     font-weight: 400;
@@ -395,7 +451,9 @@ const metadata = {
     transition: background 0.15s;
     margin-bottom: 20px;
   }
-  .quiz-btn-resume:hover { background: rgba(27,42,50,0.06); }
+  .quiz-btn-resume:hover {
+    background: rgba(27, 42, 50, 0.06);
+  }
 
   /* Feature pills row */
   .quiz-home-features {
@@ -411,17 +469,20 @@ const metadata = {
     align-items: center;
     gap: 6px;
     font-size: 13px;
-    color: rgba(27,42,50,0.6);
+    color: rgba(27, 42, 50, 0.6);
   }
-  .quiz-home-feature svg { flex-shrink: 0; opacity: 0.7; }
+  .quiz-home-feature svg {
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
 
   /* Stop disclosure */
   .quiz-stop-details {
-    border: 1px solid rgba(163,35,27,0.3);
+    border: 1px solid rgba(163, 35, 27, 0.3);
     border-radius: 12px;
     padding: 14px 16px;
     margin-bottom: 20px;
-    background: rgba(163,35,27,0.07);
+    background: rgba(163, 35, 27, 0.07);
   }
   .quiz-stop-summary {
     font-size: 13px;
@@ -431,14 +492,18 @@ const metadata = {
     list-style: none;
     user-select: none;
   }
-  .quiz-stop-summary::-webkit-details-marker { display: none; }
+  .quiz-stop-summary::-webkit-details-marker {
+    display: none;
+  }
   .quiz-stop-body {
     margin-top: 12px;
     font-size: 12px;
     line-height: 1.55;
-    color: rgba(27,42,50,0.8);
+    color: rgba(27, 42, 50, 0.8);
   }
-  .quiz-stop-body p { margin-bottom: 8px; }
+  .quiz-stop-body p {
+    margin-bottom: 8px;
+  }
   .quiz-stop-body ul {
     list-style: none;
     padding: 0;
@@ -466,7 +531,7 @@ const metadata = {
     gap: 12px;
     font-size: 13px;
     line-height: 1.5;
-    color: rgba(27,42,50,0.85);
+    color: rgba(27, 42, 50, 0.85);
     cursor: pointer;
     margin-bottom: 20px;
   }
@@ -484,7 +549,7 @@ const metadata = {
   .quiz-home-disclaimer {
     font-size: 12px;
     line-height: 1.5;
-    color: rgba(27,42,50,0.4);
+    color: rgba(27, 42, 50, 0.4);
     text-align: center;
     margin: 0 0 20px;
   }
@@ -495,7 +560,7 @@ const metadata = {
     align-items: center;
     justify-content: center;
     gap: 6px;
-    background: rgba(86,127,155,0.12);
+    background: rgba(86, 127, 155, 0.12);
     border: 1px solid #567f9b;
     border-radius: 8px;
     padding: 8px 14px;
@@ -523,8 +588,8 @@ const metadata = {
      QUESTION CARDS
   ══════════════════════════════════════════ */
   .quiz-system-card {
-    background: #FFFFFF;
-    border: 1px solid rgba(27,42,50,0.12);
+    background: #ffffff;
+    border: 1px solid rgba(27, 42, 50, 0.12);
     border-radius: 24px;
     padding: 20px 16px 20px;
     margin-bottom: 12px;
@@ -536,9 +601,9 @@ const metadata = {
     font-weight: 400;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: rgba(27,42,50,0.5);
+    color: rgba(27, 42, 50, 0.5);
     padding-bottom: 8px;
-    border-bottom: 1px solid rgba(27,42,50,0.15);
+    border-bottom: 1px solid rgba(27, 42, 50, 0.15);
     margin-bottom: 24px;
     opacity: 1; /* already low-opacity via color */
   }
@@ -546,7 +611,7 @@ const metadata = {
   /* Individual question block */
   .quiz-question {
     padding-bottom: 24px;
-    border-bottom: 1px solid rgba(27,42,50,0.1);
+    border-bottom: 1px solid rgba(27, 42, 50, 0.1);
     margin-bottom: 24px;
     display: flex;
     flex-direction: column;
@@ -562,7 +627,7 @@ const metadata = {
   .quiz-q-stem {
     font-size: 16px;
     line-height: 1.4;
-    color: #1B2A32;
+    color: #1b2a32;
     font-weight: 400;
     margin-bottom: 12px;
   }
@@ -577,25 +642,28 @@ const metadata = {
     flex: 1;
     min-width: 0;
     min-height: 64px;
-    border: 1.5px solid rgba(27,42,50,0.2);
-    background: rgba(27,42,50,0.04);
+    border: 1.5px solid rgba(27, 42, 50, 0.2);
+    background: rgba(27, 42, 50, 0.04);
     border-radius: 10px;
     font-family: var(--aw-font-sans, 'Hanken Grotesk', sans-serif);
     font-size: 13px;
     font-weight: 500;
-    color: rgba(27,42,50,0.9);
+    color: rgba(27, 42, 50, 0.9);
     cursor: pointer;
     padding: 10px 8px;
     text-align: center;
-    transition: background 0.12s, border-color 0.12s, color 0.12s;
+    transition:
+      background 0.12s,
+      border-color 0.12s,
+      color 0.12s;
     line-height: 1.3;
   }
   .quiz-opts-btn:hover {
-    background: rgba(27,42,50,0.08);
-    border-color: rgba(27,42,50,0.4);
+    background: rgba(27, 42, 50, 0.08);
+    border-color: rgba(27, 42, 50, 0.4);
   }
   .quiz-opts-btn.selected,
-  .quiz-opts-btn[aria-pressed="true"] {
+  .quiz-opts-btn[aria-pressed='true'] {
     background: #567f9b;
     border-color: #567f9b;
     color: #fff;
@@ -632,16 +700,16 @@ const metadata = {
     padding: 10px 14px;
     /* Same solid border as the other options — no dashes */
     border-style: solid;
-    border-color: rgba(27,42,50,0.2);
-    color: rgba(27,42,50,0.6);
-    background: rgba(27,42,50,0.03);
+    border-color: rgba(27, 42, 50, 0.2);
+    color: rgba(27, 42, 50, 0.6);
+    background: rgba(27, 42, 50, 0.03);
   }
   .quiz-opts-na .quiz-opts-btn:hover {
-    background: rgba(27,42,50,0.08);
-    border-color: rgba(27,42,50,0.4);
-    color: rgba(27,42,50,0.9);
+    background: rgba(27, 42, 50, 0.08);
+    border-color: rgba(27, 42, 50, 0.4);
+    color: rgba(27, 42, 50, 0.9);
   }
-  .quiz-opts-na .quiz-opts-btn[aria-pressed="true"],
+  .quiz-opts-na .quiz-opts-btn[aria-pressed='true'],
   .quiz-opts-na .quiz-opts-btn.selected {
     background: #567f9b;
     border-color: #567f9b;
@@ -653,8 +721,8 @@ const metadata = {
      SHARED CARD
   ══════════════════════════════════════════ */
   .quiz-card {
-    background: #FFFFFF;
-    border: 1px solid rgba(27,42,50,0.12);
+    background: #ffffff;
+    border: 1px solid rgba(27, 42, 50, 0.12);
     border-radius: 24px;
     padding: 24px;
     margin-bottom: 12px;
@@ -662,7 +730,7 @@ const metadata = {
   .quiz-card-subheading {
     font-size: 15px;
     font-weight: 500;
-    color: #1B2A32;
+    color: #1b2a32;
     margin: 0 0 8px;
   }
 
@@ -684,21 +752,28 @@ const metadata = {
     font-size: 15px;
     font-weight: 500;
     cursor: pointer;
-    transition: background 0.15s, opacity 0.15s;
+    transition:
+      background 0.15s,
+      opacity 0.15s;
     margin-bottom: 8px;
   }
-  .quiz-btn-primary:hover:not(:disabled) { background: #3a5f73; }
-  .quiz-btn-primary:disabled { opacity: 0.4; cursor: default; }
+  .quiz-btn-primary:hover:not(:disabled) {
+    background: #3a5f73;
+  }
+  .quiz-btn-primary:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
   .quiz-btn-ghost {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
     min-height: 44px;
-    border: 1px solid rgba(27,42,50,0.3);
+    border: 1px solid rgba(27, 42, 50, 0.3);
     border-radius: 12px;
     background: transparent;
-    color: #1B2A32;
+    color: #1b2a32;
     font-family: inherit;
     font-size: 14px;
     font-weight: 400;
@@ -706,16 +781,27 @@ const metadata = {
     transition: background 0.15s;
     margin-bottom: 8px;
   }
-  .quiz-btn-ghost:hover { background: rgba(27,42,50,0.06); }
-  .quiz-btn-ghost:disabled { opacity: 0.4; cursor: default; }
-  .hidden { display: none !important; }
+  .quiz-btn-ghost:hover {
+    background: rgba(27, 42, 50, 0.06);
+  }
+  .quiz-btn-ghost:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+  .hidden {
+    display: none !important;
+  }
 
   /* ══════════════════════════════════════════
      RESULTS TABS
   ══════════════════════════════════════════ */
   /* result steps indicator removed — navigation is via Back / Next buttons only */
-  .quiz-pane { display: none; }
-  .quiz-pane.on { display: block; }
+  .quiz-pane {
+    display: none;
+  }
+  .quiz-pane.on {
+    display: block;
+  }
 
   /* ══════════════════════════════════════════
      RESULTS ROWS / PILLS
@@ -726,18 +812,33 @@ const metadata = {
     align-items: baseline;
     gap: 12px;
     padding: 10px 0;
-    border-bottom: 1px solid rgba(27,42,50,0.1);
+    border-bottom: 1px solid rgba(27, 42, 50, 0.1);
   }
-  .quiz-result-row:last-child { border-bottom: none; }
-  .quiz-result-name { font-size: 13px; color: #1B2A32; }
-  .quiz-result-tag { font-size: 12px; font-weight: 600; white-space: nowrap; }
-  .quiz-tag-0 { color: rgba(245,244,239,0.35); }
-  .quiz-tag-1 { color: #d4a24a; }
-  .quiz-tag-2 { color: #7ba3bd; }
+  .quiz-result-row:last-child {
+    border-bottom: none;
+  }
+  .quiz-result-name {
+    font-size: 13px;
+    color: #1b2a32;
+  }
+  .quiz-result-tag {
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .quiz-tag-0 {
+    color: rgba(245, 244, 239, 0.35);
+  }
+  .quiz-tag-1 {
+    color: #d4a24a;
+  }
+  .quiz-tag-2 {
+    color: #7ba3bd;
+  }
   .quiz-pill {
     display: inline-block;
-    background: rgba(86,127,155,0.2);
-    border: 1px solid rgba(86,127,155,0.4);
+    background: rgba(86, 127, 155, 0.2);
+    border: 1px solid rgba(86, 127, 155, 0.4);
     color: #7ba3bd;
     border-radius: 20px;
     padding: 4px 12px;
@@ -769,11 +870,13 @@ const metadata = {
   /* ══════════════════════════════════════════
      INPUTS
   ══════════════════════════════════════════ */
-  .quiz-field { margin-bottom: 14px; }
+  .quiz-field {
+    margin-bottom: 14px;
+  }
   .quiz-field-label {
     display: block;
     font-size: 11px;
-    color: rgba(27,42,50,0.6);
+    color: rgba(27, 42, 50, 0.6);
     margin-bottom: 6px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -781,19 +884,23 @@ const metadata = {
   .quiz-input {
     width: 100%;
     min-height: 44px;
-    background: rgba(27,42,50,0.06);
-    border: 1px solid rgba(27,42,50,0.2);
+    background: rgba(27, 42, 50, 0.06);
+    border: 1px solid rgba(27, 42, 50, 0.2);
     border-radius: 300px;
     padding: 0 16px;
     font-family: inherit;
     font-size: 15px;
-    color: #1B2A32;
+    color: #1b2a32;
     outline: none;
     transition: border-color 0.15s;
     box-sizing: border-box;
   }
-  .quiz-input::placeholder { color: rgba(27,42,50,0.35); }
-  .quiz-input:focus { border-color: #567f9b; }
+  .quiz-input::placeholder {
+    color: rgba(27, 42, 50, 0.35);
+  }
+  .quiz-input:focus {
+    border-color: #567f9b;
+  }
 
   /* ══════════════════════════════════════════
      MEASURED INPUTS
@@ -804,28 +911,46 @@ const metadata = {
     gap: 12px;
     align-items: center;
     padding: 12px 0;
-    border-top: 1px solid rgba(27,42,50,0.08);
+    border-top: 1px solid rgba(27, 42, 50, 0.08);
   }
-  .quiz-measure-row:first-of-type { border-top: none; }
-  .quiz-measure-label { font-size: 13px; color: #1B2A32; }
-  .quiz-measure-how { font-size: 11px; color: rgba(27,42,50,0.5); line-height: 1.4; margin-top: 2px; }
-  .quiz-measure-ref { font-size: 10px; color: rgba(27,42,50,0.4); margin-top: 2px; }
+  .quiz-measure-row:first-of-type {
+    border-top: none;
+  }
+  .quiz-measure-label {
+    font-size: 13px;
+    color: #1b2a32;
+  }
+  .quiz-measure-how {
+    font-size: 11px;
+    color: rgba(27, 42, 50, 0.5);
+    line-height: 1.4;
+    margin-top: 2px;
+  }
+  .quiz-measure-ref {
+    font-size: 10px;
+    color: rgba(27, 42, 50, 0.4);
+    margin-top: 2px;
+  }
   .quiz-measure-input {
     width: 100%;
     min-height: 38px;
-    background: rgba(27,42,50,0.06);
-    border: 1px solid rgba(27,42,50,0.2);
+    background: rgba(27, 42, 50, 0.06);
+    border: 1px solid rgba(27, 42, 50, 0.2);
     border-radius: 8px;
     padding: 0 10px;
     font-family: inherit;
     font-size: 14px;
-    color: #1B2A32;
+    color: #1b2a32;
     text-align: center;
     outline: none;
     box-sizing: border-box;
   }
-  .quiz-measure-input::placeholder { color: rgba(27,42,50,0.35); }
-  .quiz-measure-input:focus { border-color: #567f9b; }
+  .quiz-measure-input::placeholder {
+    color: rgba(27, 42, 50, 0.35);
+  }
+  .quiz-measure-input:focus {
+    border-color: #567f9b;
+  }
 
   /* ══════════════════════════════════════════
      BOOK APPOINTMENT BAR — Figma 160:609
@@ -836,8 +961,8 @@ const metadata = {
     gap: 24px;
     padding: 24px 32px;
     margin-bottom: 12px;
-    background: #FFFFFF;
-    border: 1px solid rgba(27,42,50,0.12);
+    background: #ffffff;
+    border: 1px solid rgba(27, 42, 50, 0.12);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-radius: 32px;
@@ -854,14 +979,14 @@ const metadata = {
     font-size: 16px;
     font-weight: 400;
     line-height: 1.3;
-    color: #1B2A32;
+    color: #1b2a32;
   }
   .quiz-book-cta-sub {
     margin: 0;
     font-size: 12px;
     font-weight: 400;
     line-height: 1.3;
-    color: rgba(27,42,50,0.7);
+    color: rgba(27, 42, 50, 0.7);
   }
   .quiz-book-cta-btn {
     display: inline-flex;
@@ -884,8 +1009,9 @@ const metadata = {
     box-sizing: border-box;
     transition: background 0.15s;
   }
-  .quiz-book-cta-btn:hover { background: #3a5f73; }
-
+  .quiz-book-cta-btn:hover {
+    background: #3a5f73;
+  }
 
   /* ══════════════════════════════════════════
      SMALL TEXT
@@ -893,17 +1019,17 @@ const metadata = {
   .quiz-small {
     font-size: 12px;
     line-height: 1.55;
-    color: rgba(27,42,50,0.65);
+    color: rgba(27, 42, 50, 0.65);
     margin-bottom: 8px;
   }
   .quiz-note {
-    background: rgba(86,127,155,0.1);
-    border: 1px solid rgba(86,127,155,0.3);
+    background: rgba(86, 127, 155, 0.1);
+    border: 1px solid rgba(86, 127, 155, 0.3);
     border-radius: 10px;
     padding: 12px 14px;
     font-size: 13px;
     line-height: 1.5;
-    color: #1B2A32;
+    color: #1b2a32;
     margin-bottom: 12px;
   }
 
@@ -918,8 +1044,8 @@ const metadata = {
     z-index: 15;
     padding: 14px 20px;
     padding-bottom: max(14px, env(safe-area-inset-bottom));
-    background: #F5F3EE;
-    border-top: 1px solid rgba(27,42,50,0.1);
+    background: #f5f3ee;
+    border-top: 1px solid rgba(27, 42, 50, 0.1);
   }
   .quiz-nav-inner {
     display: flex;
@@ -936,19 +1062,24 @@ const metadata = {
     gap: 10px;
     width: 140px;
     min-height: 52px;
-    border: 1px solid rgba(27,42,50,0.3);
+    border: 1px solid rgba(27, 42, 50, 0.3);
     border-radius: 12px;
     background: transparent;
     backdrop-filter: blur(10px);
-    color: #1B2A32;
+    color: #1b2a32;
     font-family: inherit;
     font-size: 15px;
     font-weight: 500;
     cursor: pointer;
     transition: background 0.15s;
   }
-  .quiz-nav-back:hover { background: rgba(27,42,50,0.06); }
-  .quiz-nav-back:disabled { opacity: 0.4; cursor: default; }
+  .quiz-nav-back:hover {
+    background: rgba(27, 42, 50, 0.06);
+  }
+  .quiz-nav-back:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
   .quiz-nav-continue {
     display: inline-flex;
     align-items: center;
@@ -968,8 +1099,13 @@ const metadata = {
     cursor: pointer;
     transition: background 0.15s;
   }
-  .quiz-nav-continue:hover { background: #3a5f73; }
-  a.quiz-nav-continue { text-decoration: none; box-sizing: border-box; }
+  .quiz-nav-continue:hover {
+    background: #3a5f73;
+  }
+  a.quiz-nav-continue {
+    text-decoration: none;
+    box-sizing: border-box;
+  }
 
   /* ══════════════════════════════════════════
      SPONSOR CARD — top of every step (inside header)
@@ -981,7 +1117,7 @@ const metadata = {
     gap: 6px;
     margin: 10px auto 0;
     max-width: 680px;
-    background: rgba(86,127,155,0.12);
+    background: rgba(86, 127, 155, 0.12);
     border: 1px solid #567f9b;
     border-radius: 8px;
     padding: 6px 14px;
@@ -1004,7 +1140,9 @@ const metadata = {
   /* ── Mobile: fix progress bar + option buttons ── */
   @media (max-width: 639px) {
     /* Progress row: hide the center section name so left/right labels have room */
-    .quiz-prog-center { display: none; }
+    .quiz-prog-center {
+      display: none;
+    }
 
     /* Shrink the left/right progress labels slightly */
     .quiz-prog-left,
@@ -1048,17 +1186,30 @@ const metadata = {
   }
 
   @media (min-width: 640px) {
-    .quiz-main { padding-top: 0; }
-    .quiz-screen { padding: 20px 32px 40px; }
-    .quiz-header { padding: 16px 40px 14px; }
-    .quiz-home-card { padding: 48px 48px 40px; }
-    .quiz-system-card { padding: 28px 28px 24px; border-radius: 28px; }
+    .quiz-main {
+      padding-top: 0;
+    }
+    .quiz-screen {
+      padding: 20px 32px 40px;
+    }
+    .quiz-header {
+      padding: 16px 40px 14px;
+    }
+    .quiz-home-card {
+      padding: 48px 48px 40px;
+    }
+    .quiz-system-card {
+      padding: 28px 28px 24px;
+      border-radius: 28px;
+    }
   }
 
   /* ══════════════════════════════════════════
      PRINT + PDF CAPTURE
   ══════════════════════════════════════════ */
-  #printable { display: none; }
+  #printable {
+    display: none;
+  }
   #printable.pdf-capture {
     display: block !important;
     position: fixed;
@@ -1074,14 +1225,17 @@ const metadata = {
 
   @page {
     size: A4;
-    margin: 18mm 16mm;   /* breathing room on every page, including page 2+ */
+    margin: 18mm 16mm; /* breathing room on every page, including page 2+ */
   }
 
   @media print {
     /* ── hide the whole quiz app, show only printable ── */
-    #quiz-root { display: none !important; }
+    #quiz-root {
+      display: none !important;
+    }
 
-    html, body {
+    html,
+    body {
       background: #fff !important;
       margin: 0 !important;
       padding: 0 !important;
@@ -1099,1200 +1253,1899 @@ const metadata = {
       background: #fff;
     }
 
-    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
   }
 
   /* Shared printable document — used by window.print() and html2pdf capture */
   .rp-wrap {
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 9pt;
-      font-weight: 400;
-      color: #1a1a1a;
-      max-width: 100%;
-      margin: 0;
-      padding: 0;
-    }
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 9pt;
+    font-weight: 400;
+    color: #1a1a1a;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+  }
 
-    /* ── header band ── */
-    .rp-header {
-      background: #1B2A32;
-      color: #fff;
-      padding: 14pt 20pt 12pt;
-      margin-bottom: 0;
-      page-break-inside: avoid;
-    }
-    .rp-header-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 5pt;
-    }
-    /* Brand name is the only exception — larger for visual hierarchy */
-    .rp-brand {
-      font-size: 16pt;
-      font-weight: 400;
-      letter-spacing: 0.01em;
-      color: #fff;
-    }
-    .rp-header-label {
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: rgba(255,255,255,0.6);
-      opacity: 0.7;
-    }
-    .rp-header-meta {
-      color: rgba(255,255,255,0.55);
-      margin-top: 3pt;
-      opacity: 0.7;
-    }
+  /* ── header band ── */
+  .rp-header {
+    background: #1b2a32;
+    color: #fff;
+    padding: 14pt 20pt 12pt;
+    margin-bottom: 0;
+    page-break-inside: avoid;
+  }
+  .rp-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 5pt;
+  }
+  /* Brand name is the only exception — larger for visual hierarchy */
+  .rp-brand {
+    font-size: 16pt;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    color: #fff;
+  }
+  .rp-header-label {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.6);
+    opacity: 0.7;
+  }
+  .rp-header-meta {
+    color: rgba(255, 255, 255, 0.55);
+    margin-top: 3pt;
+    opacity: 0.7;
+  }
 
-    /* ── disclaimer note ── */
-    .rp-note {
-      margin: 0;
-      padding: 8pt 20pt;
-      background: #f4f7f9;
-      border-left: 4pt solid #567F9B;
-      color: #4a4a4a;
-      line-height: 1.5;
-    }
+  /* ── disclaimer note ── */
+  .rp-note {
+    margin: 0;
+    padding: 8pt 20pt;
+    background: #f4f7f9;
+    border-left: 4pt solid #567f9b;
+    color: #4a4a4a;
+    line-height: 1.5;
+  }
 
-    /* ── sections ── */
-    .rp-section {
-      margin: 16pt 20pt 0;
-      break-inside: avoid;
-      page-break-inside: avoid;
-    }
-    /* avoid orphaned titles at the bottom of a page */
-    .rp-section-title {
-      break-after: avoid;
-      page-break-after: avoid;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: #567F9B;
-      border-bottom: 0.75pt solid #567F9B;
-      padding-bottom: 3pt;
-      margin: 0 0 8pt 0;
-    }
-    /* measurements table can span pages naturally */
-    .rp-section.rp-section-meas {
-      break-inside: auto;
-      page-break-inside: auto;
-    }
-    .rp-table tr {
-      break-inside: avoid;
-      page-break-inside: avoid;
-    }
+  /* ── sections ── */
+  .rp-section {
+    margin: 16pt 20pt 0;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  /* avoid orphaned titles at the bottom of a page */
+  .rp-section-title {
+    break-after: avoid;
+    page-break-after: avoid;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #567f9b;
+    border-bottom: 0.75pt solid #567f9b;
+    padding-bottom: 3pt;
+    margin: 0 0 8pt 0;
+  }
+  /* measurements table can span pages naturally */
+  .rp-section.rp-section-meas {
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+  .rp-table tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
 
-    /* ── priority pills ── */
-    .rp-pills { display: flex; flex-wrap: wrap; gap: 4pt; }
-    .rp-pill {
-      color: #1B2A32;
-      background: #edf3f7;
-      border: 0.5pt solid #567F9B;
-      border-radius: 4pt;
-      padding: 2.5pt 7pt;
-    }
+  /* ── priority pills ── */
+  .rp-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4pt;
+  }
+  .rp-pill {
+    color: #1b2a32;
+    background: #edf3f7;
+    border: 0.5pt solid #567f9b;
+    border-radius: 4pt;
+    padding: 2.5pt 7pt;
+  }
 
-    /* ── changed / stopped activity rows ── */
-    .rp-flag-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 4pt 0;
-      border-bottom: 0.5pt solid #ebebeb;
-    }
-    .rp-flag-label { color: #222; }
-    .rp-flag-tag {
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      padding: 2pt 6pt;
-      border-radius: 3pt;
-    }
-    .rp-tag-stopped { background: #fde8e8; color: #b91c1c; }
-    .rp-tag-changed { background: #fef3e2; color: #92400e; }
+  /* ── changed / stopped activity rows ── */
+  .rp-flag-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4pt 0;
+    border-bottom: 0.5pt solid #ebebeb;
+  }
+  .rp-flag-label {
+    color: #222;
+  }
+  .rp-flag-tag {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2pt 6pt;
+    border-radius: 3pt;
+  }
+  .rp-tag-stopped {
+    background: #fde8e8;
+    color: #b91c1c;
+  }
+  .rp-tag-changed {
+    background: #fef3e2;
+    color: #92400e;
+  }
 
-    /* ── score bar rows (flagged section) ── */
-    .rp-score-row {
-      display: grid;
-      grid-template-columns: 80pt 120pt 1fr 28pt;
-      align-items: center;
-      column-gap: 8pt;
-      padding: 3.5pt 0;
-      border-bottom: 0.5pt solid #f0f0f0;
-    }
-    .rp-score-label  { color: #1B2A32; }
-    .rp-score-domain { color: #777; }
-    .rp-score-bar-wrap {
-      height: 5pt;
-      background: #e8edf0;
-      border-radius: 2.5pt;
-      overflow: hidden;
-    }
-    .rp-score-bar {
-      height: 100%;
-      background: #567F9B;
-      border-radius: 2.5pt;
-    }
-    .rp-bar-mid  { background: #D97706; }
-    .rp-bar-high { background: #B91C1C; }
-    .rp-score-val { color: #1B2A32; text-align: right; }
+  /* ── score bar rows (flagged section) ── */
+  .rp-score-row {
+    display: grid;
+    grid-template-columns: 80pt 120pt 1fr 28pt;
+    align-items: center;
+    column-gap: 8pt;
+    padding: 3.5pt 0;
+    border-bottom: 0.5pt solid #f0f0f0;
+  }
+  .rp-score-label {
+    color: #1b2a32;
+  }
+  .rp-score-domain {
+    color: #777;
+  }
+  .rp-score-bar-wrap {
+    height: 5pt;
+    background: #e8edf0;
+    border-radius: 2.5pt;
+    overflow: hidden;
+  }
+  .rp-score-bar {
+    height: 100%;
+    background: #567f9b;
+    border-radius: 2.5pt;
+  }
+  .rp-bar-mid {
+    background: #d97706;
+  }
+  .rp-bar-high {
+    background: #b91c1c;
+  }
+  .rp-score-val {
+    color: #1b2a32;
+    text-align: right;
+  }
 
-    /* ── mini rows (all-systems overview) ── */
-    .rp-domain-label {
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #567F9B;
-      margin-top: 7pt;
-      margin-bottom: 2pt;
-    }
-    .rp-mini-row {
-      display: grid;
-      grid-template-columns: 85pt 1fr 24pt;
-      align-items: center;
-      column-gap: 6pt;
-      padding: 2pt 0;
-      border-bottom: 0.25pt solid #f0f0f0;
-    }
-    .rp-mini-label { color: #333; }
-    .rp-mini-bar-wrap {
-      display: block;
-      height: 5pt;
-      background: #e8edf0;
-      border-radius: 2.5pt;
-      overflow: hidden;
-    }
-    .rp-mini-bar {
-      display: block;
-      height: 100%;
-      background: #567F9B;
-      border-radius: 2.5pt;
-    }
-    .rp-mini-val { color: #555; text-align: right; }
-    .rp-mini-na  { color: #bbb; grid-column: 2 / 4; }
+  /* ── mini rows (all-systems overview) ── */
+  .rp-domain-label {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #567f9b;
+    margin-top: 7pt;
+    margin-bottom: 2pt;
+  }
+  .rp-mini-row {
+    display: grid;
+    grid-template-columns: 85pt 1fr 24pt;
+    align-items: center;
+    column-gap: 6pt;
+    padding: 2pt 0;
+    border-bottom: 0.25pt solid #f0f0f0;
+  }
+  .rp-mini-label {
+    color: #333;
+  }
+  .rp-mini-bar-wrap {
+    display: block;
+    height: 5pt;
+    background: #e8edf0;
+    border-radius: 2.5pt;
+    overflow: hidden;
+  }
+  .rp-mini-bar {
+    display: block;
+    height: 100%;
+    background: #567f9b;
+    border-radius: 2.5pt;
+  }
+  .rp-mini-val {
+    color: #555;
+    text-align: right;
+  }
+  .rp-mini-na {
+    color: #bbb;
+    grid-column: 2 / 4;
+  }
 
-    /* ── measurements table ── */
-    .rp-meas-note {
-      color: #555;
-      font-style: italic;
-      margin-bottom: 8pt;
-    }
-    .rp-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    .rp-table th {
-      background: #1B2A32;
-      color: #fff;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      padding: 5pt 8pt;
-      text-align: left;
-    }
-    .rp-table td {
-      padding: 5pt 8pt;
-      border-bottom: 0.5pt solid #e0e0e0;
-      vertical-align: top;
-    }
-    .rp-table tr:nth-child(even) td { background: #f7f9fb; }
-  .rp-meas-name   { color: #1B2A32; }
-  .rp-meas-ref    { color: #666; }
-  .rp-meas-result { color: #1B2A32; }
+  /* ── measurements table ── */
+  .rp-meas-note {
+    color: #555;
+    font-style: italic;
+    margin-bottom: 8pt;
+  }
+  .rp-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .rp-table th {
+    background: #1b2a32;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 5pt 8pt;
+    text-align: left;
+  }
+  .rp-table td {
+    padding: 5pt 8pt;
+    border-bottom: 0.5pt solid #e0e0e0;
+    vertical-align: top;
+  }
+  .rp-table tr:nth-child(even) td {
+    background: #f7f9fb;
+  }
+  .rp-meas-name {
+    color: #1b2a32;
+  }
+  .rp-meas-ref {
+    color: #666;
+  }
+  .rp-meas-result {
+    color: #1b2a32;
+  }
 </style>
 
-
-
 <script>
-'use strict';
+  'use strict';
 
-/* ═════════════════════════════ DATA ═════════════════════════════ */
-const DATA = {"domains":["Movement and structure","Heart, lungs and vessels","Senses and communication","Brain, mood and sleep","Metabolic and internal","Continence, digestion and skin"],"systems":[{"id":"muscle","label":"Muscle","domain":0,"q":["Have you noticed your arms or legs looking thinner or less firm than they used to?","Do you find it harder to open jars, bottles or packaging?","Have you become slower at everyday tasks like carrying or lifting?"],"scale":["change","harder","change"]},{"id":"grip","label":"Grip and arms","domain":0,"q":["Do you drop things more often than you used to?","Is it harder to turn a key, a tap or a doorknob?","Do you have pain or weakness reaching overhead?"],"scale":["freq","harder","freq"]},{"id":"bone","label":"Bone","domain":0,"q":["Have you lost height, or do your clothes seem longer than they used to?","Have you broken a bone from a minor fall or knock since you turned 50?","Do you have persistent aching in your upper back?"],"scale":["yn3","event","freq"]},{"id":"joints","label":"Joints","domain":0,"q":["Are your joints stiff for more than half an hour after getting up?","Do you avoid certain movements because of joint pain?","Has joint pain changed which shoes, chairs or beds you can use?"],"scale":["freq","freq","yn3"]},{"id":"balance","label":"Balance","domain":0,"q":["Do you feel unsteady when you turn around quickly?","Do you reach for furniture or walls when moving about at home?","Have you had a fall, or nearly fallen, in the last year?"],"scale":["freq","freq","event"]},{"id":"gait","label":"Walking","domain":0,"q":["Do people you walk with have to slow down for you?","Do you take longer to cross a road than the signal allows?","Do you scuff or catch your feet on carpets or kerbs?"],"scale":["freq","freq","freq"]},{"id":"cardiac","label":"Heart","domain":1,"q":["Do you get breathless or chest tightness with effort you used to manage?","Have you noticed your heart racing, fluttering or skipping?","Do you need more pillows at night than you used to?"],"scale":["freq","freq","pillows"]},{"id":"bp","label":"Blood pressure","domain":1,"q":["Do you get lightheaded when you stand up quickly?","What have you been told about your blood pressure?","Do you wake with headaches at the back of your head?"],"scale":["freq","bpknow","freq"]},{"id":"lungs","label":"Lungs","domain":1,"q":["Do you cough most mornings, or bring up phlegm?","Do you wheeze, or feel tight in the chest in cold air?","Do you avoid stairs or hills because of your breathing?"],"scale":["freq","freq","freq"]},{"id":"aerobic","label":"Stamina","domain":1,"q":["How does your walking pace compare with five years ago?","Do you rest partway through activities you used to do without stopping?","Do you avoid activities because you expect to run out of breath?"],"scale":["pace","freq","freq"]},{"id":"circulation","label":"Circulation","domain":1,"q":["Do your calves ache or cramp when walking, then settle with rest?","Are your feet often cold, discoloured or numb?","Do cuts on your legs or feet take a long time to heal?"],"scale":["freq","freq","freq"]},{"id":"hearing","label":"Hearing","domain":2,"q":["Do you ask people to repeat themselves?","Do you turn the television up louder than others would like?","Do you avoid places because it is hard to hear there?"],"scale":["freq","freq","freq"]},{"id":"vision_near","label":"Near vision","domain":2,"q":["Do you need more light than others to read comfortably?","Do you hold reading material further away than you used to?","Do you have trouble reading labels, menus or prescriptions?"],"scale":["freq","change","freq"]},{"id":"vision_glare","label":"Contrast and glare","domain":2,"q":["Do oncoming headlights dazzle you more than they used to?","Do you have trouble seeing kerbs, steps or edges in dim light?","Does it take you longer to adjust going from bright light into shade?"],"scale":["change","freq","change"]},{"id":"smell","label":"Smell and taste","domain":2,"q":["Has food become less flavourful, or do you add more salt or sugar?","Have you had trouble smelling smoke, gas or food that has gone off?","Have you lost interest in eating because food does not appeal?"],"scale":["change","freq","freq"]},{"id":"oral","label":"Teeth and mouth","domain":2,"q":["Do you avoid certain foods because of your teeth, gums or dentures?","Do your gums bleed, or are your teeth loose or sensitive?","When did a dentist last look at your mouth?"],"scale":["freq","freq","last"]},{"id":"memory","label":"Memory","domain":3,"q":["Do you lose the thread of what you were saying or doing?","Do you rely on lists, notes or reminders more than you used to?","Have people close to you commented on your memory?"],"scale":["freq","change","event2"]},{"id":"executive","label":"Planning","domain":3,"q":["Is it harder to plan something with several steps?","Do you find new devices, forms or systems harder to learn?","Do you put things off because working out how to start feels difficult?"],"scale":["harder","harder","freq"]},{"id":"mood","label":"Mood","domain":3,"q":["Have you felt down, flat or hopeless more days than not?","Have you lost interest or pleasure in things you used to enjoy?","Have you felt anxious, worried or on edge?"],"scale":["days","days","days"]},{"id":"sleep","label":"Sleep","domain":3,"q":["Do you have trouble falling asleep or staying asleep?","Do you wake unrefreshed even after enough hours in bed?","Have you been told you snore heavily or stop breathing at night?"],"scale":["freq","freq","told"]},{"id":"nerves","label":"Feeling in hands and feet","domain":3,"q":["Do you have numbness, tingling or burning in your feet or hands?","Is it harder to feel the ground under your feet?","Do you have trouble with small movements like buttons or coins?"],"scale":["freq","harder","freq"]},{"id":"glucose","label":"Blood sugar","domain":4,"q":["Are you thirstier, or passing urine more often, than you used to?","Have you been told your blood sugar was borderline or high?","Do you get skin infections, thrush or sores that are slow to heal?"],"scale":["change","told","freq"]},{"id":"lipids","label":"Cholesterol and waist","domain":4,"q":["Has your waist increased even if your weight has not?","Have you been told your cholesterol or triglycerides were high?","Is there heart disease or stroke before age 60 in your immediate family?"],"scale":["yn3","told","family"]},{"id":"kidney","label":"Kidneys","domain":4,"q":["Do your ankles swell by the end of the day?","How many times do you get up at night to pass urine?","What have you been told about your kidney tests?"],"scale":["freq","nights","testknow"]},{"id":"liver","label":"Liver","domain":4,"q":["How many days in a typical week do you drink alcohol?","Have you been told you have a fatty liver or abnormal liver tests?","Do you bruise more easily than you used to?"],"scale":["drinks","told","change"]},{"id":"thyroid","label":"Hormones and energy","domain":4,"q":["Do you feel unusually cold, or unusually hot, compared with others?","Have you had unexplained changes in weight, energy or hair?","Do you feel persistently tired despite sleeping enough?"],"scale":["freq","yn3","freq"]},{"id":"immune","label":"Infections and vaccines","domain":4,"q":["Do you get more infections, or take longer to shake them off, than you used to?","Are your vaccinations up to date for your age?","Shingles: have you had it, or been vaccinated against it?"],"scale":["change","vax","shingles"]},{"id":"bladder","label":"Bladder","domain":5,"q":["Do you leak urine when you cough, laugh or hurry?","Do you plan outings around where the toilets are?","Do you get a sudden urge that is hard to hold?"],"scale":["freq","freq","freq"]},{"id":"bowel","label":"Digestion","domain":5,"q":["Have your bowel habits changed in the last year?","Do you get heartburn, reflux or difficulty swallowing?","Do you use laxatives or antacids regularly?"],"scale":["bowelchg","freq","freq"]},{"id":"sexual","label":"Sexual health","domain":5,"q":["Has sexual function changed in a way that concerns you?","Do you have discomfort, dryness or pain that affects intimacy?","Is this something you have wanted to raise with a clinician but have not?"],"scale":["change","freq","yn2"]},{"id":"skin","label":"Skin","domain":5,"q":["Do cuts and scrapes take longer to heal than they used to?","Have you noticed new, changing or non-healing spots on your skin?","Is your skin often itchy, dry, or fragile enough to tear?"],"scale":["change","spots","freq"]},{"id":"nutrition","label":"Weight and eating","domain":5,"q":["Have you lost weight in the last year without trying to?","Do you skip meals, or eat alone most of the time?","Do you struggle to shop for or prepare food?"],"scale":["wtloss","freq","freq"]}],"radius":[{"id":"night_drive","label":"Drive at night","sys":["vision_glare"]},{"id":"highway","label":"Drive on the freeway or take longer trips","sys":["vision_glare","memory"]},{"id":"stairs","label":"Climb a full flight of stairs without stopping","sys":["aerobic","muscle"]},{"id":"groceries","label":"Carry the groceries in from the car in one trip","sys":["grip","muscle"]},{"id":"lowchair","label":"Get up from a low chair without using your hands","sys":["muscle","joints"]},{"id":"walk20","label":"Walk for twenty minutes without needing to stop","sys":["aerobic","joints"]},{"id":"floor","label":"Get down to the floor and back up again","sys":["muscle","balance","joints"],"note":"Answer from memory. Please do not test this one to find out, and never on your own."},{"id":"onelegdress","label":"Stand on one leg to put on trousers or socks","sys":["balance"],"note":"Answer from memory. If you do want to check your balance, have someone beside you."},{"id":"noisyroom","label":"Follow a conversation in a noisy restaurant","sys":["hearing"]},{"id":"groupconv","label":"Keep up in a group of four or more people","sys":["hearing"]},{"id":"smallprint","label":"Read a menu, a label or a prescription","sys":["vision_near"]},{"id":"afterdark","label":"Go out in the evening","sys":["vision_glare","balance"]},{"id":"overnight","label":"Travel and stay overnight away from home","sys":["bladder","memory"]},{"id":"regulargroup","label":"Attend a regular group, class, service or club","sys":["mood","hearing"]},{"id":"ownadmin","label":"Manage your own medications and bills","sys":["memory","executive"]},{"id":"yardwork","label":"Do your own yard work or heavy housework","sys":["muscle","aerobic"]}],"measured":[{"id":"grip_kg","label":"Grip strength","how":"Hand dynamometer, best of three, dominant hand","ref":"Reference: below 28 kg men, 18 kg women","unit":"kg"},{"id":"gait_ms","label":"Walking speed","how":"Timed over 4 metres at usual pace","ref":"Reference: below 0.8 m/s","unit":"m/s"},{"id":"chair5_s","label":"Five chair rises","how":"Arms folded, from a standard chair","ref":"Reference: slower than ~12 seconds","unit":"sec"},{"id":"balance_s","label":"One-leg balance","how":"Eyes open, unsupported, best of two","ref":"Reference: under 10 seconds","unit":"sec"},{"id":"bp","label":"Blood pressure","how":"Seated 5 min, both arms, then standing","ref":"Reference: 130/80 or above on repeated readings","unit":"mmHg"},{"id":"height_cm","label":"Height now","how":"Measured, not remembered","unit":"cm"},{"id":"height_max_cm","label":"Tallest adult height","how":"Your best recollection","ref":"Losing >4 cm from tallest is worth raising","unit":"cm"},{"id":"waist_cm","label":"Waist","how":"At the navel, tape level, after breathing out","ref":"Reference: more than half your height","unit":"cm"}],"scales":{"freq":["Never or rarely","Sometimes","Often","Most of the time"],"harder":["No harder than before","A little harder","Clearly harder","I often cannot"],"change":["No change","A slight change","A clear change","A big change"],"deg":["Not at all","A little","Quite a bit","A great deal"],"yn3":["No","Not sure","Somewhat","Yes"],"told":["No","Not sure","Yes, borderline","Yes"],"event":["No","Once, a while ago","Once, recently","More than once"],"event2":["No","Once, in passing","Yes, once seriously","Yes, more than once"],"family":["No","A distant relative","A parent or sibling","More than one"],"days":["Not at all","Several days","More than half the days","Nearly every day"],"last":["Within the last year","1 to 2 years ago","3 to 5 years ago","Over 5 years ago, or never"],"bpknow":["It is normal","It is borderline","I do not know","It is high"],"testknow":["They were normal","They were borderline","I do not know","They were abnormal"],"pace":["The same or better","Slightly slower","Clearly slower","Much slower"],"nights":["Once or less","Twice","Three times","Four or more"],"drinks":["None or rarely","1 to 2 days","3 to 5 days","Most days"],"vax":["Yes, all of them","Most of them","Only some","I do not know"],"shingles":["Vaccinated, never had it","Had it, and since vaccinated","Had it, not vaccinated","Never vaccinated"],"bowelchg":["No","Briefly, then settled","Yes, still changed","Yes, and I have lost weight"],"spots":["None","One, unchanged","One that is changing","More than one changing"],"wtloss":["No","Under 5 lb","5 to 10 lb","More than 10 lb"],"yn2":["No","Maybe","Yes","Yes, for some time"],"pillows":["No, the same as before","One more pillow","Two or more","I sleep sitting up"]}};
+  /* ═════════════════════════════ DATA ═════════════════════════════ */
+  const DATA = {
+    domains: [
+      'Movement and structure',
+      'Heart, lungs and vessels',
+      'Senses and communication',
+      'Brain, mood and sleep',
+      'Metabolic and internal',
+      'Continence, digestion and skin',
+    ],
+    systems: [
+      {
+        id: 'muscle',
+        label: 'Muscle',
+        domain: 0,
+        q: [
+          'Have you noticed your arms or legs looking thinner or less firm than they used to?',
+          'Do you find it harder to open jars, bottles or packaging?',
+          'Have you become slower at everyday tasks like carrying or lifting?',
+        ],
+        scale: ['change', 'harder', 'change'],
+      },
+      {
+        id: 'grip',
+        label: 'Grip and arms',
+        domain: 0,
+        q: [
+          'Do you drop things more often than you used to?',
+          'Is it harder to turn a key, a tap or a doorknob?',
+          'Do you have pain or weakness reaching overhead?',
+        ],
+        scale: ['freq', 'harder', 'freq'],
+      },
+      {
+        id: 'bone',
+        label: 'Bone',
+        domain: 0,
+        q: [
+          'Have you lost height, or do your clothes seem longer than they used to?',
+          'Have you broken a bone from a minor fall or knock since you turned 50?',
+          'Do you have persistent aching in your upper back?',
+        ],
+        scale: ['yn3', 'event', 'freq'],
+      },
+      {
+        id: 'joints',
+        label: 'Joints',
+        domain: 0,
+        q: [
+          'Are your joints stiff for more than half an hour after getting up?',
+          'Do you avoid certain movements because of joint pain?',
+          'Has joint pain changed which shoes, chairs or beds you can use?',
+        ],
+        scale: ['freq', 'freq', 'yn3'],
+      },
+      {
+        id: 'balance',
+        label: 'Balance',
+        domain: 0,
+        q: [
+          'Do you feel unsteady when you turn around quickly?',
+          'Do you reach for furniture or walls when moving about at home?',
+          'Have you had a fall, or nearly fallen, in the last year?',
+        ],
+        scale: ['freq', 'freq', 'event'],
+      },
+      {
+        id: 'gait',
+        label: 'Walking',
+        domain: 0,
+        q: [
+          'Do people you walk with have to slow down for you?',
+          'Do you take longer to cross a road than the signal allows?',
+          'Do you scuff or catch your feet on carpets or kerbs?',
+        ],
+        scale: ['freq', 'freq', 'freq'],
+      },
+      {
+        id: 'cardiac',
+        label: 'Heart',
+        domain: 1,
+        q: [
+          'Do you get breathless or chest tightness with effort you used to manage?',
+          'Have you noticed your heart racing, fluttering or skipping?',
+          'Do you need more pillows at night than you used to?',
+        ],
+        scale: ['freq', 'freq', 'pillows'],
+      },
+      {
+        id: 'bp',
+        label: 'Blood pressure',
+        domain: 1,
+        q: [
+          'Do you get lightheaded when you stand up quickly?',
+          'What have you been told about your blood pressure?',
+          'Do you wake with headaches at the back of your head?',
+        ],
+        scale: ['freq', 'bpknow', 'freq'],
+      },
+      {
+        id: 'lungs',
+        label: 'Lungs',
+        domain: 1,
+        q: [
+          'Do you cough most mornings, or bring up phlegm?',
+          'Do you wheeze, or feel tight in the chest in cold air?',
+          'Do you avoid stairs or hills because of your breathing?',
+        ],
+        scale: ['freq', 'freq', 'freq'],
+      },
+      {
+        id: 'aerobic',
+        label: 'Stamina',
+        domain: 1,
+        q: [
+          'How does your walking pace compare with five years ago?',
+          'Do you rest partway through activities you used to do without stopping?',
+          'Do you avoid activities because you expect to run out of breath?',
+        ],
+        scale: ['pace', 'freq', 'freq'],
+      },
+      {
+        id: 'circulation',
+        label: 'Circulation',
+        domain: 1,
+        q: [
+          'Do your calves ache or cramp when walking, then settle with rest?',
+          'Are your feet often cold, discoloured or numb?',
+          'Do cuts on your legs or feet take a long time to heal?',
+        ],
+        scale: ['freq', 'freq', 'freq'],
+      },
+      {
+        id: 'hearing',
+        label: 'Hearing',
+        domain: 2,
+        q: [
+          'Do you ask people to repeat themselves?',
+          'Do you turn the television up louder than others would like?',
+          'Do you avoid places because it is hard to hear there?',
+        ],
+        scale: ['freq', 'freq', 'freq'],
+      },
+      {
+        id: 'vision_near',
+        label: 'Near vision',
+        domain: 2,
+        q: [
+          'Do you need more light than others to read comfortably?',
+          'Do you hold reading material further away than you used to?',
+          'Do you have trouble reading labels, menus or prescriptions?',
+        ],
+        scale: ['freq', 'change', 'freq'],
+      },
+      {
+        id: 'vision_glare',
+        label: 'Contrast and glare',
+        domain: 2,
+        q: [
+          'Do oncoming headlights dazzle you more than they used to?',
+          'Do you have trouble seeing kerbs, steps or edges in dim light?',
+          'Does it take you longer to adjust going from bright light into shade?',
+        ],
+        scale: ['change', 'freq', 'change'],
+      },
+      {
+        id: 'smell',
+        label: 'Smell and taste',
+        domain: 2,
+        q: [
+          'Has food become less flavourful, or do you add more salt or sugar?',
+          'Have you had trouble smelling smoke, gas or food that has gone off?',
+          'Have you lost interest in eating because food does not appeal?',
+        ],
+        scale: ['change', 'freq', 'freq'],
+      },
+      {
+        id: 'oral',
+        label: 'Teeth and mouth',
+        domain: 2,
+        q: [
+          'Do you avoid certain foods because of your teeth, gums or dentures?',
+          'Do your gums bleed, or are your teeth loose or sensitive?',
+          'When did a dentist last look at your mouth?',
+        ],
+        scale: ['freq', 'freq', 'last'],
+      },
+      {
+        id: 'memory',
+        label: 'Memory',
+        domain: 3,
+        q: [
+          'Do you lose the thread of what you were saying or doing?',
+          'Do you rely on lists, notes or reminders more than you used to?',
+          'Have people close to you commented on your memory?',
+        ],
+        scale: ['freq', 'change', 'event2'],
+      },
+      {
+        id: 'executive',
+        label: 'Planning',
+        domain: 3,
+        q: [
+          'Is it harder to plan something with several steps?',
+          'Do you find new devices, forms or systems harder to learn?',
+          'Do you put things off because working out how to start feels difficult?',
+        ],
+        scale: ['harder', 'harder', 'freq'],
+      },
+      {
+        id: 'mood',
+        label: 'Mood',
+        domain: 3,
+        q: [
+          'Have you felt down, flat or hopeless more days than not?',
+          'Have you lost interest or pleasure in things you used to enjoy?',
+          'Have you felt anxious, worried or on edge?',
+        ],
+        scale: ['days', 'days', 'days'],
+      },
+      {
+        id: 'sleep',
+        label: 'Sleep',
+        domain: 3,
+        q: [
+          'Do you have trouble falling asleep or staying asleep?',
+          'Do you wake unrefreshed even after enough hours in bed?',
+          'Have you been told you snore heavily or stop breathing at night?',
+        ],
+        scale: ['freq', 'freq', 'told'],
+      },
+      {
+        id: 'nerves',
+        label: 'Feeling in hands and feet',
+        domain: 3,
+        q: [
+          'Do you have numbness, tingling or burning in your feet or hands?',
+          'Is it harder to feel the ground under your feet?',
+          'Do you have trouble with small movements like buttons or coins?',
+        ],
+        scale: ['freq', 'harder', 'freq'],
+      },
+      {
+        id: 'glucose',
+        label: 'Blood sugar',
+        domain: 4,
+        q: [
+          'Are you thirstier, or passing urine more often, than you used to?',
+          'Have you been told your blood sugar was borderline or high?',
+          'Do you get skin infections, thrush or sores that are slow to heal?',
+        ],
+        scale: ['change', 'told', 'freq'],
+      },
+      {
+        id: 'lipids',
+        label: 'Cholesterol and waist',
+        domain: 4,
+        q: [
+          'Has your waist increased even if your weight has not?',
+          'Have you been told your cholesterol or triglycerides were high?',
+          'Is there heart disease or stroke before age 60 in your immediate family?',
+        ],
+        scale: ['yn3', 'told', 'family'],
+      },
+      {
+        id: 'kidney',
+        label: 'Kidneys',
+        domain: 4,
+        q: [
+          'Do your ankles swell by the end of the day?',
+          'How many times do you get up at night to pass urine?',
+          'What have you been told about your kidney tests?',
+        ],
+        scale: ['freq', 'nights', 'testknow'],
+      },
+      {
+        id: 'liver',
+        label: 'Liver',
+        domain: 4,
+        q: [
+          'How many days in a typical week do you drink alcohol?',
+          'Have you been told you have a fatty liver or abnormal liver tests?',
+          'Do you bruise more easily than you used to?',
+        ],
+        scale: ['drinks', 'told', 'change'],
+      },
+      {
+        id: 'thyroid',
+        label: 'Hormones and energy',
+        domain: 4,
+        q: [
+          'Do you feel unusually cold, or unusually hot, compared with others?',
+          'Have you had unexplained changes in weight, energy or hair?',
+          'Do you feel persistently tired despite sleeping enough?',
+        ],
+        scale: ['freq', 'yn3', 'freq'],
+      },
+      {
+        id: 'immune',
+        label: 'Infections and vaccines',
+        domain: 4,
+        q: [
+          'Do you get more infections, or take longer to shake them off, than you used to?',
+          'Are your vaccinations up to date for your age?',
+          'Shingles: have you had it, or been vaccinated against it?',
+        ],
+        scale: ['change', 'vax', 'shingles'],
+      },
+      {
+        id: 'bladder',
+        label: 'Bladder',
+        domain: 5,
+        q: [
+          'Do you leak urine when you cough, laugh or hurry?',
+          'Do you plan outings around where the toilets are?',
+          'Do you get a sudden urge that is hard to hold?',
+        ],
+        scale: ['freq', 'freq', 'freq'],
+      },
+      {
+        id: 'bowel',
+        label: 'Digestion',
+        domain: 5,
+        q: [
+          'Have your bowel habits changed in the last year?',
+          'Do you get heartburn, reflux or difficulty swallowing?',
+          'Do you use laxatives or antacids regularly?',
+        ],
+        scale: ['bowelchg', 'freq', 'freq'],
+      },
+      {
+        id: 'sexual',
+        label: 'Sexual health',
+        domain: 5,
+        q: [
+          'Has sexual function changed in a way that concerns you?',
+          'Do you have discomfort, dryness or pain that affects intimacy?',
+          'Is this something you have wanted to raise with a clinician but have not?',
+        ],
+        scale: ['change', 'freq', 'yn2'],
+      },
+      {
+        id: 'skin',
+        label: 'Skin',
+        domain: 5,
+        q: [
+          'Do cuts and scrapes take longer to heal than they used to?',
+          'Have you noticed new, changing or non-healing spots on your skin?',
+          'Is your skin often itchy, dry, or fragile enough to tear?',
+        ],
+        scale: ['change', 'spots', 'freq'],
+      },
+      {
+        id: 'nutrition',
+        label: 'Weight and eating',
+        domain: 5,
+        q: [
+          'Have you lost weight in the last year without trying to?',
+          'Do you skip meals, or eat alone most of the time?',
+          'Do you struggle to shop for or prepare food?',
+        ],
+        scale: ['wtloss', 'freq', 'freq'],
+      },
+    ],
+    radius: [
+      { id: 'night_drive', label: 'Drive at night', sys: ['vision_glare'] },
+      { id: 'highway', label: 'Drive on the freeway or take longer trips', sys: ['vision_glare', 'memory'] },
+      { id: 'stairs', label: 'Climb a full flight of stairs without stopping', sys: ['aerobic', 'muscle'] },
+      { id: 'groceries', label: 'Carry the groceries in from the car in one trip', sys: ['grip', 'muscle'] },
+      { id: 'lowchair', label: 'Get up from a low chair without using your hands', sys: ['muscle', 'joints'] },
+      { id: 'walk20', label: 'Walk for twenty minutes without needing to stop', sys: ['aerobic', 'joints'] },
+      {
+        id: 'floor',
+        label: 'Get down to the floor and back up again',
+        sys: ['muscle', 'balance', 'joints'],
+        note: 'Answer from memory. Please do not test this one to find out, and never on your own.',
+      },
+      {
+        id: 'onelegdress',
+        label: 'Stand on one leg to put on trousers or socks',
+        sys: ['balance'],
+        note: 'Answer from memory. If you do want to check your balance, have someone beside you.',
+      },
+      { id: 'noisyroom', label: 'Follow a conversation in a noisy restaurant', sys: ['hearing'] },
+      { id: 'groupconv', label: 'Keep up in a group of four or more people', sys: ['hearing'] },
+      { id: 'smallprint', label: 'Read a menu, a label or a prescription', sys: ['vision_near'] },
+      { id: 'afterdark', label: 'Go out in the evening', sys: ['vision_glare', 'balance'] },
+      { id: 'overnight', label: 'Travel and stay overnight away from home', sys: ['bladder', 'memory'] },
+      { id: 'regulargroup', label: 'Attend a regular group, class, service or club', sys: ['mood', 'hearing'] },
+      { id: 'ownadmin', label: 'Manage your own medications and bills', sys: ['memory', 'executive'] },
+      { id: 'yardwork', label: 'Do your own yard work or heavy housework', sys: ['muscle', 'aerobic'] },
+    ],
+    measured: [
+      {
+        id: 'grip_kg',
+        label: 'Grip strength',
+        how: 'Hand dynamometer, best of three, dominant hand',
+        ref: 'Reference: below 28 kg men, 18 kg women',
+        unit: 'kg',
+      },
+      {
+        id: 'gait_ms',
+        label: 'Walking speed',
+        how: 'Timed over 4 metres at usual pace',
+        ref: 'Reference: below 0.8 m/s',
+        unit: 'm/s',
+      },
+      {
+        id: 'chair5_s',
+        label: 'Five chair rises',
+        how: 'Arms folded, from a standard chair',
+        ref: 'Reference: slower than ~12 seconds',
+        unit: 'sec',
+      },
+      {
+        id: 'balance_s',
+        label: 'One-leg balance',
+        how: 'Eyes open, unsupported, best of two',
+        ref: 'Reference: under 10 seconds',
+        unit: 'sec',
+      },
+      {
+        id: 'bp',
+        label: 'Blood pressure',
+        how: 'Seated 5 min, both arms, then standing',
+        ref: 'Reference: 130/80 or above on repeated readings',
+        unit: 'mmHg',
+      },
+      { id: 'height_cm', label: 'Height now', how: 'Measured, not remembered', unit: 'cm' },
+      {
+        id: 'height_max_cm',
+        label: 'Tallest adult height',
+        how: 'Your best recollection',
+        ref: 'Losing >4 cm from tallest is worth raising',
+        unit: 'cm',
+      },
+      {
+        id: 'waist_cm',
+        label: 'Waist',
+        how: 'At the navel, tape level, after breathing out',
+        ref: 'Reference: more than half your height',
+        unit: 'cm',
+      },
+    ],
+    scales: {
+      freq: ['Never or rarely', 'Sometimes', 'Often', 'Most of the time'],
+      harder: ['No harder than before', 'A little harder', 'Clearly harder', 'I often cannot'],
+      change: ['No change', 'A slight change', 'A clear change', 'A big change'],
+      deg: ['Not at all', 'A little', 'Quite a bit', 'A great deal'],
+      yn3: ['No', 'Not sure', 'Somewhat', 'Yes'],
+      told: ['No', 'Not sure', 'Yes, borderline', 'Yes'],
+      event: ['No', 'Once, a while ago', 'Once, recently', 'More than once'],
+      event2: ['No', 'Once, in passing', 'Yes, once seriously', 'Yes, more than once'],
+      family: ['No', 'A distant relative', 'A parent or sibling', 'More than one'],
+      days: ['Not at all', 'Several days', 'More than half the days', 'Nearly every day'],
+      last: ['Within the last year', '1 to 2 years ago', '3 to 5 years ago', 'Over 5 years ago, or never'],
+      bpknow: ['It is normal', 'It is borderline', 'I do not know', 'It is high'],
+      testknow: ['They were normal', 'They were borderline', 'I do not know', 'They were abnormal'],
+      pace: ['The same or better', 'Slightly slower', 'Clearly slower', 'Much slower'],
+      nights: ['Once or less', 'Twice', 'Three times', 'Four or more'],
+      drinks: ['None or rarely', '1 to 2 days', '3 to 5 days', 'Most days'],
+      vax: ['Yes, all of them', 'Most of them', 'Only some', 'I do not know'],
+      shingles: [
+        'Vaccinated, never had it',
+        'Had it, and since vaccinated',
+        'Had it, not vaccinated',
+        'Never vaccinated',
+      ],
+      bowelchg: ['No', 'Briefly, then settled', 'Yes, still changed', 'Yes, and I have lost weight'],
+      spots: ['None', 'One, unchanged', 'One that is changing', 'More than one changing'],
+      wtloss: ['No', 'Under 5 lb', '5 to 10 lb', 'More than 10 lb'],
+      yn2: ['No', 'Maybe', 'Yes', 'Yes, for some time'],
+      pillows: ['No, the same as before', 'One more pillow', 'Two or more', 'I sleep sitting up'],
+    },
+  };
 
-const RLAB = ['I do this easily', 'I do it differently or less', 'I no longer do this'];
-const KEY = 'ra_fleet_v1';
-const BUILD = 'v2.3 · 2026-09-02';
-const BANDTXT = ['Nothing flagged', 'Worth mentioning', 'Worth discussing'];
+  const RLAB = ['I do this easily', 'I do it differently or less', 'I no longer do this'];
+  const KEY = 'ra_fleet_v1';
+  const BUILD = 'v2.3 · 2026-09-02';
+  const BANDTXT = ['Nothing flagged', 'Worth mentioning', 'Worth discussing'];
 
-/* ═════════════════════════════ STATE ═════════════════════════════ */
-let S = { answers: {}, radius: {}, priority: [], measured: {}, started: null, finished: null, ack: false };
+  /* ═════════════════════════════ STATE ═════════════════════════════ */
+  let S = { answers: {}, radius: {}, priority: [], measured: {}, started: null, finished: null, ack: false };
 
-function load() {
-  try {
-    const raw = localStorage.getItem(KEY);
-    if (raw) {
-      const o = JSON.parse(raw);
-      ['answers','radius','measured'].forEach(k => { if (o[k]) S[k] = o[k]; });
-      if (o.priority) S.priority = o.priority;
-      S.started = o.started || null;
-      S.finished = o.finished || null;
-      S.previous = o.previous || null;
-      S.ack = !!o.ack;
-    }
-  } catch(e) {}
-}
-function save() {
-  try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {}
-}
-load();
-
-/* ═════════════════════════════ SCORING ═════════════════════════════ */
-function sysScore(sid) {
-  let s = 0, n = 0;
-  for (let i = 0; i < 3; i++) {
-    const v = S.answers[sid + '_' + i];
-    if (typeof v === 'number') { s += v; n++; }
+  function load() {
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (raw) {
+        const o = JSON.parse(raw);
+        ['answers', 'radius', 'measured'].forEach((k) => {
+          if (o[k]) S[k] = o[k];
+        });
+        if (o.priority) S.priority = o.priority;
+        S.started = o.started || null;
+        S.finished = o.finished || null;
+        S.previous = o.previous || null;
+        S.ack = !!o.ack;
+      }
+    } catch (e) {}
   }
-  /* Score any system with at least one answer. Unanswered items count as 0
+  function save() {
+    try {
+      localStorage.setItem(KEY, JSON.stringify(S));
+    } catch (e) {}
+  }
+  load();
+
+  /* ═════════════════════════════ SCORING ═════════════════════════════ */
+  function sysScore(sid) {
+    let s = 0,
+      n = 0;
+    for (let i = 0; i < 3; i++) {
+      const v = S.answers[sid + '_' + i];
+      if (typeof v === 'number') {
+        s += v;
+        n++;
+      }
+    }
+    /* Score any system with at least one answer. Unanswered items count as 0
      so the 0–9 total stays comparable. "Not answered" is only for n === 0. */
-  return n === 0 ? null : s;
-}
-function band(sc) { return sc === null ? -1 : sc <= 2 ? 0 : sc <= 5 ? 1 : 2; }
-function sysById(id) { return DATA.systems.find(s => s.id === id) || null; }
-function answeredCount() { return Object.values(S.answers).filter(v => typeof v === 'number').length; }
-function radiusFlagged() { return DATA.radius.filter(r => S.radius[r.id] === 1 || S.radius[r.id] === 2); }
-function radiusAnswered() { return DATA.radius.filter(r => S.radius[r.id] !== undefined).length; }
+    return n === 0 ? null : s;
+  }
+  function band(sc) {
+    return sc === null ? -1 : sc <= 2 ? 0 : sc <= 5 ? 1 : 2;
+  }
+  function sysById(id) {
+    return DATA.systems.find((s) => s.id === id) || null;
+  }
+  function answeredCount() {
+    return Object.values(S.answers).filter((v) => typeof v === 'number').length;
+  }
+  function radiusFlagged() {
+    return DATA.radius.filter((r) => S.radius[r.id] === 1 || S.radius[r.id] === 2);
+  }
+  function radiusAnswered() {
+    return DATA.radius.filter((r) => S.radius[r.id] !== undefined).length;
+  }
 
-/* ═════════════════════════════ DOM HELPERS ═════════════════════════════ */
-function el(tag, cls, text) {
-  const e = document.createElement(tag);
-  if (cls) e.className = cls;
-  if (text != null) e.textContent = text;
-  return e;
-}
+  /* ═════════════════════════════ DOM HELPERS ═════════════════════════════ */
+  function el(tag, cls, text) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
 
-/* ═════════════════════════════ BUILD DOMAINS ═════════════════════════════ */
-function buildDomain(di) {
-  const host = document.getElementById('dom' + di);
-  host.innerHTML = '';
-  DATA.systems.forEach(sy => {
-    if (sy.domain !== di) return;
-    const card = el('div', 'quiz-system-card');
+  /* ═════════════════════════════ BUILD DOMAINS ═════════════════════════════ */
+  function buildDomain(di) {
+    const host = document.getElementById('dom' + di);
+    host.innerHTML = '';
+    DATA.systems.forEach((sy) => {
+      if (sy.domain !== di) return;
+      const card = el('div', 'quiz-system-card');
 
-    /* System name header row */
-    card.appendChild(el('div', 'quiz-system-name', sy.label));
+      /* System name header row */
+      card.appendChild(el('div', 'quiz-system-name', sy.label));
 
-    sy.q.forEach((stem, qi) => {
-      const q = el('div', 'quiz-question');
-      q.appendChild(el('div', 'quiz-q-stem', stem));
+      sy.q.forEach((stem, qi) => {
+        const q = el('div', 'quiz-question');
+        q.appendChild(el('div', 'quiz-q-stem', stem));
 
-      /* Horizontal answer buttons */
-      const opts = el('div', 'quiz-opts');
-      const labs = DATA.scales[(sy.scale && sy.scale[qi]) || 'freq'] || [];
-      labs.forEach((lab, vi) => {
+        /* Horizontal answer buttons */
+        const opts = el('div', 'quiz-opts');
+        const labs = DATA.scales[(sy.scale && sy.scale[qi]) || 'freq'] || [];
+        labs.forEach((lab, vi) => {
+          const b = el('button', 'quiz-opts-btn', lab);
+          b.type = 'button';
+          b.setAttribute('aria-pressed', S.answers[sy.id + '_' + qi] === vi ? 'true' : 'false');
+          if (S.answers[sy.id + '_' + qi] === vi) b.classList.add('selected');
+          b.onclick = function () {
+            S.answers[sy.id + '_' + qi] = vi;
+            save();
+            opts.querySelectorAll('.quiz-opts-btn').forEach((o, oi) => {
+              o.setAttribute('aria-pressed', oi === vi ? 'true' : 'false');
+              o.classList.toggle('selected', oi === vi);
+            });
+            updateProgress();
+          };
+          opts.appendChild(b);
+        });
+        q.appendChild(opts);
+        card.appendChild(q);
+      });
+      host.appendChild(card);
+    });
+  }
+
+  /* ═════════════════════════════ BUILD RADIUS ═════════════════════════════ */
+  function buildRadius() {
+    const host = document.getElementById('radlist');
+    host.innerHTML = '';
+    DATA.radius.forEach((r) => {
+      const card = el('div', 'quiz-system-card');
+      card.appendChild(el('div', 'quiz-q-stem', r.label));
+      if (r.note) {
+        const note = el('div', 'quiz-small', r.note);
+        note.style.marginBottom = '8px';
+        note.style.opacity = '0.6';
+        card.appendChild(note);
+      }
+      const opts = el('div', 'quiz-opts quiz-opts-three');
+      RLAB.forEach((lab, vi) => {
         const b = el('button', 'quiz-opts-btn', lab);
         b.type = 'button';
-        b.setAttribute('aria-pressed', S.answers[sy.id + '_' + qi] === vi ? 'true' : 'false');
-        if (S.answers[sy.id + '_' + qi] === vi) b.classList.add('selected');
-        b.onclick = function() {
-          S.answers[sy.id + '_' + qi] = vi; save();
+        b.setAttribute('aria-pressed', S.radius[r.id] === vi ? 'true' : 'false');
+        if (S.radius[r.id] === vi) b.classList.add('selected');
+        b.onclick = function () {
+          S.radius[r.id] = vi;
+          save();
           opts.querySelectorAll('.quiz-opts-btn').forEach((o, oi) => {
             o.setAttribute('aria-pressed', oi === vi ? 'true' : 'false');
             o.classList.toggle('selected', oi === vi);
           });
+          naBtn.setAttribute('aria-pressed', 'false');
+          naBtn.classList.remove('selected');
           updateProgress();
         };
         opts.appendChild(b);
       });
-      q.appendChild(opts);
-      card.appendChild(q);
-    });
-    host.appendChild(card);
-  });
-}
+      card.appendChild(opts);
 
-/* ═════════════════════════════ BUILD RADIUS ═════════════════════════════ */
-function buildRadius() {
-  const host = document.getElementById('radlist');
-  host.innerHTML = '';
-  DATA.radius.forEach(r => {
-    const card = el('div', 'quiz-system-card');
-    card.appendChild(el('div', 'quiz-q-stem', r.label));
-    if (r.note) {
-      const note = el('div', 'quiz-small', r.note);
-      note.style.marginBottom = '8px';
-      note.style.opacity = '0.6';
-      card.appendChild(note);
-    }
-    const opts = el('div', 'quiz-opts quiz-opts-three');
-    RLAB.forEach((lab, vi) => {
-      const b = el('button', 'quiz-opts-btn', lab);
-      b.type = 'button';
-      b.setAttribute('aria-pressed', S.radius[r.id] === vi ? 'true' : 'false');
-      if (S.radius[r.id] === vi) b.classList.add('selected');
-      b.onclick = function() {
-        S.radius[r.id] = vi; save();
-        opts.querySelectorAll('.quiz-opts-btn').forEach((o, oi) => {
-          o.setAttribute('aria-pressed', oi === vi ? 'true' : 'false');
-          o.classList.toggle('selected', oi === vi);
+      const naWrap = el('div', 'quiz-opts quiz-opts-na');
+      const naBtn = el('button', 'quiz-opts-btn', "Doesn't apply to me");
+      naBtn.type = 'button';
+      naBtn.setAttribute('aria-pressed', S.radius[r.id] === 'n' ? 'true' : 'false');
+      if (S.radius[r.id] === 'n') naBtn.classList.add('selected');
+      naBtn.onclick = function () {
+        S.radius[r.id] = 'n';
+        save();
+        opts.querySelectorAll('.quiz-opts-btn').forEach((o) => {
+          o.setAttribute('aria-pressed', 'false');
+          o.classList.remove('selected');
         });
-        naBtn.setAttribute('aria-pressed', 'false');
-        naBtn.classList.remove('selected');
+        naBtn.setAttribute('aria-pressed', 'true');
+        naBtn.classList.add('selected');
         updateProgress();
       };
-      opts.appendChild(b);
+      naWrap.appendChild(naBtn);
+      card.appendChild(naWrap);
+      host.appendChild(card);
     });
-    card.appendChild(opts);
+  }
 
-    const naWrap = el('div', 'quiz-opts quiz-opts-na');
-    const naBtn = el('button', 'quiz-opts-btn', "Doesn't apply to me");
-    naBtn.type = 'button';
-    naBtn.setAttribute('aria-pressed', S.radius[r.id] === 'n' ? 'true' : 'false');
-    if (S.radius[r.id] === 'n') naBtn.classList.add('selected');
-    naBtn.onclick = function() {
-      S.radius[r.id] = 'n'; save();
-      opts.querySelectorAll('.quiz-opts-btn').forEach(o => {
-        o.setAttribute('aria-pressed', 'false');
-        o.classList.remove('selected');
-      });
-      naBtn.setAttribute('aria-pressed', 'true');
-      naBtn.classList.add('selected');
-      updateProgress();
-    };
-    naWrap.appendChild(naBtn);
-    card.appendChild(naWrap);
+  /* ═════════════════════════════ BUILD PRIORITY ═════════════════════════════ */
+  function buildPriority() {
+    const flagged = radiusFlagged();
+    const host = document.getElementById('prilist');
+    host.innerHTML = '';
+    S.priority = S.priority.filter((id) => flagged.some((f) => f.id === id));
+    const intro = document.getElementById('pri-intro');
+    const cnt = document.getElementById('pri-count');
+    if (!flagged.length) {
+      intro.textContent = 'You did not flag anything on the last page. That is a good result.';
+      cnt.textContent = '';
+      return;
+    }
+    intro.textContent = 'Pick up to three you would most want to be doing easily five years from now.';
+    const card = el('div', 'quiz-system-card');
+    flagged.forEach((r) => {
+      const b = el('button', 'quiz-opts-btn', r.label);
+      b.type = 'button';
+      b.style.cssText =
+        'width:100%;margin-bottom:8px;min-height:52px;font-size:13px;text-transform:none;letter-spacing:0;text-align:left;padding:14px 16px;';
+      const isOn = () => S.priority.indexOf(r.id) >= 0;
+      const paint = () => {
+        b.setAttribute('aria-pressed', isOn() ? 'true' : 'false');
+        b.classList.toggle('selected', isOn());
+      };
+      b.onclick = function () {
+        const i = S.priority.indexOf(r.id);
+        if (i >= 0) S.priority.splice(i, 1);
+        else if (S.priority.length < 3) S.priority.push(r.id);
+        save();
+        buildPriority();
+      };
+      paint();
+      card.appendChild(b);
+    });
     host.appendChild(card);
-  });
-}
-
-/* ═════════════════════════════ BUILD PRIORITY ═════════════════════════════ */
-function buildPriority() {
-  const flagged = radiusFlagged();
-  const host = document.getElementById('prilist');
-  host.innerHTML = '';
-  S.priority = S.priority.filter(id => flagged.some(f => f.id === id));
-  const intro = document.getElementById('pri-intro');
-  const cnt = document.getElementById('pri-count');
-  if (!flagged.length) {
-    intro.textContent = 'You did not flag anything on the last page. That is a good result.';
-    cnt.textContent = '';
-    return;
+    cnt.textContent = S.priority.length + ' of 3 chosen';
   }
-  intro.textContent = 'Pick up to three you would most want to be doing easily five years from now.';
-  const card = el('div', 'quiz-system-card');
-  flagged.forEach(r => {
-    const b = el('button', 'quiz-opts-btn', r.label);
-    b.type = 'button';
-    b.style.cssText = 'width:100%;margin-bottom:8px;min-height:52px;font-size:13px;text-transform:none;letter-spacing:0;text-align:left;padding:14px 16px;';
-    const isOn = () => S.priority.indexOf(r.id) >= 0;
-    const paint = () => {
-      b.setAttribute('aria-pressed', isOn() ? 'true' : 'false');
-      b.classList.toggle('selected', isOn());
-    };
-    b.onclick = function() {
-      const i = S.priority.indexOf(r.id);
-      if (i >= 0) S.priority.splice(i, 1);
-      else if (S.priority.length < 3) S.priority.push(r.id);
-      save(); buildPriority();
-    };
-    paint();
-    card.appendChild(b);
-  });
-  host.appendChild(card);
-  cnt.textContent = S.priority.length + ' of 3 chosen';
-}
 
-/* ═════════════════════════════ BUILD RESULTS ═════════════════════════════ */
-function buildResults() {
-  const sc = document.getElementById('pane-screen');
-  sc.innerHTML = '';
-  const flagged = radiusFlagged();
+  /* ═════════════════════════════ BUILD RESULTS ═════════════════════════════ */
+  function buildResults() {
+    const sc = document.getElementById('pane-screen');
+    sc.innerHTML = '';
+    const flagged = radiusFlagged();
 
-  if (radiusAnswered()) {
-    const rc = el('div', 'quiz-card');
-    rc.appendChild(el('h3', 'quiz-card-subheading', 'The things you want to keep doing'));
-    const applicable = DATA.radius.filter(r => S.radius[r.id] !== 'n' && S.radius[r.id] !== undefined).length;
-    rc.appendChild(el('p', 'quiz-small', 'You noted changes in ' + flagged.length + ' of ' + applicable + ' activities.'));
-    if (flagged.length) {
-      const ul = el('div');
-      ul.style.marginBottom = '12px';
-      flagged.forEach(r => ul.appendChild(el('span', 'quiz-pill', r.label)));
-      rc.appendChild(ul);
-      const tally = {};
-      flagged.forEach(r => r.sys.forEach(s => { tally[s] = (tally[s] || 0) + 1; }));
-      const multi = Object.keys(tally).filter(k => tally[k] >= 2);
-      if (multi.length) {
-        const names = multi.map(k => { const s = sysById(k); return s ? s.label.toLowerCase() : k; });
-        rc.appendChild(el('p', 'quiz-small', 'Several of these involve the same areas: ' + names.join(', ') + '.'));
+    if (radiusAnswered()) {
+      const rc = el('div', 'quiz-card');
+      rc.appendChild(el('h3', 'quiz-card-subheading', 'The things you want to keep doing'));
+      const applicable = DATA.radius.filter((r) => S.radius[r.id] !== 'n' && S.radius[r.id] !== undefined).length;
+      rc.appendChild(
+        el('p', 'quiz-small', 'You noted changes in ' + flagged.length + ' of ' + applicable + ' activities.')
+      );
+      if (flagged.length) {
+        const ul = el('div');
+        ul.style.marginBottom = '12px';
+        flagged.forEach((r) => ul.appendChild(el('span', 'quiz-pill', r.label)));
+        rc.appendChild(ul);
+        const tally = {};
+        flagged.forEach((r) =>
+          r.sys.forEach((s) => {
+            tally[s] = (tally[s] || 0) + 1;
+          })
+        );
+        const multi = Object.keys(tally).filter((k) => tally[k] >= 2);
+        if (multi.length) {
+          const names = multi.map((k) => {
+            const s = sysById(k);
+            return s ? s.label.toLowerCase() : k;
+          });
+          rc.appendChild(el('p', 'quiz-small', 'Several of these involve the same areas: ' + names.join(', ') + '.'));
+        }
       }
+      if (S.priority.length) {
+        rc.appendChild(el('h3', 'quiz-card-subheading', 'What matters most to you'));
+        const pl = el('div');
+        pl.style.marginBottom = '8px';
+        S.priority.forEach((id) => {
+          const r = DATA.radius.find((x) => x.id === id);
+          if (r) pl.appendChild(el('span', 'quiz-pill', r.label));
+        });
+        rc.appendChild(pl);
+      }
+      rc.appendChild(
+        el(
+          'p',
+          'quiz-small',
+          'Changes like these have many causes, including things going on in your life. They are worth raising with a clinician.'
+        )
+      );
+      sc.appendChild(rc);
     }
-    if (S.priority.length) {
-      rc.appendChild(el('h3', 'quiz-card-subheading', 'What matters most to you'));
-      const pl = el('div');
-      pl.style.marginBottom = '8px';
-      S.priority.forEach(id => {
-        const r = DATA.radius.find(x => x.id === id);
-        if (r) pl.appendChild(el('span', 'quiz-pill', r.label));
+
+    DATA.domains.forEach((dn, di) => {
+      const card = el('div', 'quiz-card');
+      card.appendChild(el('h3', 'quiz-card-subheading', dn));
+      DATA.systems.forEach((sy) => {
+        if (sy.domain !== di) return;
+        const s = sysScore(sy.id),
+          b = band(s);
+        const row = el('div', 'quiz-result-row');
+        row.appendChild(el('div', 'quiz-result-name', sy.label));
+        row.appendChild(el('div', 'quiz-result-tag quiz-tag-' + (b < 0 ? 0 : b), b < 0 ? 'Not answered' : BANDTXT[b]));
+        card.appendChild(row);
       });
-      rc.appendChild(pl);
+      sc.appendChild(card);
+    });
+
+    const moodScore = sysScore('mood');
+    if (moodScore !== null && moodScore >= 5) {
+      const mn = el('div', 'quiz-card');
+      mn.appendChild(el('h3', 'quiz-card-subheading', 'One thing worth saying plainly'));
+      mn.appendChild(
+        el(
+          'p',
+          'quiz-small',
+          'Some of your answers describe low mood, lost interest or persistent worry. That is common, it is treatable, and it changes how everything else on this page feels. It is worth telling a doctor about even if nothing else here is.'
+        )
+      );
+      mn.appendChild(
+        el(
+          'p',
+          'quiz-small',
+          'If things feel worse than that, you can call or text 988 in the US at any hour, or your local crisis line elsewhere.'
+        )
+      );
+      sc.appendChild(mn);
     }
-    rc.appendChild(el('p', 'quiz-small', 'Changes like these have many causes, including things going on in your life. They are worth raising with a clinician.'));
-    sc.appendChild(rc);
+
+    const d = el('div', 'quiz-note');
+    d.textContent =
+      'This is not a diagnosis and it does not measure disease. It lists areas worth discussing with a clinician.';
+    sc.appendChild(d);
+
+    buildMeasured();
+    buildHandoff();
   }
 
-  DATA.domains.forEach((dn, di) => {
-    const card = el('div', 'quiz-card');
-    card.appendChild(el('h3', 'quiz-card-subheading', dn));
-    DATA.systems.forEach(sy => {
-      if (sy.domain !== di) return;
-      const s = sysScore(sy.id), b = band(s);
+  function createAppointmentCta() {
+    const book = el('div', 'quiz-book-cta');
+    const copy = el('div', 'quiz-book-cta-copy');
+    copy.appendChild(el('p', 'quiz-book-cta-title', 'Not sure about these questions?'));
+    copy.appendChild(el('p', 'quiz-book-cta-sub', 'Skip them and book an appointment with Athena Clinic.'));
+    const bookBtn = el('a', 'quiz-book-cta-btn', 'Schedule a visit');
+    bookBtn.href = 'https://www.athenaclinic.com/contact/';
+    bookBtn.target = '_blank';
+    bookBtn.rel = 'noopener noreferrer';
+    book.appendChild(copy);
+    book.appendChild(bookBtn);
+    return book;
+  }
+
+  function buildMeasured() {
+    const me = document.getElementById('pane-measured');
+    me.innerHTML = '';
+    const safety = el('div', 'quiz-card');
+    safety.appendChild(el('h3', 'quiz-card-subheading', 'Before anyone does the movement measurements'));
+    safety.appendChild(
+      el(
+        'p',
+        'quiz-small',
+        'Ask a doctor first if you have heart disease or chest pain on exertion, have fallen in the past six months, have osteoporosis or a fragility fracture, have had surgery in the last six months, feel dizzy on standing, or simply feel unwell today. Always do the balance and chair tests next to a wall or a partner who can steady you, never on your own.'
+      )
+    );
+    me.appendChild(safety);
+    const mc = el('div', 'quiz-card');
+    mc.appendChild(el('h3', 'quiz-card-subheading', 'Eight things you cannot measure properly at home'));
+    mc.appendChild(
+      el(
+        'p',
+        'quiz-small',
+        'Take this page to a clinician, or have them done at a measurement visit. Enter them here afterwards so next year has something to compare with.'
+      )
+    );
+    DATA.measured.forEach((m) => {
+      const r = el('div', 'quiz-measure-row');
+      const L = el('div');
+      L.appendChild(el('div', 'quiz-measure-label', m.label));
+      L.appendChild(el('div', 'quiz-measure-how', m.how));
+      if (m.ref) L.appendChild(el('div', 'quiz-measure-ref', m.ref));
+      const inp = document.createElement('input');
+      inp.type = 'text';
+      inp.placeholder = m.unit;
+      inp.value = S.measured[m.id] || '';
+      inp.className = 'quiz-measure-input';
+      inp.oninput = function () {
+        S.measured[m.id] = inp.value.slice(0, 20);
+        save();
+      };
+      r.appendChild(L);
+      r.appendChild(inp);
+      mc.appendChild(r);
+    });
+    mc.appendChild(el('p', 'quiz-small', 'These reference points are population figures, not verdicts about you.'));
+    me.appendChild(mc);
+
+    /* Book-an-appointment bar — Figma 160:609 */
+    me.appendChild(createAppointmentCta());
+  }
+
+  function buildHandoff() {
+    const h = document.getElementById('pane-handoff');
+    h.innerHTML = '';
+
+    /* ── Card 1: Download / Print — always visible ── */
+    const dlCard = el('div', 'quiz-card');
+    dlCard.id = 'handoff-dl-card';
+    dlCard.appendChild(el('h3', 'quiz-card-subheading', 'A summary for your clinician'));
+    dlCard.appendChild(el('p', 'quiz-small', 'Stays on your device. Nothing is sent to a server.'));
+    const printBtn = el('button', 'quiz-btn-primary', 'Download / Print this page');
+    printBtn.type = 'button';
+    printBtn.style.cssText = 'width:100%;margin-top:8px';
+    printBtn.onclick = function () {
+      renderPrintable();
+      window.print();
+    };
+    dlCard.appendChild(printBtn);
+    h.appendChild(dlCard);
+
+    /* ── Card 2: Email PDF — shows sent state on success ── */
+    const mailCard = el('div', 'quiz-card');
+    mailCard.id = 'handoff-mail-card';
+
+    const mailHeading = el('h3', 'quiz-card-subheading', 'Email this PDF to me');
+    mailCard.appendChild(mailHeading);
+    mailCard.appendChild(el('p', 'quiz-small', 'We send it to you and do not keep a copy.'));
+
+    const mailField = el('div', 'quiz-field');
+    mailField.style.cssText = 'margin-top:14px';
+    const mailLabel = el('label', 'quiz-field-label', 'Your email');
+    mailLabel.setAttribute('for', 'handoff-email');
+    const mailInput = document.createElement('input');
+    mailInput.type = 'email';
+    mailInput.id = 'handoff-email';
+    mailInput.placeholder = 'your@email.com';
+    mailInput.autocomplete = 'email';
+    mailInput.inputMode = 'email';
+    mailInput.className = 'quiz-input';
+    mailField.appendChild(mailLabel);
+    mailField.appendChild(mailInput);
+    mailCard.appendChild(mailField);
+
+    const tsSlot = el('div');
+    tsSlot.id = 'handoff-turnstile';
+    tsSlot.style.cssText = 'margin:8px 0 12px';
+    mailCard.appendChild(tsSlot);
+
+    const mailBtn = el('button', 'quiz-btn-ghost', 'Email me this PDF');
+    mailBtn.type = 'button';
+    mailBtn.id = 'btn-email-pdf';
+    mailBtn.style.cssText = 'width:100%';
+    mailBtn.onclick = function () {
+      emailSummaryPdf();
+    };
+    mailCard.appendChild(mailBtn);
+
+    const mailMsg = el('p', 'quiz-small');
+    mailMsg.id = 'handoff-mail-msg';
+    mailMsg.style.cssText = 'display:none;margin-top:8px';
+    mailCard.appendChild(mailMsg);
+
+    h.appendChild(mailCard);
+    renderHandoffTurnstile(tsSlot);
+
+    const prev = el('div', 'quiz-card');
+    prev.appendChild(el('h3', 'quiz-card-subheading', 'What it will contain'));
+    const items = [
+      'What you want to keep doing',
+      'Activities you have changed or stopped',
+      'The areas you flagged, highest first',
+      'The eight measurements, blank or filled',
+      'A note for the clinician about what else can cause reduced activity',
+    ];
+    items.forEach((t) => {
       const row = el('div', 'quiz-result-row');
-      row.appendChild(el('div', 'quiz-result-name', sy.label));
-      row.appendChild(el('div', 'quiz-result-tag quiz-tag-' + (b < 0 ? 0 : b), b < 0 ? 'Not answered' : BANDTXT[b]));
-      card.appendChild(row);
+      const nm = el('div', 'quiz-result-name', t);
+      row.appendChild(nm);
+      prev.appendChild(row);
     });
-    sc.appendChild(card);
-  });
+    h.appendChild(prev);
 
-  const moodScore = sysScore('mood');
-  if (moodScore !== null && moodScore >= 5) {
-    const mn = el('div', 'quiz-card');
-    mn.appendChild(el('h3', 'quiz-card-subheading', 'One thing worth saying plainly'));
-    mn.appendChild(el('p', 'quiz-small', 'Some of your answers describe low mood, lost interest or persistent worry. That is common, it is treatable, and it changes how everything else on this page feels. It is worth telling a doctor about even if nothing else here is.'));
-    mn.appendChild(el('p', 'quiz-small', 'If things feel worse than that, you can call or text 988 in the US at any hour, or your local crisis line elsewhere.'));
-    sc.appendChild(mn);
+    const mv = el('div', 'quiz-card');
+    mv.appendChild(el('h3', 'quiz-card-subheading', 'If you want the measurements done properly'));
+    mv.appendChild(
+      el(
+        'p',
+        'quiz-small',
+        'Athena Clinic in Honolulu runs a free twenty-minute measurement visit: grip strength, walking speed, chair rises, balance and blood pressure. No charge and nothing to sign up for. rebelliousaging.org/measure'
+      )
+    );
+    h.appendChild(mv);
+    h.appendChild(createAppointmentCta());
   }
 
-  const d = el('div', 'quiz-note');
-  d.textContent = 'This is not a diagnosis and it does not measure disease. It lists areas worth discussing with a clinician.';
-  sc.appendChild(d);
-
-  buildMeasured();
-  buildHandoff();
-}
-
-function createAppointmentCta() {
-  const book = el('div', 'quiz-book-cta');
-  const copy = el('div', 'quiz-book-cta-copy');
-  copy.appendChild(el('p', 'quiz-book-cta-title', 'Not sure about these questions?'));
-  copy.appendChild(el('p', 'quiz-book-cta-sub', 'Skip them and book an appointment with Athena Clinic.'));
-  const bookBtn = el('a', 'quiz-book-cta-btn', 'Schedule a visit');
-  bookBtn.href = 'https://www.athenaclinic.com/contact/';
-  bookBtn.target = '_blank';
-  bookBtn.rel = 'noopener noreferrer';
-  book.appendChild(copy);
-  book.appendChild(bookBtn);
-  return book;
-}
-
-function buildMeasured() {
-  const me = document.getElementById('pane-measured');
-  me.innerHTML = '';
-  const safety = el('div', 'quiz-card');
-  safety.appendChild(el('h3', 'quiz-card-subheading', 'Before anyone does the movement measurements'));
-  safety.appendChild(el('p', 'quiz-small', 'Ask a doctor first if you have heart disease or chest pain on exertion, have fallen in the past six months, have osteoporosis or a fragility fracture, have had surgery in the last six months, feel dizzy on standing, or simply feel unwell today. Always do the balance and chair tests next to a wall or a partner who can steady you, never on your own.'));
-  me.appendChild(safety);
-  const mc = el('div', 'quiz-card');
-  mc.appendChild(el('h3', 'quiz-card-subheading', 'Eight things you cannot measure properly at home'));
-  mc.appendChild(el('p', 'quiz-small', 'Take this page to a clinician, or have them done at a measurement visit. Enter them here afterwards so next year has something to compare with.'));
-  DATA.measured.forEach(m => {
-    const r = el('div', 'quiz-measure-row');
-    const L = el('div');
-    L.appendChild(el('div', 'quiz-measure-label', m.label));
-    L.appendChild(el('div', 'quiz-measure-how', m.how));
-    if (m.ref) L.appendChild(el('div', 'quiz-measure-ref', m.ref));
-    const inp = document.createElement('input');
-    inp.type = 'text';
-    inp.placeholder = m.unit;
-    inp.value = S.measured[m.id] || '';
-    inp.className = 'quiz-measure-input';
-    inp.oninput = function() { S.measured[m.id] = inp.value.slice(0, 20); save(); };
-    r.appendChild(L); r.appendChild(inp); mc.appendChild(r);
-  });
-  mc.appendChild(el('p', 'quiz-small', 'These reference points are population figures, not verdicts about you.'));
-  me.appendChild(mc);
-
-  /* Book-an-appointment bar — Figma 160:609 */
-  me.appendChild(createAppointmentCta());
-}
-
-function buildHandoff() {
-  const h = document.getElementById('pane-handoff');
-  h.innerHTML = '';
-
-  /* ── Card 1: Download / Print — always visible ── */
-  const dlCard = el('div', 'quiz-card');
-  dlCard.id = 'handoff-dl-card';
-  dlCard.appendChild(el('h3', 'quiz-card-subheading', 'A summary for your clinician'));
-  dlCard.appendChild(el('p', 'quiz-small', 'Stays on your device. Nothing is sent to a server.'));
-  const printBtn = el('button', 'quiz-btn-primary', 'Download / Print this page');
-  printBtn.type = 'button';
-  printBtn.style.cssText = 'width:100%;margin-top:8px';
-  printBtn.onclick = function() { renderPrintable(); window.print(); };
-  dlCard.appendChild(printBtn);
-  h.appendChild(dlCard);
-
-  /* ── Card 2: Email PDF — shows sent state on success ── */
-  const mailCard = el('div', 'quiz-card');
-  mailCard.id = 'handoff-mail-card';
-
-  const mailHeading = el('h3', 'quiz-card-subheading', 'Email this PDF to me');
-  mailCard.appendChild(mailHeading);
-  mailCard.appendChild(el('p', 'quiz-small', 'We send it to you and do not keep a copy.'));
-
-  const mailField = el('div', 'quiz-field');
-  mailField.style.cssText = 'margin-top:14px';
-  const mailLabel = el('label', 'quiz-field-label', 'Your email');
-  mailLabel.setAttribute('for', 'handoff-email');
-  const mailInput = document.createElement('input');
-  mailInput.type = 'email';
-  mailInput.id = 'handoff-email';
-  mailInput.placeholder = 'your@email.com';
-  mailInput.autocomplete = 'email';
-  mailInput.inputMode = 'email';
-  mailInput.className = 'quiz-input';
-  mailField.appendChild(mailLabel);
-  mailField.appendChild(mailInput);
-  mailCard.appendChild(mailField);
-
-  const tsSlot = el('div');
-  tsSlot.id = 'handoff-turnstile';
-  tsSlot.style.cssText = 'margin:8px 0 12px';
-  mailCard.appendChild(tsSlot);
-
-  const mailBtn = el('button', 'quiz-btn-ghost', 'Email me this PDF');
-  mailBtn.type = 'button';
-  mailBtn.id = 'btn-email-pdf';
-  mailBtn.style.cssText = 'width:100%';
-  mailBtn.onclick = function() { emailSummaryPdf(); };
-  mailCard.appendChild(mailBtn);
-
-  const mailMsg = el('p', 'quiz-small');
-  mailMsg.id = 'handoff-mail-msg';
-  mailMsg.style.cssText = 'display:none;margin-top:8px';
-  mailCard.appendChild(mailMsg);
-
-  h.appendChild(mailCard);
-  renderHandoffTurnstile(tsSlot);
-
-  const prev = el('div', 'quiz-card');
-  prev.appendChild(el('h3', 'quiz-card-subheading', 'What it will contain'));
-  const items = ['What you want to keep doing', 'Activities you have changed or stopped', 'The areas you flagged, highest first', 'The eight measurements, blank or filled', 'A note for the clinician about what else can cause reduced activity'];
-  items.forEach(t => {
-    const row = el('div', 'quiz-result-row');
-    const nm = el('div', 'quiz-result-name', t);
-    row.appendChild(nm);
-    prev.appendChild(row);
-  });
-  h.appendChild(prev);
-
-  const mv = el('div', 'quiz-card');
-  mv.appendChild(el('h3', 'quiz-card-subheading', 'If you want the measurements done properly'));
-  mv.appendChild(el('p', 'quiz-small', 'Athena Clinic in Honolulu runs a free twenty-minute measurement visit: grip strength, walking speed, chair rises, balance and blood pressure. No charge and nothing to sign up for. rebelliousaging.org/measure'));
-  h.appendChild(mv);
-  h.appendChild(createAppointmentCta());
-}
-
-function summaryText() {
-  const L = [], nl = '\n';
-  L.push('REBELLIOUS AGING CHECK-UP');
-  L.push('Completed ' + new Date().toLocaleDateString());
-  L.push('Self-reported. Not a diagnosis. Scores are 0-9 per area; higher means more reported difficulty.');
-  if (S.priority.length) {
-    L.push(''); L.push('WHAT I WANT TO KEEP DOING');
-    S.priority.forEach(id => { const r = DATA.radius.find(x => x.id === id); if (r) L.push('  - ' + r.label); });
+  function summaryText() {
+    const L = [],
+      nl = '\n';
+    L.push('REBELLIOUS AGING CHECK-UP');
+    L.push('Completed ' + new Date().toLocaleDateString());
+    L.push('Self-reported. Not a diagnosis. Scores are 0-9 per area; higher means more reported difficulty.');
+    if (S.priority.length) {
+      L.push('');
+      L.push('WHAT I WANT TO KEEP DOING');
+      S.priority.forEach((id) => {
+        const r = DATA.radius.find((x) => x.id === id);
+        if (r) L.push('  - ' + r.label);
+      });
+    }
+    const flagged = radiusFlagged();
+    if (flagged.length) {
+      L.push('');
+      L.push('ACTIVITIES I HAVE CHANGED OR STOPPED');
+      flagged.forEach((r) => {
+        L.push('  - ' + r.label + '  (' + (S.radius[r.id] === 2 ? 'no longer' : 'changed') + ')');
+      });
+    }
+    const ranked = DATA.systems
+      .map((sy) => ({ sy, s: sysScore(sy.id) }))
+      .filter((x) => x.s !== null)
+      .sort((a, b) => b.s - a.s);
+    const shown = ranked.filter((x) => x.s >= 3);
+    L.push('');
+    L.push('AREAS REPORTED, HIGHEST FIRST');
+    if (!shown.length) L.push('  Nothing scored above the reporting threshold.');
+    shown.forEach((x) => {
+      L.push('  ' + x.s + '/9  ' + x.sy.label + '  (' + DATA.domains[x.sy.domain] + ')');
+    });
+    L.push('');
+    L.push('MEASUREMENTS');
+    DATA.measured.forEach((m) => {
+      L.push('  ' + m.label + ': ' + (S.measured[m.id] || '________') + ' ' + m.unit);
+    });
+    L.push('');
+    L.push('rebelliousaging.org  |  ' + BUILD + '  |  Produced on my own device; no answers were transmitted.');
+    return L.join(nl);
   }
-  const flagged = radiusFlagged();
-  if (flagged.length) {
-    L.push(''); L.push('ACTIVITIES I HAVE CHANGED OR STOPPED');
-    flagged.forEach(r => { L.push('  - ' + r.label + '  (' + (S.radius[r.id] === 2 ? 'no longer' : 'changed') + ')'); });
-  }
-  const ranked = DATA.systems.map(sy => ({ sy, s: sysScore(sy.id) })).filter(x => x.s !== null).sort((a,b) => b.s - a.s);
-  const shown = ranked.filter(x => x.s >= 3);
-  L.push(''); L.push('AREAS REPORTED, HIGHEST FIRST');
-  if (!shown.length) L.push('  Nothing scored above the reporting threshold.');
-  shown.forEach(x => { L.push('  ' + x.s + '/9  ' + x.sy.label + '  (' + DATA.domains[x.sy.domain] + ')'); });
-  L.push(''); L.push('MEASUREMENTS');
-  DATA.measured.forEach(m => { L.push('  ' + m.label + ': ' + (S.measured[m.id] || '________') + ' ' + m.unit); });
-  L.push('');
-  L.push('rebelliousaging.org  |  ' + BUILD + '  |  Produced on my own device; no answers were transmitted.');
-  return L.join(nl);
-}
 
-function renderPrintable() {
-  const p = document.getElementById('printable');
-  p.innerHTML = '';
+  function renderPrintable() {
+    const p = document.getElementById('printable');
+    p.innerHTML = '';
 
-  /* Blank out browser-injected page-margin text (date, title, URL, page number).
+    /* Blank out browser-injected page-margin text (date, title, URL, page number).
      @page named margin boxes suppress Chrome/Edge/Safari's default content. */
-  const blankPageStyle = document.createElement('style');
-  blankPageStyle.textContent = [
-    '@page {',
-    '  @top-left   { content: ""; }',
-    '  @top-center { content: ""; }',
-    '  @top-right  { content: ""; }',
-    '  @bottom-left   { content: ""; }',
-    '  @bottom-center { content: ""; }',
-    '  @bottom-right  { content: ""; }',
-    '}'
-  ].join('\n');
-  p.appendChild(blankPageStyle);
+    const blankPageStyle = document.createElement('style');
+    blankPageStyle.textContent = [
+      '@page {',
+      '  @top-left   { content: ""; }',
+      '  @top-center { content: ""; }',
+      '  @top-right  { content: ""; }',
+      '  @bottom-left   { content: ""; }',
+      '  @bottom-center { content: ""; }',
+      '  @bottom-right  { content: ""; }',
+      '}',
+    ].join('\n');
+    p.appendChild(blankPageStyle);
 
-  const w = el('div', 'rp-wrap');
+    const w = el('div', 'rp-wrap');
 
-  /* ── Header ── */
-  const hdr = el('header', 'rp-header');
-  const hdrRow = el('div', 'rp-header-row');
-  hdrRow.appendChild(el('span', 'rp-brand', 'Rebellious Aging'));
-  hdrRow.appendChild(el('span', 'rp-header-label', 'Clinical summary'));
-  hdr.appendChild(hdrRow);
-  const hdrMeta = el('div', 'rp-header-meta');
-  hdrMeta.textContent = 'Completed ' + new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' }) + ' · Self-reported · Not a diagnosis · Scores 0-9 per area (higher = more reported difficulty)';
-  hdr.appendChild(hdrMeta);
-  w.appendChild(hdr);
+    /* ── Header ── */
+    const hdr = el('header', 'rp-header');
+    const hdrRow = el('div', 'rp-header-row');
+    hdrRow.appendChild(el('span', 'rp-brand', 'Rebellious Aging'));
+    hdrRow.appendChild(el('span', 'rp-header-label', 'Clinical summary'));
+    hdr.appendChild(hdrRow);
+    const hdrMeta = el('div', 'rp-header-meta');
+    hdrMeta.textContent =
+      'Completed ' +
+      new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) +
+      ' · Self-reported · Not a diagnosis · Scores 0-9 per area (higher = more reported difficulty)';
+    hdr.appendChild(hdrMeta);
+    w.appendChild(hdr);
 
-  /* ── Disclaimer note ── */
-  const note = el('p', 'rp-note');
-  note.textContent = 'This document was produced on the patient\'s own device using a check-up tool at rebelliousaging.org. It is a structured self-report to support a clinical conversation. It is not a diagnostic instrument.';
-  w.appendChild(note);
+    /* ── Disclaimer note ── */
+    const note = el('p', 'rp-note');
+    note.textContent =
+      "This document was produced on the patient's own device using a check-up tool at rebelliousaging.org. It is a structured self-report to support a clinical conversation. It is not a diagnostic instrument.";
+    w.appendChild(note);
 
-  /* ── Priorities ── */
-  if (S.priority && S.priority.length) {
-    const sec = el('section', 'rp-section');
-    sec.appendChild(el('h2', 'rp-section-title', 'What this person wants to keep doing'));
-    const pills = el('div', 'rp-pills');
-    S.priority.forEach(id => {
-      const r = DATA.radius.find(x => x.id === id);
-      if (r) pills.appendChild(el('span', 'rp-pill', r.label));
-    });
-    sec.appendChild(pills);
-    w.appendChild(sec);
-  }
-
-  /* ── Changed / stopped activities ── */
-  const flagged = radiusFlagged();
-  if (flagged.length) {
-    const sec = el('section', 'rp-section');
-    sec.appendChild(el('h2', 'rp-section-title', 'Activities changed or stopped'));
-    flagged.forEach(r => {
-      const row = el('div', 'rp-flag-row');
-      row.appendChild(el('span', 'rp-flag-label', r.label));
-      const stopped = S.radius[r.id] === 2;
-      row.appendChild(el('span', 'rp-flag-tag ' + (stopped ? 'rp-tag-stopped' : 'rp-tag-changed'), stopped ? 'No longer' : 'Changed'));
-      sec.appendChild(row);
-    });
-    w.appendChild(sec);
-  }
-
-  /* ── Areas flagged — sorted by score ── */
-  const ranked = DATA.systems.map(sy => ({ sy, s: sysScore(sy.id) })).filter(x => x.s !== null).sort((a, b) => b.s - a.s);
-  const flaggedSys = ranked.filter(x => x.s >= 3);
-  const sec1 = el('section', 'rp-section');
-  sec1.appendChild(el('h2', 'rp-section-title', 'Areas flagged, sorted by score'));
-  if (!flaggedSys.length) {
-    sec1.appendChild(el('p', 'rp-mini-na', 'Nothing scored above the reporting threshold (3/9).'));
-  } else {
-    flaggedSys.forEach(({ sy, s }) => {
-      const row = el('div', 'rp-score-row');
-      row.appendChild(el('div', 'rp-score-label', sy.label));
-      row.appendChild(el('div', 'rp-score-domain', DATA.domains[sy.domain]));
-      const barWrap = el('div', 'rp-score-bar-wrap');
-      const bar = el('div', 'rp-score-bar' + (s >= 7 ? ' rp-bar-high' : s >= 5 ? ' rp-bar-mid' : ''));
-      bar.style.width = Math.round(s / 9 * 100) + '%';
-      barWrap.appendChild(bar);
-      row.appendChild(barWrap);
-      row.appendChild(el('div', 'rp-score-val', s + '/9'));
-      sec1.appendChild(row);
-    });
-  }
-  w.appendChild(sec1);
-
-  /* ── All 32 systems — complete overview ── */
-  const sec2 = el('section', 'rp-section');
-  sec2.appendChild(el('h2', 'rp-section-title', 'All systems: complete overview'));
-  DATA.domains.forEach((domain, di) => {
-    const systems = DATA.systems.filter(sy => sy.domain === di);
-    const domLabel = el('div', 'rp-domain-label', domain);
-    sec2.appendChild(domLabel);
-    systems.forEach(sy => {
-      const s = sysScore(sy.id);
-      const row = el('div', 'rp-mini-row');
-      row.appendChild(el('span', 'rp-mini-label', sy.label));
-      if (s !== null) {
-        const bw = el('span', 'rp-mini-bar-wrap');
-        const b = el('span', 'rp-mini-bar');
-        b.style.width = Math.round(s / 9 * 100) + '%';
-        bw.appendChild(b);
-        row.appendChild(bw);
-        row.appendChild(el('span', 'rp-mini-val', s + '/9'));
-      } else {
-        const na = el('span', 'rp-mini-na', 'not answered');
-        na.style.gridColumn = '2 / 4';
-        row.appendChild(na);
-      }
-      sec2.appendChild(row);
-    });
-  });
-  w.appendChild(sec2);
-
-  /* ── Measurements ── */
-  const sec3 = el('section', 'rp-section');
-  sec3.appendChild(el('h2', 'rp-section-title', 'Eight measurements to collect'));
-  const measNote = el('p', 'rp-meas-note');
-  measNote.textContent = 'These cannot be measured reliably at home. A free 20-minute measurement visit is available at Athena Clinic, Honolulu. rebelliousaging.org/measure';
-  sec3.appendChild(measNote);
-  const tbl = el('table', 'rp-table');
-  const thead = el('thead');
-  const headRow = el('tr');
-  ['Test', 'How it is measured', 'Reference range', 'Result'].forEach(h => {
-    const th = el('th'); th.textContent = h; headRow.appendChild(th);
-  });
-  thead.appendChild(headRow); tbl.appendChild(thead);
-  const tbody = el('tbody');
-  DATA.measured.forEach(m => {
-    const tr = el('tr');
-    tr.appendChild(el('td', 'rp-meas-name', m.label));
-    tr.appendChild(el('td', null, m.how));
-    const refTd = el('td', 'rp-meas-ref'); refTd.textContent = m.ref || '-'; tr.appendChild(refTd);
-    const resultTd = el('td', 'rp-meas-result');
-    resultTd.textContent = S.measured && S.measured[m.id] ? S.measured[m.id] + ' ' + m.unit : '________';
-    tr.appendChild(resultTd);
-    tbody.appendChild(tr);
-  });
-  tbl.appendChild(tbody);
-  sec3.appendChild(tbl);
-  w.appendChild(sec3);
-
-  /* Footer removed — browser headers/footers suppressed via @page margin:0 */
-
-  p.appendChild(w);
-}
-
-const PDF_FILENAME = 'rebellious-aging-check-up.pdf';
-const HTML2PDF_SRC = 'https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js';
-
-function loadHtml2Pdf() {
-  if (window.html2pdf) return Promise.resolve(window.html2pdf);
-  return new Promise(function(resolve, reject) {
-    const existing = document.querySelector('script[data-html2pdf]');
-    const done = function() {
-      if (window.html2pdf) resolve(window.html2pdf);
-      else reject(new Error('html2pdf failed to load'));
-    };
-    if (existing) {
-      if (window.html2pdf) { resolve(window.html2pdf); return; }
-      existing.addEventListener('load', done, { once: true });
-      existing.addEventListener('error', function() { reject(new Error('html2pdf failed to load')); }, { once: true });
-      return;
+    /* ── Priorities ── */
+    if (S.priority && S.priority.length) {
+      const sec = el('section', 'rp-section');
+      sec.appendChild(el('h2', 'rp-section-title', 'What this person wants to keep doing'));
+      const pills = el('div', 'rp-pills');
+      S.priority.forEach((id) => {
+        const r = DATA.radius.find((x) => x.id === id);
+        if (r) pills.appendChild(el('span', 'rp-pill', r.label));
+      });
+      sec.appendChild(pills);
+      w.appendChild(sec);
     }
-    const script = document.createElement('script');
-    script.src = HTML2PDF_SRC;
-    script.async = true;
-    script.dataset.html2pdf = 'true';
-    script.addEventListener('load', done, { once: true });
-    script.addEventListener('error', function() { reject(new Error('html2pdf failed to load')); }, { once: true });
-    document.head.appendChild(script);
-  });
-}
 
-function downloadBlob(blob, filename) {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(function() { URL.revokeObjectURL(url); }, 3000);
-}
-
-async function makePdfBlob() {
-  renderPrintable();
-  const node = document.getElementById('printable');
-  const html2pdf = await loadHtml2Pdf();
-  node.classList.add('pdf-capture');
-  try {
-    const source = node.querySelector('.rp-wrap') || node;
-    return await html2pdf()
-      .set({
-        margin: 10,
-        filename: PDF_FILENAME,
-        image: { type: 'jpeg', quality: 0.92 },
-        html2canvas: { scale: 1.5, useCORS: true, backgroundColor: '#ffffff' },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak: { mode: ['css', 'legacy'] },
-      })
-      .from(source)
-      .outputPdf('blob');
-  } finally {
-    node.classList.remove('pdf-capture');
-  }
-}
-
-/* ═════════════════════════════ EMAIL-PDF FUNCTIONS ═════════════════════════════ */
-function mailConfig() {
-  const node = document.getElementById('quiz-mail-config');
-  return {
-    endpoint: (node && node.getAttribute('data-endpoint')) || '',
-    site: (node && node.getAttribute('data-site')) || '',
-    turnstileSitekey: (node && node.getAttribute('data-turnstile-sitekey')) || '',
-  };
-}
-
-function loadTurnstile() {
-  if (window.turnstile) return Promise.resolve(window.turnstile);
-  return new Promise(function(resolve, reject) {
-    const ready = function() {
-      if (window.turnstile) resolve(window.turnstile);
-      else reject(new Error('Turnstile failed to load'));
-    };
-    const existing = document.querySelector('script[data-turnstile-api]');
-    if (existing) {
-      if (window.turnstile) { resolve(window.turnstile); return; }
-      existing.addEventListener('load', ready, { once: true });
-      existing.addEventListener('error', function() { reject(new Error('Turnstile failed to load')); }, { once: true });
-      return;
+    /* ── Changed / stopped activities ── */
+    const flagged = radiusFlagged();
+    if (flagged.length) {
+      const sec = el('section', 'rp-section');
+      sec.appendChild(el('h2', 'rp-section-title', 'Activities changed or stopped'));
+      flagged.forEach((r) => {
+        const row = el('div', 'rp-flag-row');
+        row.appendChild(el('span', 'rp-flag-label', r.label));
+        const stopped = S.radius[r.id] === 2;
+        row.appendChild(
+          el(
+            'span',
+            'rp-flag-tag ' + (stopped ? 'rp-tag-stopped' : 'rp-tag-changed'),
+            stopped ? 'No longer' : 'Changed'
+          )
+        );
+        sec.appendChild(row);
+      });
+      w.appendChild(sec);
     }
-    const script = document.createElement('script');
-    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
-    script.async = true;
-    script.dataset.turnstileApi = 'true';
-    script.addEventListener('load', ready, { once: true });
-    script.addEventListener('error', function() { reject(new Error('Turnstile failed to load')); }, { once: true });
-    document.head.appendChild(script);
-  });
-}
 
-let handoffTurnstileId = '';
-
-function renderHandoffTurnstile(slot) {
-  const sitekey = mailConfig().turnstileSitekey;
-  if (!slot || !sitekey) return;
-  loadTurnstile().then(function(api) {
-    if (!slot.isConnected) return;
-    slot.innerHTML = '';
-    handoffTurnstileId = api.render(slot, { sitekey });
-  }).catch(function(err) { console.error(err); });
-}
-
-function blobToBase64(blob) {
-  return new Promise(function(resolve, reject) {
-    const reader = new FileReader();
-    reader.onload = function() {
-      const result = String(reader.result || '');
-      const comma = result.indexOf(',');
-      resolve(comma === -1 ? result : result.slice(comma + 1));
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(blob);
-  });
-}
-
-async function emailSummaryPdf() {
-  const emailInput = document.getElementById('handoff-email');
-  const msg = document.getElementById('handoff-mail-msg');
-  const btn = document.getElementById('btn-email-pdf');
-  const cfg = mailConfig();
-  const email = (emailInput && emailInput.value || '').trim();
-
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
-    showMailMsg(msg, 'error', 'That does not look like an email address.');
-    return;
-  }
-  if (!cfg.endpoint || !cfg.site) {
-    showMailMsg(msg, 'error', 'Email is not configured. Download or print instead.');
-    return;
-  }
-
-  const turnstile = window.turnstile;
-  const token = handoffTurnstileId && turnstile ? turnstile.getResponse(handoffTurnstileId) : '';
-  if (!token) {
-    showMailMsg(msg, 'error', 'Complete the spam check first.');
-    return;
-  }
-
-  if (btn) btn.disabled = true;
-  showMailMsg(msg, 'loading', 'Preparing your PDF…');
-
-  let downloaded = false;
-  try {
-    const blob = await makePdfBlob();
-    downloadBlob(blob, PDF_FILENAME);
-    downloaded = true;
-    showMailMsg(msg, 'loading', 'Sending…');
-    const pdf = await blobToBase64(blob);
-    const res = await fetch(cfg.endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({
-        site: cfg.site,
-        email: email,
-        filename: PDF_FILENAME,
-        pdf: pdf,
-        turnstileToken: token,
-      }),
-    });
-    const payload = await res.json().catch(function() { return null; });
-    if (res.ok && payload && payload.ok) {
-      showEmailSentCard(email);
+    /* ── Areas flagged — sorted by score ── */
+    const ranked = DATA.systems
+      .map((sy) => ({ sy, s: sysScore(sy.id) }))
+      .filter((x) => x.s !== null)
+      .sort((a, b) => b.s - a.s);
+    const flaggedSys = ranked.filter((x) => x.s >= 3);
+    const sec1 = el('section', 'rp-section');
+    sec1.appendChild(el('h2', 'rp-section-title', 'Areas flagged, sorted by score'));
+    if (!flaggedSys.length) {
+      sec1.appendChild(el('p', 'rp-mini-na', 'Nothing scored above the reporting threshold (3/9).'));
     } else {
-      throw new Error((payload && payload.error) || 'send failed');
+      flaggedSys.forEach(({ sy, s }) => {
+        const row = el('div', 'rp-score-row');
+        row.appendChild(el('div', 'rp-score-label', sy.label));
+        row.appendChild(el('div', 'rp-score-domain', DATA.domains[sy.domain]));
+        const barWrap = el('div', 'rp-score-bar-wrap');
+        const bar = el('div', 'rp-score-bar' + (s >= 7 ? ' rp-bar-high' : s >= 5 ? ' rp-bar-mid' : ''));
+        bar.style.width = Math.round((s / 9) * 100) + '%';
+        barWrap.appendChild(bar);
+        row.appendChild(barWrap);
+        row.appendChild(el('div', 'rp-score-val', s + '/9'));
+        sec1.appendChild(row);
+      });
     }
-  } catch (err) {
-    console.error(err);
-    const detail = err && err.message ? String(err.message) : '';
-    const known = /limit|spam|valid email|too large|Missing PDF/i.test(detail);
-    if (msg) {
-      const text = known ? detail
-        : downloaded ? 'Could not email it. The PDF still downloaded — attach that, or use Download / Print.'
-        : 'Could not build the PDF. Use Download / Print instead.';
-      showMailMsg(msg, 'error', text);
+    w.appendChild(sec1);
+
+    /* ── All 32 systems — complete overview ── */
+    const sec2 = el('section', 'rp-section');
+    sec2.appendChild(el('h2', 'rp-section-title', 'All systems: complete overview'));
+    DATA.domains.forEach((domain, di) => {
+      const systems = DATA.systems.filter((sy) => sy.domain === di);
+      const domLabel = el('div', 'rp-domain-label', domain);
+      sec2.appendChild(domLabel);
+      systems.forEach((sy) => {
+        const s = sysScore(sy.id);
+        const row = el('div', 'rp-mini-row');
+        row.appendChild(el('span', 'rp-mini-label', sy.label));
+        if (s !== null) {
+          const bw = el('span', 'rp-mini-bar-wrap');
+          const b = el('span', 'rp-mini-bar');
+          b.style.width = Math.round((s / 9) * 100) + '%';
+          bw.appendChild(b);
+          row.appendChild(bw);
+          row.appendChild(el('span', 'rp-mini-val', s + '/9'));
+        } else {
+          const na = el('span', 'rp-mini-na', 'not answered');
+          na.style.gridColumn = '2 / 4';
+          row.appendChild(na);
+        }
+        sec2.appendChild(row);
+      });
+    });
+    w.appendChild(sec2);
+
+    /* ── Measurements ── */
+    const sec3 = el('section', 'rp-section');
+    sec3.appendChild(el('h2', 'rp-section-title', 'Eight measurements to collect'));
+    const measNote = el('p', 'rp-meas-note');
+    measNote.textContent =
+      'These cannot be measured reliably at home. A free 20-minute measurement visit is available at Athena Clinic, Honolulu. rebelliousaging.org/measure';
+    sec3.appendChild(measNote);
+    const tbl = el('table', 'rp-table');
+    const thead = el('thead');
+    const headRow = el('tr');
+    ['Test', 'How it is measured', 'Reference range', 'Result'].forEach((h) => {
+      const th = el('th');
+      th.textContent = h;
+      headRow.appendChild(th);
+    });
+    thead.appendChild(headRow);
+    tbl.appendChild(thead);
+    const tbody = el('tbody');
+    DATA.measured.forEach((m) => {
+      const tr = el('tr');
+      tr.appendChild(el('td', 'rp-meas-name', m.label));
+      tr.appendChild(el('td', null, m.how));
+      const refTd = el('td', 'rp-meas-ref');
+      refTd.textContent = m.ref || '-';
+      tr.appendChild(refTd);
+      const resultTd = el('td', 'rp-meas-result');
+      resultTd.textContent = S.measured && S.measured[m.id] ? S.measured[m.id] + ' ' + m.unit : '________';
+      tr.appendChild(resultTd);
+      tbody.appendChild(tr);
+    });
+    tbl.appendChild(tbody);
+    sec3.appendChild(tbl);
+    w.appendChild(sec3);
+
+    /* Footer removed — browser headers/footers suppressed via @page margin:0 */
+
+    p.appendChild(w);
+  }
+
+  const PDF_FILENAME = 'rebellious-aging-check-up.pdf';
+  const HTML2PDF_SRC = 'https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js';
+
+  function loadHtml2Pdf() {
+    if (window.html2pdf) return Promise.resolve(window.html2pdf);
+    return new Promise(function (resolve, reject) {
+      const existing = document.querySelector('script[data-html2pdf]');
+      const done = function () {
+        if (window.html2pdf) resolve(window.html2pdf);
+        else reject(new Error('html2pdf failed to load'));
+      };
+      if (existing) {
+        if (window.html2pdf) {
+          resolve(window.html2pdf);
+          return;
+        }
+        existing.addEventListener('load', done, { once: true });
+        existing.addEventListener(
+          'error',
+          function () {
+            reject(new Error('html2pdf failed to load'));
+          },
+          { once: true }
+        );
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = HTML2PDF_SRC;
+      script.async = true;
+      script.dataset.html2pdf = 'true';
+      script.addEventListener('load', done, { once: true });
+      script.addEventListener(
+        'error',
+        function () {
+          reject(new Error('html2pdf failed to load'));
+        },
+        { once: true }
+      );
+      document.head.appendChild(script);
+    });
+  }
+
+  function downloadBlob(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () {
+      URL.revokeObjectURL(url);
+    }, 3000);
+  }
+
+  async function makePdfBlob() {
+    renderPrintable();
+    const node = document.getElementById('printable');
+    const html2pdf = await loadHtml2Pdf();
+    node.classList.add('pdf-capture');
+    try {
+      const source = node.querySelector('.rp-wrap') || node;
+      return await html2pdf()
+        .set({
+          margin: 10,
+          filename: PDF_FILENAME,
+          image: { type: 'jpeg', quality: 0.92 },
+          html2canvas: { scale: 1.5, useCORS: true, backgroundColor: '#ffffff' },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+          pagebreak: { mode: ['css', 'legacy'] },
+        })
+        .from(source)
+        .outputPdf('blob');
+    } finally {
+      node.classList.remove('pdf-capture');
     }
-  } finally {
-    if (btn) btn.disabled = false;
-    if (handoffTurnstileId && window.turnstile) {
-      try { window.turnstile.reset(handoffTurnstileId); } catch (e) {}
+  }
+
+  /* ═════════════════════════════ EMAIL-PDF FUNCTIONS ═════════════════════════════ */
+  function mailConfig() {
+    const node = document.getElementById('quiz-mail-config');
+    return {
+      endpoint: (node && node.getAttribute('data-endpoint')) || '',
+      site: (node && node.getAttribute('data-site')) || '',
+      turnstileSitekey: (node && node.getAttribute('data-turnstile-sitekey')) || '',
+    };
+  }
+
+  function loadTurnstile() {
+    if (window.turnstile) return Promise.resolve(window.turnstile);
+    return new Promise(function (resolve, reject) {
+      const ready = function () {
+        if (window.turnstile) resolve(window.turnstile);
+        else reject(new Error('Turnstile failed to load'));
+      };
+      const existing = document.querySelector('script[data-turnstile-api]');
+      if (existing) {
+        if (window.turnstile) {
+          resolve(window.turnstile);
+          return;
+        }
+        existing.addEventListener('load', ready, { once: true });
+        existing.addEventListener(
+          'error',
+          function () {
+            reject(new Error('Turnstile failed to load'));
+          },
+          { once: true }
+        );
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+      script.async = true;
+      script.dataset.turnstileApi = 'true';
+      script.addEventListener('load', ready, { once: true });
+      script.addEventListener(
+        'error',
+        function () {
+          reject(new Error('Turnstile failed to load'));
+        },
+        { once: true }
+      );
+      document.head.appendChild(script);
+    });
+  }
+
+  let handoffTurnstileId = '';
+
+  function renderHandoffTurnstile(slot) {
+    const config = mailConfig();
+    const sitekey = config.turnstileSitekey;
+    if (!slot || !sitekey) return;
+    loadTurnstile()
+      .then(function (api) {
+        if (!slot.isConnected) return;
+        slot.innerHTML = '';
+        handoffTurnstileId = api.render(slot, {
+          sitekey,
+          action: config.site,
+          size: 'flexible',
+          appearance: 'interaction-only',
+          'refresh-expired': 'auto',
+        });
+      })
+      .catch(function (err) {
+        console.error(err);
+      });
+  }
+
+  function blobToBase64(blob) {
+    return new Promise(function (resolve, reject) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        const result = String(reader.result || '');
+        const comma = result.indexOf(',');
+        resolve(comma === -1 ? result : result.slice(comma + 1));
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  async function emailSummaryPdf() {
+    const emailInput = document.getElementById('handoff-email');
+    const msg = document.getElementById('handoff-mail-msg');
+    const btn = document.getElementById('btn-email-pdf');
+    const cfg = mailConfig();
+    const email = ((emailInput && emailInput.value) || '').trim();
+
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      showMailMsg(msg, 'error', 'That does not look like an email address.');
+      return;
+    }
+    if (!cfg.endpoint || !cfg.site) {
+      showMailMsg(msg, 'error', 'Email is not configured. Download or print instead.');
+      return;
+    }
+
+    const turnstile = window.turnstile;
+    const token = handoffTurnstileId && turnstile ? turnstile.getResponse(handoffTurnstileId) : '';
+    if (!token) {
+      showMailMsg(msg, 'error', 'Complete the spam check first.');
+      return;
+    }
+
+    if (btn) btn.disabled = true;
+    showMailMsg(msg, 'loading', 'Preparing your PDF…');
+
+    let downloaded = false;
+    try {
+      const blob = await makePdfBlob();
+      downloadBlob(blob, PDF_FILENAME);
+      downloaded = true;
+      showMailMsg(msg, 'loading', 'Sending…');
+      const pdf = await blobToBase64(blob);
+      const res = await fetch(cfg.endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          site: cfg.site,
+          email: email,
+          filename: PDF_FILENAME,
+          pdf: pdf,
+          turnstileToken: token,
+        }),
+      });
+      const payload = await res.json().catch(function () {
+        return null;
+      });
+      if (res.ok && payload && payload.ok) {
+        showEmailSentCard(email);
+      } else {
+        throw new Error((payload && payload.error) || 'send failed');
+      }
+    } catch (err) {
+      console.error(err);
+      const detail = err && err.message ? String(err.message) : '';
+      const known = /limit|spam|valid email|too large|Missing PDF/i.test(detail);
+      if (msg) {
+        const text = known
+          ? detail
+          : downloaded
+            ? 'Could not email it. The PDF still downloaded — attach that, or use Download / Print.'
+            : 'Could not build the PDF. Use Download / Print instead.';
+        showMailMsg(msg, 'error', text);
+      }
+    } finally {
+      if (btn) btn.disabled = false;
+      if (handoffTurnstileId && window.turnstile) {
+        try {
+          window.turnstile.reset(handoffTurnstileId);
+        } catch (e) {}
+      }
     }
   }
-}
 
-function showMailMsg(el, type, text) {
-  if (!el) return;
-  el.style.display = 'block';
-  el.style.opacity = '1';
-  el.style.marginTop = '8px';
-  if (type === 'error') {
-    el.style.color = '#b91c1c';
-  } else if (type === 'loading') {
-    el.style.color = 'rgba(27,42,50,0.55)';
-    el.style.fontStyle = 'italic';
-  } else {
-    el.style.color = 'inherit';
-  }
-  el.textContent = text;
-}
-
-function showEmailSentCard(email) {
-  /* Flip only the email card — download card stays untouched */
-  const mailCard = document.getElementById('handoff-mail-card');
-  if (!mailCard) return;
-  mailCard.innerHTML = '';
-  mailCard.style.cssText = 'background:#f0faf4;border-color:rgba(22,163,74,0.3);text-align:center;padding:28px 24px;';
-
-  /* Check icon */
-  const icon = document.createElement('div');
-  icon.innerHTML = '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#16a34a" opacity="0.12"/><circle cx="12" cy="12" r="11" stroke="#16a34a" stroke-width="1.5"/><path d="M7 12.5l3.5 3.5 6.5-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  icon.style.cssText = 'display:flex;justify-content:center;margin-bottom:14px;';
-  mailCard.appendChild(icon);
-
-  const heading = el('h3', 'quiz-card-subheading', 'PDF sent');
-  heading.style.cssText = 'color:#15803d;margin-bottom:6px;font-size:18px;';
-  mailCard.appendChild(heading);
-
-  const sub = el('p', 'quiz-small', 'Check your inbox at ' + email);
-  sub.style.cssText = 'opacity:1;color:#166534;margin-bottom:0;font-size:14px;';
-  mailCard.appendChild(sub);
-}
-
-/* ═════════════════════════════ NAVIGATION ═════════════════════════════ */
-const ORDER = ['home','dom0','dom1','dom2','dom3','dom4','dom5','radius','priority','results'];
-const SECTION_TABS = ['screen','measured','handoff'];
-const SECTION_NAMES = ['What you told us','To be measured','For your doctor'];
-let at = 0;
-
-/* ── Sync quiz-main padding-top to actual header height ── */
-function syncMainPadding(isHome) {
-  const header = document.getElementById('quiz-header');
-  const main   = document.getElementById('quiz-main');
-  if (!header || !main) return;
-  main.style.paddingTop = isHome ? '0px' : (header.offsetHeight + 'px');
-}
-
-function show(i) {
-  at = Math.max(0, Math.min(ORDER.length - 1, i));
-  const cur = ORDER[at];
-
-  ORDER.forEach(id => {
-    const e = document.getElementById('sc-' + id);
-    if (e) e.classList.toggle('on', id === cur);
-  });
-
-  /* Header visibility */
-  const header = document.getElementById('quiz-header');
-  const isHome = cur === 'home';
-  const isResults = cur === 'results';
-  header.classList.toggle('hidden', isHome);
-
-  /* Question fill bar only — labels stay on Results */
-  const track = document.getElementById('prog-track');
-  if (track) track.classList.toggle('hidden', isResults);
-
-  /* Bottom nav */
-  const nav = document.getElementById('nav');
-  nav.classList.toggle('hidden', isHome);
-
-  /* main padding top: always matches actual rendered header height so content never hides under it */
-  const main = document.getElementById('quiz-main');
-  syncMainPadding(isHome);
-
-  /* Update header progress */
-  updateHeaderForScreen(cur);
-
-  if (cur === 'radius') buildRadius();
-  if (cur === 'priority') buildPriority();
-  if (cur === 'results') {
-    S.finished = Date.now(); save();
-    buildResults();
-    switchTab('screen', false);
-  } else {
-    syncNav();
+  function showMailMsg(el, type, text) {
+    if (!el) return;
+    el.style.display = 'block';
+    el.style.opacity = '1';
+    el.style.marginTop = '8px';
+    if (type === 'error') {
+      el.style.color = '#b91c1c';
+    } else if (type === 'loading') {
+      el.style.color = 'rgba(27,42,50,0.55)';
+      el.style.fontStyle = 'italic';
+    } else {
+      el.style.color = 'inherit';
+    }
+    el.textContent = text;
   }
 
-  updateProgress();
-  document.getElementById('quiz-main').scrollTo(0, 0);
-}
+  function showEmailSentCard(email) {
+    /* Flip only the email card — download card stays untouched */
+    const mailCard = document.getElementById('handoff-mail-card');
+    if (!mailCard) return;
+    mailCard.innerHTML = '';
+    mailCard.style.cssText = 'background:#f0faf4;border-color:rgba(22,163,74,0.3);text-align:center;padding:28px 24px;';
 
-function updateHeaderForScreen(cur) {
-  const progSection = document.getElementById('prog-section');
-  const progTab = document.getElementById('prog-tab');
+    /* Check icon */
+    const icon = document.createElement('div');
+    icon.innerHTML =
+      '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#16a34a" opacity="0.12"/><circle cx="12" cy="12" r="11" stroke="#16a34a" stroke-width="1.5"/><path d="M7 12.5l3.5 3.5 6.5-7" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    icon.style.cssText = 'display:flex;justify-content:center;margin-bottom:14px;';
+    mailCard.appendChild(icon);
 
-  if (cur.startsWith('dom')) {
-    const di = parseInt(cur.replace('dom',''));
-    progSection.textContent = 'Section ' + (di+1) + ' of 6';
-    progTab.textContent = DATA.domains[di];
-  } else if (cur === 'radius') {
-    progSection.textContent = 'Last section';
-    progTab.textContent = 'Activities';
-  } else if (cur === 'priority') {
-    progSection.textContent = 'Almost done';
-    progTab.textContent = 'Priorities';
-  } else if (cur === 'results') {
-    progSection.textContent = 'Results';
-    progTab.textContent = 'Your check-up';
+    const heading = el('h3', 'quiz-card-subheading', 'PDF sent');
+    heading.style.cssText = 'color:#15803d;margin-bottom:6px;font-size:18px;';
+    mailCard.appendChild(heading);
+
+    const sub = el('p', 'quiz-small', 'Check your inbox at ' + email);
+    sub.style.cssText = 'opacity:1;color:#166534;margin-bottom:0;font-size:14px;';
+    mailCard.appendChild(sub);
   }
-}
 
-function updateProgress() {
-  const total = 96 + 16;
-  const done = answeredCount() + radiusAnswered();
-  const pct = Math.round(done / total * 100);
-  /* Two-div bar: fill shrinks-to-width, remaining takes the rest */
-  const fillEl = document.getElementById('prog-fill');
-  const remainEl = document.getElementById('prog-remaining');
-  if (fillEl) fillEl.style.width = pct + '%';
-  if (remainEl) remainEl.style.display = pct >= 100 ? 'none' : '';
-  document.getElementById('prog-count').textContent = done + ' of ' + total + ' answered';
-}
+  /* ═════════════════════════════ NAVIGATION ═════════════════════════════ */
+  const ORDER = ['home', 'dom0', 'dom1', 'dom2', 'dom3', 'dom4', 'dom5', 'radius', 'priority', 'results'];
+  const SECTION_TABS = ['screen', 'measured', 'handoff'];
+  const SECTION_NAMES = ['What you told us', 'To be measured', 'For your doctor'];
+  let at = 0;
 
-/* Current result step index — based on which pane is visible */
-function curTab() {
-  return SECTION_TABS.findIndex(t => {
-    const pane = document.getElementById('pane-' + t);
-    return pane && pane.classList.contains('on');
-  });
-}
+  /* ── Sync quiz-main padding-top to actual header height ── */
+  function syncMainPadding(isHome) {
+    const header = document.getElementById('quiz-header');
+    const main = document.getElementById('quiz-main');
+    if (!header || !main) return;
+    main.style.paddingTop = isHome ? '0px' : header.offsetHeight + 'px';
+  }
 
-function switchTab(name, scroll) {
-  SECTION_TABS.forEach(t => {
-    document.getElementById('pane-' + t).classList.toggle('on', t === name);
-  });
-  syncNav();
-  if (scroll) {
+  function show(i) {
+    at = Math.max(0, Math.min(ORDER.length - 1, i));
+    const cur = ORDER[at];
+
+    ORDER.forEach((id) => {
+      const e = document.getElementById('sc-' + id);
+      if (e) e.classList.toggle('on', id === cur);
+    });
+
+    /* Header visibility */
+    const header = document.getElementById('quiz-header');
+    const isHome = cur === 'home';
+    const isResults = cur === 'results';
+    header.classList.toggle('hidden', isHome);
+
+    /* Question fill bar only — labels stay on Results */
+    const track = document.getElementById('prog-track');
+    if (track) track.classList.toggle('hidden', isResults);
+
+    /* Bottom nav */
+    const nav = document.getElementById('nav');
+    nav.classList.toggle('hidden', isHome);
+
+    /* main padding top: always matches actual rendered header height so content never hides under it */
+    const main = document.getElementById('quiz-main');
+    syncMainPadding(isHome);
+
+    /* Update header progress */
+    updateHeaderForScreen(cur);
+
+    if (cur === 'radius') buildRadius();
+    if (cur === 'priority') buildPriority();
+    if (cur === 'results') {
+      S.finished = Date.now();
+      save();
+      buildResults();
+      switchTab('screen', false);
+    } else {
+      syncNav();
+    }
+
+    updateProgress();
     document.getElementById('quiz-main').scrollTo(0, 0);
   }
-}
 
-const NAV_ARROW = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex-shrink:0"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function updateHeaderForScreen(cur) {
+    const progSection = document.getElementById('prog-section');
+    const progTab = document.getElementById('prog-tab');
 
-function syncNav() {
-  const cur = ORDER[at];
-  const nextBtn = document.getElementById('btn-next');
-  const homeBtn = document.getElementById('btn-home');
-  const backBtn = document.getElementById('btn-back');
-
-  backBtn.classList.toggle('hidden', at <= 1);
-
-  if (cur === 'results') {
-    const last = curTab() === SECTION_TABS.length - 1;
-    nextBtn.classList.toggle('hidden', last);
-    if (homeBtn) homeBtn.classList.toggle('hidden', !last);
-    if (!last) nextBtn.innerHTML = 'Next ' + NAV_ARROW;
-    return;
-  }
-
-  nextBtn.classList.remove('hidden');
-  if (homeBtn) homeBtn.classList.add('hidden');
-  nextBtn.innerHTML = (cur === 'priority' ? 'See my results' : 'Next') + ' ' + NAV_ARROW;
-}
-
-
-/* ═════════════════════════════ BOOT ═════════════════════════════ */
-/* Fire on both hard load and Astro view-transition navigation */
-function boot() {
-  for (let i = 0; i < 6; i++) buildDomain(i);
-
-  /* Keep padding-top in sync whenever the header height might change */
-  window.addEventListener('resize', () => {
-    const isHome = ORDER[at] === 'home';
-    syncMainPadding(isHome);
-  });
-
-  /* Smart context-aware nav — one handler for the whole quiz lifetime */
-  document.getElementById('btn-next').onclick = function() {
-    if (ORDER[at] === 'results') {
-      const i = curTab();
-      if (i < SECTION_TABS.length - 1) switchTab(SECTION_TABS[i + 1], true);
-    } else {
-      show(at + 1);
+    if (cur.startsWith('dom')) {
+      const di = parseInt(cur.replace('dom', ''));
+      progSection.textContent = 'Section ' + (di + 1) + ' of 6';
+      progTab.textContent = DATA.domains[di];
+    } else if (cur === 'radius') {
+      progSection.textContent = 'Last section';
+      progTab.textContent = 'Activities';
+    } else if (cur === 'priority') {
+      progSection.textContent = 'Almost done';
+      progTab.textContent = 'Priorities';
+    } else if (cur === 'results') {
+      progSection.textContent = 'Results';
+      progTab.textContent = 'Your check-up';
     }
-  };
-  document.getElementById('btn-back').onclick = function() {
-    if (ORDER[at] === 'results') {
-      const i = curTab();
-      if (i > 0) switchTab(SECTION_TABS[i - 1], true);
-      else show(ORDER.indexOf('priority')); /* back to priority from step 1 */
-    } else {
-      show(at - 1);
+  }
+
+  function updateProgress() {
+    const total = 96 + 16;
+    const done = answeredCount() + radiusAnswered();
+    const pct = Math.round((done / total) * 100);
+    /* Two-div bar: fill shrinks-to-width, remaining takes the rest */
+    const fillEl = document.getElementById('prog-fill');
+    const remainEl = document.getElementById('prog-remaining');
+    if (fillEl) fillEl.style.width = pct + '%';
+    if (remainEl) remainEl.style.display = pct >= 100 ? 'none' : '';
+    document.getElementById('prog-count').textContent = done + ' of ' + total + ' answered';
+  }
+
+  /* Current result step index — based on which pane is visible */
+  function curTab() {
+    return SECTION_TABS.findIndex((t) => {
+      const pane = document.getElementById('pane-' + t);
+      return pane && pane.classList.contains('on');
+    });
+  }
+
+  function switchTab(name, scroll) {
+    SECTION_TABS.forEach((t) => {
+      document.getElementById('pane-' + t).classList.toggle('on', t === name);
+    });
+    syncNav();
+    if (scroll) {
+      document.getElementById('quiz-main').scrollTo(0, 0);
     }
-  };
-
-  /* Ack checkbox */
-  const ackBox = document.getElementById('ack');
-  function syncAck() {
-    const ok = ackBox.checked;
-    document.getElementById('btn-start').disabled = !ok;
-    const resumeBtn = document.getElementById('btn-resume');
-    if (resumeBtn) resumeBtn.disabled = !ok;
-  }
-  if (S.ack) ackBox.checked = true;
-  ackBox.onchange = function() { S.ack = ackBox.checked; save(); syncAck(); };
-  syncAck();
-
-  document.getElementById('btn-start').onclick = function() {
-    if (!ackBox.checked) return;
-    if (!S.started) { S.started = Date.now(); save(); }
-    show(1);
-  };
-  document.getElementById('btn-resume').onclick = function() {
-    if (!ackBox.checked) return;
-    show(1);
-  };
-
-  if (answeredCount() > 0) {
-    document.getElementById('btn-resume').classList.remove('hidden');
   }
 
-  /* Step indicator dots are non-clickable — navigation is via main Back / Next buttons */
+  const NAV_ARROW =
+    '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex-shrink:0"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-  /* Page prev/next */
-  /* btn-pageprev / btn-pagenext no longer exist — results use main nav via switchTab() */
+  function syncNav() {
+    const cur = ORDER[at];
+    const nextBtn = document.getElementById('btn-next');
+    const homeBtn = document.getElementById('btn-home');
+    const backBtn = document.getElementById('btn-back');
 
-  /* Share/save card removed — handlers no longer needed */
+    backBtn.classList.toggle('hidden', at <= 1);
 
-  function saveTxt(txt) {
-    try {
-      const b = new Blob([txt], { type: 'text/plain' }), u = URL.createObjectURL(b);
-      const a = document.createElement('a'); a.href = u;
-      a.download = 'rebellious-aging-check-up.txt'; document.body.appendChild(a); a.click();
-      document.body.removeChild(a); setTimeout(() => URL.revokeObjectURL(u), 3000);
-      say('Saved to your downloads.');
-    } catch(e) { say('Could not save automatically. Use Print instead.'); }
+    if (cur === 'results') {
+      const last = curTab() === SECTION_TABS.length - 1;
+      nextBtn.classList.toggle('hidden', last);
+      if (homeBtn) homeBtn.classList.toggle('hidden', !last);
+      if (!last) nextBtn.innerHTML = 'Next ' + NAV_ARROW;
+      return;
+    }
+
+    nextBtn.classList.remove('hidden');
+    if (homeBtn) homeBtn.classList.add('hidden');
+    nextBtn.innerHTML = (cur === 'priority' ? 'See my results' : 'Next') + ' ' + NAV_ARROW;
   }
 
+  /* ═════════════════════════════ BOOT ═════════════════════════════ */
+  /* Fire on both hard load and Astro view-transition navigation */
+  function boot() {
+    for (let i = 0; i < 6; i++) buildDomain(i);
 
-  show(0);
-}
+    /* Keep padding-top in sync whenever the header height might change */
+    window.addEventListener('resize', () => {
+      const isHome = ORDER[at] === 'home';
+      syncMainPadding(isHome);
+    });
 
-/* Hard load */
-document.addEventListener('DOMContentLoaded', boot);
-/* Astro view-transition navigation (soft load) */
-document.addEventListener('astro:page-load', boot);
+    /* Smart context-aware nav — one handler for the whole quiz lifetime */
+    document.getElementById('btn-next').onclick = function () {
+      if (ORDER[at] === 'results') {
+        const i = curTab();
+        if (i < SECTION_TABS.length - 1) switchTab(SECTION_TABS[i + 1], true);
+      } else {
+        show(at + 1);
+      }
+    };
+    document.getElementById('btn-back').onclick = function () {
+      if (ORDER[at] === 'results') {
+        const i = curTab();
+        if (i > 0) switchTab(SECTION_TABS[i - 1], true);
+        else show(ORDER.indexOf('priority')); /* back to priority from step 1 */
+      } else {
+        show(at - 1);
+      }
+    };
+
+    /* Ack checkbox */
+    const ackBox = document.getElementById('ack');
+    function syncAck() {
+      const ok = ackBox.checked;
+      document.getElementById('btn-start').disabled = !ok;
+      const resumeBtn = document.getElementById('btn-resume');
+      if (resumeBtn) resumeBtn.disabled = !ok;
+    }
+    if (S.ack) ackBox.checked = true;
+    ackBox.onchange = function () {
+      S.ack = ackBox.checked;
+      save();
+      syncAck();
+    };
+    syncAck();
+
+    document.getElementById('btn-start').onclick = function () {
+      if (!ackBox.checked) return;
+      if (!S.started) {
+        S.started = Date.now();
+        save();
+      }
+      show(1);
+    };
+    document.getElementById('btn-resume').onclick = function () {
+      if (!ackBox.checked) return;
+      show(1);
+    };
+
+    if (answeredCount() > 0) {
+      document.getElementById('btn-resume').classList.remove('hidden');
+    }
+
+    /* Step indicator dots are non-clickable — navigation is via main Back / Next buttons */
+
+    /* Page prev/next */
+    /* btn-pageprev / btn-pagenext no longer exist — results use main nav via switchTab() */
+
+    /* Share/save card removed — handlers no longer needed */
+
+    function saveTxt(txt) {
+      try {
+        const b = new Blob([txt], { type: 'text/plain' }),
+          u = URL.createObjectURL(b);
+        const a = document.createElement('a');
+        a.href = u;
+        a.download = 'rebellious-aging-check-up.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(u), 3000);
+        say('Saved to your downloads.');
+      } catch (e) {
+        say('Could not save automatically. Use Print instead.');
+      }
+    }
+
+    show(0);
+  }
+
+  /* Hard load */
+  document.addEventListener('DOMContentLoaded', boot);
+  /* Astro view-transition navigation (soft load) */
+  document.addEventListener('astro:page-load', boot);
 </script>
