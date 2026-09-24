@@ -2773,6 +2773,16 @@ const metadata = {
   }
 
   let handoffTurnstileId = '';
+  let handoffTurnstileError = '';
+  let handoffTokenWaiters = [];
+
+  function settleTokenWaiters(token) {
+    const waiters = handoffTokenWaiters;
+    handoffTokenWaiters = [];
+    waiters.forEach(function (resolve) {
+      resolve(token);
+    });
+  }
 
   function renderHandoffTurnstile(slot) {
     const config = mailConfig();
@@ -2781,18 +2791,89 @@ const metadata = {
     loadTurnstile()
       .then(function (api) {
         if (!slot.isConnected) return;
+        if (handoffTurnstileId) {
+          try {
+            api.remove(handoffTurnstileId);
+          } catch {
+            /* widget was already torn down with its slot */
+          }
+          handoffTurnstileId = '';
+        }
         slot.innerHTML = '';
+        handoffTurnstileError = '';
         handoffTurnstileId = api.render(slot, {
           sitekey,
           action: config.site,
           size: 'flexible',
           appearance: 'interaction-only',
           'refresh-expired': 'auto',
+          callback: function (token) {
+            handoffTurnstileError = '';
+            settleTokenWaiters(token || '');
+          },
+          'error-callback': function (code) {
+            handoffTurnstileError = String(code || 'error');
+            settleTokenWaiters('');
+          },
         });
       })
       .catch(function (err) {
         console.error(err);
+        handoffTurnstileError = 'load-failed';
+        settleTokenWaiters('');
       });
+  }
+
+  /** Current token, or '' when it is missing, expired, or already spent. */
+  function currentTurnstileToken() {
+    const api = window.turnstile;
+    if (!api || !handoffTurnstileId) return '';
+    let token;
+    try {
+      token = api.getResponse(handoffTurnstileId) || '';
+    } catch {
+      return '';
+    }
+    if (!token) return '';
+    try {
+      if (api.isExpired(handoffTurnstileId)) return '';
+    } catch {
+      /* older api.js has no isExpired — fall through to the token */
+    }
+    return token;
+  }
+
+  /**
+   * Tokens last 5 minutes and are single-use, and the widget renders long before
+   * anyone reaches this card. Ask for a new one instead of failing on a stale token.
+   */
+  function requestTurnstileToken(timeoutMs) {
+    const ready = currentTurnstileToken();
+    if (ready) return Promise.resolve(ready);
+
+    const api = window.turnstile;
+    if (api && handoffTurnstileId) {
+      try {
+        api.reset(handoffTurnstileId);
+      } catch {
+        /* reset throws on a stale id — the timeout below still ends the wait */
+      }
+    } else {
+      renderHandoffTurnstile(document.getElementById('handoff-turnstile'));
+    }
+
+    return new Promise(function (resolve) {
+      let settled = false;
+      const finish = function (token) {
+        if (settled) return;
+        settled = true;
+        resolve(token || currentTurnstileToken());
+      };
+      handoffTokenWaiters.push(finish);
+      setTimeout(function () {
+        finish('');
+      }, timeoutMs);
+    });
   }
 
   function blobToBase64(blob) {
@@ -2824,14 +2905,22 @@ const metadata = {
       return;
     }
 
-    const turnstile = window.turnstile;
-    const token = handoffTurnstileId && turnstile ? turnstile.getResponse(handoffTurnstileId) : '';
+    if (btn) btn.disabled = true;
+    showMailMsg(msg, 'loading', 'Running the spam check…');
+
+    const token = await requestTurnstileToken(25000);
     if (!token) {
-      showMailMsg(msg, 'error', 'Complete the spam check first.');
+      if (btn) btn.disabled = false;
+      showMailMsg(
+        msg,
+        'error',
+        handoffTurnstileError
+          ? 'The spam check could not run. Reload the page and try again, or use Download / Print.'
+          : 'Finish the spam check above, then press Email me this PDF again.'
+      );
       return;
     }
 
-    if (btn) btn.disabled = true;
     showMailMsg(msg, 'loading', 'Preparing your PDF…');
 
     let downloaded = false;
@@ -2874,7 +2963,10 @@ const metadata = {
       }
     } finally {
       if (btn) btn.disabled = false;
-      if (handoffTurnstileId && window.turnstile) {
+      /* Tokens are single-use. Drop the widget if the sent card replaced its slot. */
+      if (!document.getElementById('handoff-turnstile')) {
+        handoffTurnstileId = '';
+      } else if (handoffTurnstileId && window.turnstile) {
         try {
           window.turnstile.reset(handoffTurnstileId);
         } catch (e) {}
