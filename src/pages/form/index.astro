@@ -46,20 +46,6 @@ const metadata = {
             and the things you have quietly stopped mentioning.
           </p>
 
-          <!-- Start CTA -->
-          <button class="quiz-btn-start" id="btn-start" disabled>
-            Start the Checkup
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"
-              ><path
-                d="M5 12h14M12 5l7 7-7 7"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"></path></svg
-            >
-          </button>
-          <button class="quiz-btn-resume hidden" id="btn-resume">Continue where I left off</button>
-
           <!-- Feature pills -->
           <div class="quiz-home-features">
             <span class="quiz-home-feature">
@@ -121,7 +107,19 @@ const metadata = {
             No account. No server. No analytics. You can delete everything with one button at the end.
           </p>
 
-          <!-- Sponsor banner — same as the one in the progress header -->
+          <button class="quiz-btn-start" id="btn-start" disabled>
+            Start the Checkup
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+              ><path
+                d="M5 12h14M12 5l7 7-7 7"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path></svg
+            >
+          </button>
+          <button class="quiz-btn-resume hidden" id="btn-resume">Continue where I left off</button>
+
           <div class="quiz-home-sponsor">Paid for by Athena Clinic</div>
         </div>
       </section>
@@ -373,7 +371,7 @@ const metadata = {
     background: #ffffff;
     border: 1px solid rgba(27, 42, 50, 0.12);
     border-radius: 32px;
-    padding: 40px 36px 32px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
     gap: 0;
@@ -569,6 +567,7 @@ const metadata = {
     letter-spacing: 0.07em;
     text-transform: uppercase;
     color: #567f9b;
+    margin-top: 10px;
   }
   .quiz-home-sponsor svg {
     flex-shrink: 0;
@@ -1571,7 +1570,7 @@ const metadata = {
         q: [
           'Do people you walk with have to slow down for you?',
           'Do you take longer to cross a road than the signal allows?',
-          'Do you scuff or catch your feet on carpets or kerbs?',
+          'Do you scuff or catch your feet on carpets or curbs?',
         ],
         scale: ['freq', 'freq', 'freq'],
       },
@@ -1625,7 +1624,7 @@ const metadata = {
         domain: 1,
         q: [
           'Do your calves ache or cramp when walking, then settle with rest?',
-          'Are your feet often cold, discoloured or numb?',
+          'Are your feet often cold, discolored or numb?',
           'Do cuts on your legs or feet take a long time to heal?',
         ],
         scale: ['freq', 'freq', 'freq'],
@@ -1658,7 +1657,7 @@ const metadata = {
         domain: 2,
         q: [
           'Do oncoming headlights dazzle you more than they used to?',
-          'Do you have trouble seeing kerbs, steps or edges in dim light?',
+          'Do you have trouble seeing curbs, steps or edges in dim light?',
           'Does it take you longer to adjust going from bright light into shade?',
         ],
         scale: ['change', 'freq', 'change'],
@@ -1901,7 +1900,7 @@ const metadata = {
       {
         id: 'gait_ms',
         label: 'Walking speed',
-        how: 'Timed over 4 metres at usual pace',
+        how: 'Timed over 4 meters at usual pace',
         ref: 'Reference: below 0.8 m/s',
         unit: 'm/s',
       },
