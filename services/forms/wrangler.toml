@@ -15,6 +15,8 @@ database_id = "376bc987-bf24-4f8c-88e0-64ce2daacf61"
 # go in .dev.vars. Do not `wrangler deploy` or `wrangler secret put` from this copy —
 # production `massic-forms` is maintained in another repository.
 [vars]
-RESEND_FROM = "Rebellious Aging <hello@rebelliousaging.org>"
+# RESEND_FROM is intentionally NOT set here.
+# Each site has its own from_email in the D1 `sites` table.
+# Setting this globally would override ALL sites with a single sender name (wrong).
 # Notify emails per site per UTC day. Extra leads still save; visitor still sees success.
-RESEND_DAILY_LIMIT = "100"
+RESEND_DAILY_LIMIT = "1000"

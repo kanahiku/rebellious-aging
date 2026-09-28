@@ -1,18 +1,17 @@
 export interface Env {
   DB: D1Database;
-  /** Per-site secret on the shared Worker. Dummy value is fine for `wrangler dev` only. */
-  TURNSTILE_SECRET_REBELLIOUS_AGING: string;
   RESEND_API_KEY: string;
-  /** Optional. If set, every site's contact notify is forced here (Resend sandbox testing only). */
-  NOTIFY_EMAIL?: string;
-  /** Same as NOTIFY_EMAIL. Prefer per-site D1 `notify_email` in production. */
-  NOTIFY_EMAIL_OVERRIDE?: string;
-  /** Defaults to Resend's test sender until a client domain is verified. */
-  RESEND_FROM?: string;
   /** Extra origins as JSON array or comma-separated list. */
   ALLOWED_ORIGINS?: string;
-  /** Notify emails per site per UTC day. Extra leads still save. Default 20. */
+  /** Notify emails per site per UTC day. Extra leads still save. Default 1000. */
   RESEND_DAILY_LIMIT?: string;
+  /**
+   * Per-site Turnstile secrets — TURNSTILE_SECRET_<SLUG_UPPERCASE_UNDERSCORED>
+   * e.g. TURNSTILE_SECRET_REBELLIOUS_AGING
+   * Falls back to global TURNSTILE_SECRET if per-site not found.
+   */
+  TURNSTILE_SECRET?: string;
+  [key: string]: unknown;
 }
 
 interface SiteRow {
@@ -59,9 +58,21 @@ interface ResendEmail {
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX = { name: 120, email: 254, phone: 40, message: 5000 };
 const MAX_PDF_B64 = 3_500_000;
-const DEFAULT_RESEND_DAILY_LIMIT = 20;
+const DEFAULT_RESEND_DAILY_LIMIT = 1000;
 const PDF_KIND = 'checkup-pdf';
 const DEFAULT_PDF_FILENAME = 'rebellious-aging-check-up.pdf';
+
+/**
+ * Resolve the Turnstile secret for a given site slug.
+ * Checks TURNSTILE_SECRET_<SLUG_UPPER> first, falls back to global TURNSTILE_SECRET.
+ * Never reads RESEND_FROM or NOTIFY_EMAIL_OVERRIDE — those must not be set globally.
+ */
+function resolveTurnstileSecret(env: Env, siteSlug: string): string {
+  const key = `TURNSTILE_SECRET_${siteSlug.toUpperCase().replace(/-/g, '_')}`;
+  const perSite = (env as Record<string, unknown>)[key];
+  if (typeof perSite === 'string' && perSite) return perSite;
+  return typeof env.TURNSTILE_SECRET === 'string' ? env.TURNSTILE_SECRET : '';
+}
 
 /** Always allowed so local + Vercel preview/prod work before a custom domain exists. */
 const DEFAULT_ORIGIN_PATTERNS = [
@@ -132,7 +143,7 @@ async function handleSubmit(request: Request, env: Env, origin: string, patterns
 
     const turnstileOk = await verifyTurnstile(
       parsed.turnstileToken,
-      env.TURNSTILE_SECRET_REBELLIOUS_AGING,
+      resolveTurnstileSecret(env, parsed.site),
       request,
       site.slug
     );
@@ -156,8 +167,8 @@ async function handleSubmit(request: Request, env: Env, origin: string, patterns
     if (sentToday >= dailyLimit) {
       console.warn(`Resend skipped: ${site.slug} hit daily cap (${dailyLimit})`);
     } else {
-      const notifyTo = env.NOTIFY_EMAIL_OVERRIDE || site.notify_email;
-      const from = env.RESEND_FROM || site.from_email;
+      const notifyTo = site.notify_email;
+      const from = site.from_email;
 
       const sent = await sendResend(env.RESEND_API_KEY, {
         from,
@@ -212,7 +223,7 @@ async function handleEmailSummary(request: Request, env: Env, origin: string, pa
 
     const turnstileOk = await verifyTurnstile(
       parsed.turnstileToken,
-      env.TURNSTILE_SECRET_REBELLIOUS_AGING,
+      resolveTurnstileSecret(env, parsed.site),
       request,
       site.slug
     );
@@ -237,7 +248,7 @@ async function handleEmailSummary(request: Request, env: Env, origin: string, pa
       }
     }
 
-    const from = env.RESEND_FROM || site.from_email;
+    const from = site.from_email;
     const sendId = crypto.randomUUID();
     const replyTo = isPlaceholderEmail(site.notify_email) ? undefined : site.notify_email;
 
