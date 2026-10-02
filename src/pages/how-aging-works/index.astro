@@ -2,6 +2,10 @@
 import Layout from '~/layouts/PageLayout.astro';
 import Hero2 from '~/components/widgets/Hero2.astro';
 import Header from '~/components/widgets/Header.astro';
+import ThreeBuckets from '~/components/widgets/ThreeBuckets.astro';
+import AgingCurve from '~/components/widgets/AgingCurve.astro';
+import ContentBand from '~/components/widgets/ContentBand.astro';
+import DecadeCurve from '~/components/widgets/DecadeCurve.astro';
 import ConceptSplit from '~/components/widgets/ConceptSplit.astro';
 import TextSplit from '~/components/widgets/TextSplit.astro';
 import Text from '~/components/ui/Text.astro';
@@ -15,7 +19,7 @@ import { PRIMARY_CTA_LABEL, PRIMARY_CTA_HREF } from '~/config/cta';
 import howAgingHero from '~/assets/images/how-aging-hero.png';
 
 const metadata = {
-  title: `How Aging Works | ${site.name}`,
+  title: `The Buckets | ${site.name}`,
   description:
     'Peak. Slope. Floor. How aging actually works: the trajectory of every system in the body, and what you can still change.',
   ignoreTitleTemplate: true,
@@ -23,12 +27,20 @@ const metadata = {
 
 const header = navigationData.header;
 
+const decadeCards = [
+  { title: 'In your 30s', body: 'Starting early pays off most.',           href: '/in-your-30s' },
+  { title: 'In your 40s', body: 'Same plan, more urgency.',                href: '/in-your-40s' },
+  { title: 'In your 50s', body: 'The slope starts to show.',               href: '/in-your-50s' },
+  { title: 'In your 60s', body: 'Build reserve before a Black Swan.',      href: '/in-your-60s' },
+  { title: '70 and beyond', body: 'Protect your independence.',            href: '/70-plus'     },
+];
+
 const heroPreload = await getImage({ src: howAgingHero, width: 1440, format: 'webp' });
 
 const conceptCards = [
   {
     label: 'the mechanism',
-    title: 'Trajectories',
+    title: 'Your aging curve',
     description:
       'Peak, slope, floor, reserve. What the average rate of decline looks like per system, and how to work out where you sit on your own curves. Failure modes: some systems fail by gradual attrition, others go off a cliff.',
   },
@@ -78,6 +90,50 @@ const conceptCards = [
       actions={header.actions}
     />
   </Hero2>
+
+  <ThreeBuckets
+    id="the-buckets"
+    eyebrow="The Buckets"
+    heading="Three buckets. Fill them in order."
+    body="The buckets hold your time, money and attention, not your health. Fill bucket one as well as you can. What spills over goes to bucket two, then bucket three. Most people start with bucket three. Start with bucket one."
+    cta={{ text: 'Find your weakest link', href: PRIMARY_CTA_HREF }}
+  />
+
+  <AgingCurve id="aging-curve" />
+
+  {/* Black Swan — dark band */}
+  <ContentBand
+    id="black-swan"
+    eyebrow="Black Swan"
+    heading="The day that drops you to the floor."
+    paragraphs={[
+      "A Black Swan is the fall, the broken hip, dialysis or the heart attack that takes you from living on your own to needing care, in a single day.",
+      "You can't predict which one or when. You can build enough reserve that when it comes, you land above the floor and get back home.",
+    ]}
+    cta={{ text: "Read Black Swan by Dr. Peterson", href: "/books" }}
+    isDark
+  />
+
+  {/* Bucket 3 — white/page bg, no button */}
+  <ContentBand
+    id="bucket-3"
+    eyebrow="Bucket 3 · The fancy stuff"
+    heading="Recreational anti-aging."
+    paragraphs={[
+      "IV drips. Peptides. Whole-body MRI. Cancer blood panels. Supplements.",
+      "Some of it is real, a lot of it is theater, and all of it is expensive. This is where the evidence is thinnest and the price is highest, which is why it comes last.",
+      "Dr. Peterson calls it recreational anti-aging. If you enjoy it and can afford it, go ahead, the same as a weekend in Las Vegas. Just fill buckets one and two first.",
+    ]}
+    boldNote="Nothing for us to sell you here."
+    bgClass="bg-white"
+  />
+
+  <DecadeCurve
+    id="start-with-your-decade"
+    eyebrow="Start with your decade"
+    heading="Where are you on the curve?"
+    cards={decadeCards}
+  />
 
   <ConceptSplit
     heading="You cannot stop the decline. You can change its slope, and the whole goal is a slope shallow enough that you never reach the floor before the end of your life."

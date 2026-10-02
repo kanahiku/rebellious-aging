@@ -53,7 +53,7 @@ const {
 } = Astro.props;
 ---
 
-<section {...id ? { id } : {}} class="not-prose w-full pt-[120px] pb-12 md:pb-16">
+<section {...id ? { id } : {}} class="not-prose w-full pt-12 md:pt-16 lg:pt-[120px] pb-12 md:pb-16">
   <div class="mx-auto grid w-full max-w-container grid-cols-1 gap-12 px-5 sm:px-8 md:px-16 lg:grid-cols-2 lg:gap-16 lg:px-[120px]">
 
     {/* ── LEFT — advice rows ── */}
@@ -82,54 +82,64 @@ const {
       ))}
     </div>
 
-    {/* ── RIGHT — packages card + overlapping disclosure ── */}
+    {/* ── RIGHT — packages card (optional) + disclosure ── */}
     <div class="relative isolate flex min-w-0 flex-col justify-center">
-      <div
-        class="relative z-[2] mb-[-34px] flex w-full flex-col items-start gap-8 overflow-hidden rounded-[32px] p-8 md:gap-8 md:p-12"
-        style="background: linear-gradient(92.4deg, var(--aw-color-bg-section-dark) 5.27%, var(--aw-color-primary) 97.29%);"
-      >
-        <div class="flex w-full flex-col items-start gap-4">
-          {clinicEyebrow && (
-            <Heading variant="eyebrow">{clinicEyebrow}</Heading>
-          )}
-          <Heading variant="h2" color="inherit" class="text-page">
-            {clinicHeading}
-          </Heading>
-        </div>
 
-        <ol class="flex w-full flex-col items-start gap-3 text-page">
-          {packages.map((step) => (
-            <li class="flex w-full items-center gap-6">
-              <span class="flex h-[52px] w-11 shrink-0 items-center font-heading text-[52px] leading-none mix-blend-overlay md:h-[82px] md:text-[82px]">
-                {step.number}
-              </span>
-              <Text color="inherit" class="min-w-0 flex-1 text-page">
-                {step.body}
-              </Text>
-            </li>
-          ))}
-        </ol>
-
-        {addOnNote && (
-          <div class="flex w-full items-center justify-end">
-            <Text color="inherit" class="max-w-[295px] text-right text-page/50">
-              {addOnNote}
-            </Text>
+      {/* Packages card — only rendered when packages are provided */}
+      {packages.length > 0 && (
+        <div
+          class="relative z-[2] mb-[-34px] flex w-full flex-col items-start gap-8 overflow-hidden rounded-[32px] p-8 md:gap-8 md:p-12"
+          style="background: linear-gradient(92.4deg, var(--aw-color-bg-section-dark) 5.27%, var(--aw-color-primary) 97.29%);"
+        >
+          <div class="flex w-full flex-col items-start gap-4">
+            {clinicEyebrow && (
+              <Heading variant="eyebrow">{clinicEyebrow}</Heading>
+            )}
+            <Heading variant="h2" color="inherit" class="text-page">
+              {clinicHeading}
+            </Heading>
           </div>
-        )}
-      </div>
 
-      {disclosure && (
-        <div class="relative z-[1] flex w-full items-start rounded-b-[32px] bg-heading px-8 pb-8 pt-16 backdrop-blur-[10px]">
-          <div class="flex min-w-0 flex-1 flex-col items-start gap-6">
-            <div class="flex w-full flex-col items-start gap-1.5">
-              {disclosureEyebrow && (
-                <Heading variant="eyebrow">{disclosureEyebrow}</Heading>
-              )}
-              <Text variant="small" color="inherit" class="text-page/80">
-                {disclosure}
+          <ol class="flex w-full flex-col items-start gap-3 text-page">
+            {packages.map((step) => (
+              <li class="flex w-full items-center gap-6">
+                <span class="flex h-[52px] w-11 shrink-0 items-center font-heading text-[52px] leading-none mix-blend-overlay md:h-[82px] md:text-[82px]">
+                  {step.number}
+                </span>
+                <Text color="inherit" class="min-w-0 flex-1 text-page">
+                  {step.body}
+                </Text>
+              </li>
+            ))}
+          </ol>
+
+          {addOnNote && (
+            <div class="flex w-full items-center justify-end">
+              <Text color="inherit" class="max-w-[295px] text-right text-page/50">
+                {addOnNote}
               </Text>
             </div>
+          )}
+        </div>
+      )}
+
+      {/* Disclosure — full card when no packages, overlapping tab when packages present */}
+      {disclosure && (
+        <div
+          class:list={[
+            'relative z-[1] flex w-full items-start bg-heading backdrop-blur-[10px]',
+            packages.length > 0
+              ? 'rounded-b-[32px] px-8 pb-8 pt-16'
+              : 'rounded-[32px] px-8 py-8',
+          ]}
+        >
+          <div class="flex min-w-0 flex-1 flex-col items-start gap-4">
+            {disclosureEyebrow && (
+              <Heading variant="eyebrow">{disclosureEyebrow}</Heading>
+            )}
+            <Text variant="small" color="inherit" class="text-page/80">
+              {disclosure}
+            </Text>
             {cta && (
               <Button
                 variant="ghost"

@@ -1,0 +1,90 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import DecadeHero from '~/components/widgets/DecadeHero.astro';
+import DecadeSplitTable from '~/components/widgets/DecadeSplitTable.astro';
+import ContentBand from '~/components/widgets/ContentBand.astro';
+import CTABanner from '~/components/widgets/CTABanner.astro';
+import { site } from '~/config/site';
+import { PRIMARY_CTA_HREF, PRIMARY_CTA_LABEL } from '~/config/cta';
+
+const metadata = {
+  title: `In your 60s | ${site.name}`,
+  description: 'Build your reserve before a Black Swan.',
+  ignoreTitleTemplate: true,
+};
+
+const likelyWeakestLinks = [
+  {
+    name: 'Leg strength and balance',
+    description: 'The two things that decide whether a fall becomes a broken hip.',
+  },
+  {
+    name: 'Medications',
+    description: 'Some were started a decade ago and may not be worth it anymore.',
+  },
+  {
+    name: 'Hearing and vision',
+    description: 'They pull other systems down with them, including your brain.',
+  },
+];
+
+const atHomeChecks = [
+  { name: 'Blood pressure', description: 'Home cuff, seated, after five minutes of rest.' },
+  { name: 'Grip strength', description: 'A hand grip meter.' },
+  { name: '5× sit-to-stand', description: 'Five times, arms crossed. Time it.' },
+  { name: 'Balance', description: 'One leg, eyes open. Count the seconds.' },
+  { name: 'Weight & waist', description: 'Waist measured at the belly button.' },
+];
+---
+
+<Layout metadata={metadata}>
+  <Fragment slot="header" />
+
+  <DecadeHero
+    eyebrow="Start with your decade"
+    heading="In your 60s."
+    description="Build your reserve before a Black Swan."
+    ctaText={PRIMARY_CTA_LABEL}
+    ctaHref={PRIMARY_CTA_HREF}
+  />
+
+  <DecadeSplitTable
+    id="where-you-are"
+    leftEyebrow="Where you are on the curve"
+    leftText="Most people now have one or two systems much closer to the floor than the rest. Finding out which ones is the most useful thing you can do this decade."
+    rightEyebrow="Your likely weakest links"
+    rows={likelyWeakestLinks}
+  />
+
+  <DecadeSplitTable
+    id="what-to-fill-first"
+    leftEyebrow="What to fill first"
+    leftText="Strength and balance work every week. A medication review with your doctor. And social connection: the Ohana is how people keep doing the basics."
+    leftTone="heading"
+    rightEyebrow="At-home checks"
+    rows={atHomeChecks}
+    note="Check every few months. A sudden drop is worth a call to your doctor."
+    bgClass="bg-white"
+  />
+
+  <ContentBand
+    id="black-swan"
+    eyebrow="Black Swan"
+    heading="The day that drops you to the floor."
+    paragraphs={[
+      "A Black Swan is the fall, the broken hip, dialysis or the heart attack that takes you from living on your own to needing care, in a single day. You can't predict it.",
+      "You can make sure that when it comes, you have enough reserve to land above the floor and get back home. That reserve is built now, not after.",
+    ]}
+    cta={{ text: 'Read Black Swan by Dr. Peterson', href: '/books' }}
+    isDark
+  />
+
+  <CTABanner
+    title="Find out where you stand."
+    subtitle="Ten minutes, free, and nothing you enter leaves your browser. Then fill the first bucket."
+    ctaText={PRIMARY_CTA_LABEL}
+    ctaHref={PRIMARY_CTA_HREF}
+    secondaryCtaText="Book an Athena evaluation"
+    secondaryCtaHref="/athena-evaluation"
+  />
+</Layout>

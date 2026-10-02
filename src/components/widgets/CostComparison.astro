@@ -1,0 +1,135 @@
+---
+/**
+ * CostComparison — "Track your curve. It costs less than the alternative." pattern.
+ *
+ * Visual shape:
+ *   bg-page full-width section, standard container + padding.
+ *   HEADER — eyebrow + h2 spanning full width.
+ *   BODY — 2-col flex, gap-[120px]:
+ *     LEFT  — h3 subheading + body paragraphs (slot) + optional btn-link (slot).
+ *     RIGHT — h3 subheading + data-driven cost rows (hairline-divided) + footer
+ *             text + optional underline link (slot).
+ *
+ * Atoms used: Heading, Text, Button.
+ * Tokens: bg-page, text-heading, text-muted, text-eyebrow, border-primary/10.
+ * No hardcoded hex anywhere.
+ *
+ * Usage:
+ *   <CostComparison
+ *     eyebrow="Why measure it"
+ *     heading="Track your curve. It costs less than the alternative."
+ *     leftHeading="Track it like a hurricane."
+ *     rightHeading="Do the math."
+ *     rows={[...]}
+ *     footer="The cheapest years of care are the ones you never need."
+ *   >
+ *     <Fragment slot="left-body">
+ *       <Text>Paragraph one…</Text>
+ *       <Text class="mt-[1.3em]">Paragraph two…</Text>
+ *     </Fragment>
+ *     <Fragment slot="left-cta">
+ *       <Button variant="link" text="Find your weakest link" href="/form" />
+ *     </Fragment>
+ *     <Fragment slot="right-cta">
+ *       <Button variant="link" text="Read the full case in Healthy, Wealthy & Wise" href="/books" />
+ *     </Fragment>
+ *   </CostComparison>
+ */
+import Heading from '~/components/ui/Heading.astro';
+import Text from '~/components/ui/Text.astro';
+
+export interface CostRow {
+  /** The dollar figure, e.g. "$127,750 a year" */
+  cost: string;
+  /** Description, e.g. "A private room in a nursing home, US median." */
+  label: string;
+  /** Optional source attribution pill, e.g. "Assumed: CareScout 2024" */
+  badge?: string;
+}
+
+export interface Props {
+  eyebrow?: string;
+  heading: string;
+  leftHeading: string;
+  rightHeading: string;
+  rows?: CostRow[];
+  footer?: string;
+  id?: string;
+}
+
+const { eyebrow, heading, leftHeading, rightHeading, rows = [], footer, id } = Astro.props;
+
+const hasLeftBody = Astro.slots.has('left-body');
+const hasLeftCta  = Astro.slots.has('left-cta');
+const hasRightCta = Astro.slots.has('right-cta');
+---
+
+<section {...(id ? { id } : {})} class="not-prose w-full bg-page">
+  <div class="mx-auto w-full max-w-container px-5 py-12 sm:px-8 md:px-16 md:py-[64px] lg:px-[120px]">
+
+    {/* ── Full-width header ── */}
+    <div class="mb-12 flex flex-col gap-4 md:mb-16">
+      {eyebrow && <Heading variant="eyebrow">{eyebrow}</Heading>}
+      <Heading variant="h2">{heading}</Heading>
+    </div>
+
+    {/* ── 2-col body ── */}
+    <div class="flex flex-col gap-12 lg:flex-row lg:items-start lg:gap-[120px]">
+
+      {/* LEFT — narrative + CTA */}
+      <div class="flex min-w-0 flex-1 flex-col gap-6">
+        <Heading variant="h3">{leftHeading}</Heading>
+        {hasLeftBody && (
+          <div class="flex flex-col">
+            <slot name="left-body" />
+          </div>
+        )}
+        {hasLeftCta && (
+          <div>
+            <slot name="left-cta" />
+          </div>
+        )}
+      </div>
+
+      {/* RIGHT — cost rows + footer + link */}
+      <div class="flex min-w-0 flex-1 flex-col">
+        <Heading variant="h3" class="mb-2">{rightHeading}</Heading>
+
+        {rows.length > 0 && (
+          <div class="flex flex-col">
+            {rows.map((row, i) => (
+              <div
+                class:list={[
+                  'flex flex-col gap-2 py-6',
+                  i > 0 ? 'border-t border-primary/10' : 'border-t border-primary/10 mt-4',
+                ]}
+              >
+                {/* Cost figure — Fraunces h4 scale */}
+                <p class="font-heading text-h4 font-normal leading-none text-heading">{row.cost}</p>
+                {/* Description */}
+                <p class="font-sans text-body leading-[1.45] text-muted">{row.label}</p>
+                {/* Source badge */}
+                {row.badge && (
+                  <span class="self-start rounded-full border border-primary/15 bg-section-grey px-2.5 py-0.5 font-sans text-[11px] tracking-[0.04em] uppercase text-eyebrow">
+                    {row.badge}
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {footer && (
+          <Text class="mt-4 border-t border-primary/10 pt-6">{footer}</Text>
+        )}
+
+        {hasRightCta && (
+          <div class="mt-4">
+            <slot name="right-cta" />
+          </div>
+        )}
+      </div>
+
+    </div>
+  </div>
+</section>

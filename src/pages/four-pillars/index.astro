@@ -8,14 +8,14 @@ import Text from '~/components/ui/Text.astro';
 import Button from '~/components/ui/Button.astro';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
-import { ATHENA_CONTACT_HREF } from '~/config/cta';
+import { PRIMARY_CTA_HREF, PRIMARY_CTA_LABEL, ATHENA_CONTACT_HREF } from '~/config/cta';
 import { getImage } from 'astro:assets';
 import fourPillarHero from '~/assets/images/four-pillar-hero.png';
 
 const metadata = {
-  title: `Four Pillars | ${site.name}`,
+  title: `The basics | ${site.name}`,
   description:
-    'Diet. Exercise. Sleep. Social interaction. Strongest evidence in the literature, lowest price tag in medicine, and the four things to do before you spend a dollar on anything else.',
+    'Diet. Exercise. Sleep. Social connection. Strongest evidence in the literature, lowest price tag in medicine, and the four things to do before you spend a dollar on anything else.',
   ignoreTitleTemplate: true,
 };
 
@@ -63,7 +63,7 @@ const pillarCards = [
   },
   {
     label: 'sleep',
-    title: 'The pillar nobody can sell you.',
+    title: 'The one nobody can sell you.',
     description:
       'Glymphatic clearance, deep sleep after sixty, and the dementia evidence. The intervention with no product attached, which is exactly why you have not been sold it.',
     iconSvg: sleepSvg,
@@ -71,13 +71,17 @@ const pillarCards = [
     iconBgClass: 'bg-section-grey',
   },
   {
-    label: 'social interaction',
+    label: 'social connection',
     title: 'You get old alone. You grow long in company.',
     description:
-      'Isolation carries a cardiovascular-scale risk, and company is the only reliable adherence mechanism anyone has found. This is the pillar the ohana exists to solve.',
+      'Isolation carries a cardiovascular-scale risk, and company is the only reliable adherence mechanism anyone has found. This is the one the Ohana exists to solve.',
     iconSvg: socialSvg,
     iconBg: true,
     iconBgClass: 'bg-section-grey',
+    link: {
+      text: 'Learn from ohana',
+      href: '/ohana',
+    },
   },
 ];
 ---
@@ -91,8 +95,8 @@ const pillarCards = [
     overlapHeader={false}
     withImage
     pageOverlay
-    title="Four Pillars"
-    subtitle="<p>Diet. Exercise. Sleep. Social interaction. Strongest evidence in the literature, lowest price tag in medicine, and the four things to do before you spend a dollar on anything else.</p><p>There is no order inside this bucket. Show up for any one, stay for all four. Start with whichever you can face on a Tuesday, then let the surplus flow.</p>"
+    title="The basics"
+    subtitle="<p>Diet. Exercise. Sleep. Social connection. Strongest evidence in the literature, lowest price tag in medicine, and the four things to do before you spend a dollar on anything else.</p><p>There is no order inside this bucket. Show up for any one, stay for all four. Start with whichever you can face on a Tuesday, then let the surplus flow.</p>"
     image={{
       ...fourPillarHero,
       alt: 'A cairn of balanced stones on a beach with ocean behind it',
@@ -113,18 +117,17 @@ const pillarCards = [
     heading="What this framework deliberately leaves out."
   >
     <Text>
-      Peptides. Infusions. Hyperbaric chambers. Proprietary blends. Full-body MRI. A supplement subscription. Most of what the longevity industry sells is a conversation for after the four buckets are full, and almost nobody's are.
-    </Text>
-    <Text class="mt-4">
-      We are not against any of it on principle. Dr. Peterson calls it recreational anti-aging, and files it with a weekend in Las Vegas: if you enjoy it and can afford it, help yourself. We are against buying the fifth thing before you have done the first four, which are free.
+      Athena Clinic can run every test on this page in one evaluation, review your self-assessment and give you a plan.
     </Text>
     <Button
       variant="primary"
-      text="Schedule a free visit"
-      href={ATHENA_CONTACT_HREF}
-      target="_blank"
+      text="Book an Athena evaluation"
+      href="/athena-evaluation"
       hideNote
-      class="mt-8 self-start"
+      class="mt-6 self-start"
     />
+    <Text class="mt-4">
+      Or bring this list to your own doctor. Everything here works just as well with someone who knows your history.
+    </Text>
   </TextSplit>
 </Layout>

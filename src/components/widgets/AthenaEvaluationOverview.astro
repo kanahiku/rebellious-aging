@@ -1,0 +1,45 @@
+---
+/**
+ * AthenaEvaluationOverview — intro + included-items table for /athena-evaluation.
+ */
+import Heading from '~/components/ui/Heading.astro';
+import Text from '~/components/ui/Text.astro';
+
+export interface IncludedItem {
+  title: string;
+  body: string;
+}
+
+export interface Props {
+  id?: string;
+  items: IncludedItem[];
+}
+
+const { id, items } = Astro.props;
+---
+
+<section {...id ? { id } : {}} class="not-prose w-full bg-page">
+  <div class="mx-auto w-full max-w-container px-5 py-12 sm:px-8 md:px-16 md:py-[64px] lg:px-[120px] lg:py-[120px]">
+    <div class="grid gap-12 lg:grid-cols-2 lg:items-start lg:gap-[120px]">
+      <div class="flex min-w-0 flex-col gap-4">
+        <Heading variant="eyebrow">What it is</Heading>
+        <Heading variant="h2">One visit. Your numbers. A plan.</Heading>
+        <Text variant="body-lg">
+          A one-time evaluation with Athena Clinic's team in Honolulu. They review your self-assessment, run the bucket 2 tests, find your weakest link and give you a plan for filling your buckets.
+        </Text>
+      </div>
+
+      <div class="flex min-w-0 flex-col">
+        <Heading variant="eyebrow">What's included</Heading>
+        <div class="mt-8 divide-y divide-primary/10 border-b border-primary/10">
+          {items.map((item) => (
+            <div class="grid gap-3 py-5 first:pt-0 md:grid-cols-[0.85fr_1.15fr] md:gap-8">
+              <p class="font-sans text-body font-semibold leading-[1.45] text-heading">{item.title}</p>
+              <p class="font-sans text-body leading-[1.45] text-muted">{item.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

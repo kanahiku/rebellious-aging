@@ -2,15 +2,17 @@
 import Layout from '~/layouts/PageLayout.astro';
 import Hero2 from '~/components/widgets/Hero2.astro';
 import Header from '~/components/widgets/Header.astro';
-import AboutStory from '~/components/widgets/AboutStory.astro';
-import SingleQuote from '~/components/widgets/SingleQuote.astro';
+import TextSplit from '~/components/widgets/TextSplit.astro';
 import CredentialsSection from '~/components/widgets/CredentialsSection.astro';
 import PublicationsSection from '~/components/widgets/PublicationsSection.astro';
+import Text from '~/components/ui/Text.astro';
+import Heading from '~/components/ui/Heading.astro';
+import Button from '~/components/ui/Button.astro';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
+import { PRIMARY_CTA_HREF, PRIMARY_CTA_LABEL } from '~/config/cta';
 import { getImage } from 'astro:assets';
 import robertImg from '~/assets/images/robert.png';
-import microscopeImg from '~/assets/images/microscope.png';
 
 const metadata = {
   title: `About Dr. Peterson | ${site.name}`,
@@ -32,7 +34,7 @@ const header = navigationData.header;
     overlapHeader={false}
     tagline="About Dr. Peterson"
     title="Medicine for the<br />Long Game"
-    content="Dr. Robert Peterson has spent his career helping patients combat aging, first as a plastic surgeon and now as a longevity expert. With a background in engineering and pharmacology, he is now focused on how we age, what can be done about it, and what gives the most &ldquo;bang for the buck.&rdquo;"
+    content="Rebellious Aging is a movement started by Dr. Robert Peterson, a surgeon and engineer, to keep people independent and out of the nursing home for as long as possible. It is currently sponsored by Athena Clinic."
     image={{
       ...robertImg,
       alt: 'Portrait of Dr. Robert Peterson',
@@ -47,19 +49,44 @@ const header = navigationData.header;
     />
   </Hero2>
 
-  {/* ── Story & Philosophy: image left + text right ── */}
-  <AboutStory
-    id="story"
-    image={microscopeImg}
-    imageAlt="Gloved hands holding a sample dish under a laboratory microscope"
-  />
+  <TextSplit id="movement" eyebrow="The movement" headingHtml="Who&apos;s rebelling?<br />You are." compact>
+    <Text variant="body-lg">
+      Against the idea that decline is just what happens. And against spending money on the fancy stuff before the basics are done.
+    </Text>
+    <Text class="mt-4">
+      Rebellious Aging is a movement, so there's nothing to buy. You join it. Start by finding your weakest link, then fill your buckets in order.
+    </Text>
+    <Button
+      variant="primary"
+      text={PRIMARY_CTA_LABEL}
+      href={PRIMARY_CTA_HREF}
+      hideNote
+      class="mt-6 self-start"
+    />
+  </TextSplit>
 
-  {/* ── Pullquote card ── */}
-  <SingleQuote
+  <TextSplit
     id="guiding-principle"
-    quote="You are only as young as your oldest parts."
-    attribution="Dr. Robert Peterson"
-  />
+    eyebrow="Dr. Peterson"
+    heading="Thirty years separating real advances from fads."
+    compact
+    alignTop
+    class="bg-white"
+  >
+    <Text>
+      Dr. Robert Peterson is a surgeon and engineer. He spent his career as a plastic surgeon helping people fight the signs of aging, and the last thirty years studying the science of aging itself, to separate what lasts from what's just in fashion.
+    </Text>
+    <Text class="mt-4">
+      His conclusion is simple. Every system in your body ages at its own rate, and the weakest one decides how you age. So the job is to find that weakest link and put your effort there first.
+    </Text>
+    <Text class="mt-4">
+      He wrote the Athena Textbook of Longevity Medicine as the scientific reference for clinicians, and the Rebellious Aging guidebooks to make it usable for everyone else. The buckets turn it into a plan: do the basics first, measure what matters, and leave the fancy stuff for last.
+    </Text>
+    <Heading variant="h3" as="p" class="mt-8 !text-[30px]">
+      "You are only as young as your oldest part."
+    </Heading>
+    <Text class="mt-3">Dr. Robert Peterson</Text>
+  </TextSplit>
 
   {/* ── Medical Credentials / Journey ── */}
   <CredentialsSection id="credentials" />
@@ -86,4 +113,14 @@ const header = navigationData.header;
       },
     ]}
   />
+
+  <TextSplit id="sponsor" eyebrow="Our sponsor" heading="Athena Clinic" compact alignTop class="bg-page">
+    <div class="rounded-[32px] bg-section-grey p-6 md:p-8">
+      <Heading variant="h4">Disclosure</Heading>
+      <Text class="mt-4">
+        Rebellious Aging is currently sponsored by Athena Clinic in Honolulu, which Dr. Peterson owns. Athena Clinic offers the Athena evaluation linked from this site. Nothing here requires you to use it. Everything in the buckets works just as well with your own doctor.
+      </Text>
+      <a href="/athena-evaluation" class="btn-link mt-5">About the Athena evaluation</a>
+    </div>
+  </TextSplit>
 </Layout>

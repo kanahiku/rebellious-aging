@@ -1,0 +1,72 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Hero2 from '~/components/widgets/Hero2.astro';
+import Header from '~/components/widgets/Header.astro';
+import AthenaEvaluationOverview from '~/components/widgets/AthenaEvaluationOverview.astro';
+import AthenaPricing from '~/components/widgets/AthenaPricing.astro';
+import AthenaEvaluationBooking from '~/components/widgets/AthenaEvaluationBooking.astro';
+import { site } from '~/config/site';
+import { navigationData } from '~/data/navigation';
+import { ATHENA_CONTACT_HREF } from '~/config/cta';
+
+const metadata = {
+  title: `Athena evaluation | ${site.name}`,
+  description:
+    "Find out where you actually stand, measured by a doctor instead of guessed. You don't know what you don't know.",
+  ignoreTitleTemplate: true,
+};
+
+const header = navigationData.header;
+
+const includedItems = [
+  {
+    title: 'Self-assessment review',
+    body: 'Bring your printed results. A doctor goes through them with you.',
+  },
+  {
+    title: 'The bucket 2 tests',
+    body: 'A1c, cholesterol, kidney & liver, bone density, coronary calcium, hearing and a medication review.',
+  },
+  {
+    title: 'Your weakest link',
+    body: 'The system closest to its floor, confirmed with real numbers.',
+  },
+  {
+    title: 'A starting plan',
+    body: 'What to fill first, and what to measure again next year.',
+  },
+];
+
+const tiers = [
+  { label: 'Tier 1', price: '$200' },
+  { label: 'Tier 2', price: '$450' },
+  { label: 'Tier 3', price: '$1,000' },
+];
+---
+
+<Layout metadata={metadata}>
+  <Fragment slot="header" />
+
+  <Hero2
+    variant="dark-page"
+    overlapHeader={false}
+    tagline="Sponsored by Athena Clinic"
+    title="The Athena evaluation."
+    subtitle="Find out where you actually stand, measured by a doctor instead of guessed. You don't know what you don't know."
+    actions={[{ variant: 'primary', text: 'Request an evaluation', href: ATHENA_CONTACT_HREF, target: '_blank', hideNote: true }]}
+  >
+    <Header
+      slot="nav"
+      embedded
+      isSticky={false}
+      links={header.links}
+      actions={header.actions}
+    />
+  </Hero2>
+
+  <AthenaEvaluationOverview id="what-it-is" items={includedItems} />
+
+  <AthenaPricing id="price" tiers={tiers} />
+
+  <AthenaEvaluationBooking id="own-doctor" ctaHref={ATHENA_CONTACT_HREF} />
+</Layout>

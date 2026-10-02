@@ -1,15 +1,14 @@
 import type { NavigationContent } from '~/lib/content/types';
-import { CONTACT, PRIMARY_CTA_LABEL, PRIMARY_CTA_HREF, SOCIAL } from '~/config';
+import { PRIMARY_CTA_LABEL, PRIMARY_CTA_HREF, SOCIAL } from '~/config';
 
 export const navigationData: NavigationContent = {
   header: {
     links: [
-      { text: 'How Aging Works', href: '/how-aging-works' },
-      { text: 'Four Pillars', href: '/four-pillars' },
+      { text: 'The Buckets', href: '/how-aging-works' },
+      { text: 'The Ohana', href: '/ohana' },
       { text: 'Ask Your Doctor', href: '/talk-to-your-doctor' },
       { text: 'Books', href: '/books' },
-      { text: 'Podcasts', href: '/podcast' },
-      { text: 'Ohana', href: '/ohana' },
+      { text: 'Podcast', href: '/podcast' },
       { text: 'About', href: '/about' },
     ],
     actions: [{ variant: 'primary', text: PRIMARY_CTA_LABEL, href: PRIMARY_CTA_HREF }],
@@ -20,13 +19,22 @@ export const navigationData: NavigationContent = {
       {
         title: 'Navigation',
         links: [
-          { text: 'How Aging Works', href: '/how-aging-works' },
-          { text: 'Four Pillars', href: '/four-pillars' },
+          { text: 'The Buckets', href: '/how-aging-works' },
+          { text: 'The Ohana', href: '/ohana' },
           { text: 'Ask Your Doctor', href: '/talk-to-your-doctor' },
           { text: 'Books', href: '/books' },
-          { text: 'Podcasts', href: '/podcast' },
-          { text: 'Ohana', href: '/ohana' },
+          { text: 'Podcast', href: '/podcast' },
           { text: 'About', href: '/about' },
+        ],
+      },
+      {
+        title: 'Start with your decade',
+        links: [
+          { text: 'In your 30s', href: '/in-your-30s' },
+          { text: 'In your 40s', href: '/in-your-40s' },
+          { text: 'In your 50s', href: '/in-your-50s' },
+          { text: 'In your 60s', href: '/in-your-60s' },
+          { text: '70 and beyond', href: '/70-plus' },
         ],
       },
     ],
@@ -35,6 +43,6 @@ export const navigationData: NavigationContent = {
       { text: 'Terms of Service', href: '/terms-of-service' },
     ],
     socialLinks: SOCIAL.nav as unknown as NavigationContent['footer']['socialLinks'],
-    footNote: `&copy; ${new Date().getFullYear()} ${CONTACT.businessName}. All rights reserved.`,
+    footNote: 'Rebellious Aging is sponsored by Athena Clinic, which Dr. Peterson owns.',
   },
 };

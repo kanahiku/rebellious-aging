@@ -1,0 +1,51 @@
+---
+/**
+ * DecadeCurve — five-card decade selector.
+ *
+ * Props:
+ *   eyebrow — small uppercase section label
+ *   heading — section h2
+ *   cards   — { title, body, href }[]
+ *   id      — optional section anchor
+ */
+import Heading from '~/components/ui/Heading.astro';
+
+export interface DecadeCard {
+  title: string;
+  body: string;
+  href: string;
+}
+
+export interface Props {
+  eyebrow?: string;
+  heading: string;
+  cards?: DecadeCard[];
+  id?: string;
+}
+
+const { eyebrow, heading, cards = [], id } = Astro.props;
+---
+
+<section {...id ? { id } : {}} class="not-prose w-full bg-cta">
+  <div class="mx-auto flex w-full max-w-container flex-col gap-6 px-5 py-10 sm:px-8 md:px-16 md:py-[64px] lg:px-[120px]">
+    <div class="flex flex-col gap-4">
+      {eyebrow && <Heading variant="eyebrow">{eyebrow}</Heading>}
+      <Heading variant="h2">{heading}</Heading>
+    </div>
+
+    {cards.length > 0 && (
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5 lg:gap-5">
+        {cards.map((card) => (
+          <a
+            href={card.href}
+            class="group flex h-full flex-col rounded-[16px] border border-primary/10 bg-surface p-6 shadow-card-mist transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+            aria-label={`Read more: ${card.title}`}
+          >
+            <h3 class="font-heading text-h4 font-normal leading-[0.95] text-heading">{card.title}</h3>
+            <p class="mt-4 flex-1 font-sans text-body leading-[1.45] text-muted">{card.body}</p>
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</section>

@@ -1,0 +1,288 @@
+---
+/**
+ * ThreeBuckets — horizontal three-bucket diagram.
+ *
+ * All three cards share the same height (lg:items-stretch + h-full).
+ * Content sits at the top of each card; a flex-1 spacer creates the
+ * "unfilled" visual portion below the content; the footer note pins
+ * to the bottom of every card.
+ *
+ * Bucket 2 (middle) uses a trimmed key-item list so its content fills
+ * roughly half the card height — the rest is intentionally empty space.
+ *
+ * Routes:  B1 → /four-pillars
+ *          B2 → /talk-to-your-doctor
+ *          B3 → /how-aging-works#bucket-3
+ *
+ * Atoms: Button. Tokens only — no hex.
+ */
+import Button from '~/components/ui/Button.astro';
+import Heading from '~/components/ui/Heading.astro';
+import Text from '~/components/ui/Text.astro';
+import { PRIMARY_CTA_HREF } from '~/config/cta';
+
+export interface Props {
+  id?: string;
+  /** Optional intro block shown above the diagram */
+  eyebrow?: string;
+  heading?: string;
+  body?: string;
+  cta?: { text: string; href: string };
+}
+const {
+  id = 'three-buckets',
+  eyebrow,
+  heading,
+  body,
+  cta,
+} = Astro.props;
+
+// Bucket 1 — 4 pills in a 2×2 grid
+const pillars = ['Diet', 'Exercise', 'Sleep', 'Social connection'];
+
+// Bucket 2 — trimmed to key items so content fills ~half the card
+const homeItems   = ['Blood pressure', 'Balance', 'Weight & waist'];
+const doctorItems = ['A1c (blood sugar)', 'Coronary calcium', 'Medication review'];
+
+// Bucket 3 — centered list
+const fancyItems  = ['IV drips', 'Peptides', 'Whole-body MRI', 'Cancer blood panels', 'Supplements'];
+---
+
+<section {...(id ? { id } : {})} class="not-prose w-full bg-white">
+  <div class="mx-auto w-full max-w-container px-5 py-12 sm:px-8 md:px-16 md:py-[64px] lg:px-[120px]">
+
+    {/* ── Optional intro ── */}
+    {(eyebrow || heading || body || cta) && (
+      <div class="mb-12 flex flex-col items-start gap-6 md:mb-16">
+        {(eyebrow || heading) && (
+          <div class="flex flex-col gap-4">
+            {eyebrow && <Heading variant="eyebrow">{eyebrow}</Heading>}
+            {heading  && <Heading variant="h2">{heading}</Heading>}
+          </div>
+        )}
+        {body && <Text variant="body-lg" class="max-w-[620px]">{body}</Text>}
+        {cta  && <Button variant="primary" text={cta.text} href={cta.href} hideNote />}
+      </div>
+    )}
+
+    {/* ── Scale bars ── */}
+    <div class="mb-8 flex max-w-sm flex-col gap-1.5">
+      {[
+        { label: 'Evidence', lo: 'Strongest', hi: 'Thinnest', cls: 'from-primary to-primary/10' },
+        { label: 'Cost',     lo: 'Lowest',    hi: 'Highest',  cls: 'from-primary/10 to-primary' },
+      ].map(({ label, lo, hi, cls }) => (
+        <div class="flex items-center gap-3">
+          <span class="type-eyebrow w-16 shrink-0 font-sans text-eyebrow">{label}</span>
+          <div class={`h-0.5 flex-1 rounded-full bg-gradient-to-r ${cls}`} />
+          <div class="flex shrink-0 gap-3 font-sans text-[11px] text-muted">
+            <span>{lo}</span>
+            <span>{hi}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {/* ────────────────────────────────────────────────────────────
+        Bucket grid
+        Desktop: 5-col [1fr auto 1fr auto 1fr] — connectors size to content.
+        lg:items-stretch  → all three cards grow to the same height.
+        Each <a> is h-full so it fills its grid cell.
+        ──────────────────────────────────────────────────────────── */}
+    <div class="grid grid-cols-1 gap-4
+                lg:grid-cols-[1fr_auto_1fr_auto_1fr]
+                lg:items-stretch lg:gap-x-0 lg:gap-y-0">
+
+      {/* ─── Bucket 1 — The basics ─── */}
+      <a
+        href="/four-pillars"
+        class="group flex h-full flex-col overflow-hidden rounded-[20px]
+               border-2 border-section-dark no-underline
+               transition-opacity hover:opacity-90
+               focus-visible:outline focus-visible:outline-2
+               focus-visible:outline-offset-2 focus-visible:outline-accent
+               lg:min-h-[500px]"
+        aria-label="Bucket 1: The basics — four pillars"
+      >
+        {/* Header band */}
+        <div class="bg-section-dark px-4 py-2 text-center">
+          <span class="type-eyebrow font-sans text-[11px] text-white/60">Bucket 1</span>
+        </div>
+
+        {/* Flex body — flex-1 fills remaining height */}
+        <div class="flex flex-1 flex-col bg-section-grey">
+          {/* Content area (top) */}
+          <div class="flex flex-col gap-4 p-5 md:p-6">
+            <h3 class="font-heading text-h2 font-normal leading-none text-heading text-center">
+              The basics
+            </h3>
+            {/* 2×2 pill grid */}
+            <div class="grid grid-cols-2 gap-2">
+              {pillars.map((item) => (
+                <div class="rounded-[12px] bg-white px-3 py-3 text-center
+                            font-sans text-[13px] font-semibold leading-[1.3] text-heading">
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Spacer — "unfilled" portion of the bucket */}
+          <div class="flex-1" />
+
+          {/* Footer note — pinned to bottom */}
+          <div class="px-5 pb-5 text-center font-sans text-[12px] leading-[1.5] text-muted">
+            No order inside. All four count.<br />Social connection → the Ohana
+          </div>
+        </div>
+      </a>
+
+      {/* ─── Connector 1 → 2 ─── */}
+      <div class="flex items-center justify-center gap-1
+                  lg:flex-col lg:items-center lg:justify-start lg:pt-32 lg:px-3">
+        <span class="type-eyebrow font-sans text-[10px] text-muted lg:hidden">spills over</span>
+        <span class="text-muted lg:hidden">→</span>
+        <div class="hidden lg:flex lg:flex-col lg:items-center lg:gap-0.5">
+          <span class="type-eyebrow font-sans text-[10px] leading-[1.3] text-muted text-center">
+            spills<br />over
+          </span>
+          <span class="font-sans text-[18px] leading-none text-muted">→</span>
+        </div>
+      </div>
+
+      {/* ─── Bucket 2 — Ask your doctor (half filled) ─── */}
+      <a
+        href="/talk-to-your-doctor"
+        class="group flex h-full flex-col overflow-hidden rounded-[20px]
+               border-2 border-primary no-underline
+               transition-opacity hover:opacity-90
+               focus-visible:outline focus-visible:outline-2
+               focus-visible:outline-offset-2 focus-visible:outline-accent
+               lg:min-h-[500px]"
+        aria-label="Bucket 2: Ask your doctor"
+      >
+        {/* Header band */}
+        <div class="bg-primary px-4 py-2 text-center">
+          <span class="type-eyebrow font-sans text-[11px] text-white/60">Bucket 2</span>
+        </div>
+
+        {/* Flex body */}
+        <div class="flex flex-1 flex-col bg-section-grey">
+          {/* Content area (top ~half) */}
+          <div class="flex flex-col gap-4 p-5 md:p-6">
+            <h3 class="font-heading text-h2 font-normal leading-none text-heading text-center">
+              Ask your<br />doctor
+            </h3>
+            {/* 2-col key-item list */}
+            <div class="flex divide-x divide-primary/20 font-sans text-[12px]">
+              <div class="flex flex-1 flex-col gap-1 pr-3">
+                <span class="type-eyebrow mb-1 font-sans text-[10px] text-eyebrow">
+                  Check at home
+                </span>
+                {homeItems.map((item) => (
+                  <span class="leading-[1.5] text-primary">{item}</span>
+                ))}
+              </div>
+              <div class="flex flex-1 flex-col gap-1 pl-3">
+                <span class="type-eyebrow mb-1 font-sans text-[10px] text-eyebrow">
+                  Doctor orders
+                </span>
+                {doctorItems.map((item) => (
+                  <span class="leading-[1.5] text-primary">{item}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Spacer — intentionally empty bottom half */}
+          <div class="flex-1" />
+
+          {/* Footer note */}
+          <div class="px-5 pb-5 text-center font-sans text-[12px] leading-[1.5] text-muted">
+            You don&apos;t know what you don&apos;t know.
+          </div>
+        </div>
+      </a>
+
+      {/* ─── Connector 2 → 3 ─── */}
+      <div class="flex items-center justify-center gap-1
+                  lg:flex-col lg:items-center lg:justify-start lg:pt-32 lg:px-3">
+        <span class="type-eyebrow font-sans text-[10px] text-muted lg:hidden">spills over</span>
+        <span class="text-muted lg:hidden">→</span>
+        <div class="hidden lg:flex lg:flex-col lg:items-center lg:gap-0.5">
+          <span class="type-eyebrow font-sans text-[10px] leading-[1.3] text-muted text-center">
+            spills<br />over
+          </span>
+          <span class="font-sans text-[18px] leading-none text-muted">→</span>
+        </div>
+      </div>
+
+      {/* ─── Bucket 3 — The fancy stuff ─── */}
+      <a
+        href="/how-aging-works#bucket-3"
+        class="group flex h-full flex-col overflow-hidden rounded-[20px]
+               border-2 border-dashed no-underline
+               transition-opacity hover:opacity-90
+               focus-visible:outline focus-visible:outline-2
+               focus-visible:outline-offset-2 focus-visible:outline-accent
+               lg:min-h-[500px]"
+        style="border-color: var(--aw-color-text-tan); background-color: var(--aw-color-bg-page);"
+        aria-label="Bucket 3: The fancy stuff"
+      >
+        {/* No solid header band — dashed border is the container */}
+        <div class="px-4 pt-4 text-center">
+          <span class="type-eyebrow font-sans text-[11px]"
+                style="color: var(--aw-color-text-tan);">Bucket 3</span>
+        </div>
+
+        {/* Flex body */}
+        <div class="flex flex-1 flex-col" style="background-color: var(--aw-color-bg-page);">
+          {/* Content area (top) */}
+          <div class="flex flex-col items-center gap-3 px-5 py-4 md:px-6">
+            <h3 class="font-heading text-h2 font-normal leading-none text-heading text-center">
+              The fancy stuff
+            </h3>
+            <div class="flex flex-col items-center gap-1.5 font-sans text-[15px] text-heading">
+              {fancyItems.map((item) => (
+                <span class="text-center leading-[1.4]">{item}</span>
+              ))}
+            </div>
+          </div>
+
+          {/* Spacer */}
+          <div class="flex-1" />
+
+          {/* Footer note */}
+          <div class="px-5 pb-5 text-center font-sans text-[12px] leading-[1.5] text-muted">
+            Optional. Recreational anti-aging.<br />Nothing for us to sell you here.
+          </div>
+        </div>
+      </a>
+
+    </div>{/* end bucket grid */}
+
+    {/* ── Below-bucket labels (mirrors 5-col grid) ── */}
+    <div class="mt-4 grid grid-cols-1 gap-4 text-center
+                lg:grid-cols-[1fr_auto_1fr_auto_1fr] lg:gap-x-0">
+      <div class="flex flex-col gap-0.5">
+        <p class="font-sans text-[13px] font-bold text-heading">Strongest evidence · Lowest cost</p>
+        <p class="font-sans text-[12px] text-muted">Fill first</p>
+      </div>
+      <div class="hidden lg:block lg:px-3" aria-hidden="true" />
+      <div class="flex flex-col gap-0.5">
+        <p class="font-sans text-[13px] font-bold text-heading">Strong evidence · Moderate cost</p>
+        <p class="font-sans text-[12px] text-muted">Fill once bucket 1 is on its way</p>
+      </div>
+      <div class="hidden lg:block lg:px-3" aria-hidden="true" />
+      <div class="flex flex-col gap-0.5">
+        <p class="font-sans text-[13px] font-bold text-heading">Thin evidence · Highest cost</p>
+        <p class="font-sans text-[12px] text-muted">Only with whatever spills over</p>
+      </div>
+    </div>
+
+    {/* ── Footer note ── */}
+    <p class="mt-8 font-sans text-body text-muted">
+      Buckets hold your time, money and attention, not your health.
+    </p>
+
+  </div>
+</section>

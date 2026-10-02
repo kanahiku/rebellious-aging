@@ -1,12 +1,13 @@
 -- Shared Cloudflare Worker form service. One row per client site.
--- from_email uses Resend's test sender until the client domain is verified.
--- After DNS is verified, update from_email to: hello@rebelliousaging.org
+-- notify_email  → where lead notifications land (dhruv@kanahiku.com)
+-- from_email    → Resend sending address (kanahiku.com domain — must stay verified on Resend)
+-- allowed_origins → includes wildcard *.vercel.app for preview deployments + production URLs
 INSERT OR REPLACE INTO sites (slug, name, notify_email, from_email, from_name, allowed_origins)
 VALUES (
   'rebellious-aging',
   'Rebellious Aging',
-  'hello@rebelliousaging.org',
+  'dhruv@kanahiku.com',
   'Rebellious Aging <hello@rebelliousaging.org>',
   'Rebellious Aging',
-  '["http://localhost:4321","https://*.vercel.app","https://rebelliousaging.org","https://www.rebelliousaging.org"]'
+  '["http://localhost:4321","https://*.vercel.app","https://rebellious-aging.vercel.app","https://rebelliousaging.org","https://www.rebelliousaging.org"]'
 );

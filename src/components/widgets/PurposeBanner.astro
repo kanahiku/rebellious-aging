@@ -78,13 +78,17 @@ const {
           <Heading variant="h2" color="inherit" class="text-page">
             {noChapterHeading}
           </Heading>
-          <Button
-            variant="primary"
-            text={noChapterCta.text}
-            href={noChapterCta.href}
-            class="w-full"
-            hideNote
-          />
+          {Astro.slots.has('no-chapter-cta') ? (
+            <slot name="no-chapter-cta" />
+          ) : (
+            <Button
+              variant="primary"
+              text={noChapterCta.text}
+              href={noChapterCta.href}
+              class="w-full"
+              hideNote
+            />
+          )}
         </div>
         <div class="min-w-0 flex-1 flex flex-col gap-[1lh]">
           <slot name="no-chapter-body" />

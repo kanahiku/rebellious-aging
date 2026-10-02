@@ -1,0 +1,40 @@
+---
+/**
+ * DecadeBulletSplit — two-column decade section with left narrative and right bullet checklist.
+ */
+import Heading from '~/components/ui/Heading.astro';
+import Text from '~/components/ui/Text.astro';
+
+export interface Props {
+  id?: string;
+  heading: string;
+  lead: string;
+  body: string;
+  source?: string;
+  bullets: string[];
+  bgClass?: string;
+}
+
+const { id, heading, lead, body, source, bullets, bgClass = 'bg-page' } = Astro.props;
+---
+
+<section {...id ? { id } : {}} class:list={['not-prose w-full', bgClass]}>
+  <div class="mx-auto w-full max-w-container px-5 py-[64px] sm:px-8 md:px-16 lg:px-[120px]">
+    <div class="grid gap-12 lg:grid-cols-2 lg:items-start lg:gap-[120px]">
+      <div class="flex min-w-0 flex-col gap-4">
+        <Heading variant="h2">{heading}</Heading>
+        <Text variant="body-lg">{lead}</Text>
+        <Text>{body}</Text>
+        {source && <Text variant="small" class="font-semibold">Source: {source}</Text>}
+      </div>
+
+      <ul class="flex min-w-0 flex-col divide-y divide-primary/10 border-b border-primary/10">
+        {bullets.map((bullet) => (
+          <li class="py-4 first:pt-0">
+            <p class="font-sans text-body font-semibold leading-[1.45] text-heading">{bullet}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>

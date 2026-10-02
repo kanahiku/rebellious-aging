@@ -1,0 +1,153 @@
+---
+/**
+ * AgingCurve — "Peak. Slope. Floor. Reserve." section.
+ *
+ * SVG from design spec; colours wired to brand tokens via CSS custom
+ * property aliases (--muted / --tan / --sky / --ink / --navy / --paper).
+ * Chart container is scrollable horizontally on mobile.
+ *
+ * Anchor: id="aging-curve"
+ */
+import Heading from '~/components/ui/Heading.astro';
+
+export interface Props {
+  id?: string;
+}
+
+const { id = 'aging-curve' } = Astro.props;
+
+const cards = [
+  {
+    label: 'Peak',
+    body: "Every system rises to its best. For most, that's somewhere in your 20s or 30s.",
+  },
+  {
+    label: 'Slope',
+    body: 'Then it declines at some rate. The rate is the part you can change.',
+  },
+  {
+    label: 'Floor',
+    body: 'The point where you can no longer live on your own. A Black Swan is what usually drops you there.',
+  },
+  {
+    label: 'Reserve',
+    body: "The distance between where you are now and the floor. It's measurable, and different for every system.",
+  },
+];
+---
+
+<style>
+  /* Map design-spec aliases to brand tokens */
+  .ac-wrap {
+    --muted: var(--aw-color-text-muted);
+    --tan:   var(--aw-color-text-tan);
+    --sky:   var(--aw-color-accent);      /* #567F9B — buckets-filled curve */
+    --ink:   var(--aw-color-text-heading);/* #1E2A30 — default path + PEAK  */
+    --navy:  var(--aw-color-primary);     /* #2C4A5B — YOU ARE HERE / RESERVE */
+    --paper: var(--aw-color-bg-page);     /* #F5F4EF — open-circle fill     */
+  }
+  /* Override SVG font-family with our brand sans */
+  .ac-wrap svg text {
+    font-family: var(--aw-font-sans), Arial, sans-serif;
+  }
+</style>
+
+<section {...(id ? { id } : {})} class="not-prose w-full bg-page">
+  <div class="mx-auto w-full max-w-container px-5 py-12 sm:px-8 md:px-16 md:py-[64px] lg:px-[120px]">
+
+    {/* ── Header ── */}
+    <div class="mb-10 flex flex-col gap-4 md:mb-14">
+      <Heading variant="eyebrow">Your aging curve</Heading>
+      <Heading variant="h2">Peak. Slope. Floor. Reserve.</Heading>
+      <p class="max-w-[600px] font-sans text-body leading-[1.5] text-default">
+        Every system in your body follows the same curve.{' '}
+        <strong class="font-semibold text-heading">
+          You can change how fast you decline. You can't climb back up.
+        </strong>
+      </p>
+    </div>
+
+    {/* ── Chart — scrollable on mobile ── */}
+    <div class="ac-wrap overflow-x-auto rounded-[20px] border border-primary/10 bg-surface p-4 md:p-8">
+      <div class="min-w-[620px]">
+        <svg viewBox="0 0 820 400" class="w-full" role="img" aria-label="Aging curve: function peaks around 30, then slopes. The default path hits the floor after a Black Swan; the buckets-filled path stays above it.">
+          <line x1="70" y1="360" x2="790" y2="360" stroke="var(--muted)" stroke-width="1"></line>
+          <line x1="70" y1="360" x2="70" y2="40" stroke="var(--muted)" stroke-width="1"></line>
+          <text x="70" y="30" font-size="13" fill="var(--muted)">FUNCTION</text>
+          <text x="70"  y="382" font-size="13" text-anchor="middle" fill="var(--muted)">20</text>
+          <text x="171" y="382" font-size="13" text-anchor="middle" fill="var(--muted)">30</text>
+          <text x="273" y="382" font-size="13" text-anchor="middle" fill="var(--muted)">40</text>
+          <text x="374" y="382" font-size="13" text-anchor="middle" fill="var(--muted)">50</text>
+          <text x="476" y="382" font-size="13" text-anchor="middle" fill="var(--muted)">60</text>
+          <text x="577" y="382" font-size="13" text-anchor="middle" fill="var(--muted)">70</text>
+          <text x="679" y="382" font-size="13" text-anchor="middle" fill="var(--muted)">80</text>
+          <text x="780" y="382" font-size="13" text-anchor="middle" fill="var(--muted)">90</text>
+          <text x="790" y="398" font-size="12" text-anchor="end"    fill="var(--muted)">AGE</text>
+
+          {/* Floor dashed line */}
+          <line x1="70" y1="330" x2="790" y2="330" stroke="var(--tan)" stroke-width="2" stroke-dasharray="7 6"></line>
+          <text x="78"  y="322" font-size="14" font-weight="700" fill="var(--tan)">FLOOR</text>
+          <text x="134" y="322" font-size="13" fill="var(--muted)">you can no longer live on your own</text>
+
+          {/* Buckets-filled path (sky / light blue) */}
+          <path
+            d="M171.4 90.0 L181.6 90.2 L191.7 90.5 L201.9 91.0 L212.0 91.6 L222.1 92.2 L232.3 93.0 L242.4 93.8 L252.6 94.7 L262.7 95.7 L272.9 96.8 L283.0 97.9 L293.1 99.1 L303.3 100.3 L313.4 101.6 L323.6 102.9 L333.7 104.4 L343.9 105.8 L354.0 107.3 L364.1 108.9 L374.3 110.5 L384.4 112.2 L394.6 113.9 L404.7 115.7 L414.9 117.5 L425.0 119.3 L435.1 121.2 L445.3 123.2 L455.4 125.1 L465.6 127.2 L475.7 129.3 L485.9 131.4 L496.0 133.5 L506.1 135.7 L516.3 138.0 L526.4 140.2 L536.6 142.5 L546.7 144.9 L556.9 147.3 L567.0 149.7 L577.1 152.2 L587.3 154.7 L597.4 157.2 L607.6 159.8 L617.7 162.4 L627.9 165.1 L638.0 167.8 L648.1 170.5 L658.3 173.3 L668.4 176.1 L678.6 178.9 L688.7 181.7 L698.9 184.6 L709.0 187.6 L719.1 190.5 L729.3 193.5 L739.4 196.5 L749.6 199.6 L759.7 202.7 L769.9 205.8 L780.0 209.0"
+            fill="none" stroke="var(--sky)" stroke-width="4" stroke-linecap="round"
+          ></path>
+
+          {/* Default path (ink / dark) + cliff drop */}
+          <path
+            d="M70.0 170.0 L80.1 162.0 L90.3 154.0 L100.4 146.0 L110.6 138.0 L120.7 130.0 L130.9 122.0 L141.0 114.0 L151.1 106.0 L161.3 98.0 L171.4 90.0 L181.6 90.4 L191.7 91.1 L201.9 92.1 L212.0 93.3 L222.1 94.7 L232.3 96.3 L242.4 98.1 L252.6 100.0 L262.7 102.1 L272.9 104.3 L283.0 106.7 L293.1 109.2 L303.3 111.8 L313.4 114.6 L323.6 117.4 L333.7 120.4 L343.9 123.5 L354.0 126.7 L364.1 130.0 L374.3 133.4 L384.4 137.0 L394.6 140.6 L404.7 144.3 L414.9 148.2 L425.0 152.1 L435.1 156.1 L445.3 160.2 L455.4 164.4 L465.6 168.7 L475.7 173.1 L485.9 177.6 L496.0 182.2 L506.1 186.8 L516.3 191.5 L526.4 196.4 L536.6 201.3 L546.7 206.3 L556.9 211.3 L567.0 216.5 L577.1 221.7 L587.3 227.0 L597.4 232.4 L607.6 237.9 L617.7 243.4 L627.9 249.0 L638.0 254.7 L648.1 260.5 L658.3 266.3 L664.4 348 L780 352"
+            fill="none" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"
+          ></path>
+
+          {/* PEAK dot + label */}
+          <circle cx="171" cy="90" r="6" fill="var(--ink)"></circle>
+          <text x="171" y="74" font-size="15" font-weight="700" text-anchor="middle" fill="var(--ink)">PEAK</text>
+
+          {/* SLOPE label */}
+          <text x="476" y="207" font-size="15" font-weight="700" fill="var(--ink)">SLOPE</text>
+
+          {/* BUCKETS FILLED label */}
+          <text x="780" y="193" font-size="13" text-anchor="end" fill="var(--navy)" font-weight="700">BUCKETS FILLED</text>
+
+          {/* BLACK SWAN dot + label */}
+          <circle cx="658" cy="266" r="9" fill="var(--paper)" stroke="var(--ink)" stroke-width="3"></circle>
+          <text x="674" y="262" font-size="14" font-weight="700" text-anchor="start" fill="var(--ink)">BLACK SWAN</text>
+          <text x="674" y="280" font-size="12" text-anchor="start" fill="var(--muted)">links to the book</text>
+
+          {/* RESERVE dashed line + label */}
+          <line x1="395" y1="153" x2="395" y2="326" stroke="var(--navy)" stroke-width="2" stroke-dasharray="3 4"></line>
+          <text x="405" y="240" font-size="14" font-weight="700" fill="var(--navy)">RESERVE</text>
+
+          {/* YOU ARE HERE dot + label */}
+          <circle cx="395" cy="141" r="8" fill="var(--navy)"></circle>
+          <text x="407" y="129" font-size="14" font-weight="700" fill="var(--navy)">YOU ARE HERE</text>
+        </svg>
+
+        {/* Legend */}
+        <div class="mt-3 flex flex-wrap gap-x-6 gap-y-1 px-2">
+          <div class="flex items-center gap-2">
+            <svg width="28" height="4" aria-hidden="true"><line x1="0" y1="2" x2="28" y2="2" stroke="var(--aw-color-text-heading)" stroke-width="3" stroke-linecap="round"/></svg>
+            <span class="font-sans text-[12px] text-muted">Default path</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg width="28" height="4" aria-hidden="true"><line x1="0" y1="2" x2="28" y2="2" stroke="var(--aw-color-accent)" stroke-width="3" stroke-linecap="round"/></svg>
+            <span class="font-sans text-[12px] text-muted">Buckets filled</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* ── Concept cards ── */}
+    <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {cards.map((card) => (
+        <div class="flex flex-col gap-3 rounded-[16px] border border-primary/10 bg-surface p-5">
+          <span class="type-eyebrow font-sans text-[11px] text-eyebrow">{card.label}</span>
+          <p class="font-sans text-body leading-[1.5] text-default">{card.body}</p>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>

@@ -1,0 +1,49 @@
+---
+/**
+ * AthenaEvaluationBooking — own-doctor alternative + sponsor disclosure/booking CTA.
+ */
+import Heading from '~/components/ui/Heading.astro';
+import Text from '~/components/ui/Text.astro';
+import Button from '~/components/ui/Button.astro';
+
+export interface Props {
+  id?: string;
+  ctaHref: string;
+}
+
+const { id, ctaHref } = Astro.props;
+---
+
+<section {...id ? { id } : {}} class="not-prose w-full bg-cta">
+  <div class="mx-auto w-full max-w-container px-5 py-12 sm:px-8 md:px-16 md:py-[64px] lg:px-[120px] lg:py-[120px]">
+    <div class="grid gap-12 lg:grid-cols-2 lg:items-start lg:gap-[120px]">
+      <div class="flex min-w-0 flex-col">
+        <Heading variant="h2">Or ask your own doctor.</Heading>
+        <Text class="mt-4">
+          Everything in bucket 2 works just as well with your own doctor. If you'd rather go to someone who knows your history, bring them the list.
+        </Text>
+        <a href="/talk-to-your-doctor" class="btn-link mt-5">See the list</a>
+      </div>
+
+      <div class="flex min-w-0 flex-col items-start">
+        <div class="w-full rounded-[32px] bg-surface p-6 md:p-8">
+          <Heading variant="eyebrow">Disclosure</Heading>
+          <Text class="mt-4">
+            Rebellious Aging is sponsored by Athena Clinic, which Dr. Peterson owns. Nothing on this site requires you to use it.
+          </Text>
+        </div>
+        <Button
+          variant="primary"
+          text="Request an evaluation"
+          href={ctaHref}
+          target="_blank"
+          hideNote
+          class="mt-6 self-start"
+        />
+        <Text variant="small" class="mt-4">
+          Athena Clinic will reply to schedule. Spots are limited each month.
+        </Text>
+      </div>
+    </div>
+  </div>
+</section>

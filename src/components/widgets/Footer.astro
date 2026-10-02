@@ -53,6 +53,7 @@ const {
   secondaryLinks = [],
   links = [],
   tagline = site.footerTagline,
+  footNote = '',
 } = Astro.props;
 ---
 
@@ -95,8 +96,14 @@ const {
         </a>
         <Text variant="small" color="white">{tagline}</Text>
         {
-          secondaryLinks.length > 0 && (
+          (footNote || secondaryLinks.length > 0) && (
             <p class="text-small font-sans text-white/50">
+              {footNote && (
+                <>
+                  <a class="hover:text-white transition duration-150 ease-in-out" href="/about#sponsor">{footNote}</a>
+                  {secondaryLinks.length > 0 ? ' · ' : ''}
+                </>
+              )}
               {secondaryLinks.map(({ text, href }, index) => (
                 <>
                   {index !== 0 ? ' · ' : ''}

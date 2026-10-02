@@ -1,0 +1,93 @@
+---
+/**
+ * MeasurementTable — "You don't know what you don't know." section.
+ *
+ * Eyebrow + heading + body, then a two-column table:
+ *   Left  — "Check at home" rows
+ *   Right — "Doctor orders" rows
+ *
+ * Each row: bold item name + description, separated by a hairline divider.
+ * Content is passed as props — never baked in.
+ *
+ * P-54 · Used on /talk-to-your-doctor
+ */
+import Heading from '~/components/ui/Heading.astro';
+
+export interface TableRow {
+  name: string;
+  description: string;
+}
+
+export interface Props {
+  id?: string;
+  eyebrow?: string;
+  heading: string;
+  body?: string;
+  leftHeading: string;
+  leftRows: TableRow[];
+  rightHeading: string;
+  rightRows: TableRow[];
+  bgClass?: string;
+}
+
+const {
+  id,
+  eyebrow,
+  heading,
+  body,
+  leftHeading,
+  leftRows,
+  rightHeading,
+  rightRows,
+  bgClass = 'bg-page',
+} = Astro.props;
+---
+
+<section {...(id ? { id } : {})} class={`not-prose w-full ${bgClass}`}>
+  <div class="mx-auto w-full max-w-container px-5 py-12 sm:px-8 md:px-16 md:py-[64px] lg:px-[120px]">
+
+    {/* ── Header ── */}
+    <div class="mb-10 flex flex-col gap-4">
+      {eyebrow && <Heading variant="eyebrow">{eyebrow}</Heading>}
+      <Heading variant="h2">{heading}</Heading>
+      {body && (
+        <p class="max-w-[640px] font-sans text-body leading-[1.5] text-default">{body}</p>
+      )}
+    </div>
+
+    {/* ── Two-column table ── */}
+    <div class="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-[80px]">
+
+      {/* Left column */}
+      <div class="flex flex-col">
+        <h3 class="mb-4 font-heading text-h3 font-normal leading-none text-heading">
+          {leftHeading}
+        </h3>
+        <div class="flex flex-col">
+          {leftRows.map((row) => (
+            <div class="grid grid-cols-[1fr_1.5fr] gap-4 border-b border-primary/10 py-4 first:border-t">
+              <p class="font-sans text-body font-semibold leading-[1.4] text-heading">{row.name}</p>
+              <p class="font-sans text-body leading-[1.4] text-muted">{row.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Right column */}
+      <div class="flex flex-col">
+        <h3 class="mb-4 font-heading text-h3 font-normal leading-none text-heading">
+          {rightHeading}
+        </h3>
+        <div class="flex flex-col">
+          {rightRows.map((row) => (
+            <div class="grid grid-cols-[1fr_1.5fr] gap-4 border-b border-primary/10 py-4 first:border-t">
+              <p class="font-sans text-body font-semibold leading-[1.4] text-heading">{row.name}</p>
+              <p class="font-sans text-body leading-[1.4] text-muted">{row.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

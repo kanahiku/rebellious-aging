@@ -1,0 +1,278 @@
+---
+/**
+ * OhanaJoinForm — "Want to start or join one?" form section (Ohana page, #join anchor).
+ *
+ * Layout: 2-col on lg+, flex-col on mobile.
+ *   Left  — eyebrow + h2 + description
+ *   Right — Name / Email / City or ZIP / Intent radio / Notes textarea + Send button
+ *
+ * Submission: POSTs to the shared Cloudflare Worker (massic-forms).
+ *   City/ZIP + intent + notes are composed into the `message` field.
+ *   Cloudflare Turnstile (invisible / interaction-only) handles spam protection.
+ *
+ * After submit: inline success message replaces the Send button.
+ */
+
+import Heading from '~/components/ui/Heading.astro';
+import Text from '~/components/ui/Text.astro';
+import { FORM_ENDPOINT, TURNSTILE_SITE_KEY, SITE_SLUG } from '~/lib/forms';
+
+export interface Props {
+  id?: string;
+  eyebrow?: string;
+  heading?: string;
+  description?: string;
+}
+
+const {
+  id = 'join',
+  eyebrow = 'The Ohana',
+  heading = 'Want to start or join one?',
+  description = "Tell us where you are. We'll be in touch as Ohanas start near you.",
+} = Astro.props;
+---
+
+<section {...id ? { id } : {}} class="not-prose w-full bg-page">
+  <div class="mx-auto w-full max-w-container px-5 py-12 sm:px-8 md:px-16 md:py-[64px] lg:px-[120px] lg:py-[120px]">
+    <div class="flex flex-col gap-12 lg:flex-row lg:items-start lg:gap-[120px]">
+
+      {/* ── LEFT: heading + description ── */}
+      <div class="flex min-w-0 flex-1 flex-col gap-4 lg:pt-1">
+        <Heading variant="eyebrow">{eyebrow}</Heading>
+        <Heading variant="h2">{heading}</Heading>
+        <Text class="mt-2 max-w-[380px]">{description}</Text>
+      </div>
+
+      {/* ── RIGHT: form ── */}
+      <div class="min-w-0 flex-1">
+        <form
+          id="ojf"
+          data-endpoint={FORM_ENDPOINT}
+          data-slug={SITE_SLUG}
+          data-sitekey={TURNSTILE_SITE_KEY}
+          class="flex flex-col gap-5"
+          novalidate
+        >
+
+          {/* Honeypot — invisible to real users */}
+          <input type="text" name="website" class="sr-only" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+          {/* Phone placeholder — the worker requires a valid phone field; this form does not collect one.
+              We send a dummy value so the shared worker's validation passes without changing its code.
+              The actual intent + location + notes travel in the `message` field. */}
+          <input type="hidden" name="phone" value="0000000000" />
+
+          {/* Name */}
+          <div class="flex flex-col gap-1.5">
+            <label for="ojf-name" class="font-sans text-[13px] font-medium leading-none text-heading">Name</label>
+            <input
+              type="text"
+              id="ojf-name"
+              name="name"
+              placeholder="Leilani K."
+              required
+              autocomplete="name"
+              class="w-full rounded-[10px] border border-primary/15 bg-surface px-4 py-3 font-sans text-[15px] text-heading placeholder:text-muted/40 transition-colors focus:border-primary/40 focus:outline-none"
+            />
+          </div>
+
+          {/* Email */}
+          <div class="flex flex-col gap-1.5">
+            <label for="ojf-email" class="font-sans text-[13px] font-medium leading-none text-heading">Email</label>
+            <input
+              type="email"
+              id="ojf-email"
+              name="email"
+              placeholder="leilani@example.com"
+              required
+              autocomplete="email"
+              class="w-full rounded-[10px] border border-primary/15 bg-surface px-4 py-3 font-sans text-[15px] text-heading placeholder:text-muted/40 transition-colors focus:border-primary/40 focus:outline-none"
+            />
+          </div>
+
+          {/* City or ZIP */}
+          <div class="flex flex-col gap-1.5">
+            <label for="ojf-location" class="font-sans text-[13px] font-medium leading-none text-heading">City or ZIP code</label>
+            <input
+              type="text"
+              id="ojf-location"
+              name="location"
+              placeholder="Kailua, 96734"
+              autocomplete="postal-code"
+              class="w-full rounded-[10px] border border-primary/15 bg-surface px-4 py-3 font-sans text-[15px] text-heading placeholder:text-muted/40 transition-colors focus:border-primary/40 focus:outline-none"
+            />
+          </div>
+
+          {/* I want to — radio */}
+          <div class="flex flex-col gap-2">
+            <span class="font-sans text-[13px] font-medium leading-none text-heading">I want to</span>
+            <div class="flex flex-wrap gap-x-6 gap-y-2">
+              <label class="flex cursor-pointer items-center gap-2 font-sans text-[15px] text-heading">
+                <input
+                  type="radio"
+                  name="intent"
+                  value="Join an Ohana"
+                  checked
+                  class="h-4 w-4 accent-primary cursor-pointer"
+                />
+                Join an Ohana
+              </label>
+              <label class="flex cursor-pointer items-center gap-2 font-sans text-[15px] text-heading">
+                <input
+                  type="radio"
+                  name="intent"
+                  value="Start an Ohana"
+                  class="h-4 w-4 accent-primary cursor-pointer"
+                />
+                Start an Ohana
+              </label>
+            </div>
+          </div>
+
+          {/* Anything else */}
+          <div class="flex flex-col gap-1.5">
+            <label for="ojf-notes" class="font-sans text-[13px] font-medium leading-none text-heading">
+              Anything else? <span class="font-normal text-muted">(optional)</span>
+            </label>
+            <textarea
+              id="ojf-notes"
+              name="notes"
+              rows="4"
+              class="w-full resize-none rounded-[10px] border border-primary/15 bg-surface px-4 py-3 font-sans text-[15px] text-heading placeholder:text-muted/40 transition-colors focus:border-primary/40 focus:outline-none"
+            ></textarea>
+          </div>
+
+          {/* Turnstile container (interaction-only — renders as invisible) */}
+          <div id="ojf-turnstile" class="empty:hidden"></div>
+
+          {/* Submit row */}
+          <div class="flex flex-col items-start gap-3">
+            <button
+              type="submit"
+              id="ojf-submit"
+              class="btn-primary"
+            >Send</button>
+
+            <p id="ojf-success" class="hidden font-sans text-[14px] font-semibold text-heading">
+              Thanks. We'll be in touch.
+            </p>
+            <p id="ojf-error" class="hidden font-sans text-[13px] text-red-600">
+              Something went wrong. Please try again.
+            </p>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  (() => {
+    const form = document.getElementById('ojf') as HTMLFormElement | null;
+    if (!form) return;
+
+    const endpoint  = form.dataset.endpoint!;
+    const slug      = form.dataset.slug!;
+    const sitekey   = form.dataset.sitekey!;
+    const submitBtn = document.getElementById('ojf-submit') as HTMLButtonElement;
+    const successEl = document.getElementById('ojf-success')!;
+    const errorEl   = document.getElementById('ojf-error')!;
+
+    let tsToken  = '';
+    let widgetId = '';
+
+    /* ── Load Turnstile script once ── */
+    const ts = document.createElement('script');
+    ts.src   = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+    ts.async = true;
+    ts.defer = true;
+    ts.onload = () => {
+      const w = (window as any).turnstile;
+      widgetId = w.render('#ojf-turnstile', {
+        sitekey,
+        action:             slug,             // must match site slug — worker validates this
+        appearance:        'interaction-only',
+        callback:          (token: string) => { tsToken = token; },
+        'expired-callback': ()             => { tsToken = ''; },
+        'error-callback':  ()             => { tsToken = ''; },
+      });
+    };
+    document.head.appendChild(ts);
+
+    /* ── Submit handler ── */
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorEl.classList.add('hidden');
+
+      const name  = (form.querySelector<HTMLInputElement>('[name="name"]')?.value ?? '').trim();
+      const email = (form.querySelector<HTMLInputElement>('[name="email"]')?.value ?? '').trim();
+      const phone = (form.querySelector<HTMLInputElement>('[name="phone"]')?.value ?? '').trim();
+
+      /* Basic required-field check */
+      if (!name || !email) {
+        form.querySelector<HTMLInputElement>('[name="name"]')?.focus();
+        return;
+      }
+
+      /* If Turnstile hasn't resolved yet, trigger it and wait (max 12 s) */
+      if (!tsToken) {
+        const w = (window as any).turnstile;
+        if (w && widgetId) w.execute(widgetId);
+        await new Promise<void>((resolve) => {
+          const deadline = Date.now() + 12_000;
+          const poll = () => (tsToken || Date.now() > deadline) ? resolve() : setTimeout(poll, 150);
+          poll();
+        });
+      }
+
+      /* Compose message from extra fields */
+      const location = (form.querySelector<HTMLInputElement>('[name="location"]')?.value ?? '').trim();
+      const intent   = form.querySelector<HTMLInputElement>('[name="intent"]:checked')?.value ?? '';
+      const notes    = (form.querySelector<HTMLTextAreaElement>('[name="notes"]')?.value ?? '').trim();
+      const honeypot = form.querySelector<HTMLInputElement>('[name="website"]')?.value ?? '';
+
+      const parts = [
+        intent   && `Intent: ${intent}`,
+        location && `Location: ${location}`,
+        notes    && `Notes: ${notes}`,
+      ].filter(Boolean);
+
+      /* Lock UI */
+      submitBtn.disabled    = true;
+      submitBtn.textContent = 'Sending…';
+
+      try {
+        const res = await fetch(endpoint, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            site:           slug,
+            name,
+            email,
+            phone,
+            message:        parts.join('\n'),
+            website:        honeypot,
+            turnstileToken: tsToken,
+          }),
+        });
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        /* Success */
+        form.reset();
+        submitBtn.classList.add('hidden');
+        successEl.classList.remove('hidden');
+      } catch {
+        /* Failure — let them retry */
+        errorEl.classList.remove('hidden');
+        submitBtn.disabled    = false;
+        submitBtn.textContent = 'Send';
+        const w = (window as any).turnstile;
+        if (w && widgetId) w.reset(widgetId);
+        tsToken = '';
+      }
+    });
+  })();
+</script>

@@ -31,6 +31,10 @@ export interface ConceptCardItem {
    * Pass 'bg-cta' for tan background (homepage pillars).
    */
   iconBgClass?: string;
+  link?: {
+    text: string;
+    href: string;
+  };
 }
 
 export interface Props {
@@ -58,7 +62,17 @@ const { cards = [], id } = Astro.props;
         <Heading variant="h4" color="inherit" class="text-primary flex-1" as="p">
           {card.title}
         </Heading>
-        <p class="mt-auto font-sans text-[14px] leading-[1.45] text-muted">{card.description}</p>
+        <p class="mt-auto font-sans text-[14px] leading-[1.45] text-muted">
+          {card.description}
+          {card.link && (
+            <>
+              {' '}
+              <a href={card.link.href} class="btn-link">
+                {card.link.text}
+              </a>
+            </>
+          )}
+        </p>
       </Card>
     ))}
   </div>

@@ -143,6 +143,15 @@ export interface HomePageContent {
   };
 }
 
+export interface HomePageImages {
+  heroImage?: ContentImage;
+  heroImageMobile?: ContentImage;
+  whyUrgentGraph?: ContentImage;
+  acceptChangeImage?: ContentImage;
+  talkToDoctorImage?: ContentImage;
+  locationsBackground?: ContentImage;
+}
+
 // ─── Shared CMS sections (service pages and later templates) ───────────────────
 
 export interface LinkedCardItem {

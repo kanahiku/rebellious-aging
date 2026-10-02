@@ -1,0 +1,67 @@
+---
+/**
+ * DecadeSplitTable — two-column decade section with left copy and right divided table rows.
+ */
+import Heading from '~/components/ui/Heading.astro';
+import Text from '~/components/ui/Text.astro';
+
+export interface TableRow {
+  name: string;
+  description: string;
+}
+
+export interface Props {
+  id?: string;
+  leftEyebrow: string;
+  leftHeading?: string;
+  leftText: string | string[];
+  leftTone?: 'body' | 'heading';
+  rightEyebrow: string;
+  rows: TableRow[];
+  note?: string;
+  bgClass?: string;
+}
+
+const {
+  id,
+  leftEyebrow,
+  leftHeading,
+  leftText,
+  leftTone = 'body',
+  rightEyebrow,
+  rows,
+  note,
+  bgClass = 'bg-page',
+} = Astro.props;
+
+const leftParagraphs = Array.isArray(leftText) ? leftText : [leftText];
+---
+
+<section {...id ? { id } : {}} class:list={['not-prose w-full', bgClass]}>
+  <div class="mx-auto w-full max-w-container px-5 py-[64px] sm:px-8 md:px-16 lg:px-[120px]">
+    <div class="grid gap-12 lg:grid-cols-2 lg:items-start lg:gap-[120px]">
+      <div class="flex min-w-0 flex-col gap-4">
+        <Heading variant="eyebrow">{leftEyebrow}</Heading>
+        {leftHeading && <Heading variant="h2">{leftHeading}</Heading>}
+        {leftTone === 'heading' ? (
+          <Heading variant="h3" as="p" class="!text-[30px] leading-[1.1]">{leftParagraphs[0]}</Heading>
+        ) : (
+          leftParagraphs.map((paragraph) => <Text variant="body-lg">{paragraph}</Text>)
+        )}
+      </div>
+
+      <div class="flex min-w-0 flex-col">
+        <Heading variant="eyebrow">{rightEyebrow}</Heading>
+        <div class="mt-8 divide-y divide-primary/10 border-b border-primary/10">
+          {rows.map((row) => (
+            <div class="grid gap-3 py-5 first:pt-0 md:grid-cols-[0.85fr_1.15fr] md:gap-8">
+              <p class="font-sans text-body font-semibold leading-[1.45] text-heading">{row.name}</p>
+              <p class="font-sans text-body leading-[1.45] text-muted">{row.description}</p>
+            </div>
+          ))}
+        </div>
+        {note && <Text class="mt-6">{note}</Text>}
+      </div>
+    </div>
+  </div>
+</section>

@@ -22,17 +22,17 @@
  *     footerLink={{ text: "See all seven chapters.", href: "/chapters" }}
  *   />
  *
- * Background image: pass `bgImage` (imported PNG/JPG ImageMetadata) to show a real photo.
+ * Background image: pass `bgImage` (local ImageMetadata or Sanity URL) to show a real photo.
  * Falls back to a bg-section-grey placeholder when omitted.
  */
 
-import { Image } from 'astro:assets';
+import Image from '~/components/common/Image.astro';
 import type { ImageMetadata } from 'astro';
 
 export interface ChapterLocation {
   name: string;
   memberCount?: number;
-  href: string;
+  href?: string;  // retained for data compat; rows are no longer clickable
 }
 
 export interface Props {
@@ -40,8 +40,9 @@ export interface Props {
   locations: ChapterLocation[];
   footerNote?: string;
   footerLink?: { text: string; href: string };
-  /** Optional background image (imported ImageMetadata). Falls back to bg-section-grey. */
-  bgImage?: ImageMetadata;
+  /** Optional background image (local ImageMetadata or Sanity URL). Falls back to bg-section-grey. */
+  bgImage?: ImageMetadata | string;
+  bgImageAlt?: string;
   id?: string;
 }
 
@@ -51,6 +52,7 @@ const {
   footerNote,
   footerLink,
   bgImage,
+  bgImageAlt = '',
   id = 'our-locations',
 } = Astro.props;
 ---
@@ -65,7 +67,7 @@ const {
       {bgImage ? (
         <Image
           src={bgImage}
-          alt=""
+          alt={bgImageAlt}
           aria-hidden="true"
           class="absolute inset-0 h-full w-full object-cover object-center"
           widths={[640, 828, 1200, 1440]}
@@ -88,34 +90,13 @@ const {
 
         {/* Location rows */}
         <div class="flex w-full flex-col gap-4">
-          {locations.map((loc) => {
-            const isExternal = /^https?:\/\//.test(loc.href);
-            return (
-            <a
-              href={loc.href}
-              class="group flex w-full flex-row items-center justify-between gap-4 rounded-[24px] bg-heading/25 px-5 py-5 no-underline backdrop-blur-[3px] transition-colors hover:bg-heading/35 sm:rounded-full sm:px-8 sm:py-8"
-              {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-            >
-              {/* Location name */}
+          {locations.map((loc) => (
+            <div class="flex w-full flex-row items-center rounded-[24px] bg-heading/25 px-5 py-5 backdrop-blur-[3px] sm:rounded-full sm:px-8 sm:py-8">
               <span class="min-w-0 font-heading text-h3 font-normal leading-none text-white md:text-h2">
                 {loc.name}
               </span>
-
-              {/* Right: badge + arrow */}
-              <div class="flex shrink-0 items-center gap-2.5">
-
-
-                {/* Arrow-forward-circle icon */}
-                <div class="size-8 shrink-0 sm:size-12" aria-hidden="true">
-                  <svg viewBox="25.52 25.52 48 48" fill="currentColor" class="size-full text-white" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M73.04 49.52C73.04 36.53 62.51 26 49.52 26 36.53 26 26 36.53 26 49.52c0 12.99 10.53 23.52 23.52 23.52 12.99 0 23.52-10.53 23.52-23.52zm-24.05 10.33a1.81 1.81 0 01-.54-1.28l5.92-5.96H39.8a1.81 1.81 0 010-3.62h14.6l-5.91-5.96a1.81 1.81 0 012.56-2.56l8.98 9.05c.336.34.525.797.525 1.274 0 .478-.189.935-.525 1.274l-8.98 9.05a1.812 1.812 0 01-2.56-.012z"/>
-                  </svg>
-                </div>
-
-              </div>
-            </a>
-            );
-          })}
+            </div>
+          ))}
         </div>
 
         {/* Footer note */}

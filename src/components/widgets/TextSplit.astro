@@ -31,6 +31,7 @@
  *   withImage       — true = include the image column / placeholder
  *   imageAspect     — CSS aspect-ratio for the default placeholder (Figma frame size)
  *   imagePlacement  — "end" (image opposite the text stack) or "under-heading"
+ *   alignTop        — true = top-align columns instead of vertically centering them
  *   class           — extra classes on the outer <section>
  */
 
@@ -53,6 +54,7 @@ export interface Props {
    */
   reversed?: boolean;
   noPadY?: boolean;
+  alignTop?: boolean;
   class?: string;
 }
 
@@ -68,6 +70,7 @@ const {
   imagePlacement = 'end',
   reversed = false,
   class: className = '',
+  alignTop = false,
 } = Astro.props;
 
 const hasImage = withImage || Astro.slots.has('image');
@@ -90,7 +93,8 @@ const useNarrowGap = imageUnderHeading || (imageAside && isLandscape);
   >
     <div
       class:list={[
-        'flex flex-col gap-12 lg:flex-row lg:items-center',
+        'flex flex-col gap-12 lg:flex-row',
+        alignTop ? 'lg:items-start' : 'lg:items-center',
         useNarrowGap ? 'lg:gap-16' : 'lg:gap-[120px]',
       ]}
     >

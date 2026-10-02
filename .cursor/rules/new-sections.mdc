@@ -1,0 +1,190 @@
+---
+description: Design-system checklist for every new section or widget added to the site.
+alwaysApply: true
+---
+
+# New sections — stay inside the design system
+
+Every new section must be self-consistent with the existing site. Run this checklist **before** writing any markup.
+
+---
+
+## 1 · Check before creating
+
+Open `src/registry/components.json` and `src/components/widgets/`. If a widget with the same **shape** (layout + atom combination) already exists, reuse and extend it — do not create a twin.
+
+---
+
+## 2 · Background token (one of these — never a raw hex)
+
+| Surface | Tailwind utility |
+|---|---|
+| Cream page default | `bg-page` |
+| Light blue-grey | `bg-section-grey` |
+| Dark navy | `bg-section-dark` |
+| Tan / CTA | `bg-cta` |
+| White card | `bg-surface` |
+| Feature card (pale blue) | `bg-feature-card` |
+
+Do **not** write `bg-[#F5F4EF]`, `bg-[#D2E1EA]`, or any other inline hex.
+
+---
+
+## 3 · Headings — always the `Heading` atom
+
+```astro
+<!-- ✅ correct -->
+<Heading variant="eyebrow">Why measure it</Heading>
+<Heading variant="h2">Section title</Heading>
+<Heading variant="h3">Sub-heading</Heading>
+<Heading variant="h4">Card title</Heading>
+
+<!-- ❌ wrong — never raw HTML heading with ad-hoc classes -->
+<h2 class="text-[46px] font-serif text-[#1E2A30]">Section title</h2>
+```
+
+Exception: when an existing widget already writes `<h1 class="font-heading text-h1 …">` directly for LCP reasons (Hero2), maintain that pattern. Do not introduce the exception in new widgets.
+
+---
+
+## 4 · Body text — always the `Text` atom or its exact class chain
+
+```astro
+<!-- ✅ correct -->
+<Text>Paragraph copy.</Text>
+<Text variant="body-lg">Lede copy.</Text>
+<Text variant="small">Footer note.</Text>
+
+<!-- also correct when inline class override is required -->
+<p class="font-sans text-body leading-[1.45] text-muted">…</p>
+
+<!-- ❌ wrong -->
+<p class="text-[16px] text-gray-500">…</p>
+```
+
+---
+
+## 5 · CTAs — always the `Button` atom
+
+```astro
+<!-- ✅ correct -->
+<Button variant="primary" text="Find your weakest link" href="/form" hideNote />
+<Button variant="ghost" tone="light" text="Learn more" href="/about" />
+<Button variant="link" text="Read more" href="/blog" />
+
+<!-- ❌ wrong — never hand-roll a styled anchor as a CTA -->
+<a href="/form" class="bg-primary text-white px-6 py-3 rounded-xl font-semibold">…</a>
+```
+
+---
+
+## 6 · Container + spacing — the standard shell
+
+Every section should open with this container pattern (copy exactly):
+
+```astro
+<section class="not-prose w-full bg-page">
+  <div class="mx-auto w-full max-w-container px-5 py-12 sm:px-8 md:px-16 md:py-[64px] lg:px-[120px] lg:py-[120px]">
+    <!-- content -->
+  </div>
+</section>
+```
+
+Vertical rhythm tiers:
+- **Large** — `py-12 md:py-[64px] lg:py-[120px]` (most sections)
+- **Compact** — `py-8 md:py-[48px] lg:py-[64px]` (tight bands, stats)
+- **No py** — omit when a parent wrapper owns the padding
+
+Horizontal gap between two equal columns: `gap-12 lg:gap-[120px]`.
+Tight gap (cards, short rows): `gap-4 lg:gap-5` or `gap-8`.
+
+---
+
+## 7 · Color tokens only — no hex anywhere in widgets or pages
+
+Use Tailwind utilities backed by `src/brand.ts`:
+
+```
+text-heading   text-muted   text-eyebrow   text-default   text-accent
+text-heading   text-white   text-tan
+border-primary/10   border-primary/15   border-primary/20
+```
+
+If a swatch exists in `brand.colors` but has no Tailwind utility yet, add one to `src/assets/styles/tailwind.css` as an `@utility`. Do **not** write `text-[#2C4A5B]`.
+
+---
+
+## 8 · Two-column layout
+
+Standard text-only 2-col:
+
+```astro
+<div class="flex flex-col gap-12 lg:flex-row lg:items-start lg:gap-[120px]">
+  <div class="flex min-w-0 flex-1 flex-col gap-4"><!-- left --></div>
+  <div class="flex min-w-0 flex-1 flex-col"><!-- right --></div>
+</div>
+```
+
+Add `lg:items-center` only when the columns should be vertically centred (e.g., short heading vs. tall image).
+
+---
+
+## 9 · Card structure
+
+Every card with a CTA must be `flex flex-col h-full`, with the body `flex-1` and the CTA `mt-auto`, so buttons align across cards regardless of copy length:
+
+```astro
+<article class="flex flex-col h-full rounded-[16px] bg-surface p-6">
+  <h3 class="font-heading text-h4 font-normal text-heading">…</h3>
+  <p class="mt-4 flex-1 font-sans text-body text-muted leading-[1.45]">…</p>
+  <div class="mt-auto pt-4">
+    <Button variant="link" text="…" href="…" />
+  </div>
+</article>
+```
+
+---
+
+## 10 · Image slots
+
+During build — always a grey placeholder, never a real image:
+
+```astro
+<!-- TODO: replace with <Image> when asset is ready -->
+<div
+  class="w-full rounded-[32px] bg-section-grey"
+  style="aspect-ratio: 16 / 9;"
+  aria-hidden="true"
+/>
+```
+
+Set `aspect-ratio` to the exact Figma frame ratio. Match `rounded-*` to the Figma corner radius.
+
+---
+
+## 11 · Register the widget
+
+After writing a new `src/components/widgets/Foo.astro`, add an entry to `src/registry/components.json`:
+
+```json
+{
+  "id": "P-NN",
+  "name": "Human-readable name",
+  "figmaNames": ["Figma frame name", "node id"],
+  "shape": "one-line layout description",
+  "component": "Foo",
+  "import": "~/components/widgets/Foo.astro",
+  "props": { "…": "…" },
+  "notes": "Figma node [id]. …"
+}
+```
+
+---
+
+## 12 · Do not
+
+- Hardcode any hex color (`#1B2A32`, `#E5DDCF`, `#2C4A5B`, …) in a widget or page file
+- Create `HomeCostComparison.astro` / `AboutTextSplit.astro` — one shape = one file
+- Paste multi-section markup directly into a page `index.astro`
+- Skip registering a new widget in `components.json`
+- Use `font-[Fraunces]` or `font-family: Fraunces` inline — always use `font-heading` or the `Heading` atom

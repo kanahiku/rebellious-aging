@@ -18,6 +18,7 @@ import type {
   ContentImage,
   FormHelpOption,
   HomePageContent,
+  HomePageImages,
   NavigationContent,
   ReviewsPageContent,
   ServicePageContent,
@@ -117,6 +118,81 @@ export async function getSanityHomeContent(): Promise<HomePageContent> {
       ...page.whyInspect,
       image: resolveContentImageOrEmpty(page.whyInspect?.image),
     },
+  };
+}
+
+const HOME_IMAGES_QUERY = /* groq */ `
+  *[_type == "homePage" && _id == "singleton-home"][0] {
+    hero {
+      "heroImage": {
+        "src": coalesce(heroImage.asset->url, heroImageUrl, ""),
+        "alt": coalesce(heroImage.alt, ""),
+        "crop": heroImage.crop,
+        "hotspot": heroImage.hotspot,
+        "asset": heroImage.asset
+      },
+      "heroImageMobile": {
+        "src": coalesce(heroImageMobile.asset->url, heroImageMobileUrl, ""),
+        "alt": coalesce(heroImageMobile.alt, heroImage.alt, ""),
+        "crop": heroImageMobile.crop,
+        "hotspot": heroImageMobile.hotspot,
+        "asset": heroImageMobile.asset
+      }
+    },
+    pageImages {
+      "whyUrgentGraph": {
+        "src": coalesce(whyUrgentGraph.asset->url, ""),
+        "alt": coalesce(whyUrgentGraph.alt, ""),
+        "crop": whyUrgentGraph.crop,
+        "hotspot": whyUrgentGraph.hotspot,
+        "asset": whyUrgentGraph.asset
+      },
+      "acceptChangeImage": {
+        "src": coalesce(acceptChangeImage.asset->url, ""),
+        "alt": coalesce(acceptChangeImage.alt, ""),
+        "crop": acceptChangeImage.crop,
+        "hotspot": acceptChangeImage.hotspot,
+        "asset": acceptChangeImage.asset
+      },
+      "talkToDoctorImage": {
+        "src": coalesce(talkToDoctorImage.asset->url, ""),
+        "alt": coalesce(talkToDoctorImage.alt, ""),
+        "crop": talkToDoctorImage.crop,
+        "hotspot": talkToDoctorImage.hotspot,
+        "asset": talkToDoctorImage.asset
+      },
+      "locationsBackground": {
+        "src": coalesce(locationsBackground.asset->url, ""),
+        "alt": coalesce(locationsBackground.alt, ""),
+        "crop": locationsBackground.crop,
+        "hotspot": locationsBackground.hotspot,
+        "asset": locationsBackground.asset
+      }
+    }
+  }
+`;
+
+export async function getSanityHomeImages(): Promise<HomePageImages> {
+  const page = await sanityClient.fetch<{
+    hero?: {
+      heroImage?: FetchedImage;
+      heroImageMobile?: FetchedImage;
+    };
+    pageImages?: {
+      whyUrgentGraph?: FetchedImage;
+      acceptChangeImage?: FetchedImage;
+      talkToDoctorImage?: FetchedImage;
+      locationsBackground?: FetchedImage;
+    };
+  } | null>(HOME_IMAGES_QUERY);
+
+  return {
+    heroImage: resolveContentImage(page?.hero?.heroImage),
+    heroImageMobile: resolveContentImage(page?.hero?.heroImageMobile),
+    whyUrgentGraph: resolveContentImage(page?.pageImages?.whyUrgentGraph),
+    acceptChangeImage: resolveContentImage(page?.pageImages?.acceptChangeImage),
+    talkToDoctorImage: resolveContentImage(page?.pageImages?.talkToDoctorImage),
+    locationsBackground: resolveContentImage(page?.pageImages?.locationsBackground),
   };
 }
 

@@ -208,8 +208,8 @@ export interface Hero extends Omit<Headline, 'classes'>, Omit<Widget, 'isDark' |
   image?: string | unknown;
   /** Optional phone-only crop. Falls back to `image` below the `md` breakpoint. */
   imageMobile?: string | unknown;
-  /** `split` = text + side image. `overlay` = photo + headline/CTAs. `words` = photo + three positioned words. `page` = light gradient + title left / lede right. `title` = photo + centered h1 (Figma 64:935 Chapters). */
-  variant?: 'split' | 'overlay' | 'words' | 'page' | 'title' | 'split-dark';
+  /** `split` = text + side image. `overlay` = photo + headline/CTAs. `words` = photo + three positioned words. `page` = light gradient + title left / lede right. `dark-page` = text-only dark page hero. `title` = photo + centered h1 (Figma 64:935 Chapters). */
+  variant?: 'split' | 'overlay' | 'words' | 'page' | 'dark-page' | 'title' | 'split-dark';
   /** Three-word overlay hero (e.g. Peak. Slope. Floor.). Used when `variant="words"`. */
   words?: HeroWord[];
   /** Optional height preset. `page` matches the standard image-led page hero height. */

@@ -1,0 +1,69 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import DecadeHero from '~/components/widgets/DecadeHero.astro';
+import DecadeSplitTable from '~/components/widgets/DecadeSplitTable.astro';
+import CTABanner from '~/components/widgets/CTABanner.astro';
+import { site } from '~/config/site';
+import { PRIMARY_CTA_HREF, PRIMARY_CTA_LABEL } from '~/config/cta';
+
+const metadata = {
+  title: `In your 30s | ${site.name}`,
+  description:
+    "You're at or near your peak. This is the cheapest decade to build the reserve you'll spend later.",
+  ignoreTitleTemplate: true,
+};
+
+const likelyWeakestLinks = [
+  { name: 'Sleep', description: 'Work, kids and screens cut it first.' },
+  { name: 'Exercise', description: "A desk job. Muscle you don't build now is harder to build later." },
+  { name: 'Blood pressure', description: 'Few people your age have ever checked it. It can rise for years with no symptoms.' },
+];
+
+const atHomeChecks = [
+  { name: 'Blood pressure', description: 'Home cuff, seated, after five minutes of rest.' },
+  { name: 'Grip strength', description: 'A hand grip meter.' },
+  { name: '5× sit-to-stand', description: 'Five times, arms crossed. Time it.' },
+  { name: 'Balance', description: 'One leg, eyes open. Count the seconds.' },
+  { name: 'Weight & waist', description: 'Waist measured at the belly button.' },
+];
+---
+
+<Layout metadata={metadata}>
+  <Fragment slot="header" />
+
+  <DecadeHero
+    eyebrow="Start with your decade"
+    heading="In your 30s."
+    description="You're at or near your peak. This is the cheapest decade to build the reserve you'll spend later."
+    ctaText={PRIMARY_CTA_LABEL}
+    ctaHref={PRIMARY_CTA_HREF}
+  />
+
+  <DecadeSplitTable
+    id="where-you-are"
+    leftEyebrow="Where you are on the curve"
+    leftText="Most systems peak somewhere in your 20s or early 30s: muscle, bone, heart and lungs. From here the curve starts to slope. You won't feel it yet. That's the point. What you build now is reserve you get to keep."
+    rightEyebrow="Your likely weakest links"
+    rows={likelyWeakestLinks}
+  />
+
+  <DecadeSplitTable
+    id="what-to-fill-first"
+    leftEyebrow="What to fill first"
+    leftText="Bucket 1. Strength training twice a week, while muscle and bone respond fastest. Protect seven hours of sleep. Cook most of your meals. Keep your friendships on the calendar."
+    leftTone="heading"
+    rightEyebrow="At-home checks"
+    rows={atHomeChecks}
+    note="Write the numbers down. This is your baseline. Every number you take later means more because of it."
+    bgClass="bg-white"
+  />
+
+  <CTABanner
+    title="Find out where you stand."
+    subtitle="Ten minutes, free, and nothing you enter leaves your browser. Then fill the first bucket."
+    ctaText={PRIMARY_CTA_LABEL}
+    ctaHref={PRIMARY_CTA_HREF}
+    secondaryCtaText="Book an Athena evaluation"
+    secondaryCtaHref="/athena-evaluation"
+  />
+</Layout>

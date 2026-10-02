@@ -1,0 +1,120 @@
+---
+/**
+ * ContentBand — two-column text band.
+ *
+ * Left column: eyebrow + large heading.
+ * Right column: body paragraphs, optional bold footnote, optional CTA.
+ *
+ * Background is controlled by the `isDark` flag (or a custom `bgClass`):
+ *   isDark=true  → bg-section-dark, white text, ghost-dark button
+ *   isDark=false → bg-cta (warm cream), dark text, primary button
+ *
+ * The CTA button href is always a prop — never hardcoded inside this widget.
+ *
+ * Usage:
+ *   <ContentBand
+ *     id="black-swan"
+ *     eyebrow="Black Swan"
+ *     heading="The day that drops you to the floor."
+ *     paragraphs={[
+ *       "A Black Swan is the fall…",
+ *       "You can't predict which one or when…",
+ *     ]}
+ *     cta={{ text: "Read Black Swan by Dr. Peterson", href: "/books" }}
+ *     isDark
+ *   />
+ */
+import Heading from '~/components/ui/Heading.astro';
+import Button from '~/components/ui/Button.astro';
+
+export interface Props {
+  id?: string;
+  /** Small label above the heading */
+  eyebrow?: string;
+  /** Main heading — plain text (no HTML) */
+  heading: string;
+  /** Body paragraphs — each string becomes a <p> */
+  paragraphs?: string[];
+  /** Bold closing line rendered after paragraphs (no extra margin) */
+  boldNote?: string;
+  /** Optional CTA. href is required when provided. */
+  cta?: { text: string; href: string };
+  /**
+   * Dark variant → bg-section-dark, white text, ghost button.
+   * Light variant (default) → bg-cta, dark text, primary button.
+   */
+  isDark?: boolean;
+  /**
+   * Override the background Tailwind class entirely.
+   * Useful for one-off variants without forking the component.
+   */
+  bgClass?: string;
+}
+
+const {
+  id,
+  eyebrow,
+  heading,
+  paragraphs = [],
+  boldNote,
+  cta,
+  isDark = false,
+  bgClass,
+} = Astro.props;
+
+const sectionBg = bgClass ?? (isDark ? 'bg-section-dark' : 'bg-cta');
+const eyebrowColor  = isDark ? 'text-white/50' : 'text-eyebrow';
+const headingColor  = isDark ? 'text-white'    : 'text-heading';
+const bodyColor     = isDark ? 'text-white/75'  : 'text-default';
+const boldColor     = isDark ? 'text-white'     : 'text-heading';
+const ctaVariant    = isDark ? 'ghost'          : 'primary';
+const ctaTone       = isDark ? 'dark'           : undefined;
+---
+
+<section {...(id ? { id } : {})} class={`not-prose w-full ${sectionBg}`}>
+  <div class="mx-auto w-full max-w-container px-5 py-12 sm:px-8 md:px-16 md:py-[64px] lg:px-[120px]">
+
+    <div class="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-[120px]">
+
+      {/* LEFT — eyebrow + heading */}
+      <div class="flex min-w-0 shrink-0 flex-col gap-4 lg:max-w-[44%]">
+        {eyebrow && (
+          <Heading variant="eyebrow" class={eyebrowColor}>{eyebrow}</Heading>
+        )}
+        <h2 class={`font-heading text-h2 font-normal leading-none ${headingColor}`}>
+          {heading}
+        </h2>
+      </div>
+
+      {/* RIGHT — body + optional CTA */}
+      <div class="flex min-w-0 flex-1 flex-col gap-6">
+        {paragraphs.length > 0 && (
+          <div class="flex flex-col gap-4">
+            {paragraphs.map((p) => (
+              <p class={`font-sans text-body leading-[1.5] ${bodyColor}`}>{p}</p>
+            ))}
+          </div>
+        )}
+
+        {boldNote && (
+          <p class={`font-sans text-body font-semibold leading-[1.5] ${boldColor}`}>
+            {boldNote}
+          </p>
+        )}
+
+        {cta && (
+          <div class="pt-2">
+            <Button
+              variant={ctaVariant}
+              tone={ctaTone}
+              text={cta.text}
+              href={cta.href}
+              hideNote
+            />
+          </div>
+        )}
+      </div>
+
+    </div>
+  </div>
+</section>

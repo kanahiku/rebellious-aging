@@ -1,0 +1,95 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import DecadeHero from '~/components/widgets/DecadeHero.astro';
+import DecadeSplitTable from '~/components/widgets/DecadeSplitTable.astro';
+import CTABanner from '~/components/widgets/CTABanner.astro';
+import { site } from '~/config/site';
+import { PRIMARY_CTA_HREF, PRIMARY_CTA_LABEL } from '~/config/cta';
+
+const metadata = {
+  title: `In your 50s | ${site.name}`,
+  description: 'The slope starts to show.',
+  ignoreTitleTemplate: true,
+};
+
+const likelyWeakestLinks = [
+  {
+    name: 'Heart and blood vessels',
+    description: 'Blood pressure and cholesterol, and the damage they do quietly.',
+  },
+  {
+    name: 'Bone density',
+    description: 'Bone loss speeds up for women after menopause.',
+  },
+  {
+    name: 'Hearing',
+    description: 'Hearing loss often starts here, and it speeds up cognitive decline.',
+  },
+];
+
+const atHomeChecks = [
+  { name: 'Blood pressure', description: 'Home cuff, seated, after five minutes of rest.' },
+  { name: 'Grip strength', description: 'A hand grip meter.' },
+  { name: '5× sit-to-stand', description: 'Five times, arms crossed. Time it.' },
+  { name: 'Balance', description: 'One leg, eyes open. Count the seconds.' },
+  { name: 'Weight & waist', description: 'Waist measured at the belly button.' },
+];
+
+const doctorTests = [
+  { name: 'A1c (blood sugar)', description: 'Catches prediabetes years early.' },
+  { name: 'Cholesterol', description: 'A standard lipid panel.' },
+  { name: 'Kidney & liver', description: 'Silent until late. Easy to check.' },
+  { name: 'Coronary calcium', description: "Shows plaque in your heart's arteries." },
+  { name: 'Bone density', description: 'Especially for women after menopause.' },
+  { name: 'Hearing', description: 'Get a baseline now.' },
+];
+---
+
+<Layout metadata={metadata}>
+  <Fragment slot="header" />
+
+  <DecadeHero
+    eyebrow="Start with your decade"
+    heading="In your 50s."
+    description="The slope starts to show."
+    ctaText={PRIMARY_CTA_LABEL}
+    ctaHref={PRIMARY_CTA_HREF}
+  />
+
+  <DecadeSplitTable
+    id="where-you-are"
+    leftEyebrow="Where you are on the curve"
+    leftText="This is when the numbers start to move: blood pressure, cholesterol, blood sugar, and for women after menopause, bone density. The changes are still easy to slow. They're much harder to reverse later."
+    rightEyebrow="Your likely weakest links"
+    rows={likelyWeakestLinks}
+  />
+
+  <DecadeSplitTable
+    id="what-to-fill-first"
+    leftEyebrow="What to fill first"
+    leftText="Keep bucket 1 full, and start on bucket 2. Strength and balance work, a mostly plant-based diet, seven hours of sleep, and people who notice when you don't show up."
+    leftTone="heading"
+    rightEyebrow="At-home checks"
+    rows={atHomeChecks}
+    note="Bring these numbers to your doctor."
+    bgClass="bg-white"
+  />
+
+  <DecadeSplitTable
+    id="ask-your-doctor"
+    leftEyebrow="Bucket 2 · Ask your doctor"
+    leftHeading="First tests worth asking for."
+    leftText="You don't know what you don't know. Ask your doctor which of these make sense for you."
+    rightEyebrow="Doctor orders"
+    rows={doctorTests}
+  />
+
+  <CTABanner
+    title="Find out where you stand."
+    subtitle="Ten minutes, free, and nothing you enter leaves your browser. Then fill the first bucket."
+    ctaText={PRIMARY_CTA_LABEL}
+    ctaHref={PRIMARY_CTA_HREF}
+    secondaryCtaText="Book an Athena evaluation"
+    secondaryCtaHref="/athena-evaluation"
+  />
+</Layout>

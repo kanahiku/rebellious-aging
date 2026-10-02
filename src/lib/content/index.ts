@@ -22,6 +22,7 @@ import {
   groupEpisodesByPart,
   getSanityContactPage,
   getSanityHomeContent,
+  getSanityHomeImages,
   getSanityNavigationContent,
   getSanityReviewsPage,
   getSanityServicePage,
@@ -38,6 +39,15 @@ export async function getHomeContent(): Promise<HomePageContent> {
     throw new Error('Sanity homePage document is missing (singleton-home).');
   }
   return page;
+}
+
+export async function getHomeImages() {
+  try {
+    return await getSanityHomeImages();
+  } catch (error) {
+    console.warn('Sanity home images unavailable; using image placeholders.', error);
+    return {};
+  }
 }
 
 export async function getContactPage(): Promise<ContactPageContent | null> {

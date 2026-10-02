@@ -13,6 +13,25 @@ export const structure = (S: StructureBuilder) =>
     .title('Content')
     .items([
       S.listItem()
+        .title('Home')
+        .child(S.document().schemaType('homePage').documentId('singleton-home').title('Home Page')),
+
+      S.listItem()
+        .title('Contact')
+        .child(S.document().schemaType('contactPage').documentId('singleton-contact').title('Contact Page')),
+
+      S.listItem()
+        .title('Reviews')
+        .child(S.document().schemaType('reviewsPage').documentId('singleton-reviews').title('Reviews Page')),
+
+      S.listItem()
+        .title('Service Pages')
+        .schemaType('servicePage')
+        .child(S.documentTypeList('servicePage').title('Service Pages')),
+
+      S.divider(),
+
+      S.listItem()
         .title('Navigation')
         .child(S.document().schemaType('siteNavigation').documentId('singleton-navigation').title('Navigation')),
 
@@ -62,29 +81,6 @@ export const structure = (S: StructureBuilder) =>
             { field: 'order', direction: 'asc' },
             { field: 'name', direction: 'asc' },
           ])
-        ),
-
-      S.divider(),
-
-      S.listItem()
-        .title('Pages')
-        .child(
-          S.list()
-            .title('Pages')
-            .items([
-              S.listItem()
-                .title('Home')
-                .child(S.document().schemaType('homePage').documentId('singleton-home').title('Home Page')),
-              S.listItem()
-                .title('Contact')
-                .child(S.document().schemaType('contactPage').documentId('singleton-contact').title('Contact Page')),
-              S.listItem()
-                .title('Reviews')
-                .child(S.document().schemaType('reviewsPage').documentId('singleton-reviews').title('Reviews Page')),
-              S.listItem()
-                .title('Pages')
-                .child(S.documentTypeList('servicePage').title('Pages')),
-            ])
         ),
     ]);
 

@@ -11,9 +11,9 @@
  * S6a 310:1416 TextSplit — "Okinawa calls it a moai." (heading left, body right)
  * S6b 310:1424 TextSplit reversed — body left + "Information is not an adherence mechanism." right
  * S6c 310:1430 DuoCards — "The other three, alone" + "The other three, together"
- * S7  310:1447 OhanaActivities — "What an ohana actually does."
+ * S7  310:1447 OhanaActivities — "What an Ohana actually does."
  * S8  310:1550 PurposeBanner — "Purpose is a longevity drug." + "No chapter near you?"
- * S9  310:1562 Testimonials tone="light" — "From the ohana"
+ * S9  310:1562 Testimonials tone="light" — "From the Ohana"
  * S10 310:1601 TextSplit — "Come home." + body + 2 CTAs
  * S11 310:1019 Footer
  */
@@ -29,10 +29,10 @@ import DuoCards from '~/components/widgets/DuoCards.astro';
 import OhanaActivities from '~/components/widgets/OhanaActivities.astro';
 import PurposeBanner from '~/components/widgets/PurposeBanner.astro';
 import Testimonials from '~/components/widgets/Testimonials.astro';
+import OhanaJoinForm from '~/components/widgets/OhanaJoinForm.astro';
 import Button from '~/components/ui/Button.astro';
 import Text from '~/components/ui/Text.astro';
 import { navigationData } from '~/data/navigation';
-import { chapterLocations } from '~/data/chapters';
 import { ATHENA_CONTACT_HREF } from '~/config/cta';
 import { Image, getImage } from 'astro:assets';
 import { formatTestimonialAttribution, getTestimonials } from '~/lib/content';
@@ -49,15 +49,13 @@ import ohanaPurposeImg from '~/assets/images/ohana-purpose.png';
 const metadata = {
   title: 'The Ohana',
   description:
-    'The fourth pillar is not really one of four: it is the mechanism by which the other three happen at all. Find your ohana.',
+    'The fourth pillar is not really one of four: it is the mechanism by which the other three happen at all. Find your Ohana.',
 };
 
 const heroPreload = await getImage({ src: ohanaheroImg, width: 1440, format: 'webp' });
 
 const testimonials = await getTestimonials();
 const header = navigationData.header;
-const ohanaMeetupHref = chapterLocations[0]?.href ?? '/';
-
 // ── S3: Stats (Figma 310:1235) ──
 const ohanaStats = [
   {
@@ -70,7 +68,7 @@ const ohanaStats = [
   },
   {
     number: '699',
-    label: 'Members across seven ohana',
+    label: 'Members across seven Ohana',
   },
 ];
 
@@ -133,7 +131,7 @@ const ohanaActivities = [
   {
     frequency: 'Fridays',
     title: 'The potluck',
-    body: 'Bring a dish. The long-life table is loud, crowded and full of olive oil, and it doubles as the diet pillar.',
+    body: 'Bring a dish. The long-life table is loud, crowded and full of olive oil, and it covers diet too.',
   },
   {
     frequency: 'Always',
@@ -163,11 +161,11 @@ const ohanaActivities = [
   {/* S2 — Intro text split: heading left, body + CTA right */}
   <TextSplit id="ohana-intro" heading="You get old alone. You grow long in company.">
     <Text>
-      Three of the four pillars ask you to go and do something by yourself. This one is different, and it is the one
+      Three of the four basics ask you to go and do something by yourself. This one is different, and it is the one
       most people get wrong, not because they disagree, but because there is nothing to buy and no obvious place to
-      start. So we built the place to start. We call it an ohana.
+      start. So we built the place to start. We call it an Ohana.
     </Text>
-    <Button variant="primary" text="Join an Ohana" href={ohanaMeetupHref} hideNote class="mt-8" />
+    <Button variant="link" text="Want to start or join one? Tell us." href="#join" class="mt-8" />
   </TextSplit>
 
   {/* S3 — Stats band: 3 of 9 / 15 / 699 */}
@@ -244,7 +242,7 @@ const ohanaActivities = [
         <Text class="mt-[1lh]">
           Most of us were not placed in one at five years old. That is the whole problem, and it is a solvable one: the
           moai is not magic, it is structure: a small group, a fixed rhythm, and a commitment that outlasts anyone's
-          motivation. An ohana is that structure, built deliberately and built late. Ours meet weekly instead of for
+          motivation. An Ohana is that structure, built deliberately and built late. Ours meet weekly instead of for
           ninety years, and nobody is assigning you to one at birth. You just have to walk in once.
         </Text>
       </TextSplit>
@@ -266,7 +264,7 @@ const ohanaActivities = [
           people who notice when you do not turn up. Social pressure, in the good direction, for a change.
         </Text>
         <Text class="mt-[1lh]">
-          Which means the fourth pillar is not really one of four. It is the mechanism by which the other three happen
+          Which means social connection is not really one of four. It is the mechanism by which the other three happen
           at all.
         </Text>
       </TextSplit>
@@ -276,10 +274,10 @@ const ohanaActivities = [
     </div>
   </div>
 
-  {/* S7 — What an ohana actually does */}
+  {/* S7 — What an Ohana actually does */}
   <OhanaActivities
     id="ohana-activities"
-    heading="What an ohana actually does."
+    heading="What an Ohana actually does."
     subtitle="None of this is elaborate. It is the same handful of things, every week, for years, which is the only reason it works."
     activities={ohanaActivities}
   >
@@ -299,7 +297,13 @@ const ohanaActivities = [
   </OhanaActivities>
 
   {/* S8 — Purpose banner + No chapter near you */}
-  <PurposeBanner id="purpose" noChapterCta={{ text: 'Join an Ohana', href: ohanaMeetupHref }}>
+  <PurposeBanner id="purpose">
+    <a
+      slot="no-chapter-cta"
+      href="#join"
+      class="font-sans font-semibold text-[14px] md:text-[15px] underline-offset-2 transition-colors duration-200 hover:underline"
+      style="color: var(--aw-color-bg-page);"
+    >Want to start or join one? Tell us.</a>
     <Image
       slot="bg"
       src={ohanaPurposeImg}
@@ -314,7 +318,7 @@ const ohanaActivities = [
     />
     <Fragment slot="purpose-body">
       <Text>
-        The other half of this pillar is not company, it is being needed. Every chapter adopts causes: beach
+        The other half of social connection is not company, it is being needed. Every chapter adopts causes: beach
         restoration, mentorship programmes, meal delivery for homebound kūpuna, literacy tutoring. Purpose lowers
         cortisol, raises meaning, and keeps a calendar full of reasons to be somewhere on a Tuesday morning.
       </Text>
@@ -331,7 +335,7 @@ const ohanaActivities = [
         Somebody whose job it is to notice when a person misses two in a row.
       </Text>
       <Text color="inherit" class="mt-[1lh] text-page/80">
-        That is a moai. That is an ohana. It does not require our name on it, and the literature does not care whose
+        That is a moai. That is an Ohana. It does not require our name on it, and the literature does not care whose
         logo is on the door.
       </Text>
       <Text color="inherit" class="mt-[1lh] text-page/80">
@@ -340,17 +344,20 @@ const ohanaActivities = [
     </Fragment>
   </PurposeBanner>
 
-  {/* S9 — Testimonials: light tone, "From the ohana" */}
+  {/* S9 — Testimonials: light tone, "From the Ohana" */}
   <Testimonials
     id="from-the-ohana"
     eyebrow="The Community"
-    heading="From the ohana"
+    heading="From the Ohana"
     tone="light"
     testimonials={testimonials.map((item) => ({
       testimonial: item.quote,
       name: formatTestimonialAttribution(item),
     }))}
   />
+
+  {/* S10a — Ohana join form — #join anchor, just above "Come home." */}
+  <OhanaJoinForm id="join" />
 
   {/* S10 — Come home CTA — Figma: py-[64px], two buttons side by side */}
   <TextSplit id="come-home" heading="Come home." compact>

@@ -666,6 +666,192 @@
         "id": "optional section anchor"
       },
       "notes": "Reusable single-image band. Used after the Fill the First Bucket rules/buckets section."
+    },
+    {
+      "id": "P-49",
+      "name": "Decade Curve",
+      "figmaNames": ["Start with your decade", "Where are you on the curve?"],
+      "shape": "Tan section with eyebrow+h2 heading and five equal clickable cards. Each card has Fraunces title and muted body.",
+      "component": "DecadeCurve",
+      "import": "~/components/widgets/DecadeCurve.astro",
+      "props": {
+        "eyebrow": "section label",
+        "heading": "h2 section heading",
+        "cards": "DecadeCard[] — { title, body, href }",
+        "id": "section anchor"
+      },
+      "itemCount": [5],
+      "notes": "Built from supplied decade-card reference image. Content is passed from the page file."
+    },
+    {
+      "id": "P-50",
+      "name": "Cost Comparison",
+      "figmaNames": ["Why measure it", "Track your curve"],
+      "shape": "bg-page. Full-width eyebrow+h2 header. 2-col body (gap 120px): LEFT h3+body paragraphs+btn-link / RIGHT h3+hairline-divided cost rows (cost figure + label + optional badge pill) + footer text + underline link.",
+      "component": "CostComparison",
+      "import": "~/components/widgets/CostComparison.astro",
+      "props": {
+        "eyebrow": "section eyebrow label",
+        "heading": "h2 spanning full width",
+        "leftHeading": "h3 in the left column",
+        "rightHeading": "h3 in the right column",
+        "rows": "CostRow[] — { cost, label, badge? }",
+        "footer": "muted note below the cost rows",
+        "id": "section anchor"
+      },
+      "slots": {
+        "left-body": "Text paragraphs in the left narrative column",
+        "left-cta": "btn-link in the left column",
+        "right-cta": "underline link below the footer text"
+      },
+      "notes": "Built from reference image. Cost figures rendered in font-heading text-h4 scale. Rows divided by border-primary/10 hairlines. Content always passed from the page file."
+    },
+    {
+      "id": "P-51",
+      "name": "Three Buckets",
+      "figmaNames": ["Three Buckets diagram", "Do the basics first"],
+      "shape": "bg-page. Evidence/Cost scale bars. Primary CTA above bucket 1. 5-col grid [1fr auto 1fr auto 1fr]: 3 clickable bucket cards with 'spills over →' connectors. Below-labels row mirrors same grid. Footer note. Buckets stack on mobile.",
+      "component": "ThreeBuckets",
+      "import": "~/components/widgets/ThreeBuckets.astro",
+      "props": { "id": "section anchor" },
+      "notes": "B1 → /four-pillars (dark solid border, section-grey bg). B2 → /talk-to-your-doctor (primary solid border, section-grey bg, 2-col list). B3 → /how-aging-works#bucket-3 (dashed tan border, page bg, centered list). Content baked in — single-purpose diagram."
+    },
+    {
+      "id": "P-52",
+      "name": "Aging Curve",
+      "figmaNames": ["Aging Curve", "Peak Slope Floor Reserve"],
+      "shape": "bg-page. Eyebrow + h2 + rich body. Inline SVG chart (scrollable on mobile) showing two Function-vs-Age curves with Peak/Slope/Floor/Reserve/Black-Swan annotations. 4 concept cards below in 1→2→4 col grid.",
+      "component": "AgingCurve",
+      "import": "~/components/widgets/AgingCurve.astro",
+      "props": { "id": "section anchor" },
+      "notes": "Chart is pure inline SVG — no image file. All colours use CSS custom properties (brand tokens). Mobile: overflow-x-auto scroll inside chart box. Used on /how-aging-works."
+    },
+    {
+      "id": "P-53",
+      "name": "Content Band",
+      "figmaNames": ["ContentBand", "Dark Text Split", "Black Swan Band", "Bucket 3 Band"],
+      "shape": "Full-width colored band. Left col: eyebrow + h2. Right col: body paragraphs + optional bold footnote + optional CTA. isDark=true → bg-section-dark, white text, ghost button. isDark=false → bg-cta, dark text, primary button. bgClass prop overrides bg entirely.",
+      "component": "ContentBand",
+      "import": "~/components/widgets/ContentBand.astro",
+      "props": {
+        "id": "anchor",
+        "eyebrow": "string",
+        "heading": "string",
+        "paragraphs": "string[]",
+        "boldNote": "string (optional)",
+        "cta": "{ text, href } optional — never hardcode href inside widget",
+        "isDark": "boolean",
+        "bgClass": "override bg token (optional)"
+      },
+      "notes": "Reusable across /how-aging-works and any future page. CTA href always a prop."
+    },
+    {
+      "id": "P-55",
+      "name": "Athena Pricing",
+      "figmaNames": ["Athena evaluation pricing", "NEW-E3"],
+      "shape": "White section. Top 2-col price/after-evaluation intro followed by 3 equal tier cards with monthly prices.",
+      "component": "AthenaPricing",
+      "import": "~/components/widgets/AthenaPricing.astro",
+      "props": {
+        "id": "anchor",
+        "tiers": "{ label, price }[]"
+      },
+      "notes": "Built from Claude artifact NEW-E3 for /athena-evaluation. Yellow assumption notes intentionally omitted from the site."
+    },
+    {
+      "id": "P-56",
+      "name": "Athena Evaluation Overview",
+      "figmaNames": ["Athena evaluation overview", "NEW-E2"],
+      "shape": "Cream section. 2-col layout: left eyebrow+h2+lede; right eyebrow plus divided included-items table with title/body rows.",
+      "component": "AthenaEvaluationOverview",
+      "import": "~/components/widgets/AthenaEvaluationOverview.astro",
+      "props": {
+        "id": "anchor",
+        "items": "{ title, body }[]"
+      },
+      "notes": "Built from Claude artifact NEW-E2 and matched to the supplied reference screenshot. No card shell around the table."
+    },
+    {
+      "id": "P-57",
+      "name": "Athena Evaluation Booking",
+      "figmaNames": ["Athena evaluation booking", "NEW-E4"],
+      "shape": "Tan CTA section. 2-col layout: left heading+body+btn-link; right disclosure card + primary external CTA + small scheduling note.",
+      "component": "AthenaEvaluationBooking",
+      "import": "~/components/widgets/AthenaEvaluationBooking.astro",
+      "props": {
+        "id": "anchor",
+        "ctaHref": "external booking/contact URL"
+      },
+      "notes": "Built from Claude artifact NEW-E4 for /athena-evaluation."
+    },
+    {
+      "id": "P-58",
+      "name": "Decade Hero",
+      "figmaNames": ["Decade hero", "In your 30s hero"],
+      "shape": "Blue/dark hero. Left eyebrow+h1+body+primary CTA; right inline SVG aging curve graph.",
+      "component": "DecadeHero",
+      "import": "~/components/widgets/DecadeHero.astro",
+      "props": {
+        "eyebrow": "string",
+        "heading": "string",
+        "description": "string",
+        "ctaText": "string",
+        "ctaHref": "string"
+      },
+      "notes": "Reusable for decade pages. Graph is inline SVG using brand tokens; no image asset."
+    },
+    {
+      "id": "P-59",
+      "name": "Decade Split Table",
+      "figmaNames": ["Decade split table", "Where you are on the curve", "What to fill first"],
+      "shape": "2-col section. Left eyebrow + body or 30px heading-style copy. Right eyebrow + divided title/body table rows + optional note.",
+      "component": "DecadeSplitTable",
+      "import": "~/components/widgets/DecadeSplitTable.astro",
+      "props": {
+        "id": "anchor",
+        "leftEyebrow": "string",
+        "leftHeading": "string optional",
+        "leftText": "string",
+        "leftTone": "body | heading",
+        "rightEyebrow": "string",
+        "rows": "{ name, description }[]",
+        "note": "string optional",
+        "bgClass": "background token utility"
+      },
+      "notes": "Reusable for decade pages. Table styling matches AthenaEvaluationOverview."
+    },
+    {
+      "id": "P-60",
+      "name": "Decade Bullet Split",
+      "figmaNames": ["70 plus home safety", "Staying in your home"],
+      "shape": "2-col section. Left heading+lede+body+source. Right divided checklist bullets.",
+      "component": "DecadeBulletSplit",
+      "import": "~/components/widgets/DecadeBulletSplit.astro",
+      "props": {
+        "id": "anchor",
+        "heading": "string",
+        "lead": "string",
+        "body": "string",
+        "source": "string optional",
+        "bullets": "string[]",
+        "bgClass": "background token utility"
+      },
+      "notes": "Built for /70-plus fall-prevention section. Uses token backgrounds and divided checklist styling."
+    },
+    {
+      "id": "P-40",
+      "name": "Ohana Join Form",
+      "figmaNames": ["OhanaJoinForm", "Join Form"],
+      "shape": "2-col: left heading/description, right form (Name / Email / City/ZIP / intent radio / notes textarea)",
+      "component": "OhanaJoinForm",
+      "import": "~/components/widgets/OhanaJoinForm.astro",
+      "props": {
+        "id": "anchor — defaults to 'join'",
+        "eyebrow": "string",
+        "heading": "string",
+        "description": "string"
+      },
+      "notes": "Ohana /ohana page #join anchor. POSTs to massic-forms Cloudflare Worker. Cloudflare Turnstile (interaction-only). City/ZIP + intent + notes composed into message field. Shows inline success on submit."
     }
   ]
 }

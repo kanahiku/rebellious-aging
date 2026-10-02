@@ -1,0 +1,69 @@
+---
+/**
+ * DecadeHero — dark/blue page hero with copy on the left and an inline curve graphic on the right.
+ */
+import Header from '~/components/widgets/Header.astro';
+import Heading from '~/components/ui/Heading.astro';
+import Text from '~/components/ui/Text.astro';
+import Button from '~/components/ui/Button.astro';
+import { navigationData } from '~/data/navigation';
+
+export interface Props {
+  eyebrow: string;
+  heading: string;
+  description: string;
+  ctaText: string;
+  ctaHref: string;
+}
+
+const { eyebrow, heading, description, ctaText, ctaHref } = Astro.props;
+const header = navigationData.header;
+---
+
+<section class="not-prose w-full overflow-hidden rounded-b-hero bg-section-dark">
+  <div class="mx-auto flex w-full max-w-container flex-col px-5 py-6 sm:px-8 md:min-h-[580px] md:px-16 lg:min-h-[640px] lg:px-[120px] lg:py-8">
+    <Header slot="nav" embedded isSticky={false} links={header.links} actions={header.actions} />
+
+    <div class="grid flex-1 gap-8 py-10 md:gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-[80px] lg:py-[64px]">
+      <div class="flex max-w-[620px] flex-col items-start gap-6">
+        <Heading variant="eyebrow" color="white">{eyebrow}</Heading>
+        <h1 class="font-heading text-h1 font-normal leading-none text-white">{heading}</h1>
+        <Text variant="body-lg" color="inherit" class="text-white/75">{description}</Text>
+        <Button variant="primary" text={ctaText} href={ctaHref} hideNote />
+      </div>
+
+      <div
+        class="overflow-x-auto rounded-[14px] bg-page px-4 py-3 shadow-card-mist md:px-6 md:py-5"
+        style="--muted: var(--aw-color-text-muted); --tan: var(--aw-color-bg-cta); --sky: var(--aw-color-accent); --ink: var(--aw-color-text-heading); --navy: var(--aw-color-primary); --paper: var(--aw-color-bg-page);"
+      >
+        <div class="w-full">
+        <svg class="w-full" viewBox="0 0 820 400" role="img" aria-label="Aging curve: function peaks around 30, then slopes. The default path hits the floor after a Black Swan; the buckets-filled path stays above it.">
+          <line x1="70" y1="360" x2="790" y2="360" stroke="var(--muted)" stroke-width="1"></line>
+          <line x1="70" y1="360" x2="70" y2="40" stroke="var(--muted)" stroke-width="1"></line>
+          <text x="70" y="30" font-size="13" fill="var(--muted)" font-family="var(--aw-font-sans)">FUNCTION</text>
+          <text x="70" y="382" font-size="13" text-anchor="middle" fill="var(--muted)" font-family="var(--aw-font-sans)">20</text>
+          <text x="171.42857142857144" y="382" font-size="13" text-anchor="middle" fill="var(--muted)" font-family="var(--aw-font-sans)">30</text>
+          <text x="272.8571428571429" y="382" font-size="13" text-anchor="middle" fill="var(--muted)" font-family="var(--aw-font-sans)">40</text>
+          <text x="374.2857142857143" y="382" font-size="13" text-anchor="middle" fill="var(--muted)" font-family="var(--aw-font-sans)">50</text>
+          <text x="475.7142857142857" y="382" font-size="13" text-anchor="middle" fill="var(--muted)" font-family="var(--aw-font-sans)">60</text>
+          <text x="577.1428571428571" y="382" font-size="13" text-anchor="middle" fill="var(--muted)" font-family="var(--aw-font-sans)">70</text>
+          <text x="678.5714285714286" y="382" font-size="13" text-anchor="middle" fill="var(--muted)" font-family="var(--aw-font-sans)">80</text>
+          <text x="780" y="382" font-size="13" text-anchor="middle" fill="var(--muted)" font-family="var(--aw-font-sans)">90</text>
+          <text x="790" y="398" font-size="12" text-anchor="end" fill="var(--muted)" font-family="var(--aw-font-sans)">AGE</text>
+          <line x1="70" y1="330" x2="790" y2="330" stroke="var(--tan)" stroke-width="2" stroke-dasharray="7 6"></line>
+          <text x="78" y="322" font-size="14" font-weight="700" fill="var(--tan)" font-family="var(--aw-font-sans)">FLOOR</text>
+          <text x="134" y="322" font-size="13" fill="var(--muted)" font-family="var(--aw-font-sans)">you can no longer live on your own</text>
+          <path d="M171.4 90.0 L181.6 90.2 L191.7 90.5 L201.9 91.0 L212.0 91.6 L222.1 92.2 L232.3 93.0 L242.4 93.8 L252.6 94.7 L262.7 95.7 L272.9 96.8 L283.0 97.9 L293.1 99.1 L303.3 100.3 L313.4 101.6 L323.6 102.9 L333.7 104.4 L343.9 105.8 L354.0 107.3 L364.1 108.9 L374.3 110.5 L384.4 112.2 L394.6 113.9 L404.7 115.7 L414.9 117.5 L425.0 119.3 L435.1 121.2 L445.3 123.2 L455.4 125.1 L465.6 127.2 L475.7 129.3 L485.9 131.4 L496.0 133.5 L506.1 135.7 L516.3 138.0 L526.4 140.2 L536.6 142.5 L546.7 144.9 L556.9 147.3 L567.0 149.7 L577.1 152.2 L587.3 154.7 L597.4 157.2 L607.6 159.8 L617.7 162.4 L627.9 165.1 L638.0 167.8 L648.1 170.5 L658.3 173.3 L668.4 176.1 L678.6 178.9 L688.7 181.7 L698.9 184.6 L709.0 187.6 L719.1 190.5 L729.3 193.5 L739.4 196.5 L749.6 199.6 L759.7 202.7 L769.9 205.8 L780.0 209.0 " fill="none" stroke="var(--sky)" stroke-width="4" stroke-linecap="round"></path>
+          <path d="M70.0 170.0 L80.1 162.0 L90.3 154.0 L100.4 146.0 L110.6 138.0 L120.7 130.0 L130.9 122.0 L141.0 114.0 L151.1 106.0 L161.3 98.0 L171.4 90.0 L181.6 90.4 L191.7 91.1 L201.9 92.1 L212.0 93.3 L222.1 94.7 L232.3 96.3 L242.4 98.1 L252.6 100.0 L262.7 102.1 L272.9 104.3 L283.0 106.7 L293.1 109.2 L303.3 111.8 L313.4 114.6 L323.6 117.4 L333.7 120.4 L343.9 123.5 L354.0 126.7 L364.1 130.0 L374.3 133.4 L384.4 137.0 L394.6 140.6 L404.7 144.3 L414.9 148.2 L425.0 152.1 L435.1 156.1 L445.3 160.2 L455.4 164.4 L465.6 168.7 L475.7 173.1 L485.9 177.6 L496.0 182.2 L506.1 186.8 L516.3 191.5 L526.4 196.4 L536.6 201.3 L546.7 206.3 L556.9 211.3 L567.0 216.5 L577.1 221.7 L587.3 227.0 L597.4 232.4 L607.6 237.9 L617.7 243.4 L627.9 249.0 L638.0 254.7 L648.1 260.5 L658.3 266.3  L664.4 348 L780 352" fill="none" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"></path>
+          <circle cx="171.42857142857144" cy="90" r="6" fill="var(--ink)"></circle>
+          <text x="171.42857142857144" y="74" font-size="15" font-weight="700" text-anchor="middle" fill="var(--ink)" font-family="var(--aw-font-sans)">PEAK</text>
+          <line x1="222.14285714285714" y1="106.72775004792678" x2="222.14285714285714" y2="326" stroke="var(--navy)" stroke-width="2" stroke-dasharray="3 4"></line>
+          <text x="232.14285714285714" y="217.36387502396337" font-size="14" font-weight="700" fill="var(--navy)" font-family="var(--aw-font-sans)">RESERVE</text>
+          <circle cx="222.14285714285714" cy="94.72775004792678" r="8" fill="var(--navy)"></circle>
+          <text x="234.14285714285714" y="82.72775004792678" font-size="14" font-weight="700" fill="var(--navy)" font-family="var(--aw-font-sans)">YOU ARE HERE</text>
+        </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

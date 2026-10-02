@@ -74,7 +74,14 @@
 @utility font-heading {
   font-family: var(--font-heading);
   font-weight: 400;
-  font-variation-settings: 'SOFT' 0, 'WONK' 1;
+  font-variation-settings: 'SOFT' 0, 'WONK' 0;
+  font-variant-ligatures: no-common-ligatures;
+}
+
+@utility font-serif {
+  font-family: var(--font-serif);
+  font-variation-settings: 'SOFT' 0, 'WONK' 0;
+  font-variant-ligatures: no-common-ligatures;
 }
 
 /* ── Fluid type utilities ───────────────────────────────────────────────────
