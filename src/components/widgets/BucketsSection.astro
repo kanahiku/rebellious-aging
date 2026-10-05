@@ -1,10 +1,9 @@
 ---
 /**
- * BucketsSection — Two-column "The Three Buckets" section (Figma node 176:20).
+ * BucketsSection — "The Three Buckets" section (Figma node 176:20).
  *
- * Left:  pull-quote (Fraunces h3, accent on middle phrase) +
- *        "Four rules that make this work" heading + numbered body rules.
- * Right: shared BucketGraphic with the animated three-bucket cascade.
+ * Top: pull-quote left + "Four rules that make this work" right.
+ * Then: shared BucketGraphic with the animated three-bucket cascade.
  *
  * Used on /fill-the-first-bucket.
  */
@@ -12,20 +11,20 @@ import BucketGraphic from '~/components/ui/BucketGraphic.astro';
 ---
 
 <section class="not-prose w-full py-12 md:py-16 lg:py-[80px]">
-  <div
-    class="mx-auto flex w-full max-w-container flex-col gap-12 px-5 sm:px-8 md:flex-row md:gap-16 md:px-16 lg:gap-[64px] lg:px-[120px]"
-  >
-    {/* ── LEFT: pull-quote + rules ── */}
-    <div class="flex min-w-0 flex-1 flex-col gap-10 md:gap-[64px]">
+  <div class="mx-auto flex w-full max-w-container flex-col gap-12 px-5 sm:px-8 md:gap-16 md:px-16 lg:px-[120px]">
+    {/* ── TOP: pull-quote | rules ── */}
+    <div class="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-[120px]">
       {/* Pull quote */}
-      <p class="font-heading text-h3 font-normal leading-[1.2] text-heading">
-        The price goes up as the evidence goes down. Bucket one is free and it is the one that matters most.{' '}
-        <span class="text-accent">Bucket three costs thousands and may do nothing at all.</span>{' '}
-        Almost nobody in this business will tell you that, because most of them sell bucket three.
-      </p>
+      <div class="flex min-w-0 flex-1 flex-col gap-[1.3em] font-heading text-h3 font-normal leading-[1.2] text-heading">
+        <p>
+          The price goes up as the evidence goes down. Bucket one is free and it is the one that matters most.{' '}
+          <span class="text-accent">Bucket three costs thousands and may do nothing at all.</span>
+        </p>
+        <p>Almost nobody in this business will tell you that, because most of them sell bucket three.</p>
+      </div>
 
       {/* Four rules */}
-      <div class="flex flex-col gap-6">
+      <div class="flex min-w-0 flex-1 flex-col gap-6">
         <h2 class="font-heading text-h2 font-normal leading-none text-heading">
           Four rules that make<br class="hidden sm:block" /> this work.
         </h2>
@@ -54,8 +53,8 @@ import BucketGraphic from '~/components/ui/BucketGraphic.astro';
       </div>
     </div>
 
-    {/* ── RIGHT: shared bucket graphic ── */}
-    <div class="min-w-0 flex-1">
+    {/* ── Shared bucket graphic — full width here so it does not feel cramped ── */}
+    <div class="w-full">
       <BucketGraphic />
     </div>
   </div>
