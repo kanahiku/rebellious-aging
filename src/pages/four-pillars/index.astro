@@ -5,10 +5,8 @@ import Header from '~/components/widgets/Header.astro';
 import ConceptCards from '~/components/widgets/ConceptCards.astro';
 import TextSplit from '~/components/widgets/TextSplit.astro';
 import Text from '~/components/ui/Text.astro';
-import Button from '~/components/ui/Button.astro';
 import { site } from '~/config/site';
 import { navigationData } from '~/data/navigation';
-import { PRIMARY_CTA_HREF, PRIMARY_CTA_LABEL, ATHENA_CONTACT_HREF } from '~/config/cta';
 import { getImage } from 'astro:assets';
 import fourPillarHero from '~/assets/images/four-pillar-hero.png';
 
@@ -44,6 +42,7 @@ const socialSvg = `<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org
 // ── Four pillar cards (Figma 64:845) ──────────────────────────────────────
 const pillarCards = [
   {
+    preLabel: 'BUCKET 1 · THE BASICS',
     label: 'diet',
     title: 'Cook like you plan to be here a while.',
     description:
@@ -53,6 +52,7 @@ const pillarCards = [
     iconBgClass: 'bg-section-grey',
   },
   {
+    preLabel: 'BUCKET 1 · THE BASICS',
     label: 'exercise',
     title: 'The body is a rebellion. Train it like one.',
     description:
@@ -62,6 +62,7 @@ const pillarCards = [
     iconBgClass: 'bg-section-grey',
   },
   {
+    preLabel: 'BUCKET 1 · THE BASICS',
     label: 'sleep',
     title: 'The one nobody can sell you.',
     description:
@@ -71,6 +72,7 @@ const pillarCards = [
     iconBgClass: 'bg-section-grey',
   },
   {
+    preLabel: 'BUCKET 1 · THE BASICS',
     label: 'social connection',
     title: 'You get old alone. You grow long in company.',
     description:
@@ -79,7 +81,7 @@ const pillarCards = [
     iconBg: true,
     iconBgClass: 'bg-section-grey',
     link: {
-      text: 'Learn from ohana',
+      text: 'Learn about the Ohana',
       href: '/ohana',
     },
   },
@@ -117,17 +119,15 @@ const pillarCards = [
     heading="What this framework deliberately leaves out."
   >
     <Text>
-      Athena Clinic can run every test on this page in one evaluation, review your self-assessment and give you a plan.
+      Peptides. Infusions. Hyperbaric chambers. Proprietary blends. Full-body MRI. A
+      supplement subscription. Most of what the longevity industry sells is a
+      conversation for after buckets one and two are full, and almost nobody&apos;s are.
     </Text>
-    <Button
-      variant="primary"
-      text="Book an Athena evaluation"
-      href="/athena-evaluation"
-      hideNote
-      class="mt-6 self-start"
-    />
-    <Text class="mt-4">
-      Or bring this list to your own doctor. Everything here works just as well with someone who knows your history.
+    <Text class="mt-[1.3em]">
+      We are not against any of it on principle. Dr. Peterson calls it recreational
+      anti-aging, and files it with a weekend in Las Vegas: if you enjoy it and can afford
+      it, help yourself. We are against buying the fifth thing before you have done the
+      first four, which are free.
     </Text>
   </TextSplit>
 </Layout>

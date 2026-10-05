@@ -7,7 +7,7 @@
  *   bg-page, px-[120px], no extra vertical padding (padding controlled by the wrapper section).
  *   4 equal columns, gap-[32px], items stretch to the tallest card.
  *   Each card: optional icon tile (50×50, bg-section-grey, rounded-bl-[12px])
- *              + label eyebrow + 28px Fraunces title + 14px body.
+ *              + optional pre-label + label eyebrow + 28px Fraunces title + 14px body.
  *
  * Content is passed from the page file — never baked in.
  */
@@ -15,6 +15,7 @@ import Card from '~/components/ui/Card.astro';
 import Heading from '~/components/ui/Heading.astro';
 
 export interface ConceptCardItem {
+  preLabel?: string;
   label: string;
   title: string;
   description: string;
@@ -51,6 +52,7 @@ const { cards = [], id } = Astro.props;
       <Card
         variant="pillar"
         surface="white"
+        preLabel={card.preLabel}
         label={card.label}
         iconBg={card.iconBg ?? false}
         iconBgClass={card.iconBgClass ?? 'bg-section-grey'}
