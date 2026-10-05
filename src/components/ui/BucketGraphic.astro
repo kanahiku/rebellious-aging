@@ -1,0 +1,1040 @@
+---
+/**
+ * BucketGraphic — reusable three-bucket diagram with cascading pour animation.
+ *
+ * Based on the supplied buckets.html reference. Tokens only; no hardcoded hex.
+ */
+import Button from '~/components/ui/Button.astro';
+
+export interface Props {
+  cta?: { text: string; href: string };
+  class?: string;
+}
+
+const { cta, class: className = '' } = Astro.props;
+
+const pillars = ['Diet', 'Exercise', 'Sleep', 'Social connection'];
+const homeItems = ['Blood pressure', 'Grip strength', '5× sit-to-stand', 'Balance', 'Weight & waist'];
+const doctorItems = [
+  'A1c (blood sugar)',
+  'Cholesterol',
+  'Kidney & liver',
+  'Bone density',
+  'Coronary calcium',
+  'Hearing',
+  'Medication review',
+];
+const fancyItems = ['IV drips', 'Peptides', 'Whole-body MRI', 'Cancer blood panels', 'Supplements'];
+---
+
+<div class:list={['bucket-graphic', className]} data-bucket-graphic>
+  {
+    cta && (
+      <div class="bucket-graphic__cta-row">
+        <div class="bucket-graphic__cta-col">
+          <Button variant="primary" text={cta.text} href={cta.href} hideNote class="bucket-graphic__cta" />
+          <svg class="bucket-graphic__cta-pour bucket-graphic__pour" viewBox="0 0 14 56" aria-hidden="true">
+            <path
+              d="M 7 0 L 7 46"
+              fill="none"
+              stroke="var(--aw-color-secondary)"
+              stroke-width="6"
+              stroke-linecap="round"
+            />
+            <path
+              class="bucket-graphic__flow"
+              d="M 7 0 L 7 46"
+              fill="none"
+              stroke="var(--aw-color-bg-feature-card)"
+              stroke-width="2.5"
+              stroke-linecap="round"
+            />
+            <circle class="bucket-graphic__drop" cx="2" cy="50" r="2" fill="var(--aw-color-secondary)" />
+            <circle
+              class="bucket-graphic__drop bucket-graphic__drop--delay"
+              cx="12"
+              cy="51"
+              r="1.7"
+              fill="var(--aw-color-secondary)"
+            />
+          </svg>
+        </div>
+      </div>
+    )
+  }
+
+  <div class="bucket-graphic__row">
+    <svg class="bucket-graphic__cascade bucket-graphic__pour" aria-hidden="true">
+      <g class="bucket-graphic__stream">
+        <path
+          class="bucket-graphic__base"
+          fill="none"
+          stroke="var(--aw-color-secondary)"
+          stroke-width="6"
+          stroke-linecap="round"></path>
+        <g class="bucket-graphic__tail">
+          <path
+            class="bucket-graphic__flow"
+            fill="none"
+            stroke="var(--aw-color-bg-feature-card)"
+            stroke-width="2.5"
+            stroke-linecap="round"></path>
+          <circle class="bucket-graphic__drop" r="2.2" fill="var(--aw-color-secondary)"></circle>
+          <circle class="bucket-graphic__drop bucket-graphic__drop--delay" r="1.8" fill="var(--aw-color-secondary)"
+          ></circle>
+        </g>
+      </g>
+      <g class="bucket-graphic__stream">
+        <path
+          class="bucket-graphic__base"
+          fill="none"
+          stroke="var(--aw-color-secondary)"
+          stroke-width="6"
+          stroke-linecap="round"></path>
+        <g class="bucket-graphic__tail">
+          <path
+            class="bucket-graphic__flow"
+            fill="none"
+            stroke="var(--aw-color-bg-feature-card)"
+            stroke-width="2.5"
+            stroke-linecap="round"></path>
+          <circle class="bucket-graphic__drop" r="2.2" fill="var(--aw-color-secondary)"></circle>
+          <circle class="bucket-graphic__drop bucket-graphic__drop--delay" r="1.8" fill="var(--aw-color-secondary)"
+          ></circle>
+        </g>
+      </g>
+    </svg>
+
+    <div class="bucket-graphic__col bucket-graphic__col--one">
+      <a
+        class="bucket-graphic__bucket bucket-graphic__bucket--one"
+        href="/four-pillars"
+        aria-label="Bucket 1: The basics, four pillars"
+      >
+        <div class="bucket-graphic__rim"><span>Bucket 1</span></div>
+        <div class="bucket-graphic__body">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M3 0 L97 0 L89 100 L11 100 Z" fill="var(--aw-color-bg-card)"></path>
+            <path
+              class="bucket-graphic__water"
+              data-level="1"
+              d="M3 0 L97 0 L89 100 L11 100 Z"
+              fill="var(--aw-color-bg-section-grey)"></path>
+            <path
+              d="M3 0 L97 0 L89 100 L11 100 Z"
+              fill="none"
+              stroke="var(--aw-color-bg-section-dark)"
+              stroke-width="2"
+              stroke-linejoin="round"
+              vector-effect="non-scaling-stroke"></path>
+          </svg>
+          <div class="bucket-graphic__top">
+            <h3>The basics</h3>
+            <div class="bucket-graphic__tiles">
+              {pillars.map((item) => <div class="bucket-graphic__tile">{item}</div>)}
+            </div>
+          </div>
+          <div class="bucket-graphic__spacer"></div>
+          <div class="bucket-graphic__note">No order inside. All four count.<br />Social connection → the Ohana</div>
+        </div>
+      </a>
+      <div class="bucket-graphic__caption">
+        <p class="bucket-graphic__caption-strong">Strongest evidence · Lowest cost</p>
+        <p class="bucket-graphic__caption-sub">Fill first</p>
+      </div>
+    </div>
+
+    <div class="bucket-graphic__spill bucket-graphic__spill--one">
+      <svg class="bucket-graphic__pour" viewBox="0 0 64 140" aria-hidden="true">
+        <path
+          d="M -18 1 C 8 -42, 62 -32, 92 59"
+          fill="none"
+          stroke="var(--aw-color-secondary)"
+          stroke-width="6"
+          stroke-linecap="round"></path>
+        <path
+          class="bucket-graphic__flow"
+          d="M -18 1 C 8 -42, 62 -32, 92 59"
+          fill="none"
+          stroke="var(--aw-color-bg-feature-card)"
+          stroke-width="2.5"
+          stroke-linecap="round"></path>
+        <circle class="bucket-graphic__drop" cx="84" cy="51" r="2.2" fill="var(--aw-color-secondary)"></circle>
+        <circle
+          class="bucket-graphic__drop bucket-graphic__drop--delay"
+          cx="100"
+          cy="53"
+          r="1.8"
+          fill="var(--aw-color-secondary)"></circle>
+      </svg>
+      <span class="bucket-graphic__word">spills<br /> over</span>
+    </div>
+
+    <div class="bucket-graphic__col bucket-graphic__col--two">
+      <a
+        class="bucket-graphic__bucket bucket-graphic__bucket--two"
+        href="/talk-to-your-doctor"
+        aria-label="Bucket 2: Ask your doctor"
+      >
+        <div class="bucket-graphic__rim"><span>Bucket 2</span></div>
+        <div class="bucket-graphic__body">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M3 0 L97 0 L89 100 L11 100 Z" fill="var(--aw-color-bg-card)"></path>
+            <path
+              class="bucket-graphic__water"
+              data-level="0.4"
+              d="M7.8 60 L92.2 60 L89 100 L11 100 Z"
+              fill="var(--aw-color-bg-section-grey)"></path>
+            <path
+              d="M3 0 L97 0 L89 100 L11 100 Z"
+              fill="none"
+              stroke="var(--aw-color-primary)"
+              stroke-width="2"
+              stroke-linejoin="round"
+              vector-effect="non-scaling-stroke"></path>
+          </svg>
+          <div class="bucket-graphic__top">
+            <h3>Ask your doctor</h3>
+            <div class="bucket-graphic__lists">
+              <div>
+                <span class="bucket-graphic__label">Check at home</span>
+                {homeItems.map((item) => <span>{item}</span>)}
+              </div>
+              <div>
+                <span class="bucket-graphic__label">Doctor orders</span>
+                {doctorItems.map((item) => <span>{item}</span>)}
+              </div>
+            </div>
+          </div>
+          <div class="bucket-graphic__spacer"></div>
+          <div class="bucket-graphic__note">You don&apos;t know what you don&apos;t know.</div>
+        </div>
+      </a>
+      <div class="bucket-graphic__caption">
+        <p class="bucket-graphic__caption-strong">Strong evidence · Moderate cost</p>
+        <p class="bucket-graphic__caption-sub">Fill once bucket 1 is on its way</p>
+      </div>
+    </div>
+
+    <div class="bucket-graphic__spill bucket-graphic__spill--two">
+      <svg class="bucket-graphic__pour" viewBox="0 0 64 140" aria-hidden="true">
+        <path
+          d="M -18 66 C 8 23, 62 33, 92 124"
+          fill="none"
+          stroke="var(--aw-color-secondary)"
+          stroke-width="6"
+          stroke-linecap="round"></path>
+        <path
+          class="bucket-graphic__flow"
+          d="M -18 66 C 8 23, 62 33, 92 124"
+          fill="none"
+          stroke="var(--aw-color-bg-feature-card)"
+          stroke-width="2.5"
+          stroke-linecap="round"></path>
+        <circle class="bucket-graphic__drop" cx="84" cy="116" r="2.2" fill="var(--aw-color-secondary)"></circle>
+        <circle
+          class="bucket-graphic__drop bucket-graphic__drop--delay"
+          cx="100"
+          cy="118"
+          r="1.8"
+          fill="var(--aw-color-secondary)"></circle>
+      </svg>
+      <span class="bucket-graphic__word">spills<br /> over</span>
+    </div>
+
+    <div class="bucket-graphic__col bucket-graphic__col--three">
+      <a
+        class="bucket-graphic__bucket bucket-graphic__bucket--three"
+        href="/how-aging-works#bucket-3"
+        aria-label="Bucket 3: The fancy stuff"
+      >
+        <div class="bucket-graphic__rim"><span>Bucket 3</span></div>
+        <div class="bucket-graphic__body">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <path
+              d="M3 0 L97 0 L89 100 L11 100 Z"
+              fill="var(--aw-color-bg-card)"
+              stroke="var(--aw-color-text-tan)"
+              stroke-width="2"
+              stroke-dasharray="6 5"
+              stroke-linejoin="round"
+              vector-effect="non-scaling-stroke"></path>
+          </svg>
+          <div class="bucket-graphic__top">
+            <h3>The fancy stuff</h3>
+            <div class="bucket-graphic__fancy">
+              {fancyItems.map((item) => <span>{item}</span>)}
+            </div>
+          </div>
+          <div class="bucket-graphic__spacer"></div>
+          <div class="bucket-graphic__note">
+            Optional. Recreational anti-aging.<br />Nothing for us to sell you here.
+          </div>
+        </div>
+      </a>
+      <div class="bucket-graphic__caption">
+        <p class="bucket-graphic__caption-strong">Thin evidence · Highest cost</p>
+        <p class="bucket-graphic__caption-sub">Only with whatever spills over</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .bucket-graphic {
+    width: 100%;
+    color: var(--aw-color-text-heading);
+    font-family: var(--aw-font-sans);
+  }
+
+  .bucket-graphic__cta-row {
+    display: grid;
+    grid-template-columns: 1fr 64px 1fr 64px 1fr;
+    margin-bottom: -2px;
+  }
+
+  .bucket-graphic__cta-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .bucket-graphic__cta-pour {
+    display: block;
+    width: 14px;
+    height: 56px;
+    overflow: visible;
+    filter: drop-shadow(0 6px 8px color-mix(in srgb, var(--aw-color-secondary) 24%, transparent));
+  }
+
+  .bucket-graphic__row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 64px 1fr 64px 1fr;
+    align-items: end;
+    filter: drop-shadow(0 22px 28px color-mix(in srgb, var(--aw-color-bg-section-dark) 12%, transparent));
+  }
+
+  .bucket-graphic__col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .bucket-graphic__bucket {
+    display: flex;
+    min-height: 500px;
+    flex-direction: column;
+    color: inherit;
+    text-decoration: none;
+    transition:
+      filter 200ms ease,
+      transform 200ms ease;
+  }
+
+  .bucket-graphic__bucket:hover {
+    filter: brightness(1.015);
+    transform: translateY(-2px);
+  }
+
+  .bucket-graphic__bucket--two {
+    min-height: 435px;
+  }
+
+  .bucket-graphic__bucket--three {
+    min-height: 370px;
+  }
+
+  .bucket-graphic__rim {
+    position: relative;
+    z-index: 1;
+    border-radius: 14px;
+    padding: 10px 16px 9px;
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--aw-color-bg-card) 26%, transparent),
+      inset 0 -10px 18px color-mix(in srgb, var(--aw-color-bg-section-dark) 18%, transparent),
+      0 10px 16px color-mix(in srgb, var(--aw-color-bg-section-dark) 10%, transparent);
+    text-align: center;
+  }
+
+  .bucket-graphic__rim span {
+    color: color-mix(in srgb, var(--aw-color-bg-card) 60%, transparent);
+    font-family: var(--aw-font-sans);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .bucket-graphic__bucket--one .bucket-graphic__rim {
+    background: var(--aw-color-bg-section-dark);
+  }
+
+  .bucket-graphic__bucket--two .bucket-graphic__rim {
+    background: var(--aw-color-primary);
+  }
+
+  .bucket-graphic__bucket--three .bucket-graphic__rim {
+    border: 2px dashed var(--aw-color-text-tan);
+    background: var(--aw-color-bg-page);
+    box-shadow:
+      inset 0 1px 0 var(--aw-color-bg-card),
+      0 10px 16px color-mix(in srgb, var(--aw-color-text-tan) 12%, transparent);
+  }
+
+  .bucket-graphic__bucket--three .bucket-graphic__rim span {
+    color: var(--aw-color-text-tan);
+  }
+
+  .bucket-graphic__body {
+    position: relative;
+    isolation: isolate;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-top: -2px;
+    padding: 0 9%;
+  }
+
+  .bucket-graphic__body::before {
+    position: absolute;
+    inset: 2px 10% 0;
+    z-index: -1;
+    clip-path: polygon(0 0, 100% 0, 91% 100%, 9% 100%);
+    background:
+      linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--aw-color-bg-section-dark) 10%, transparent),
+        transparent 18%,
+        transparent 72%,
+        color-mix(in srgb, var(--aw-color-bg-card) 38%, transparent)
+      ),
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--aw-color-bg-card) 45%, transparent),
+        transparent 18%,
+        color-mix(in srgb, var(--aw-color-bg-section-dark) 7%, transparent)
+      );
+    content: '';
+    pointer-events: none;
+  }
+
+  .bucket-graphic__body::after {
+    position: absolute;
+    inset: 12px 17% auto;
+    z-index: -1;
+    height: 18%;
+    border-radius: 999px;
+    background: radial-gradient(
+      ellipse at 50% 0,
+      color-mix(in srgb, var(--aw-color-bg-card) 48%, transparent),
+      transparent 70%
+    );
+    content: '';
+    pointer-events: none;
+  }
+
+  .bucket-graphic__body > svg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    filter: drop-shadow(0 12px 12px color-mix(in srgb, var(--aw-color-bg-section-dark) 12%, transparent));
+  }
+
+  .bucket-graphic__top {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+  }
+
+  .bucket-graphic__spacer {
+    flex: 1;
+  }
+
+  .bucket-graphic__note {
+    padding: 0 20px 20px;
+    color: var(--aw-color-text-muted);
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  .bucket-graphic h3 {
+    color: var(--aw-color-text-heading);
+    font-family: var(--aw-font-heading);
+    font-size: clamp(2.125rem, 2.1vw + 1.6rem, 2.875rem);
+    font-weight: 400;
+    line-height: 1;
+    text-align: center;
+  }
+
+  .bucket-graphic__tiles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .bucket-graphic__tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: var(--aw-color-bg-page);
+    color: var(--aw-color-text-heading);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+    padding: 12px;
+    text-align: center;
+    box-shadow:
+      inset 0 1px 0 var(--aw-color-bg-card),
+      0 6px 12px color-mix(in srgb, var(--aw-color-bg-section-dark) 6%, transparent);
+  }
+
+  .bucket-graphic__lists {
+    display: flex;
+    font-size: 12px;
+  }
+
+  .bucket-graphic__lists > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .bucket-graphic__lists > div:first-child {
+    padding-right: 12px;
+  }
+
+  .bucket-graphic__lists > div:last-child {
+    border-left: 1px solid color-mix(in srgb, var(--aw-color-primary) 20%, transparent);
+    padding-left: 12px;
+  }
+
+  .bucket-graphic__label {
+    color: var(--aw-color-text-eyebrow);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+
+  .bucket-graphic__lists span:not(.bucket-graphic__label) {
+    color: var(--aw-color-primary);
+    line-height: 1.5;
+  }
+
+  .bucket-graphic__bucket--three .bucket-graphic__top {
+    align-items: center;
+    gap: 12px;
+    padding: 16px 24px;
+  }
+
+  .bucket-graphic__fancy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: var(--aw-color-text-heading);
+    font-size: 15px;
+    line-height: 1.4;
+  }
+
+  .bucket-graphic__caption {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-align: center;
+  }
+
+  .bucket-graphic__caption-strong {
+    color: var(--aw-color-text-heading);
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .bucket-graphic__caption-sub {
+    color: var(--aw-color-text-muted);
+    font-size: 12px;
+  }
+
+  .bucket-graphic__spill {
+    position: relative;
+    z-index: 2;
+    align-self: stretch;
+    width: 64px;
+    color: var(--aw-color-text-muted);
+  }
+
+  .bucket-graphic__spill::before {
+    position: absolute;
+    inset: 8px 9px auto;
+    height: 50px;
+    border-radius: 999px;
+    background: radial-gradient(
+      ellipse at 50% 50%,
+      color-mix(in srgb, var(--aw-color-secondary) 12%, transparent),
+      transparent 70%
+    );
+    content: '';
+  }
+
+  .bucket-graphic__spill .bucket-graphic__pour {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 64px;
+    height: 140px;
+    overflow: visible;
+    filter: drop-shadow(0 8px 10px color-mix(in srgb, var(--aw-color-secondary) 22%, transparent));
+  }
+
+  .bucket-graphic__spill .bucket-graphic__pour path:first-child,
+  .bucket-graphic__cta-pour path:first-child,
+  .bucket-graphic__cascade .bucket-graphic__base {
+    opacity: 0.82;
+    stroke-width: 8;
+  }
+
+  .bucket-graphic__word {
+    position: absolute;
+    left: 0;
+    right: 0;
+    font-size: 12px;
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  .bucket-graphic__spill--one .bucket-graphic__word {
+    top: 22px;
+  }
+
+  .bucket-graphic__spill--two .bucket-graphic__word {
+    top: 87px;
+  }
+
+  .bucket-graphic__flow {
+    animation: bucket-graphic-flow 0.7s linear infinite;
+    filter: drop-shadow(0 0 5px color-mix(in srgb, var(--aw-color-bg-card) 75%, transparent));
+    stroke-dasharray: 2 10;
+  }
+
+  .bucket-graphic__drop {
+    animation: bucket-graphic-drip 1.4s ease-in infinite;
+    filter: drop-shadow(0 2px 4px color-mix(in srgb, var(--aw-color-secondary) 40%, transparent));
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  .bucket-graphic__drop--delay {
+    animation-delay: 0.7s;
+  }
+
+  .bucket-graphic__cascade {
+    display: none;
+  }
+
+  @keyframes bucket-graphic-flow {
+    to {
+      stroke-dashoffset: -20;
+    }
+  }
+
+  @keyframes bucket-graphic-drip {
+    0% {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    20% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bucket-graphic__flow,
+    .bucket-graphic__drop {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .bucket-graphic__row,
+    .bucket-graphic__cta-row {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .bucket-graphic__col--one,
+    .bucket-graphic__col--three,
+    .bucket-graphic__col--two,
+    .bucket-graphic__cta-col {
+      justify-self: center;
+      width: min(100%, 560px);
+    }
+
+    .bucket-graphic__cta-col {
+      justify-self: center;
+      width: min(100%, 560px);
+    }
+
+    .bucket-graphic__bucket,
+    .bucket-graphic__bucket--two,
+    .bucket-graphic__bucket--three {
+      min-height: 360px;
+    }
+
+    .bucket-graphic__bucket:hover {
+      transform: none;
+    }
+
+    .bucket-graphic h3 {
+      font-size: 34px;
+    }
+
+    .bucket-graphic__top {
+      padding: 20px 16px;
+    }
+
+    .bucket-graphic__bucket--three .bucket-graphic__top {
+      padding: 16px;
+    }
+
+    .bucket-graphic__body {
+      padding: 0 6%;
+    }
+
+    .bucket-graphic__cascade {
+      display: none;
+    }
+
+    .bucket-graphic__tail {
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .bucket-graphic__stream.is-done .bucket-graphic__tail {
+      opacity: 1;
+    }
+
+    .bucket-graphic__spill {
+      position: relative;
+      display: flex;
+      width: min(100%, 560px);
+      height: 92px;
+      align-items: center;
+      justify-content: center;
+      justify-self: center;
+    }
+
+    .bucket-graphic__spill .bucket-graphic__pour {
+      display: none;
+    }
+
+    .bucket-graphic__word {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--aw-color-bg-page) 78%, var(--aw-color-bg-card));
+      box-shadow: 0 6px 16px color-mix(in srgb, var(--aw-color-bg-section-dark) 8%, transparent);
+      color: var(--aw-color-text-muted);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      line-height: 1;
+      padding: 7px 12px;
+      text-transform: uppercase;
+    }
+
+    .bucket-graphic__word br {
+      display: none;
+    }
+
+    .bucket-graphic__spill::before {
+      inset: 2px auto;
+      width: 10px;
+      height: 88px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--aw-color-secondary) 64%, transparent);
+      box-shadow:
+        inset 0 0 0 1px color-mix(in srgb, var(--aw-color-bg-card) 22%, transparent),
+        0 8px 18px color-mix(in srgb, var(--aw-color-secondary) 22%, transparent);
+    }
+
+    .bucket-graphic__spill::after {
+      position: absolute;
+      inset: 6px auto;
+      width: 3px;
+      height: 80px;
+      border-radius: 999px;
+      background: var(--aw-color-bg-feature-card);
+      animation: bucket-graphic-mobile-flow 0.8s linear infinite;
+      box-shadow: 0 0 8px color-mix(in srgb, var(--aw-color-bg-card) 70%, transparent);
+      content: '';
+    }
+  }
+
+  @keyframes bucket-graphic-mobile-flow {
+    0% {
+      transform: translateY(-10px) scaleY(0.55);
+      opacity: 0;
+    }
+    35% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(12px) scaleY(0.9);
+      opacity: 0.2;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .bucket-graphic__lists {
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .bucket-graphic__lists > div {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 5px;
+      justify-content: center;
+    }
+
+    .bucket-graphic__lists > div:first-child {
+      padding-right: 0;
+    }
+
+    .bucket-graphic__lists > div:last-child {
+      border-left: none;
+      padding-left: 0;
+    }
+
+    .bucket-graphic__lists .bucket-graphic__label {
+      flex-basis: 100%;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .bucket-graphic__lists span:not(.bucket-graphic__label) {
+      border-radius: 999px;
+      background: var(--aw-color-bg-page);
+      font-size: 11.5px;
+      line-height: 1.4;
+      padding: 3px 9px;
+      white-space: nowrap;
+    }
+  }
+</style>
+
+<script>
+  const clamp = (value: number) => Math.max(0, Math.min(1, value));
+  const mobile = window.matchMedia('(max-width: 1023px)');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  function setupBucketGraphic(root: HTMLElement) {
+    const row = root.querySelector<HTMLElement>('.bucket-graphic__row')!;
+    const cascade = root.querySelector<SVGSVGElement>('.bucket-graphic__cascade')!;
+    const streams = Array.from(root.querySelectorAll<SVGGElement>('.bucket-graphic__stream'));
+    const b1 = root.querySelector<HTMLElement>('.bucket-graphic__bucket--one')!;
+    const b2 = root.querySelector<HTMLElement>('.bucket-graphic__bucket--two')!;
+    const b3 = root.querySelector<HTMLElement>('.bucket-graphic__bucket--three')!;
+    const w1 = b1.querySelector<SVGPathElement>('.bucket-graphic__water')!;
+    const w2 = b2.querySelector<SVGPathElement>('.bucket-graphic__water')!;
+
+    if (!row || !cascade || streams.length < 2 || !b1 || !b2 || !b3 || !w1 || !w2) return;
+
+    let lengths = [0, 0];
+    let state = { fill1: 0, pour1: 0, fill2: 0, pour2: 0 };
+    let step = 0;
+    let playing = false;
+    let ticking = false;
+
+    function setLevel(path: SVGPathElement, level: number) {
+      if (level <= 0.002) {
+        path.style.opacity = '0';
+        return;
+      }
+      path.style.opacity = '1';
+      const y = 100 - level * 100;
+      const left = 3 + (8 * y) / 100;
+      const right = 97 - (8 * y) / 100;
+      path.setAttribute('d', `M${left} ${y} L${right} ${y} L89 100 L11 100 Z`);
+    }
+
+    function setStream(index: number, amount: number) {
+      const stream = streams[index];
+      const base = stream.querySelector<SVGPathElement>('.bucket-graphic__base');
+      if (!base) return;
+      base.style.strokeDasharray = String(lengths[index]);
+      base.style.strokeDashoffset = String(lengths[index] * (1 - amount));
+      stream.classList.toggle('is-done', amount >= 1);
+    }
+
+    function box(el: HTMLElement) {
+      const rect = el.getBoundingClientRect();
+      const origin = row.getBoundingClientRect();
+      return {
+        left: rect.left - origin.left,
+        right: rect.right - origin.left,
+        top: rect.top - origin.top,
+        bottom: rect.bottom - origin.top,
+      };
+    }
+
+    function contentHeight(bucket: HTMLElement) {
+      const rim = bucket.querySelector<HTMLElement>('.bucket-graphic__rim');
+      const body = bucket.querySelector<HTMLElement>('.bucket-graphic__body');
+      let height = rim?.offsetHeight ?? 0;
+      if (!body) return height;
+      Array.from(body.children).forEach((child) => {
+        const element = child as HTMLElement;
+        if (element.tagName.toLowerCase() === 'svg' || element.classList.contains('bucket-graphic__spacer')) return;
+        height += element.offsetHeight;
+      });
+      return height + 24;
+    }
+
+    function sizeBuckets() {
+      const all = [b1, b2, b3];
+      if (!mobile.matches) {
+        all.forEach((bucket) => {
+          bucket.style.minHeight = '';
+        });
+        return;
+      }
+      const content = all.map(contentHeight);
+      const stepHeight = 50;
+      const h3 = Math.max(content[2], content[1] - stepHeight, content[0] - 2 * stepHeight);
+      b1.style.minHeight = `${h3 + 2 * stepHeight}px`;
+      b2.style.minHeight = `${h3 + stepHeight}px`;
+      b3.style.minHeight = `${h3}px`;
+    }
+
+    function render() {
+      setLevel(w1, state.fill1);
+      setLevel(w2, 0.4 * state.fill2);
+      if (mobile.matches) {
+        setStream(0, state.pour1);
+        setStream(1, state.pour2);
+      }
+    }
+
+    function layout() {
+      sizeBuckets();
+      if (!mobile.matches) return;
+
+      const origin = row.getBoundingClientRect();
+      cascade.setAttribute('width', String(origin.width));
+      cascade.setAttribute('height', String(origin.height));
+      cascade.setAttribute('viewBox', `0 0 ${origin.width} ${origin.height}`);
+
+      const first = box(b1);
+      const second = box(b2);
+      const third = box(b3);
+
+      const x1 = first.right - 10;
+      const y1 = first.top + 1;
+      const xf = first.right + (origin.width - first.right) / 2;
+      const d1 = `M ${x1} ${y1} C ${x1 + 8} ${y1 - 30}, ${xf} ${y1 - 26}, ${xf} ${y1 + 14} L ${xf} ${second.top - 6}`;
+
+      const x2 = second.left + 10;
+      const y2 = second.top + 1;
+      const xg = second.left / 2;
+      const d2 = `M ${x2} ${y2} C ${x2 - 8} ${y2 - 30}, ${xg} ${y2 - 26}, ${xg} ${y2 + 14} L ${xg} ${third.top - 6}`;
+
+      [
+        [d1, xf, second.top],
+        [d2, xg, third.top],
+      ].forEach(([path, x, y], index) => {
+        const stream = streams[index];
+        stream.querySelector<SVGPathElement>('.bucket-graphic__base')?.setAttribute('d', String(path));
+        stream.querySelector<SVGPathElement>('.bucket-graphic__flow')?.setAttribute('d', String(path));
+        const drops = stream.querySelectorAll<SVGCircleElement>('circle');
+        drops[0]?.setAttribute('cx', String(Number(x) - 6));
+        drops[0]?.setAttribute('cy', String(Number(y) - 12));
+        drops[1]?.setAttribute('cx', String(Number(x) + 7));
+        drops[1]?.setAttribute('cy', String(Number(y) - 10));
+        lengths[index] = stream.querySelector<SVGPathElement>('.bucket-graphic__base')?.getTotalLength() ?? 0;
+      });
+      render();
+    }
+
+    function shown(el: HTMLElement, amount: number) {
+      const rect = el.getBoundingClientRect();
+      const visible = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+      return visible / Math.min(rect.height, window.innerHeight) >= amount;
+    }
+
+    function play(key: keyof typeof state, ms: number, done?: () => void) {
+      playing = true;
+      const start = performance.now();
+      function frame(now: number) {
+        const progress = clamp((now - start) / ms);
+        state[key] = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+        render();
+        if (progress < 1) {
+          requestAnimationFrame(frame);
+        } else {
+          playing = false;
+          step += 1;
+          done?.();
+          update();
+        }
+      }
+      requestAnimationFrame(frame);
+    }
+
+    function update() {
+      if (!mobile.matches || reduce.matches) {
+        state = { fill1: 1, pour1: 1, fill2: 1, pour2: 1 };
+        render();
+        return;
+      }
+      if (playing) return;
+      if (step === 0 && shown(b1, 0.5)) play('fill1', 1400);
+      else if (step === 1) play('pour1', 900);
+      else if (step === 2 && shown(b2, 0.4)) play('fill2', 1200);
+      else if (step === 3) play('pour2', 900);
+    }
+
+    if (mobile.matches && !reduce.matches) render();
+    else update();
+
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          update();
+          ticking = false;
+        });
+      },
+      { passive: true }
+    );
+
+    window.addEventListener('resize', () => {
+      if (!mobile.matches) {
+        step = 4;
+        state = { fill1: 1, pour1: 1, fill2: 1, pour2: 1 };
+      }
+      layout();
+      render();
+    });
+
+    if (window.ResizeObserver) new ResizeObserver(layout).observe(row);
+    if (document.fonts?.ready) document.fonts.ready.then(layout);
+    layout();
+    update();
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-bucket-graphic]').forEach(setupBucketGraphic);
+</script>

@@ -10,7 +10,6 @@ import { navigationData } from '~/data/navigation';
 import { getImage } from 'astro:assets';
 import fillBucketHero from '~/assets/images/fill-bucket-hero.png';
 import closedEyeLadyImg from '~/assets/images/closed-eye-lady.jpg';
-import { ATHENA_CONTACT_HREF } from '~/config/cta';
 
 const metadata = {
   title: `Fill the First Bucket | ${site.name}`,
@@ -62,7 +61,6 @@ const heroPreload = await getImage({ src: fillBucketHero, width: 1920, format: '
     title="So where does your weakest link fit?"
     subtitle="It isn't a bucket. Finding your weakest link is free, takes an evening, and its job is to tell you two things: where inside bucket one to concentrate, and what to raise when you get to bucket two. It's the aiming device, not a rung on the ladder."
     ctaText="Find your weakest link"
-    ctaHref={ATHENA_CONTACT_HREF}
-    ctaTarget="_blank"
+    ctaHref="/form"
   />
 </Layout>

@@ -91,6 +91,32 @@ const conceptCards = [
     />
   </Hero2>
 
+  <ConceptSplit
+    heading="You cannot stop the decline. You can change its slope, and the whole goal is a slope shallow enough that you never reach the floor before the end of your life."
+    cta={{ text: PRIMARY_CTA_LABEL, href: PRIMARY_CTA_HREF }}
+    cards={conceptCards}
+  >
+    <Text>
+      Every system in your body follows the same shape. It rises to a peak, then declines at some rate, and somewhere below there is a floor: not a number, an event. A fall and a broken hip. Dialysis. Oxygen. A heart attack.
+    </Text>
+    <Text>
+      The useful questions are: which system, how steep, and how far away is the floor?
+    </Text>
+    <!-- TODO: replace with <Image> when asset is ready -->
+    <Image
+      slot="image"
+      src={whyUrgent}
+      alt="Function vs age chart: managed vs unmanaged decline"
+      class="w-full rounded-[32px]"
+      widths={[480, 900, 1695]}
+      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 60vw, 1695px"
+      format="webp"
+      quality={90}
+      loading="lazy"
+      decoding="async"
+    />
+  </ConceptSplit>
+
   <ThreeBuckets
     id="the-buckets"
     eyebrow="The Buckets"
@@ -134,32 +160,6 @@ const conceptCards = [
     heading="Where are you on the curve?"
     cards={decadeCards}
   />
-
-  <ConceptSplit
-    heading="You cannot stop the decline. You can change its slope, and the whole goal is a slope shallow enough that you never reach the floor before the end of your life."
-    cta={{ text: PRIMARY_CTA_LABEL, href: PRIMARY_CTA_HREF }}
-    cards={conceptCards}
-  >
-    <Text>
-      Every system in your body follows the same shape. It rises to a peak, then declines at some rate, and somewhere below there is a floor: not a number, an event. A fall and a broken hip. Dialysis. Oxygen. A heart attack.
-    </Text>
-    <Text>
-      The useful questions are: which system, how steep, and how far away is the floor?
-    </Text>
-    <!-- TODO: replace with <Image> when asset is ready -->
-    <Image
-      slot="image"
-      src={whyUrgent}
-      alt="Function vs age chart: managed vs unmanaged decline"
-      class="w-full rounded-[32px]"
-      widths={[480, 900, 1695]}
-      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 60vw, 1695px"
-      format="webp"
-      quality={90}
-      loading="lazy"
-      decoding="async"
-    />
-  </ConceptSplit>
 
   <TextSplit
     heading="And then we stop."

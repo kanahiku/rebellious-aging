@@ -55,6 +55,7 @@
  *   Override via class= (e.g. class="shadow-card-mist" or class="shadow-card-pink").
  *
  * ── pillar ──
+ *   preLabel  — optional eyebrow line shown before the category label
  *   label     — eyebrow category label shown left in the header row (e.g. "MOVEMENT")
  *   iconBg    — when true, wraps the <slot name="icon"> in a bg-cta rounded-bl-[12px]
  *               container. Use for icons that don't already carry their own bg.
@@ -95,6 +96,8 @@ export interface Props {
   tone?: 'light' | 'dark';
 
   // ── shared ──
+  /** Optional eyebrow line shown before the main label on pillar cards. */
+  preLabel?: string;
   /** Eyebrow / category label shown in the header area. */
   label?: string;
   /** Extra classes on the card root (e.g. to swap the shadow utility). */
@@ -165,6 +168,7 @@ export interface Props {
 
 const {
   variant = 'bordered',
+  preLabel,
   label,
   labelBg = 'bg-card-mist',
   labelTextColor = 'text-secondary',
@@ -279,12 +283,21 @@ const peopleSvg = `<svg viewBox="0 0 16 16" fill="currentColor" class="size-4 sh
 {variant === 'pillar' ? (
   <div class={cls}>
 
-    {/* ── Header row: label (left) + icon (right, top-corner) ── */}
+    {/* ── Header row: label stack (left) + icon (right, top-corner) ── */}
     <div class="flex min-h-9 w-full shrink-0 items-center gap-4 pl-4 sm:min-h-[50px]">
-      {label && (
-        <span class="flex-1 font-sans text-[12px] uppercase tracking-[0.06em] text-accent">
-          {label}
-        </span>
+      {(preLabel || label) && (
+        <div class="flex flex-1 flex-col gap-1 py-2">
+          {preLabel && (
+            <span class="font-sans text-[11px] uppercase tracking-[0.06em] text-eyebrow">
+              {preLabel}
+            </span>
+          )}
+          {label && (
+            <span class="font-sans text-[12px] uppercase tracking-[0.06em] text-accent">
+              {label}
+            </span>
+          )}
+        </div>
       )}
 
       {hasPillarIcon && (
