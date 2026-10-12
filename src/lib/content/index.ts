@@ -16,6 +16,7 @@ import {
   getSanityBlogPost,
   getSanityBlogPosts,
   getSanityBlogPostSlugs,
+  getSanityBlogPostSitemapEntries,
   getSanityBooks,
   getSanityPodcastEpisodes,
   getSanityTestimonials,
@@ -29,6 +30,7 @@ import {
   getSanityServicePageSlugs,
 } from './sanity';
 import { ATHENA_CONTACT_HREF } from '~/config/cta';
+import { getSchemaPaths } from '~/config/schema';
 import { blogPosts as localBlogPosts } from '../../data/pages/blogPosts';
 /* contact page removed */
 import { navigationData } from '../../data/navigation';
@@ -193,21 +195,47 @@ export async function getBlogPostSlugs(): Promise<string[]> {
   return [...new Set([...localSlugs, ...sanitySlugs])];
 }
 
-const STATIC_PATHS = [
-  '/',
-  '/blog',
-  '/reviews',
-  '/privacy-policy',
-  '/terms-of-service',
-];
+/** Every static route — shared with schema.org (`src/config/schema/pages.ts`). */
+const STATIC_PATHS = getSchemaPaths();
+
+export interface SitemapEntry {
+  path: string;
+  /** ISO date (YYYY-MM-DD). Only set where we know the real last-modified date. */
+  lastmod?: string;
+}
+
+const toDate = (value?: string) => (value && !Number.isNaN(Date.parse(value)) ? value.slice(0, 10) : undefined);
+
+/**
+ * Every public URL for `/sitemap.xml`: static routes (from the schema page list),
+ * CMS service pages, and blog posts with a real `lastmod` from Sanity.
+ */
+export async function getSitemapEntries(): Promise<SitemapEntry[]> {
+  const [pageSlugs, sanityPosts] = await Promise.all([
+    getServicePageSlugs(),
+    getSanityBlogPostSitemapEntries().catch(() => [] as { slug: string; updatedAt?: string }[]),
+  ]);
+
+  const posts = new Map<string, SitemapEntry>();
+  for (const post of localBlogPosts) {
+    posts.set(post.slug, { path: `/blog/${post.slug}`, lastmod: toDate(post.updatedAt || post.publishDate) });
+  }
+  for (const post of sanityPosts) {
+    posts.set(post.slug, { path: `/blog/${post.slug}`, lastmod: toDate(post.updatedAt) });
+  }
+
+  const entries: SitemapEntry[] = [
+    ...STATIC_PATHS.map((path) => ({ path })),
+    ...pageSlugs.map((slug) => ({ path: `/${slug.replace(/^\/+/, '')}` })),
+    ...posts.values(),
+  ];
+
+  const seen = new Set<string>();
+  return entries.filter((entry) => !seen.has(entry.path) && seen.add(entry.path));
+}
 
 export async function getPublicContentPaths(): Promise<string[]> {
-  const [pageSlugs, postSlugs] = await Promise.all([getServicePageSlugs(), getBlogPostSlugs()]);
-  return [
-    ...STATIC_PATHS,
-    ...pageSlugs.map((slug) => `/${slug.replace(/^\/+/, '')}`),
-    ...postSlugs.map((slug) => `/blog/${slug.replace(/^\/+/, '')}`),
-  ];
+  return (await getSitemapEntries()).map((entry) => entry.path);
 }
 
 export function getBlogPermalink(slug: string): string {
@@ -220,6 +248,7 @@ function overlayCmsFields(local: BlogPost, sanity: BlogPost): BlogPost {
     title: sanity.title || local.title,
     excerpt: sanity.excerpt || local.excerpt,
     publishDate: sanity.publishDate || local.publishDate,
+    updatedAt: sanity.updatedAt || local.updatedAt,
     author: sanity.author || local.author,
     image: sanity.image?.src ? sanity.image : local.image,
     relatedPages: sanity.relatedPages.length ? sanity.relatedPages : local.relatedPages,

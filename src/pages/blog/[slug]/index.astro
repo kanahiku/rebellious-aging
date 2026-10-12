@@ -11,6 +11,8 @@ import { getFormattedDate } from '~/utils/utils';
 import { getBlogPost } from '~/lib/content';
 import { getArticleToc, getLeadInlineImages, shouldUsePortableBody } from '~/lib/content/blogArticle';
 import { PRIMARY_CTA_LABEL } from '~/config/cta';
+import { getArticleNodes } from '~/config/schema';
+import { absoluteUrl } from '~/config/schema/urls';
 
 export const prerender = false;
 
@@ -27,6 +29,20 @@ const usePortableBody = shouldUsePortableBody(post);
 const leadParagraphs = usePortableBody ? [] : post.heroParagraphs.length ? post.heroParagraphs : post.body;
 const leadImages = getLeadInlineImages(post);
 const toc = getArticleToc(post);
+
+Astro.locals.jsonLdNodes = getArticleNodes({
+  slug: post.slug,
+  title: post.title,
+  description: post.meta.description || post.excerpt,
+  publishDate: post.publishDate,
+  updatedAt: post.updatedAt,
+  author: post.author,
+  imageUrl: post.image?.src
+    ? post.image.src.startsWith('http')
+      ? post.image.src
+      : absoluteUrl(post.image.src)
+    : undefined,
+});
 
 const metadata = {
   title: post.meta.title,

@@ -411,6 +411,8 @@ export interface BlogPost {
   slug: string;
   excerpt: string;
   publishDate: string;
+  /** ISO timestamp of the last CMS edit (Sanity `_updatedAt`). */
+  updatedAt?: string;
   author?: string;
   image?: ContentImage;
   imagePlaceholder?: string;

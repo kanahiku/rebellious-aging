@@ -13,7 +13,6 @@ export const GET: APIRoute = ({ request }) => {
         'Allow: /',
         '',
         `Sitemap: ${origin}/sitemap.xml`,
-        `Sitemap: ${origin}/sitemap-index.xml`,
         '',
       ].join('\n')
     : ['User-agent: *', 'Disallow: /', ''].join('\n');

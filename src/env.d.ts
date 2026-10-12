@@ -32,3 +32,10 @@ interface ImportMeta {
 interface Window {
   __gtmLoaded?: boolean;
 }
+
+declare namespace App {
+  interface Locals {
+    /** Extra schema.org nodes a route adds to the page's JSON-LD graph. */
+    jsonLdNodes?: Record<string, unknown>[];
+  }
+}

@@ -1,4 +1,4 @@
-export type SchemaType = 'Service' | 'WebPage' | 'AboutPage' | 'ContactPage' | 'FAQOnly';
+export type SchemaType = 'Service' | 'WebPage' | 'AboutPage' | 'ContactPage' | 'CollectionPage' | 'FAQOnly';
 
 export interface FaqItem {
   q: string;
@@ -47,7 +47,8 @@ export interface BusinessSchema {
   businessType: string;
   telephone?: string;
   email: string;
-  priceRange: string;
+  /** Only valid on LocalBusiness subtypes — leave undefined for a plain Organization. */
+  priceRange?: string;
   address: PostalAddress;
   description: string;
   openingHoursSpecification?: OpeningHoursSpecification[] | null;
@@ -56,6 +57,21 @@ export interface BusinessSchema {
   award?: string[] | null;
   sameAs?: string[] | null;
   areaServed?: AreaServed | null;
+  /** Absolute path (from site root) to a square logo in /public. */
+  logoPath?: string;
+  founder?: FounderSchema | null;
+  /** Organization that sponsors / operates alongside this entity. */
+  sponsor?: { name: string; url: string } | null;
+}
+
+export interface FounderSchema {
+  idFragment: string;
+  name: string;
+  honorificPrefix?: string;
+  jobTitle: string;
+  description: string;
+  /** Path of the page that describes this person. */
+  path: string;
 }
 
 export interface PageSchema {

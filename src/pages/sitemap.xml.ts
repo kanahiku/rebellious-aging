@@ -1,7 +1,7 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import { getPublicContentPaths } from '~/lib/content';
+import { getSitemapEntries } from '~/lib/content';
 import { canonicalSiteOrigin, isIndexableHost } from '~/lib/indexing';
 
 function escapeXml(value: string) {
@@ -31,11 +31,11 @@ export const GET: APIRoute = async ({ request }) => {
   }
 
   const origin = canonicalSiteOrigin();
-  const paths = [...new Set(await getPublicContentPaths())];
-  const urls = paths
-    .map((path) => {
-      const loc = `${origin}${path === '/' ? '/' : path}`;
-      return `  <url>\n    <loc>${escapeXml(loc)}</loc>\n    <changefreq>weekly</changefreq>\n  </url>`;
+  const entries = await getSitemapEntries();
+  const urls = entries
+    .map(({ path, lastmod }) => {
+      const loc = escapeXml(`${origin}${path === '/' ? '/' : path}`);
+      return `  <url>\n    <loc>${loc}</loc>${lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : ''}\n  </url>`;
     })
     .join('\n');
 

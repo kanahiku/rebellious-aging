@@ -1,11 +1,17 @@
 ---
-import { getJsonLdBlocks } from '~/config/schema';
+import { getJsonLdGraph } from '~/config/schema';
 
-const blocks = getJsonLdBlocks(Astro.url.pathname);
+export interface Props {
+  /** The page's meta description, so schema mirrors the page. */
+  description?: string;
+}
+
+const { description } = Astro.props;
+// Dynamic routes (e.g. blog posts) push their own nodes onto locals before the layout renders.
+const graph = getJsonLdGraph(Astro.url.pathname, {
+  description,
+  extraNodes: Astro.locals.jsonLdNodes,
+});
 ---
 
-{
-  blocks.map((block) => (
-    <script type="application/ld+json" is:inline set:html={JSON.stringify(block)} />
-  ))
-}
+{graph && <script type="application/ld+json" is:inline set:html={JSON.stringify(graph)} />}

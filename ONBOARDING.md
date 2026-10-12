@@ -291,7 +291,7 @@ CNAME   www   cname.vercel-dns.com    DNS only
 - [ ] `npm run build` succeeds
 - [ ] `/form` checkup completes; `/contact` redirects to Athena Clinic
 - [ ] GTM container firing
-- [ ] Search Console verified; sitemap submitted
+- [ ] Search Console verified; `/sitemap.xml` submitted (the only sitemap). `npm run check:seo` keeps routes, schema and sitemap in sync
 - [ ] Reviews show (or empty-state if keys are not set yet)
 - [ ] JSON-LD looks right at [validator.schema.org](https://validator.schema.org)
 - [ ] Home, blog, legal, mobile menu checked in the browser

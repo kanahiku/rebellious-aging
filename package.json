@@ -13,7 +13,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "check": "npm run check:astro && npm run check:eslint && npm run check:prettier",
+    "check": "npm run check:seo && npm run check:astro && npm run check:eslint && npm run check:prettier",
+    "check:seo": "tsx scripts/check-seo.ts",
     "check:astro": "astro check",
     "check:eslint": "eslint .",
     "check:prettier": "prettier --check .",
@@ -25,7 +26,6 @@
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
-    "@astrojs/sitemap": "^3.7.3",
     "@astrojs/vercel": "^11.0.9",
     "@sanity/client": "^8.4.0",
     "@sanity/image-url": "^2.1.1",

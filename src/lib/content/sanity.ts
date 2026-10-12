@@ -684,6 +684,7 @@ function normalizeBlogPost(post: SanityBlogPost): BlogPost {
     slug: post.slug,
     excerpt,
     publishDate: post.publishDate,
+    updatedAt: post.updatedAt,
     author: post.author,
     image: resolveContentImage(post.image as FetchedImage | undefined),
     relatedPages: (post.relatedPages ?? []).map((key) => key.replace(/^\/+/, '')).filter(Boolean),
@@ -718,6 +719,7 @@ const BLOG_POST_CARD_PROJECTION = /* groq */ `
   "slug": slug.current,
   excerpt,
   publishDate,
+  "updatedAt": _updatedAt,
   author,
   "image": {
     "src": coalesce(image.asset->url, imageUrl, ""),
@@ -803,6 +805,18 @@ const BLOG_POST_SLUGS_QUERY = /* groq */ `
 export async function getSanityServicePageSlugs(): Promise<string[]> {
   const slugs = await sanityClient.fetch<string[]>(SERVICE_PAGE_SLUGS_QUERY);
   return (slugs ?? []).filter((slug): slug is string => typeof slug === 'string' && slug.length > 0);
+}
+
+const BLOG_POST_SITEMAP_QUERY = /* groq */ `
+  *[_type == "blogPost" && defined(slug.current)] | order(publishDate desc) {
+    "slug": slug.current,
+    "updatedAt": _updatedAt
+  }
+`;
+
+export async function getSanityBlogPostSitemapEntries(): Promise<{ slug: string; updatedAt?: string }[]> {
+  const rows = await sanityClient.fetch<{ slug?: string; updatedAt?: string }[]>(BLOG_POST_SITEMAP_QUERY);
+  return (rows ?? []).filter((r): r is { slug: string; updatedAt?: string } => !!r?.slug);
 }
 
 export async function getSanityBlogPostSlugs(): Promise<string[]> {
