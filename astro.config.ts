@@ -39,6 +39,9 @@ export default defineConfig({
 
   redirects: {
     '/contact': 'https://www.athenaclinic.com/contact/',
+    // Hidden until those pages are published. Kept out of the sitemap.
+    '/chapters': { status: 302, destination: '/' },
+    '/guidebooks': { status: 302, destination: '/' },
     // Old Astro-generated sitemap URLs → the single dynamic sitemap.
     '/sitemap-index.xml': '/sitemap.xml',
     '/sitemap-0.xml': '/sitemap.xml',

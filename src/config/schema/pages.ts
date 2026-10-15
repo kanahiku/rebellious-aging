@@ -10,7 +10,8 @@ const crumb = (name: string, path: string): BreadcrumbItem[] => [HOME, { name, p
  * so adding a route here adds it to both schema and sitemap.
  * The page description is NOT stored here: it is read from each page's real
  * `metadata.description` at render time, so schema can never drift from the page.
- * Not listed on purpose: `/contact` (redirects to Athena Clinic) and any page
+ * Not listed on purpose: `/contact` (redirects to Athena Clinic),
+ * `/chapters` and `/guidebooks` (temporarily redirect home), and any page
  * marked `noindex`. `npm run check:seo` enforces this.
  */
 export const pages: PageSchema[] = [
@@ -135,20 +136,6 @@ export const pages: PageSchema[] = [
     schemaType: 'WebPage',
     faq: [],
     breadcrumb: crumb('Ask your doctor', '/talk-to-your-doctor'),
-  },
-  {
-    name: 'Chapters',
-    path: '/chapters',
-    schemaType: 'CollectionPage',
-    faq: [],
-    breadcrumb: crumb('Chapters', '/chapters'),
-  },
-  {
-    name: 'Guidebooks',
-    path: '/guidebooks',
-    schemaType: 'CollectionPage',
-    faq: [],
-    breadcrumb: crumb('Guidebooks', '/guidebooks'),
   },
   {
     name: 'Books',

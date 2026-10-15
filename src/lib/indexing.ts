@@ -58,3 +58,12 @@ export function isIndexableHost(hostHeader: string | null | undefined): boolean 
   if (!hostname || isTemporaryHost(hostname)) return false;
   return indexableHosts().has(hostname);
 }
+
+/** Plain-text robots.txt. Preview hosts are disallowed; the public domain is allowed. */
+export function robotsTxtBody(hostHeader: string | null | undefined): string {
+  if (!isIndexableHost(hostHeader)) {
+    return 'User-agent: *\nDisallow: /\n';
+  }
+
+  return ['User-agent: *', 'Allow: /', '', `Sitemap: ${canonicalSiteOrigin()}/sitemap.xml`, ''].join('\n');
+}

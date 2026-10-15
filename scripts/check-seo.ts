@@ -5,7 +5,7 @@
  *
  * - every static, indexable page under src/pages must be in pages.ts
  *   (that list drives both schema.org and /sitemap.xml)
- * - pages marked `noindex` must NOT be in pages.ts
+ * - pages marked `noindex`, and pages that redirect away, must NOT be in pages.ts
  * - every pages.ts entry must have a real page
  */
 import { readdirSync, readFileSync, statSync } from 'node:fs';
@@ -24,23 +24,29 @@ function walk(dir: string): string[] {
   });
 }
 
-const routes = new Map<string, { file: string; noindex: boolean }>();
+const routes = new Map<string, { file: string; noindex: boolean; redirects: boolean }>();
 for (const file of walk(ROOT)) {
   const rel = relative(ROOT, file).split(sep).join('/');
   if (!/(^|\/)index\.astro$/.test(rel) && rel !== 'index.astro') continue;
   if (rel.includes('[')) continue; // dynamic routes are handled separately (blog posts)
   const route = '/' + rel.replace(/\/?index\.astro$/, '');
   if (IGNORE_TOP_LEVEL.has(route.split('/')[1] ?? '')) continue;
-  const noindex = /robots:\s*['"`]?[^,\n]*noindex/i.test(readFileSync(file, 'utf8'));
-  routes.set(route === '/' ? '/' : route, { file, noindex });
+  const source = readFileSync(file, 'utf8');
+  const noindex = /robots:\s*['"`]?[^,\n]*noindex/i.test(source);
+  const redirects = /return\s+Astro\.redirect\(/.test(source);
+  routes.set(route === '/' ? '/' : route, { file, noindex, redirects });
 }
 
 const listed = new Set(pages.map((p) => p.path));
 const errors: string[] = [];
 
-for (const [route, { file, noindex }] of routes) {
-  if (noindex && listed.has(route)) errors.push(`${route} is noindex but listed in pages.ts (${file})`);
-  if (!noindex && !listed.has(route)) errors.push(`${route} is missing from src/config/schema/pages.ts (${file})`);
+for (const [route, { file, noindex, redirects }] of routes) {
+  if ((noindex || redirects) && listed.has(route)) {
+    errors.push(`${route} is ${redirects ? 'a redirect' : 'noindex'} but listed in pages.ts (${file})`);
+  }
+  if (!noindex && !redirects && !listed.has(route)) {
+    errors.push(`${route} is missing from src/config/schema/pages.ts (${file})`);
+  }
 }
 for (const path of listed) {
   if (!routes.has(path)) errors.push(`${path} is in pages.ts but has no src/pages route`);

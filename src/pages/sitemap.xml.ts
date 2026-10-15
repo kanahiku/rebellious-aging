@@ -49,7 +49,7 @@ ${urls}
     status: 200,
     headers: {
       'Content-Type': 'application/xml; charset=utf-8',
-      'Cache-Control': 'public, max-age=60, s-maxage=300',
+      'Cache-Control': 'public, max-age=0, must-revalidate',
     },
   });
 };
