@@ -3,7 +3,7 @@
 
 site:
   name: Rebellious Aging
-  site: 'https://rebelliousaging.org'
+  site: 'https://www.rebelliousaging.org'
   base: '/'
   trailingSlash: false
   googleSiteVerificationId: ''
@@ -60,7 +60,7 @@ apps:
       isEnabled: true
       pathname: 'tag'
       robots:
-        index: false
+        index: true
 
     isRelatedPostsEnabled: true
     relatedPostsCount: 4

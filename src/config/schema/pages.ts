@@ -11,7 +11,7 @@ const crumb = (name: string, path: string): BreadcrumbItem[] => [HOME, { name, p
  * The page description is NOT stored here: it is read from each page's real
  * `metadata.description` at render time, so schema can never drift from the page.
  * Not listed on purpose: `/contact` (redirects to Athena Clinic) and any page
- * marked `noindex` (e.g. `/form`). `npm run check:seo` enforces this.
+ * marked `noindex`. `npm run check:seo` enforces this.
  */
 export const pages: PageSchema[] = [
   {
@@ -121,6 +121,13 @@ export const pages: PageSchema[] = [
     schemaType: 'WebPage',
     faq: [],
     breadcrumb: crumb('Athena evaluation', '/athena-evaluation'),
+  },
+  {
+    name: 'Rebellious Aging Self-Assessment',
+    path: '/form',
+    schemaType: 'WebPage',
+    faq: [],
+    breadcrumb: crumb('Self-assessment', '/form'),
   },
   {
     name: 'Ask Your Doctor',

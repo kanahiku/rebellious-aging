@@ -6,7 +6,7 @@ import { getPublicContentPaths } from '~/lib/content';
 
 /**
  * Sanity webhook (Manage → API → Webhooks):
- * URL: https://rebelliousaging.org/api/revalidate
+ * URL: https://www.rebelliousaging.org/api/revalidate
  * Method: POST
  * Header: Authorization: Bearer <SANITY_REVALIDATE_SECRET>
  * Trigger: Create / Update / Delete
