@@ -830,6 +830,7 @@ const NAVIGATION_QUERY = /* groq */ `
       "socialLinks": socialLinks[] { ariaLabel, icon, href },
       footNote,
       tagline,
+      "backgroundImage": backgroundImage.asset->url,
       cta { eyebrow, title, body, buttonLabel, buttonHref }
     }
   }

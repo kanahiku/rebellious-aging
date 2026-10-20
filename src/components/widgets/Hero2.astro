@@ -15,7 +15,6 @@ import ArtDirectedImage from '~/components/ui/ArtDirectedImage.astro';
 import CTAActions from '~/components/ui/CTAActions.astro';
 import Text from '~/components/ui/Text.astro';
 import Heading from '~/components/ui/Heading.astro';
-import overlayImage from '~/assets/images/people-walking.png';
 import type { ContentImage } from '~/lib/content/types';
 import type { ImageMetadata } from 'astro';
 
@@ -147,19 +146,6 @@ const isLocalPageImage =
               class="absolute inset-0 bg-section-grey"
               style={isTitle ? 'aspect-ratio: 1440 / 450;' : 'aspect-ratio: 1440 / 579;'}
               aria-hidden="true"
-            />
-          ) : !bg ? (
-            <AstroImage
-              src={overlayImage}
-              alt=""
-              class="absolute inset-0 h-full w-full object-cover object-center"
-              widths={[640, 828, 1200, 1440, 1920]}
-              sizes="100vw"
-              format="webp"
-              quality={85}
-              loading="eager"
-              fetchpriority="high"
-              decoding="async"
             />
           ) : null}
           {isTitle ? (

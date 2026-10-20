@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity';
+import { imageField } from './_fields';
 
 export const siteFooter = defineType({
   name: 'siteFooter',
@@ -11,6 +12,7 @@ export const siteFooter = defineType({
       title: 'Tagline (under the logo)',
       type: 'string',
     }),
+    imageField('backgroundImage', 'Background photo', 'Full-width photo behind the footer on every page. Decorative, so no alt text is shown.'),
     defineField({
       name: 'cta',
       title: 'Assessment card (top of footer)',

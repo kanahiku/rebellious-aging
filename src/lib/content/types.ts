@@ -59,6 +59,8 @@ export interface NavigationContent {
     socialLinks: SocialLink[];
     footNote: string;
     tagline?: string | null;
+    /** Sanity CDN URL of the footer background photo (decorative). */
+    backgroundImage?: string | null;
     cta?: {
       eyebrow?: string | null;
       title?: string | null;

@@ -9,7 +9,7 @@
  *      └─ logo + tagline + legal links | nav columns
  *
  * Copy lives in src/config/cta.ts.
- * Background image: src/assets/images/footer-bg.png.
+ * Background image: Sanity (siteFooter.backgroundImage).
  * Do NOT fork this component per page.
  */
 import Logo from '~/components/Logo.astro';
@@ -25,8 +25,7 @@ import {
   FOOTER_CTA_LABEL,
   FOOTER_CTA_TITLE,
 } from '~/config/cta';
-import { Image } from 'astro:assets';
-import footerBg from '~/assets/images/footer-bg.png';
+import Image from '~/components/common/Image.astro';
 
 interface Link {
   text?: string;
@@ -47,6 +46,8 @@ export interface Props {
   footNote?: string;
   theme?: string;
   tagline?: string;
+  /** Sanity CDN URL of the background photo. */
+  backgroundImage?: string;
   /** Assessment card copy (Sanity). Falls back to src/config/cta.ts. */
   cta?: {
     eyebrow?: string | null;
@@ -63,6 +64,7 @@ const {
   tagline: taglineProp,
   footNote = '',
   cta,
+  backgroundImage,
 } = Astro.props;
 
 const tagline = taglineProp || site.footerTagline;
@@ -76,10 +78,12 @@ const ctaHref = cta?.buttonHref || FOOTER_CTA_HREF;
 
 <footer class="relative not-prose w-full overflow-hidden">
   <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+    {backgroundImage && (
     <Image
-      src={footerBg}
+      src={backgroundImage}
       alt=""
       class="absolute inset-0 h-full w-full object-cover object-center"
+      layout="none"
       widths={[640, 828, 1200, 1440]}
       sizes="100vw"
       format="webp"
@@ -87,6 +91,7 @@ const ctaHref = cta?.buttonHref || FOOTER_CTA_HREF;
       loading="lazy"
       decoding="async"
     />
+    )}
     <div class="absolute inset-0 bg-gradient-to-b from-heading/20 to-heading/50"></div>
   </div>
 
