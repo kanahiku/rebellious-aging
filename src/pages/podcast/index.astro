@@ -4,21 +4,18 @@ import Hero2 from '~/components/widgets/Hero2.astro';
 import Header from '~/components/widgets/Header.astro';
 import PodcastFilter from '~/components/widgets/PodcastFilter.astro';
 import PodcastEpisodes from '~/components/widgets/PodcastEpisodes.astro';
-import { site } from '~/config/site';
-import { navigationData } from '~/data/navigation';
-import { getImage } from 'astro:assets';
-import podcastHero from '~/assets/images/podcast-hero.png';
-import { getPodcastEpisodes, getBooks, groupEpisodesByPart } from '~/lib/content';
+import { getPodcastEpisodes, getBooks, groupEpisodesByPart, getPodcastPageContent, getNavigationContent } from '~/lib/content';
+
+const [page, nav] = await Promise.all([getPodcastPageContent(), getNavigationContent()]);
+const { hero, roadmap } = page;
 
 const metadata = {
-  title: `Podcast | ${site.name}`,
-  description:
-    "Aging isn't a decline to manage. It's a chapter to author. Across 28 fearless episodes, we dismantle the stereotypes society hands us and reclaim every system of the body.",
+  title: page.meta.title,
+  description: page.meta.description,
   ignoreTitleTemplate: true,
 };
 
-const header = navigationData.header;
-const heroPreload = await getImage({ src: podcastHero, width: 1920, format: 'webp' });
+const header = nav.header;
 
 // ── Fetch from Sanity ─────────────────────────────────────────────────────────
 const [allEpisodes, allBooks] = await Promise.all([getPodcastEpisodes(), getBooks()]);
@@ -66,7 +63,7 @@ const tones: Array<'dark' | 'light'> = ['dark', 'light', 'dark', 'light', 'dark'
 ---
 
 <Layout metadata={metadata}>
-  <link slot="head" rel="preload" as="image" href={heroPreload.src} fetchpriority="high" />
+  {hero.image?.src && <link slot="head" rel="preload" as="image" href={hero.image.src} fetchpriority="high" />}
   <Fragment slot="header" />
 
   <Hero2
@@ -74,12 +71,9 @@ const tones: Array<'dark' | 'light'> = ['dark', 'light', 'dark', 'light', 'dark'
     overlapHeader={false}
     withImage
     pageOverlay
-    title="The Rebellious Aging Podcast"
-    subtitle="Aging isn't a decline to manage. It's a chapter to author. Across 28 fearless episodes, we dismantle the stereotypes society hands us and reclaim every system of the body, from mitochondria to mindset. This is not gentle wellness. This is a community of rebels choosing strength, clarity, and vitality on our own terms."
-    image={{
-      ...podcastHero,
-      alt: 'Older adults high-fiving on an indoor court',
-    }}
+    title={hero.title}
+    subtitle={hero.subtitle}
+    image={hero.image}
   >
     <Header
       slot="nav"
@@ -92,9 +86,11 @@ const tones: Array<'dark' | 'light'> = ['dark', 'light', 'dark', 'light', 'dark'
 
   <PodcastFilter
     id="roadmap"
-    eyebrow="the roadmap"
-    heading="Every system. Every stereotype. One by one."
-    description="The full series rolls out over the coming months. Here's the incredible roadmap ahead, organized by the systems they reclaim. Subscribe on your platform of choice so you never miss a drop."
+    eyebrow={roadmap.eyebrow}
+    heading={roadmap.heading}
+    description={roadmap.description}
+    spotifyLabel={roadmap.spotifyLabel}
+    youtubeLabel={roadmap.youtubeLabel}
     tabs={filterTabs}
   />
 
@@ -110,7 +106,7 @@ const tones: Array<'dark' | 'light'> = ['dark', 'light', 'dark', 'light', 'dark'
         title: ep.title,
         tag: group.partName,
         description: ep.description,
-        ctaText: 'Read the guidebook',
+        ctaText: roadmap.episodeCtaText,
         ctaHref: guidebookLink(ep.slug, ep.guidebookHref),
         status: ep.status,
         spotifyUrl: ep.spotifyUrl,

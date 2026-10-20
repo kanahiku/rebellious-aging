@@ -15,15 +15,17 @@ export interface FilterTab {
 export interface Props {
   id?: string;
   books?: Book[];
+  /** Tab labels (Sanity). Order: textbook, guidebook, bargaining, podcast. Links are fixed. */
+  tabLabels?: { textbook?: string; guidebook?: string; bargaining?: string; podcast?: string };
 }
 
-const { id, books = [] } = Astro.props;
+const { id, books = [], tabLabels = {} } = Astro.props;
 
 const tabs: FilterTab[] = [
-  { label: 'Textbook Series', href: '#textbook-series' },
-  { label: 'Rebellious Aging Guidebook Series', href: '#guidebook-series' },
-  { label: 'Bargaining with Aging Series', href: '#bargaining-series' },
-  { label: 'Rebellious Aging Podcast', href: '/podcast' },
+  { label: tabLabels.textbook || 'Textbook Series', href: '#textbook-series' },
+  { label: tabLabels.guidebook || 'Rebellious Aging Guidebook Series', href: '#guidebook-series' },
+  { label: tabLabels.bargaining || 'Bargaining with Aging Series', href: '#bargaining-series' },
+  { label: tabLabels.podcast || 'Rebellious Aging Podcast', href: '/podcast' },
 ];
 ---
 

@@ -10,175 +10,114 @@ import ConceptSplit from '~/components/widgets/ConceptSplit.astro';
 import TextSplit from '~/components/widgets/TextSplit.astro';
 import Text from '~/components/ui/Text.astro';
 import Image from '~/components/common/Image.astro';
-import { getImage } from 'astro:assets';
-import whyUrgent from '~/assets/images/full-szie-graph.png';
-import weStopImg from '~/assets/images/we-stop.png';
-import { site } from '~/config/site';
-import { navigationData } from '~/data/navigation';
-import { PRIMARY_CTA_LABEL, PRIMARY_CTA_HREF } from '~/config/cta';
-import howAgingHero from '~/assets/images/how-aging-hero.png';
+import { getHowAgingWorksContent, getNavigationContent } from '~/lib/content';
+
+/**
+ * /how-aging-works. All copy and images come from the Sanity `howAgingWorksPage` singleton.
+ * Kept in code on purpose: <ThreeBuckets /> (diagram) and <AgingCurve /> (SVG chart + its cards).
+ */
+const [page, nav] = await Promise.all([getHowAgingWorksContent(), getNavigationContent()]);
+const { hero, intro, buckets, blackSwan, bucketThree, decades, weStop } = page;
 
 const metadata = {
-  title: `The Buckets | ${site.name}`,
-  description:
-    'Peak. Slope. Floor. How aging actually works: the trajectory of every system in the body, and what you can still change.',
+  title: page.meta.title,
+  description: page.meta.description,
   ignoreTitleTemplate: true,
 };
 
-const header = navigationData.header;
-
-const decadeCards = [
-  { title: 'In your 30s', body: 'Starting early pays off most.',           href: '/in-your-30s' },
-  { title: 'In your 40s', body: 'Same plan, more urgency.',                href: '/in-your-40s' },
-  { title: 'In your 50s', body: 'The slope starts to show.',               href: '/in-your-50s' },
-  { title: 'In your 60s', body: 'Build reserve before a Black Swan.',      href: '/in-your-60s' },
-  { title: '70 and beyond', body: 'Protect your independence.',            href: '/70-plus'     },
-];
-
-const heroPreload = await getImage({ src: howAgingHero, width: 1440, format: 'webp' });
-
-const conceptCards = [
-  {
-    label: 'the mechanism',
-    title: 'Your aging curve',
-    description:
-      'Peak, slope, floor, reserve. What the average rate of decline looks like per system, and how to work out where you sit on your own curves. Failure modes: some systems fail by gradual attrition, others go off a cliff.',
-  },
-  {
-    label: 'the strategy',
-    title: 'The Weakest Link',
-    description:
-      'Put disproportionate effort into the system closest to its floor, not the one that is already strong. And watch the interlinkage: lose your hearing and you hasten dementia; damage your vasculature and it pulls your muscles, brain, eyes and kidneys down with it.',
-  },
-  {
-    label: 'the sequence',
-    title: 'The Buckets',
-    description:
-      'Do the basics first, then earn your way to the fancy stuff. The price goes up as the evidence goes down, which is why bucket one is free and bucket three costs thousands.',
-  },
-  {
-    label: 'the philosophy',
-    title: 'Accept vs. Change',
-    description:
-      'Your eyes will stiffen no matter what you do. Accept it. Your kidney function falling from unmanaged blood pressure is not the same thing at all. The wisdom to know the difference is the whole product.',
-  },
-];
+/** Sanity asset URLs end in `-{width}x{height}.ext`; use it so remote images keep their intrinsic ratio. */
+function dimensionsOf(src?: string) {
+  const match = src?.match(/-(\d+)x(\d+)\.[a-z]+(?:\?|$)/i);
+  return match ? { width: Number(match[1]), height: Number(match[2]) } : {};
+}
+const introImageSize = dimensionsOf(intro.image?.src);
+const weStopImageSize = dimensionsOf(weStop.image?.src);
 ---
 
 <Layout metadata={metadata}>
-  <link slot="head" rel="preload" as="image" href={heroPreload.src} fetchpriority="high" />
+  {hero.image?.src && <link slot="head" rel="preload" as="image" href={hero.image.src} fetchpriority="high" />}
   <Fragment slot="header" />
 
-  <Hero2
-    variant="words"
-    overlapHeader={false}
-    words={[
-      { text: 'Peak.', align: 'start' },
-      { text: 'Slope.', italic: true, align: 'center' },
-      { text: 'Floor.', align: 'end' },
-    ]}
-    image={{
-      ...howAgingHero,
-      alt: "A baby's hand resting on an elderly person's hand",
-    }}
-  >
-    <Header
-      slot="nav"
-      embedded
-      isSticky={false}
-      links={header.links}
-      actions={header.actions}
-    />
+  <Hero2 variant="words" overlapHeader={false} words={hero.words} image={hero.image} imageMobile={hero.imageMobile}>
+    <Header slot="nav" embedded isSticky={false} links={nav.header.links} actions={nav.header.actions} />
   </Hero2>
 
   <ConceptSplit
-    heading="You cannot stop the decline. You can change its slope, and the whole goal is a slope shallow enough that you never reach the floor before the end of your life."
-    cta={{ text: PRIMARY_CTA_LABEL, href: PRIMARY_CTA_HREF }}
-    cards={conceptCards}
+    heading={intro.heading}
+    cta={intro.ctaText && intro.ctaHref ? { text: intro.ctaText, href: intro.ctaHref } : undefined}
+    cards={intro.cards}
   >
-    <Text>
-      Every system in your body follows the same shape. It rises to a peak, then declines at some rate, and somewhere below there is a floor: not a number, an event. A fall and a broken hip. Dialysis. Oxygen. A heart attack.
-    </Text>
-    <Text>
-      The useful questions are: which system, how steep, and how far away is the floor?
-    </Text>
-    <!-- TODO: replace with <Image> when asset is ready -->
-    <Image
-      slot="image"
-      src={whyUrgent}
-      alt="Function vs age chart: managed vs unmanaged decline"
-      class="w-full rounded-[32px]"
-      widths={[480, 900, 1695]}
-      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 60vw, 1695px"
-      format="webp"
-      quality={90}
-      loading="lazy"
-      decoding="async"
-    />
+    {intro.body.map((paragraph) => <Text>{paragraph}</Text>)}
+    {
+      intro.image?.src && (
+        <Image
+          slot="image"
+          src={intro.image.src}
+          alt={intro.image.alt}
+          {...introImageSize}
+          class="w-full rounded-[32px]"
+          widths={[480, 900, 1695]}
+          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 60vw, 1695px"
+          format="webp"
+          quality={90}
+          loading="lazy"
+          decoding="async"
+        />
+      )
+    }
   </ConceptSplit>
 
+  {/* Code-owned diagram. Only the intro text is editable. */}
   <ThreeBuckets
     id="the-buckets"
-    eyebrow="The Buckets"
-    heading="Three buckets. Fill them in order."
-    body="The buckets hold your time, money and attention, not your health. Fill bucket one as well as you can. What spills over goes to bucket two, then bucket three. Most people start with bucket three. Start with bucket one."
-    cta={{ text: 'Find your weakest link', href: PRIMARY_CTA_HREF }}
+    eyebrow={buckets.eyebrow}
+    heading={buckets.heading}
+    body={buckets.body}
+    cta={buckets.ctaText && buckets.ctaHref ? { text: buckets.ctaText, href: buckets.ctaHref } : undefined}
   />
 
+  {/* Code-owned SVG chart + Peak/Slope/Floor/Reserve cards */}
   <AgingCurve id="aging-curve" />
 
-  {/* Black Swan — dark band */}
+  {/* Black Swan: dark band */}
   <ContentBand
     id="black-swan"
-    eyebrow="Black Swan"
-    heading="The day that drops you to the floor."
-    paragraphs={[
-      "A Black Swan is the fall, the broken hip, dialysis or the heart attack that takes you from living on your own to needing care, in a single day.",
-      "You can't predict which one or when. You can build enough reserve that when it comes, you land above the floor and get back home.",
-    ]}
-    cta={{ text: "Read Black Swan by Dr. Peterson", href: "/books" }}
+    eyebrow={blackSwan.eyebrow}
+    heading={blackSwan.heading}
+    paragraphs={blackSwan.paragraphs}
+    cta={blackSwan.ctaText && blackSwan.ctaHref ? { text: blackSwan.ctaText, href: blackSwan.ctaHref } : undefined}
     isDark
   />
 
-  {/* Bucket 3 — white/page bg, no button */}
+  {/* Bucket 3: white bg, no button */}
   <ContentBand
     id="bucket-3"
-    eyebrow="Bucket 3 · The fancy stuff"
-    heading="Recreational anti-aging."
-    paragraphs={[
-      "IV drips. Peptides. Whole-body MRI. Cancer blood panels. Supplements.",
-      "Some of it is real, a lot of it is theater, and all of it is expensive. This is where the evidence is thinnest and the price is highest, which is why it comes last.",
-      "Dr. Peterson calls it recreational anti-aging. If you enjoy it and can afford it, go ahead, the same as a weekend in Las Vegas. Just fill buckets one and two first.",
-    ]}
-    boldNote="Nothing for us to sell you here."
+    eyebrow={bucketThree.eyebrow}
+    heading={bucketThree.heading}
+    paragraphs={bucketThree.paragraphs}
+    boldNote={bucketThree.boldNote}
     bgClass="bg-white"
   />
 
-  <DecadeCurve
-    id="start-with-your-decade"
-    eyebrow="Start with your decade"
-    heading="Where are you on the curve?"
-    cards={decadeCards}
-  />
+  <DecadeCurve id="start-with-your-decade" eyebrow={decades.eyebrow} heading={decades.heading} cards={decades.cards} />
 
-  <TextSplit
-    heading="And then we stop."
-    withImage
-    imageAspect="568 / 378.667"
-  >
-    <Text>
-      There is a point past which this is medical care, and we do not deliver medical care. What we do is hand you a shorter, sharper list of things to raise with the person who does, including the ones almost nobody raises, like whether you still need every medication you are taking.
-    </Text>
-    <Image
-      slot="image"
-      src={weStopImg}
-      alt="Hands typing on a laptop with a stethoscope on the desk"
-      class="w-full rounded-[32px] object-cover"
-      style="aspect-ratio: 568 / 378.667;"
-      widths={[400, 568, 852]}
-      sizes="(max-width: 768px) 100vw, 568px"
-      loading="lazy"
-      decoding="async"
-    />
+  <TextSplit heading={weStop.heading} withImage imageAspect="568 / 378.667">
+    {weStop.body.map((paragraph) => <Text>{paragraph}</Text>)}
+    {
+      weStop.image?.src && (
+        <Image
+          slot="image"
+          src={weStop.image.src}
+          alt={weStop.image.alt}
+          {...weStopImageSize}
+          class="w-full rounded-[32px] object-cover"
+          style="aspect-ratio: 568 / 378.667;"
+          widths={[400, 568, 852]}
+          sizes="(max-width: 768px) 100vw, 568px"
+          loading="lazy"
+          decoding="async"
+        />
+      )
+    }
   </TextSplit>
 </Layout>

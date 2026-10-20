@@ -2,7 +2,18 @@
 import { siteNavigation } from './singletons/navigation';
 import { siteFooter } from './singletons/footer';
 import { homePage } from './singletons/homePage';
-import { contactPage } from './singletons/contactPage';
+import { howAgingWorksPage } from './singletons/howAgingWorksPage';
+import { talkToDoctorPage } from './singletons/talkToDoctorPage';
+import { aboutPage } from './singletons/aboutPage';
+import { ohanaPage } from './singletons/ohanaPage';
+import { decadePage } from './singletons/decadePage';
+import { fillFirstBucketPage } from './singletons/fillFirstBucketPage';
+import { fourPillarsPage } from './singletons/fourPillarsPage';
+import { athenaEvaluationPage } from './singletons/athenaEvaluationPage';
+import { legalPage } from './singletons/legalPage';
+import { booksPage } from './singletons/booksPage';
+import { podcastPage } from './singletons/podcastPage';
+import { blogIndexPage } from './singletons/blogIndexPage';
 import { reviewsPage } from './singletons/reviewsPage';
 import { lead } from './documents/lead';
 import { servicePage } from './documents/servicePage';
@@ -47,8 +58,6 @@ import {
   quoteCardItem,
   quoteCardsSection,
   faqsSection,
-  formHelpOption,
-  contactLink,
   reviewPlatformItem,
   previewImageItem,
 } from './objects/sectionObjects';
@@ -58,8 +67,19 @@ export const schemaTypes = [
   siteNavigation,
   siteFooter,
   homePage,
-  contactPage,
+  howAgingWorksPage,
+  talkToDoctorPage,
+  aboutPage,
+  ohanaPage,
+  decadePage,
+  fillFirstBucketPage,
+  fourPillarsPage,
+  athenaEvaluationPage,
+  legalPage,
   reviewsPage,
+  booksPage,
+  podcastPage,
+  blogIndexPage,
   servicePage,
   blogPost,
   book,
@@ -105,8 +125,6 @@ export const schemaTypes = [
   splitContentSection,
   quoteCardsSection,
   faqsSection,
-  formHelpOption,
-  contactLink,
   reviewPlatformItem,
   previewImageItem,
 ];

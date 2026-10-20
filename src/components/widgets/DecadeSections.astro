@@ -1,0 +1,97 @@
+---
+/**
+ * DecadeSections: the full body of a decade page (/in-your-30s … /70-plus).
+ *
+ * Composition: hero → "where you are" table → "what to fill first" table →
+ * one optional extra section (doctor tests / Black Swan / staying home) → bottom CTA banner.
+ * All copy comes from the Sanity `decadePage` document passed in as `page`.
+ */
+import DecadeHero from '~/components/widgets/DecadeHero.astro';
+import DecadeSplitTable from '~/components/widgets/DecadeSplitTable.astro';
+import DecadeBulletSplit from '~/components/widgets/DecadeBulletSplit.astro';
+import ContentBand from '~/components/widgets/ContentBand.astro';
+import CTABanner from '~/components/widgets/CTABanner.astro';
+import type { DecadePageContent } from '~/lib/content/types';
+
+export interface Props {
+  page: DecadePageContent;
+}
+
+const { page } = Astro.props;
+const { hero, whereYouAre, fillFirst, doctorTests, blackSwan, stayingHome, cta } = page;
+---
+
+<DecadeHero
+  eyebrow={hero.eyebrow}
+  heading={hero.heading}
+  description={hero.description}
+  ctaText={hero.ctaText}
+  ctaHref={hero.ctaHref}
+/>
+
+<DecadeSplitTable
+  id="where-you-are"
+  leftEyebrow={whereYouAre.eyebrow}
+  leftText={whereYouAre.paragraphs}
+  rightEyebrow={whereYouAre.rightEyebrow}
+  rows={whereYouAre.rows}
+/>
+
+<DecadeSplitTable
+  id="what-to-fill-first"
+  leftEyebrow={fillFirst.eyebrow}
+  leftText={fillFirst.text}
+  leftTone="heading"
+  rightEyebrow={fillFirst.rightEyebrow}
+  rows={fillFirst.rows}
+  note={fillFirst.note}
+  bgClass="bg-white"
+/>
+
+{
+  doctorTests && (
+    <DecadeSplitTable
+      id="ask-your-doctor"
+      leftEyebrow={doctorTests.eyebrow}
+      leftHeading={doctorTests.heading}
+      leftText={doctorTests.text}
+      rightEyebrow={doctorTests.rightEyebrow}
+      rows={doctorTests.rows}
+    />
+  )
+}
+
+{
+  blackSwan && (
+    <ContentBand
+      id="black-swan"
+      eyebrow={blackSwan.eyebrow}
+      heading={blackSwan.heading}
+      paragraphs={blackSwan.paragraphs}
+      cta={{ text: blackSwan.ctaText, href: blackSwan.ctaHref }}
+      isDark
+    />
+  )
+}
+
+{
+  stayingHome && (
+    <DecadeBulletSplit
+      id="staying-home"
+      heading={stayingHome.heading}
+      lead={stayingHome.lead}
+      body={stayingHome.body}
+      source={stayingHome.source}
+      bullets={stayingHome.bullets}
+    />
+  )
+}
+
+<CTABanner
+  title={cta.title}
+  subtitle={cta.subtitle}
+  ctaText={cta.primaryText}
+  ctaHref={cta.primaryHref}
+  secondaryCtaText={cta.secondaryText}
+  secondaryCtaHref={cta.secondaryHref}
+/>

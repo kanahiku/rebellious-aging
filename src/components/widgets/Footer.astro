@@ -47,14 +47,31 @@ export interface Props {
   footNote?: string;
   theme?: string;
   tagline?: string;
+  /** Assessment card copy (Sanity). Falls back to src/config/cta.ts. */
+  cta?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    body?: string | null;
+    buttonLabel?: string | null;
+    buttonHref?: string | null;
+  } | null;
 }
 
 const {
   secondaryLinks = [],
   links = [],
-  tagline = site.footerTagline,
+  tagline: taglineProp,
   footNote = '',
+  cta,
 } = Astro.props;
+
+const tagline = taglineProp || site.footerTagline;
+const ctaEyebrow = cta?.eyebrow || FOOTER_CTA_EYEBROW;
+// Line breaks typed in Sanity become <br />; the code default already contains <br />.
+const ctaTitle = cta?.title ? cta.title.replace(/\r?\n/g, '<br />') : FOOTER_CTA_TITLE;
+const ctaBody = cta?.body || FOOTER_CTA_BODY;
+const ctaLabel = cta?.buttonLabel || FOOTER_CTA_LABEL;
+const ctaHref = cta?.buttonHref || FOOTER_CTA_HREF;
 ---
 
 <footer class="relative not-prose w-full overflow-hidden">
@@ -80,12 +97,12 @@ const {
       class="flex w-full flex-col items-start gap-8 rounded-[var(--aw-radius-xl)] bg-gradient-to-r from-cta to-cta-end p-8 md:p-10 lg:flex-row lg:gap-16 lg:p-16"
     >
       <div class="flex w-full flex-col items-start gap-4 lg:w-auto lg:max-w-[55%] lg:shrink-0">
-        <Heading variant="eyebrow" color="inherit" class="text-tan opacity-50">{FOOTER_CTA_EYEBROW}</Heading>
-        <Heading variant="h2" color="inherit" class="text-tan" html={FOOTER_CTA_TITLE} />
+        <Heading variant="eyebrow" color="inherit" class="text-tan opacity-50">{ctaEyebrow}</Heading>
+        <Heading variant="h2" color="inherit" class="text-tan" html={ctaTitle} />
       </div>
       <div class="flex min-w-0 flex-1 flex-col items-start justify-center gap-8">
-        <Text color="inherit" class="text-tan-body" html={FOOTER_CTA_BODY} />
-        <Button variant="secondary" text={FOOTER_CTA_LABEL} href={FOOTER_CTA_HREF} class="w-full sm:w-auto" />
+        <Text color="inherit" class="text-tan-body" html={ctaBody} />
+        <Button variant="secondary" text={ctaLabel} href={ctaHref} class="w-full sm:w-auto" />
       </div>
     </div>
 

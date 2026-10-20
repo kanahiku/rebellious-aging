@@ -58,6 +58,14 @@ export interface NavigationContent {
     secondaryLinks: FooterLink[];
     socialLinks: SocialLink[];
     footNote: string;
+    tagline?: string | null;
+    cta?: {
+      eyebrow?: string | null;
+      title?: string | null;
+      body?: string | null;
+      buttonLabel?: string | null;
+      buttonHref?: string | null;
+    } | null;
   };
 }
 
@@ -95,61 +103,300 @@ export interface FAQItem {
 // ─── Full homepage content ─────────────────────────────────────────────────────
 
 export interface HomePageContent {
-  meta: {
-    title: string;
-    description: string;
-  };
+  meta: { title: string; description: string };
 
   hero: {
-    titleLine1: string;
-    titleLine2: string;
-    subtitleParagraph1: string;
-    ctaText: string;
-    ctaHref: string;
-    phoneCtaText?: string;
-    phoneCtaHref?: string;
-    heroImage: ContentImage;
+    tagline?: string;
+    title: string;
+    subtitle: string[];
+    primaryCtaText?: string;
+    primaryCtaHref?: string;
+    secondaryCtaText?: string;
+    secondaryCtaHref?: string;
+    secondaryCtaNewTab?: boolean;
+    note?: string;
+    heroImage?: ContentImage;
     heroImageMobile?: ContentImage;
   };
 
-  statsBar: StatItem[];
-
-  whyInspect: {
+  whyUrgent: {
+    eyebrow?: string;
     heading: string;
-    paragraph1: string;
-    paragraph2: string;
-    ctaText: string;
-    ctaHref: string;
-    image: ContentImage;
-  };
-
-  servicesSection: {
-    title: string;
-    subtitle: string;
-    services: ServiceItem[];
-  };
-
-  faqs: {
-    title: string;
-    items: FAQItem[];
-  };
-
-  ctaBanner: {
-    title: string;
-    subtitle: string;
+    body: string[];
     ctaText?: string;
     ctaHref?: string;
-    showAfterHoursNote: boolean;
+    image?: ContentImage;
+  };
+
+  decades: {
+    eyebrow?: string;
+    heading: string;
+    cards: { title: string; body: string; href: string }[];
+  };
+
+  cost: {
+    eyebrow?: string;
+    heading: string;
+    leftHeading: string;
+    leftBody: string[];
+    leftCtaText?: string;
+    leftCtaHref?: string;
+    rightHeading: string;
+    rows: { cost: string; label: string }[];
+    rightCtaText?: string;
+    rightCtaHref?: string;
+    footer?: string;
+  };
+
+  acceptChange: {
+    eyebrow?: string;
+    heading: string;
+    body: string[];
+    emphasis?: string;
+    linkText?: string;
+    linkHref?: string;
+    image?: ContentImage;
+  };
+
+  bucketOne: {
+    eyebrow?: string;
+    heading: string;
+    body?: string;
+    cards: { label: string; heading: string; description?: string }[];
+  };
+
+  assessment: {
+    eyebrow?: string;
+    title: string;
+    subtitle?: string;
+    ctaText?: string;
+    ctaHref?: string;
+    disclaimer?: string;
+  };
+
+  locations: {
+    eyebrow?: string;
+    backgroundImage?: ContentImage;
+    items: { name: string; memberCount?: number; href?: string }[];
+  };
+
+  doctor: {
+    eyebrow?: string;
+    heading: string;
+    lead?: string;
+    body: string[];
+    ctaText?: string;
+    ctaHref?: string;
+    linkText?: string;
+    linkHref?: string;
+    image?: ContentImage;
+  };
+
+  voices: { eyebrow?: string; heading?: string };
+}
+
+export interface HowAgingWorksContent {
+  meta: { title: string; description: string };
+  hero: {
+    words: { text: string; italic?: boolean; align?: 'start' | 'center' | 'end' }[];
+    image?: ContentImage;
+    imageMobile?: ContentImage;
+  };
+  intro: {
+    heading: string;
+    body: string[];
+    ctaText?: string;
+    ctaHref?: string;
+    cards: { label: string; title: string; description: string }[];
+    image?: ContentImage;
+  };
+  buckets: { eyebrow?: string; heading?: string; body?: string; ctaText?: string; ctaHref?: string };
+  blackSwan: { eyebrow?: string; heading: string; paragraphs: string[]; ctaText?: string; ctaHref?: string };
+  bucketThree: { eyebrow?: string; heading: string; paragraphs: string[]; boldNote?: string };
+  decades: { eyebrow?: string; heading: string; cards: { title: string; body: string; href: string }[] };
+  weStop: { heading: string; body: string[]; image?: ContentImage };
+}
+
+export interface TalkToDoctorContent {
+  meta: { title: string; description: string };
+  hero: { title: string; subtitle: string; image?: ContentImage; imageMobile?: ContentImage };
+  measurement: {
+    eyebrow?: string;
+    heading: string;
+    body?: string;
+    leftHeading: string;
+    leftRows: { name: string; description: string }[];
+    rightHeading: string;
+    rightRows: { name: string; description: string }[];
+  };
+  advice: { items: { title: string; body: string }[]; disclosure?: string };
+  getMeasured: { heading: string; paragraphs: string[]; ctaText?: string; ctaHref?: string };
+}
+
+export interface AboutPageContent {
+  meta: { title: string; description: string };
+  hero: { tagline: string; title: string; content: string; image?: ContentImage };
+  movement: { eyebrow: string; heading: string; lede: string; body: string; ctaText: string; ctaHref: string };
+  doctor: { eyebrow: string; heading: string; paragraphs: string[]; quote: string; quoteAuthor: string };
+  credentials: {
+    eyebrow: string;
+    heading: string;
+    educationLabel: string;
+    education: string;
+    certificationsLabel: string;
+    certifications: string[];
+    residenciesLabel: string;
+    residencies: { title: string; institution: string }[];
+  };
+  publications: { eyebrow: string; heading: string; items: { count: string; title: string; description: string }[] };
+  sponsor: {
+    eyebrow: string;
+    heading: string;
+    disclosureHeading: string;
+    body: string;
+    linkText: string;
+    linkHref: string;
   };
 }
 
-export interface HomePageImages {
-  heroImage?: ContentImage;
-  heroImageMobile?: ContentImage;
-  whyUrgentGraph?: ContentImage;
-  acceptChangeImage?: ContentImage;
-  talkToDoctorImage?: ContentImage;
-  locationsBackground?: ContentImage;
+export interface OhanaPageContent {
+  meta: { title: string; description: string };
+  hero: { title: string; image?: ContentImage; imageMobile?: ContentImage };
+  intro: {
+    heading: string;
+    body: string;
+    ctaText: string;
+    ctaHref: string;
+    stats: { number: string; label: string }[];
+  };
+  loneliness: { heading: string; pullQuote: string; body: string[]; caption: string[]; image?: ContentImage };
+  blueZones: {
+    cards: { eyebrow: string; heading: string; body: string; image?: ContentImage }[];
+    footerNote: string;
+  };
+  moai: {
+    moaiHeading: string;
+    moaiBody: string[];
+    adherenceHeading: string;
+    adherenceBody: string[];
+    duoCards: { eyebrow: string; heading: string; body: string }[];
+  };
+  activities: {
+    heading: string;
+    subtitle: string;
+    items: { frequency: string; title: string; body: string }[];
+    image?: ContentImage;
+  };
+  purpose: {
+    image?: ContentImage;
+    heading: string;
+    body: string[];
+    noChapterHeading: string;
+    noChapterBody: string[];
+    noChapterLinkText: string;
+    noChapterLinkHref: string;
+  };
+  community: {
+    testimonialsEyebrow: string;
+    testimonialsHeading: string;
+    joinEyebrow: string;
+    joinHeading: string;
+    joinDescription: string;
+  };
+  comeHome: {
+    heading: string;
+    body: string;
+    primaryText: string;
+    primaryHref: string;
+    secondaryText: string;
+    secondaryHref: string;
+  };
+}
+
+export interface DecadeRow {
+  name: string;
+  description: string;
+}
+
+export type DecadeKey = '30s' | '40s' | '50s' | '60s' | '70-plus';
+
+export interface DecadePageContent {
+  meta: { title: string; description: string };
+  hero: { eyebrow: string; heading: string; description: string; ctaText: string; ctaHref: string };
+  whereYouAre: { eyebrow: string; paragraphs: string[]; rightEyebrow: string; rows: DecadeRow[] };
+  fillFirst: { eyebrow: string; text: string; rightEyebrow: string; rows: DecadeRow[]; note: string };
+  /** 50s only */
+  doctorTests?: { eyebrow: string; heading: string; text: string; rightEyebrow: string; rows: DecadeRow[] };
+  /** 60s only */
+  blackSwan?: { eyebrow: string; heading: string; paragraphs: string[]; ctaText: string; ctaHref: string };
+  /** 70+ only */
+  stayingHome?: { heading: string; lead: string; body: string; source: string; bullets: string[] };
+  cta: { title: string; subtitle: string; primaryText: string; primaryHref: string; secondaryText: string; secondaryHref: string };
+}
+
+export interface FillFirstBucketContent {
+  meta: { title: string; description: string };
+  hero: { title: string; paragraphs: string[]; image?: ContentImage; imageMobile?: ContentImage };
+  rules: { pullQuote: string[]; heading: string; items: { title: string; body: string }[] };
+  band: { image?: ContentImage };
+  cta: { eyebrow: string; title: string; subtitle: string; ctaText: string; ctaHref: string };
+}
+
+export interface FourPillarsContent {
+  meta: { title: string; description: string };
+  hero: { title: string; paragraphs: string[]; image?: ContentImage; imageMobile?: ContentImage };
+  cards: {
+    preLabel: string;
+    label: string;
+    title: string;
+    description: string;
+    linkText?: string;
+    linkHref?: string;
+  }[];
+  leftOut: { heading: string; paragraphs: string[] };
+}
+
+export interface AthenaEvaluationContent {
+  meta: { title: string; description: string };
+  hero: { tagline: string; title: string; subtitle: string; ctaText: string; ctaHref: string };
+  overview: {
+    eyebrow: string;
+    heading: string;
+    intro: string;
+    itemsEyebrow: string;
+    items: { title: string; body: string }[];
+  };
+  pricing: {
+    priceEyebrow: string;
+    price: string;
+    priceNote: string;
+    afterEyebrow: string;
+    afterText: string;
+    tiers: { label: string; price: string }[];
+    perLabel: string;
+  };
+  booking: {
+    heading: string;
+    body: string;
+    listLinkText: string;
+    listLinkHref: string;
+    disclosureEyebrow: string;
+    disclosureText: string;
+    ctaText: string;
+    ctaHref: string;
+    note: string;
+  };
+}
+
+export type LegalBlock =
+  | { type: 'paragraph'; text: string }
+  | { type: 'list'; items: string[] }
+  | { type: 'contact'; text: string };
+
+export interface LegalPageContent {
+  meta: { title: string; description: string };
+  title: string;
+  sections: { heading: string; blocks: LegalBlock[] }[];
 }
 
 // ─── Shared CMS sections (service pages and later templates) ───────────────────
@@ -556,4 +803,40 @@ export interface Testimonial {
   location?: string;
   tenure: string;
   order: number;
+}
+
+// ─── Books / Podcast / Blog index pages ──────────────────────────────────────
+
+export interface SeriesIntro {
+  eyebrow: string;
+  heading: string;
+  description: string;
+}
+
+export interface BooksPageContent {
+  meta: { title: string; description: string };
+  hero: { title: string; subtitle: string; image?: ContentImage };
+  tabs: { textbook: string; guidebook: string; bargaining: string; podcast: string };
+  series: { textbook: SeriesIntro; guidebook: SeriesIntro; bargaining: SeriesIntro; podcastLinkLabel: string };
+}
+
+export interface PodcastPageContent {
+  meta: { title: string; description: string };
+  hero: { title: string; subtitle: string; image?: ContentImage };
+  roadmap: {
+    eyebrow: string;
+    heading: string;
+    description: string;
+    spotifyLabel: string;
+    youtubeLabel: string;
+    episodeCtaText: string;
+  };
+}
+
+export interface BlogIndexContent {
+  meta: { title: string; description: string };
+  heading: string;
+  emptyMessage: string;
+  backLabel: string;
+  cta: { title: string; subtitle: string; ctaText: string };
 }

@@ -338,6 +338,19 @@ const isLocalPageImage =
                       loading="eager"
                       decoding="async"
                     />
+                  ) : image && typeof image === 'object' && 'src' in image && typeof image.src === 'string' && image.src ? (
+                    <Image
+                      src={image.src}
+                      alt={'alt' in image && typeof image.alt === 'string' ? image.alt : ''}
+                      class="w-full h-full object-cover object-top"
+                      layout="none"
+                      widths={[400, 640, 828, 1080]}
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                      format="webp"
+                      quality={85}
+                      loading="eager"
+                      decoding="async"
+                    />
                   ) : null}
                   <div class="absolute inset-0 bg-gradient-to-b from-transparent from-[62%] to-section-dark" />
                 </div>

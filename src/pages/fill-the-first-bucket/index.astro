@@ -5,62 +5,55 @@ import Header from '~/components/widgets/Header.astro';
 import BucketsSection from '~/components/widgets/BucketsSection.astro';
 import FullWidthImageBand from '~/components/widgets/FullWidthImageBand.astro';
 import CTABanner from '~/components/widgets/CTABanner.astro';
-import { site } from '~/config/site';
-import { navigationData } from '~/data/navigation';
-import { getImage } from 'astro:assets';
-import fillBucketHero from '~/assets/images/fill-bucket-hero.png';
-import closedEyeLadyImg from '~/assets/images/closed-eye-lady.jpg';
+import { getFillFirstBucketContent, getNavigationContent } from '~/lib/content';
+import { cmsHeading, cmsInline, cmsParagraphsHtml } from '~/utils/cmsText';
+
+/**
+ * /fill-the-first-bucket. All copy and images come from the Sanity `fillFirstBucketPage` singleton.
+ * The animated three-bucket graphic inside BucketsSection stays in code.
+ */
+const [page, nav] = await Promise.all([getFillFirstBucketContent(), getNavigationContent()]);
+const { hero, rules, band, cta } = page;
 
 const metadata = {
-  title: `Fill the First Bucket | ${site.name}`,
-  description:
-    'Movement, food, sleep, and connection: the four pillars with the strongest evidence in longevity medicine, and the lowest price tag. Do these before you spend a dollar on anything else.',
+  title: page.meta.title,
+  description: page.meta.description,
   ignoreTitleTemplate: true,
 };
-
-const header = navigationData.header;
-const heroPreload = await getImage({ src: fillBucketHero, width: 1920, format: 'webp' });
 ---
 
 <Layout metadata={metadata}>
-  <link slot="head" rel="preload" as="image" href={heroPreload.src} fetchpriority="high" />
+  {hero.image?.src && <link slot="head" rel="preload" as="image" href={hero.image.src} fetchpriority="high" />}
   <Fragment slot="header" />
   <Hero2
     variant="page"
     overlapHeader={false}
     withImage
     pageOverlay
-    title="Fill the<br />first bucket."
-    subtitle={`<p>Then the next one, and the one after that. The buckets do not hold health. They hold resources: your money, your time, your attention, your appointments, your willpower. All five are finite, and where you pour them is the most consequential decision you make about your own aging.</p><p>The order runs from the simplest and cheapest to the most complex and expensive. Do the basics before the fancy stuff.</p>`}
-    image={{
-      ...fillBucketHero,
-      alt: 'Silhouette of a person meditating at sunrise among palm trees',
-    }}
+    title={cmsInline(hero.title)}
+    subtitle={cmsParagraphsHtml(hero.paragraphs)}
+    image={hero.image}
+    imageMobile={hero.imageMobile}
   >
-    <Header
-      slot="nav"
-      embedded
-      isSticky={false}
-      links={header.links}
-      actions={header.actions}
-    />
+    <Header slot="nav" embedded isSticky={false} links={nav.header.links} actions={nav.header.actions} />
   </Hero2>
 
   {/* ── Three Buckets Section — Figma node 176:20 ── */}
-  <BucketsSection />
-
-  <FullWidthImageBand
-    image={closedEyeLadyImg}
-    alt="Close-up portrait of an older woman with her eyes closed"
+  <BucketsSection
+    pullQuote={rules.pullQuote.map((paragraph) => cmsHeading(paragraph))}
+    rulesHeading={rules.heading}
+    rules={rules.items}
   />
+
+  <FullWidthImageBand imageSrc={band.image?.src} alt={band.image?.alt ?? ''} />
 
   {/* ── CTA Banner — Figma node 176:227 ── */}
   <CTABanner
     id="find-weakest-link"
-    eyebrow="Know where to aim"
-    title="So where does your weakest link fit?"
-    subtitle="It isn't a bucket. Finding your weakest link is free, takes an evening, and its job is to tell you two things: where inside bucket one to concentrate, and what to raise when you get to bucket two. It's the aiming device, not a rung on the ladder."
-    ctaText="Find your weakest link"
-    ctaHref="/form"
+    eyebrow={cta.eyebrow}
+    title={cta.title}
+    subtitle={cta.subtitle}
+    ctaText={cta.ctaText}
+    ctaHref={cta.ctaHref}
   />
 </Layout>

@@ -12,25 +12,27 @@ export interface IncludedItem {
 
 export interface Props {
   id?: string;
+  eyebrow: string;
+  heading: string;
+  intro: string;
+  itemsEyebrow: string;
   items: IncludedItem[];
 }
 
-const { id, items } = Astro.props;
+const { id, eyebrow, heading, intro, itemsEyebrow, items } = Astro.props;
 ---
 
 <section {...id ? { id } : {}} class="not-prose w-full bg-page">
   <div class="mx-auto w-full max-w-container px-5 py-12 sm:px-8 md:px-16 md:py-[64px] lg:px-[120px] lg:py-[120px]">
     <div class="grid gap-12 lg:grid-cols-2 lg:items-start lg:gap-[120px]">
       <div class="flex min-w-0 flex-col gap-4">
-        <Heading variant="eyebrow">What it is</Heading>
-        <Heading variant="h2">One visit. Your numbers. A plan.</Heading>
-        <Text variant="body-lg">
-          A one-time evaluation with Athena Clinic's team in Honolulu. They review your self-assessment, run the bucket 2 tests, find your weakest link and give you a plan for filling your buckets.
-        </Text>
+        <Heading variant="eyebrow">{eyebrow}</Heading>
+        <Heading variant="h2">{heading}</Heading>
+        <Text variant="body-lg">{intro}</Text>
       </div>
 
       <div class="flex min-w-0 flex-col">
-        <Heading variant="eyebrow">What's included</Heading>
+        <Heading variant="eyebrow">{itemsEyebrow}</Heading>
         <div class="mt-8 divide-y divide-primary/10 border-b border-primary/10">
           {items.map((item) => (
             <div class="grid gap-3 py-5 first:pt-0 md:grid-cols-[0.85fr_1.15fr] md:gap-8">

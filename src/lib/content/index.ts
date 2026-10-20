@@ -4,7 +4,20 @@ import type {
   BookSeries,
   ContactPageContent,
   HomePageContent,
+  HowAgingWorksContent,
+  TalkToDoctorContent,
+  AboutPageContent,
+  OhanaPageContent,
+  DecadePageContent,
+  DecadeKey,
+  FillFirstBucketContent,
+  FourPillarsContent,
+  AthenaEvaluationContent,
+  LegalPageContent,
   NavigationContent,
+  BooksPageContent,
+  PodcastPageContent,
+  BlogIndexContent,
   NavLink,
   PodcastEpisode,
   PodcastPartGroup,
@@ -23,7 +36,18 @@ import {
   groupEpisodesByPart,
   getSanityContactPage,
   getSanityHomeContent,
-  getSanityHomeImages,
+  getSanityHowAgingWorks,
+  getSanityTalkToDoctor,
+  getSanityAbout,
+  getSanityOhana,
+  getSanityDecade,
+  getSanityFillFirstBucket,
+  getSanityFourPillars,
+  getSanityAthenaEvaluation,
+  getSanityLegal,
+  getSanityBooksPage,
+  getSanityPodcastPage,
+  getSanityBlogIndex,
   getSanityNavigationContent,
   getSanityReviewsPage,
   getSanityServicePage,
@@ -43,13 +67,94 @@ export async function getHomeContent(): Promise<HomePageContent> {
   return page;
 }
 
-export async function getHomeImages() {
-  try {
-    return await getSanityHomeImages();
-  } catch (error) {
-    console.warn('Sanity home images unavailable; using image placeholders.', error);
-    return {};
+export async function getHowAgingWorksContent(): Promise<HowAgingWorksContent> {
+  const page = await getSanityHowAgingWorks();
+  if (!page) {
+    throw new Error('Sanity howAgingWorksPage document is missing (singleton-how-aging-works).');
   }
+  return page;
+}
+
+export async function getTalkToDoctorContent(): Promise<TalkToDoctorContent> {
+  const page = await getSanityTalkToDoctor();
+  if (!page) {
+    throw new Error('Sanity talkToDoctorPage document is missing (singleton-talk-to-doctor).');
+  }
+  return page;
+}
+
+export async function getAboutContent(): Promise<AboutPageContent> {
+  const page = await getSanityAbout();
+  if (!page) {
+    throw new Error('Sanity aboutPage document is missing (singleton-about).');
+  }
+  return page;
+}
+
+export async function getOhanaContent(): Promise<OhanaPageContent> {
+  const page = await getSanityOhana();
+  if (!page) {
+    throw new Error('Sanity ohanaPage document is missing (singleton-ohana).');
+  }
+  return page;
+}
+
+export async function getDecadeContent(key: DecadeKey): Promise<DecadePageContent> {
+  const page = await getSanityDecade(key);
+  if (!page) {
+    throw new Error(`Sanity decadePage document is missing (decade-${key}).`);
+  }
+  return page;
+}
+
+export async function getFillFirstBucketContent(): Promise<FillFirstBucketContent> {
+  const page = await getSanityFillFirstBucket();
+  if (!page) {
+    throw new Error('Sanity fillFirstBucketPage document is missing (singleton-fill-first-bucket).');
+  }
+  return page;
+}
+
+export async function getBooksPageContent(): Promise<BooksPageContent> {
+  const page = await getSanityBooksPage();
+  if (!page) throw new Error('Sanity booksPage document is missing (singleton-books).');
+  return page;
+}
+
+export async function getPodcastPageContent(): Promise<PodcastPageContent> {
+  const page = await getSanityPodcastPage();
+  if (!page) throw new Error('Sanity podcastPage document is missing (singleton-podcast).');
+  return page;
+}
+
+export async function getBlogIndexContent(): Promise<BlogIndexContent> {
+  const page = await getSanityBlogIndex();
+  if (!page) throw new Error('Sanity blogIndexPage document is missing (singleton-blog-index).');
+  return page;
+}
+
+export async function getFourPillarsContent(): Promise<FourPillarsContent> {
+  const page = await getSanityFourPillars();
+  if (!page) {
+    throw new Error('Sanity fourPillarsPage document is missing (singleton-four-pillars).');
+  }
+  return page;
+}
+
+export async function getAthenaEvaluationContent(): Promise<AthenaEvaluationContent> {
+  const page = await getSanityAthenaEvaluation();
+  if (!page) {
+    throw new Error('Sanity athenaEvaluationPage document is missing (singleton-athena-evaluation).');
+  }
+  return page;
+}
+
+export async function getLegalContent(slug: 'privacy-policy' | 'terms-of-service'): Promise<LegalPageContent> {
+  const page = await getSanityLegal(slug);
+  if (!page) {
+    throw new Error(`Sanity legalPage document is missing (legal-${slug}).`);
+  }
+  return page;
 }
 
 export async function getContactPage(): Promise<ContactPageContent | null> {
@@ -332,6 +437,15 @@ export type {
   BookSeries,
   ContactPageContent,
   HomePageContent,
+  HowAgingWorksContent,
+  TalkToDoctorContent,
+  AboutPageContent,
+  OhanaPageContent,
+  DecadePageContent,
+  FillFirstBucketContent,
+  FourPillarsContent,
+  AthenaEvaluationContent,
+  LegalPageContent,
   NavigationContent,
   PodcastEpisode,
   PodcastPartGroup,

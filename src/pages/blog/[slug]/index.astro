@@ -8,7 +8,7 @@ import BlogArticleBody from '~/components/blog/BlogArticleBody.astro';
 import BlogSidebar from '~/components/blog/BlogSidebar.astro';
 import { Icon } from 'astro-icon/components';
 import { getFormattedDate } from '~/utils/utils';
-import { getBlogPost } from '~/lib/content';
+import { getBlogPost, getBlogIndexContent } from '~/lib/content';
 import { getArticleToc, getLeadInlineImages, shouldUsePortableBody } from '~/lib/content/blogArticle';
 import { PRIMARY_CTA_LABEL } from '~/config/cta';
 import { getArticleNodes } from '~/config/schema';
@@ -18,6 +18,7 @@ export const prerender = false;
 
 const slug = Astro.params.slug;
 const post = typeof slug === 'string' ? await getBlogPost(slug) : undefined;
+const blogIndex = await getBlogIndexContent();
 
 if (!post) {
   Astro.response.status = 404;
@@ -70,7 +71,7 @@ const metadata = {
             class="btn-link gap-1 mb-6"
           >
             <Icon name="tabler:chevron-left" class="w-4 h-4" aria-hidden="true" />
-            All articles
+            {blogIndex.backLabel}
           </a>
 
           <h1 class="text-h1 font-normal leading-[105%] tracking-tighter font-heading text-heading mb-4">

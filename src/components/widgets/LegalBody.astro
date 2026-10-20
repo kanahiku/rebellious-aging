@@ -1,0 +1,69 @@
+---
+/**
+ * LegalBody: the numbered sections of a legal page (Privacy Policy, Terms of Service).
+ * Rendered inside <LegalDoc>. Copy comes from the Sanity `legalPage` document; the
+ * {{tokens}} are filled from `vars`, and the Contact block's address comes from the contact config.
+ */
+import { CONTACT } from '~/config/contact';
+import { cmsLegal } from '~/utils/cmsText';
+import type { LegalPageContent } from '~/lib/content/types';
+
+export interface Props {
+  sections: LegalPageContent['sections'];
+  vars: Record<string, string>;
+}
+
+const { sections, vars } = Astro.props;
+
+const headingClass = 'text-h4 font-heading font-normal text-heading mb-4';
+const bodyClass = 'text-body-lg font-normal leading-[160%] text-muted';
+const listClass = `${bodyClass} mt-4 space-y-1 list-disc pl-5`;
+const linkClass = 'btn-link';
+---
+
+{
+  sections.map((section) => (
+    <section>
+      <h2 class={headingClass} set:html={cmsLegal(section.heading, vars)} />
+      {section.blocks.map((block, i) => {
+        if (block.type === 'list') {
+          return (
+            <ul class={listClass}>
+              {block.items.map((item) => (
+                <li set:html={cmsLegal(item, vars)} />
+              ))}
+            </ul>
+          );
+        }
+        if (block.type === 'contact') {
+          return (
+            <p class={i > 0 ? `${bodyClass} mt-4` : bodyClass}>
+              {block.text}
+              <br />
+              <br />
+              {vars.legalName}
+              <br />
+              {CONTACT.address.street && (
+                <>
+                  {CONTACT.address.street}
+                  <br />
+                </>
+              )}
+              {CONTACT.address.cityLine}
+              {CONTACT.phone.display && CONTACT.phone.href && (
+                <>
+                  <br />
+                  Phone:{' '}
+                  <a class={linkClass} href={CONTACT.phone.href}>
+                    {CONTACT.phone.display}
+                  </a>
+                </>
+              )}
+            </p>
+          );
+        }
+        return <p class={i > 0 ? `${bodyClass} mt-4` : bodyClass} set:html={cmsLegal(block.text, vars)} />;
+      })}
+    </section>
+  ))
+}

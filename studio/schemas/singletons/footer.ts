@@ -7,6 +7,30 @@ export const siteFooter = defineType({
   __experimental_actions: ['update', 'publish'],
   fields: [
     defineField({
+      name: 'tagline',
+      title: 'Tagline (under the logo)',
+      type: 'string',
+    }),
+    defineField({
+      name: 'cta',
+      title: 'Assessment card (top of footer)',
+      description: 'The coloured card above the links on every page.',
+      type: 'object',
+      fields: [
+        defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
+        defineField({
+          name: 'title',
+          title: 'Heading',
+          type: 'text',
+          rows: 2,
+          description: 'Use a new line for a line break.',
+        }),
+        defineField({ name: 'body', title: 'Body', type: 'text', rows: 4 }),
+        defineField({ name: 'buttonLabel', title: 'Button label', type: 'string' }),
+        defineField({ name: 'buttonHref', title: 'Button URL', type: 'string' }),
+      ],
+    }),
+    defineField({
       name: 'columns',
       title: 'Link Columns',
       description: 'Each column has a heading and a list of links.',

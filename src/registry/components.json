@@ -852,6 +852,31 @@
         "description": "string"
       },
       "notes": "Ohana /ohana page #join anchor. POSTs to massic-forms Cloudflare Worker. Cloudflare Turnstile (interaction-only). City/ZIP + intent + notes composed into message field. Shows inline success on submit."
+    },
+    {
+      "id": "P-42",
+      "name": "Decade page body",
+      "figmaNames": ["In your 30s", "In your 40s", "In your 50s", "In your 60s", "70 and beyond"],
+      "shape": "DecadeHero + 2 DecadeSplitTable + one optional extra (doctor tests / Black Swan / staying home) + CTABanner, all from one Sanity decadePage doc",
+      "component": "DecadeSections",
+      "import": "~/components/widgets/DecadeSections.astro",
+      "props": {
+        "page": "DecadePageContent from getDecadeContent(key)"
+      },
+      "notes": "Used by the five decade routes. Copy lives in Sanity (decade-30s … decade-70-plus); the aging-curve graphic inside DecadeHero stays in code."
+    },
+    {
+      "id": "P-43",
+      "name": "Legal body",
+      "figmaNames": ["Privacy Policy", "Terms of Service"],
+      "shape": "Numbered legal sections: h2 + paragraphs / bullet lists / code-owned Contact address block, inside LegalDoc",
+      "component": "LegalBody",
+      "import": "~/components/widgets/LegalBody.astro",
+      "props": {
+        "sections": "LegalPageContent['sections'] from getLegalContent(slug)",
+        "vars": "legalVars() — values for {{tokens}} (dba, host, legalName, entity, analytics, governingState, governingCounty)"
+      },
+      "notes": "Copy lives in Sanity (legal-privacy-policy, legal-terms-of-service). Markup: **bold**, [label](href), {{tokens}}."
     }
   ]
 }

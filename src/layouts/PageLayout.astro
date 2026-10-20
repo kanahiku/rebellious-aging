@@ -5,7 +5,6 @@ import Footer from '~/components/widgets/Footer.astro';
 
 
 import { getNavigationContent } from '~/lib/content';
-import { navigationData } from '~/data/navigation';
 
 import type { MetaData } from '~/types';
 
@@ -15,7 +14,7 @@ export interface Props {
 
 const { metadata } = Astro.props;
 const nav = await getNavigationContent();
-const footer = navigationData.footer;
+const footer = nav.footer;
 ---
 
 <Layout metadata={metadata}>
@@ -28,7 +27,13 @@ const footer = navigationData.footer;
       <slot />
     </main>
     <slot name="footer">
-      <Footer links={footer.links} secondaryLinks={footer.secondaryLinks} footNote={footer.footNote} />
+      <Footer
+        links={footer.links}
+        secondaryLinks={footer.secondaryLinks}
+        footNote={footer.footNote}
+        tagline={footer.tagline ?? undefined}
+        cta={footer.cta}
+      />
     </slot>
   </div>
 </Layout>

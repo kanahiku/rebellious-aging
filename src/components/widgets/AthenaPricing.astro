@@ -12,23 +12,30 @@ export interface Tier {
 
 export interface Props {
   id?: string;
+  priceEyebrow: string;
+  price: string;
+  priceNote: string;
+  afterEyebrow: string;
+  afterText: string;
   tiers: Tier[];
+  /** Shown after each tier price, e.g. "/ month". */
+  perLabel?: string;
 }
 
-const { id, tiers } = Astro.props;
+const { id, priceEyebrow, price, priceNote, afterEyebrow, afterText, tiers, perLabel = '' } = Astro.props;
 ---
 
 <section {...id ? { id } : {}} class="not-prose w-full bg-white">
   <div class="mx-auto w-full max-w-container px-5 py-12 sm:px-8 md:px-16 md:py-[64px] lg:px-[120px] lg:py-[120px]">
     <div class="mb-8 flex flex-col gap-12 lg:mb-10 lg:flex-row lg:items-start lg:gap-[120px]">
       <div class="flex min-w-0 flex-1 flex-col gap-4">
-        <Heading variant="eyebrow">Price</Heading>
-        <p class="font-heading text-h2 font-normal leading-none text-heading">$999</p>
-        <Text>Introductory evaluation.</Text>
+        <Heading variant="eyebrow">{priceEyebrow}</Heading>
+        <p class="font-heading text-h2 font-normal leading-none text-heading">{price}</p>
+        <Text>{priceNote}</Text>
       </div>
       <div class="flex min-w-0 flex-1 flex-col gap-4">
-        <Heading variant="eyebrow">After your evaluation</Heading>
-        <Text>Keep tracking your curve with an ongoing plan. Pick the level of support you want.</Text>
+        <Heading variant="eyebrow">{afterEyebrow}</Heading>
+        <Text>{afterText}</Text>
       </div>
     </div>
 
@@ -37,7 +44,7 @@ const { id, tiers } = Astro.props;
         <article class="flex h-full flex-col rounded-[24px] bg-page p-6">
           <Heading variant="eyebrow">{tier.label}</Heading>
           <p class="mt-5 font-heading text-h3 font-normal leading-none text-heading">
-            {tier.price} <span class="font-sans text-body text-muted">/ month</span>
+            {tier.price} {perLabel && <span class="font-sans text-body text-muted">{perLabel}</span>}
           </p>
         </article>
       ))}

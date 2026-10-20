@@ -5,20 +5,21 @@ import Header from '~/components/widgets/Header.astro';
 import ConceptCards from '~/components/widgets/ConceptCards.astro';
 import TextSplit from '~/components/widgets/TextSplit.astro';
 import Text from '~/components/ui/Text.astro';
-import { site } from '~/config/site';
-import { navigationData } from '~/data/navigation';
-import { getImage } from 'astro:assets';
-import fourPillarHero from '~/assets/images/four-pillar-hero.png';
+import { getFourPillarsContent, getNavigationContent } from '~/lib/content';
+import { cmsInline, cmsParagraphsHtml } from '~/utils/cmsText';
+
+/**
+ * /four-pillars. All copy and images come from the Sanity `fourPillarsPage` singleton.
+ * Kept in code on purpose: the four card icons below (matched to the CMS cards by position).
+ */
+const [page, nav] = await Promise.all([getFourPillarsContent(), getNavigationContent()]);
+const { hero, cards, leftOut } = page;
 
 const metadata = {
-  title: `The basics | ${site.name}`,
-  description:
-    'Diet. Exercise. Sleep. Social connection. Strongest evidence in the literature, lowest price tag in medicine, and the four things to do before you spend a dollar on anything else.',
+  title: page.meta.title,
+  description: page.meta.description,
   ignoreTitleTemplate: true,
 };
-
-const header = navigationData.header;
-const heroPreload = await getImage({ src: fourPillarHero, width: 1920, format: 'webp' });
 
 // ── Icon SVGs (20×20, stroke-based, #2C4A5B) ──────────────────────────────
 // All 4 use iconBg=true with bg-section-grey tile (blue-grey, matches Figma 64:845)
@@ -39,57 +40,22 @@ const sleepSvg = `<svg viewBox="0 0 20 17.5" fill="none" xmlns="http://www.w3.or
 
 const socialSvg = `<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.1248 9.9995C12.3217 9.9995 11.5452 9.64092 10.9374 8.99012C10.3463 8.35537 9.98542 7.50892 9.92175 6.60738C9.85379 5.64567 10.1471 4.76129 10.7475 4.11677C11.3479 3.47225 12.1873 3.12459 13.1248 3.12459C14.0557 3.12459 14.8975 3.4785 15.4959 4.12145C16.1002 4.77067 16.3943 5.65346 16.3263 6.60696C16.2611 7.50971 15.9006 8.35579 15.3107 8.98975C14.7045 9.64092 13.9283 9.9995 13.1248 9.9995Z" fill="#2C4A5B"/><path d="M18.2738 16.8745H7.97513C7.80954 16.8754 7.646 16.8383 7.497 16.766C7.34804 16.6938 7.21758 16.5883 7.11575 16.4577C7.00775 16.3162 6.93317 16.152 6.89758 15.9776C6.862 15.8031 6.86633 15.6229 6.91029 15.4503C7.23921 14.1296 8.05404 13.0343 9.2665 12.2832C10.3427 11.6168 11.7126 11.2496 13.1243 11.2496C14.5637 11.2496 15.8977 11.6012 16.9801 12.2672C18.1953 13.0144 19.0113 14.116 19.3386 15.4527C19.3821 15.6253 19.3859 15.8056 19.3499 15.98C19.314 16.1543 19.2391 16.3103 19.1313 16.4409C19.0295 16.564 18.9006 16.663 18.7549 16.7298C18.6091 16.7965 18.4503 16.8294 18.2899 16.8257L18.2738 16.8745Z" fill="#2C4A5B"/><path d="M5.62512 10.6254C4.96262 10.6254 4.31387 10.4317 3.76013 10.0692C3.2064 9.70669 2.77174 9.19172 2.51005 8.5897C2.24836 7.98769 2.18104 7.32537 2.31636 6.68746C2.45168 6.04956 2.78341 5.46494 3.2689 5.01201C3.7544 4.55908 4.36188 4.25769 5.01796 4.14599C5.67403 4.03428 6.34889 4.11724 6.9587 4.38449C7.56851 4.65175 8.08546 5.09138 8.44435 5.64871C8.80324 6.20604 8.98775 6.85657 8.97512 7.51912" stroke="#2C4A5B" stroke-width="1.25" stroke-linecap="round"/><path d="M1.66699 16.8745H5.21949" stroke="#2C4A5B" stroke-width="1.25" stroke-linecap="round"/><path d="M1.04199 14.5622C1.27778 13.6068 1.84559 12.7613 2.64699 12.1629C3.14618 11.792 3.71655 11.5308 4.32132 11.3965" stroke="#2C4A5B" stroke-width="1.25" stroke-linecap="round"/></svg>`;
 
-// ── Four pillar cards (Figma 64:845) ──────────────────────────────────────
-const pillarCards = [
-  {
-    preLabel: 'BUCKET 1 · THE BASICS',
-    label: 'diet',
-    title: 'Cook like you plan to be here a while.',
-    description:
-      'The Mediterranean pattern, not a diet, a pattern, adapted for island kitchens and what actually grows here. Twice-monthly kitchen salons; you leave with containers.',
-    iconSvg: dietSvg,
-    iconBg: true,
-    iconBgClass: 'bg-section-grey',
-  },
-  {
-    preLabel: 'BUCKET 1 · THE BASICS',
-    label: 'exercise',
-    title: 'The body is a rebellion. Train it like one.',
-    description:
-      'Strength, zone 2, VO₂ max work and balance: what the dose actually is after sixty, and the strength circles that deliver it twice a week.',
-    iconSvg: exerciseSvg,
-    iconBg: true,
-    iconBgClass: 'bg-section-grey',
-  },
-  {
-    preLabel: 'BUCKET 1 · THE BASICS',
-    label: 'sleep',
-    title: 'The one nobody can sell you.',
-    description:
-      'Glymphatic clearance, deep sleep after sixty, and the dementia evidence. The intervention with no product attached, which is exactly why you have not been sold it.',
-    iconSvg: sleepSvg,
-    iconBg: true,
-    iconBgClass: 'bg-section-grey',
-  },
-  {
-    preLabel: 'BUCKET 1 · THE BASICS',
-    label: 'social connection',
-    title: 'You get old alone. You grow long in company.',
-    description:
-      'Isolation carries a cardiovascular-scale risk, and company is the only reliable adherence mechanism anyone has found. This is the one the Ohana exists to solve.',
-    iconSvg: socialSvg,
-    iconBg: true,
-    iconBgClass: 'bg-section-grey',
-    link: {
-      text: 'Learn about the Ohana',
-      href: '/ohana',
-    },
-  },
-];
+// Order matches the CMS cards: 1 diet, 2 exercise, 3 sleep, 4 social connection.
+const pillarIcons = [dietSvg, exerciseSvg, sleepSvg, socialSvg];
+const pillarCards = cards.slice(0, pillarIcons.length).map((card, i) => ({
+  preLabel: card.preLabel,
+  label: card.label,
+  title: card.title,
+  description: card.description,
+  iconSvg: pillarIcons[i]!,
+  iconBg: true,
+  iconBgClass: 'bg-section-grey',
+  ...(card.linkText && card.linkHref ? { link: { text: card.linkText, href: card.linkHref } } : {}),
+}));
 ---
 
 <Layout metadata={metadata}>
-  <link slot="head" rel="preload" as="image" href={heroPreload.src} fetchpriority="high" />
+  {hero.image?.src && <link slot="head" rel="preload" as="image" href={hero.image.src} fetchpriority="high" />}
   <Fragment slot="header" />
 
   <Hero2
@@ -97,37 +63,17 @@ const pillarCards = [
     overlapHeader={false}
     withImage
     pageOverlay
-    title="The basics"
-    subtitle="<p>Diet. Exercise. Sleep. Social connection. Strongest evidence in the literature, lowest price tag in medicine, and the four things to do before you spend a dollar on anything else.</p><p>There is no order inside this bucket. Show up for any one, stay for all four. Start with whichever you can face on a Tuesday, then let the surplus flow.</p>"
-    image={{
-      ...fourPillarHero,
-      alt: 'A cairn of balanced stones on a beach with ocean behind it',
-    }}
+    title={cmsInline(hero.title)}
+    subtitle={cmsParagraphsHtml(hero.paragraphs)}
+    image={hero.image}
+    imageMobile={hero.imageMobile}
   >
-    <Header
-      slot="nav"
-      embedded
-      isSticky={false}
-      links={header.links}
-      actions={header.actions}
-    />
+    <Header slot="nav" embedded isSticky={false} links={nav.header.links} actions={nav.header.actions} />
   </Hero2>
 
   <ConceptCards cards={pillarCards} />
 
-  <TextSplit
-    heading="What this framework deliberately leaves out."
-  >
-    <Text>
-      Peptides. Infusions. Hyperbaric chambers. Proprietary blends. Full-body MRI. A
-      supplement subscription. Most of what the longevity industry sells is a
-      conversation for after buckets one and two are full, and almost nobody&apos;s are.
-    </Text>
-    <Text class="mt-[1.3em]">
-      We are not against any of it on principle. Dr. Peterson calls it recreational
-      anti-aging, and files it with a weekend in Las Vegas: if you enjoy it and can afford
-      it, help yourself. We are against buying the fifth thing before you have done the
-      first four, which are free.
-    </Text>
+  <TextSplit heading={leftOut.heading}>
+    {leftOut.paragraphs.map((paragraph, i) => <Text class={i > 0 ? 'mt-[1.3em]' : undefined}>{paragraph}</Text>)}
   </TextSplit>
 </Layout>

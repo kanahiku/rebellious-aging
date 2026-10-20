@@ -45,6 +45,7 @@ export interface Props {
   book?: BookFeatureItem;
   roundedBottom?: boolean;
   id?: string;
+  podcastLinkLabel?: string;
 }
 
 const {
@@ -54,6 +55,7 @@ const {
   book,
   roundedBottom = false,
   id,
+  podcastLinkLabel = 'Listen to the matching podcast episode',
 } = Astro.props;
 ---
 
@@ -130,7 +132,7 @@ const {
                 class="btn-link gap-1.5 self-start"
               >
                 <Icon name="tabler:headphones" class="w-4 h-4 shrink-0" />
-                <span>Listen to the matching podcast episode</span>
+                <span>{podcastLinkLabel}</span>
               </a>
             )}
           </div>

@@ -1,7 +1,6 @@
 import { sanityClient } from '../sanity/client';
 import {
   resolveContentImage,
-  resolveContentImageOrEmpty,
   type SanityImageFields,
 } from '../sanity/image';
 import type {
@@ -18,8 +17,21 @@ import type {
   ContentImage,
   FormHelpOption,
   HomePageContent,
-  HomePageImages,
+  HowAgingWorksContent,
+  TalkToDoctorContent,
+  AboutPageContent,
+  OhanaPageContent,
+  DecadePageContent,
+  DecadeKey,
+  FillFirstBucketContent,
+  FourPillarsContent,
+  AthenaEvaluationContent,
+  LegalPageContent,
+  LegalBlock,
   NavigationContent,
+  BooksPageContent,
+  PodcastPageContent,
+  BlogIndexContent,
   ReviewsPageContent,
   ServicePageContent,
   ServiceSection,
@@ -44,155 +56,753 @@ const IMAGE_MOBILE_PROJECTION = /* groq */ `
 
 type FetchedImage = ContentImage & SanityImageFields;
 
+const homeImage = (field: string) => /* groq */ `{
+      "src": coalesce(${field}.asset->url, ""),
+      "alt": coalesce(${field}.alt, ""),
+      "crop": ${field}.crop,
+      "hotspot": ${field}.hotspot,
+      "asset": ${field}.asset
+    }`;
+
 const HOME_QUERY = /* groq */ `
   *[_type == "homePage" && _id == "singleton-home"][0] {
     meta,
     hero {
-      titleLine1,
-      titleLine2,
-      subtitleParagraph1,
-      ctaText,
-      ctaHref,
-      phoneCtaText,
-      phoneCtaHref,
-      "heroImage": {
-        "src": coalesce(heroImage.asset->url, heroImageUrl, ""),
-        "alt": coalesce(heroImage.alt, ""),
-        "crop": heroImage.crop,
-        "hotspot": heroImage.hotspot,
-        "asset": heroImage.asset
-      },
-      "heroImageMobile": {
-        "src": coalesce(heroImageMobile.asset->url, heroImageMobileUrl, ""),
-        "alt": coalesce(heroImageMobile.alt, heroImage.alt, ""),
-        "crop": heroImageMobile.crop,
-        "hotspot": heroImageMobile.hotspot,
-        "asset": heroImageMobile.asset
-      }
+      tagline, title, subtitle,
+      primaryCtaText, primaryCtaHref,
+      secondaryCtaText, secondaryCtaHref, secondaryCtaNewTab,
+      note,
+      "heroImage": ${homeImage('heroImage')},
+      "heroImageMobile": ${homeImage('heroImageMobile')}
     },
-    "statsBar": statsBar[] { stat, label },
-    whyInspect {
-      heading,
-      paragraph1,
-      paragraph2,
-      ctaText,
-      ctaHref,
-      "image": {
-        ${IMAGE_PROJECTION}
-      }
+    whyUrgent {
+      eyebrow, heading, body, ctaText, ctaHref,
+      "image": ${homeImage('image')}
     },
-    servicesSection {
-      title,
-      subtitle,
-      "services": services[] { title, description, linkText, linkHref }
+    decades { eyebrow, heading, "cards": cards[] { title, body, href } },
+    cost {
+      eyebrow, heading, leftHeading, leftBody, leftCtaText, leftCtaHref,
+      rightHeading, "rows": rows[] { cost, label }, rightCtaText, rightCtaHref, footer
     },
-    faqs {
-      title,
-      "items": items[] { question, answer }
+    acceptChange {
+      eyebrow, heading, body, emphasis, linkText, linkHref,
+      "image": ${homeImage('image')}
     },
-    ctaBanner {
-      title,
-      subtitle,
-      ctaText,
-      ctaHref,
-      showAfterHoursNote
-    }
+    bucketOne { eyebrow, heading, body, "cards": cards[] { label, heading, description } },
+    assessment { eyebrow, title, subtitle, ctaText, ctaHref, disclaimer },
+    locations {
+      eyebrow,
+      "backgroundImage": ${homeImage('backgroundImage')},
+      "items": items[] { name, memberCount, href }
+    },
+    doctor {
+      eyebrow, heading, lead, body, ctaText, ctaHref, linkText, linkHref,
+      "image": ${homeImage('image')}
+    },
+    voices { eyebrow, heading }
   }
 `;
 
-export async function getSanityHomeContent(): Promise<HomePageContent> {
-  const page = await sanityClient.fetch<
-    HomePageContent & {
-      hero: HomePageContent['hero'] & { heroImage: FetchedImage; heroImageMobile?: FetchedImage };
-      whyInspect: HomePageContent['whyInspect'] & { image: FetchedImage };
-    }
-  >(HOME_QUERY);
+type RawHome = Omit<HomePageContent, 'hero' | 'whyUrgent' | 'acceptChange' | 'locations' | 'doctor'> & {
+  hero: Omit<HomePageContent['hero'], 'heroImage' | 'heroImageMobile'> & {
+    heroImage?: FetchedImage;
+    heroImageMobile?: FetchedImage;
+  };
+  whyUrgent: Omit<HomePageContent['whyUrgent'], 'image'> & { image?: FetchedImage };
+  acceptChange: Omit<HomePageContent['acceptChange'], 'image'> & { image?: FetchedImage };
+  locations: Omit<HomePageContent['locations'], 'backgroundImage'> & { backgroundImage?: FetchedImage };
+  doctor: Omit<HomePageContent['doctor'], 'image'> & { image?: FetchedImage };
+};
+
+/** Null-safe: an unfilled object/array in Studio comes back as null. */
+export async function getSanityHomeContent(): Promise<HomePageContent | null> {
+  const raw = await sanityClient.fetch<RawHome | null>(HOME_QUERY);
+  if (!raw) return null;
+
   return {
-    ...page,
+    meta: { title: raw.meta?.title ?? '', description: raw.meta?.description ?? '' },
     hero: {
-      ...page.hero,
-      heroImage: resolveContentImageOrEmpty(page.hero?.heroImage),
-      heroImageMobile: resolveContentImage(page.hero?.heroImageMobile),
+      ...raw.hero,
+      title: raw.hero?.title ?? '',
+      subtitle: raw.hero?.subtitle ?? [],
+      heroImage: resolveContentImage(raw.hero?.heroImage),
+      heroImageMobile: resolveContentImage(raw.hero?.heroImageMobile),
     },
-    whyInspect: {
-      ...page.whyInspect,
-      image: resolveContentImageOrEmpty(page.whyInspect?.image),
+    whyUrgent: {
+      ...raw.whyUrgent,
+      heading: raw.whyUrgent?.heading ?? '',
+      body: raw.whyUrgent?.body ?? [],
+      image: resolveContentImage(raw.whyUrgent?.image),
+    },
+    decades: {
+      ...raw.decades,
+      heading: raw.decades?.heading ?? '',
+      cards: (raw.decades?.cards ?? []).map((card) => ({ ...card, body: card.body ?? '' })),
+    },
+    cost: {
+      ...raw.cost,
+      heading: raw.cost?.heading ?? '',
+      leftHeading: raw.cost?.leftHeading ?? '',
+      leftBody: raw.cost?.leftBody ?? [],
+      rightHeading: raw.cost?.rightHeading ?? '',
+      rows: raw.cost?.rows ?? [],
+    },
+    acceptChange: {
+      ...raw.acceptChange,
+      heading: raw.acceptChange?.heading ?? '',
+      body: raw.acceptChange?.body ?? [],
+      image: resolveContentImage(raw.acceptChange?.image),
+    },
+    bucketOne: { ...raw.bucketOne, heading: raw.bucketOne?.heading ?? '', cards: raw.bucketOne?.cards ?? [] },
+    assessment: { ...raw.assessment, title: raw.assessment?.title ?? '' },
+    locations: {
+      ...raw.locations,
+      backgroundImage: resolveContentImage(raw.locations?.backgroundImage),
+      items: raw.locations?.items ?? [],
+    },
+    doctor: {
+      ...raw.doctor,
+      heading: raw.doctor?.heading ?? '',
+      body: raw.doctor?.body ?? [],
+      image: resolveContentImage(raw.doctor?.image),
+    },
+    voices: { ...raw.voices },
+  };
+}
+
+const HOW_AGING_QUERY = /* groq */ `
+  *[_type == "howAgingWorksPage" && _id == "singleton-how-aging-works"][0] {
+    meta,
+    hero {
+      "words": words[] { text, italic, align },
+      "image": ${homeImage('image')},
+      "imageMobile": ${homeImage('imageMobile')}
+    },
+    intro {
+      heading, body, ctaText, ctaHref,
+      "cards": cards[] { label, title, description },
+      "image": ${homeImage('image')}
+    },
+    buckets { eyebrow, heading, body, ctaText, ctaHref },
+    blackSwan { eyebrow, heading, paragraphs, ctaText, ctaHref },
+    bucketThree { eyebrow, heading, paragraphs, boldNote },
+    decades { eyebrow, heading, "cards": cards[] { title, body, href } },
+    weStop { heading, body, "image": ${homeImage('image')} }
+  }
+`;
+
+type RawHowAging = {
+  meta?: HowAgingWorksContent['meta'];
+  hero?: { words?: HowAgingWorksContent['hero']['words']; image?: FetchedImage; imageMobile?: FetchedImage };
+  intro?: Omit<Partial<HowAgingWorksContent['intro']>, 'image'> & { image?: FetchedImage };
+  buckets?: HowAgingWorksContent['buckets'];
+  blackSwan?: Partial<HowAgingWorksContent['blackSwan']>;
+  bucketThree?: Partial<HowAgingWorksContent['bucketThree']>;
+  decades?: Partial<HowAgingWorksContent['decades']>;
+  weStop?: Omit<Partial<HowAgingWorksContent['weStop']>, 'image'> & { image?: FetchedImage };
+};
+
+/** Null-safe: an unfilled object/array in Studio comes back as null. */
+export async function getSanityHowAgingWorks(): Promise<HowAgingWorksContent | null> {
+  const raw = await sanityClient.fetch<RawHowAging | null>(HOW_AGING_QUERY);
+  if (!raw) return null;
+
+  return {
+    meta: { title: raw.meta?.title ?? '', description: raw.meta?.description ?? '' },
+    hero: {
+      words: raw.hero?.words ?? [],
+      image: resolveContentImage(raw.hero?.image),
+      imageMobile: resolveContentImage(raw.hero?.imageMobile),
+    },
+    intro: {
+      ...raw.intro,
+      heading: raw.intro?.heading ?? '',
+      body: raw.intro?.body ?? [],
+      cards: raw.intro?.cards ?? [],
+      image: resolveContentImage(raw.intro?.image),
+    },
+    buckets: { ...raw.buckets },
+    blackSwan: { ...raw.blackSwan, heading: raw.blackSwan?.heading ?? '', paragraphs: raw.blackSwan?.paragraphs ?? [] },
+    bucketThree: {
+      ...raw.bucketThree,
+      heading: raw.bucketThree?.heading ?? '',
+      paragraphs: raw.bucketThree?.paragraphs ?? [],
+    },
+    decades: {
+      ...raw.decades,
+      heading: raw.decades?.heading ?? '',
+      cards: (raw.decades?.cards ?? []).map((card) => ({ ...card, body: card.body ?? '' })),
+    },
+    weStop: {
+      ...raw.weStop,
+      heading: raw.weStop?.heading ?? '',
+      body: raw.weStop?.body ?? [],
+      image: resolveContentImage(raw.weStop?.image),
     },
   };
 }
 
-const HOME_IMAGES_QUERY = /* groq */ `
-  *[_type == "homePage" && _id == "singleton-home"][0] {
+const TALK_TO_DOCTOR_QUERY = /* groq */ `
+  *[_type == "talkToDoctorPage" && _id == "singleton-talk-to-doctor"][0] {
+    meta,
     hero {
-      "heroImage": {
-        "src": coalesce(heroImage.asset->url, heroImageUrl, ""),
-        "alt": coalesce(heroImage.alt, ""),
-        "crop": heroImage.crop,
-        "hotspot": heroImage.hotspot,
-        "asset": heroImage.asset
-      },
-      "heroImageMobile": {
-        "src": coalesce(heroImageMobile.asset->url, heroImageMobileUrl, ""),
-        "alt": coalesce(heroImageMobile.alt, heroImage.alt, ""),
-        "crop": heroImageMobile.crop,
-        "hotspot": heroImageMobile.hotspot,
-        "asset": heroImageMobile.asset
-      }
+      title, subtitle,
+      "image": ${homeImage('image')},
+      "imageMobile": ${homeImage('imageMobile')}
     },
-    pageImages {
-      "whyUrgentGraph": {
-        "src": coalesce(whyUrgentGraph.asset->url, ""),
-        "alt": coalesce(whyUrgentGraph.alt, ""),
-        "crop": whyUrgentGraph.crop,
-        "hotspot": whyUrgentGraph.hotspot,
-        "asset": whyUrgentGraph.asset
-      },
-      "acceptChangeImage": {
-        "src": coalesce(acceptChangeImage.asset->url, ""),
-        "alt": coalesce(acceptChangeImage.alt, ""),
-        "crop": acceptChangeImage.crop,
-        "hotspot": acceptChangeImage.hotspot,
-        "asset": acceptChangeImage.asset
-      },
-      "talkToDoctorImage": {
-        "src": coalesce(talkToDoctorImage.asset->url, ""),
-        "alt": coalesce(talkToDoctorImage.alt, ""),
-        "crop": talkToDoctorImage.crop,
-        "hotspot": talkToDoctorImage.hotspot,
-        "asset": talkToDoctorImage.asset
-      },
-      "locationsBackground": {
-        "src": coalesce(locationsBackground.asset->url, ""),
-        "alt": coalesce(locationsBackground.alt, ""),
-        "crop": locationsBackground.crop,
-        "hotspot": locationsBackground.hotspot,
-        "asset": locationsBackground.asset
-      }
+    measurement {
+      eyebrow, heading, body,
+      leftHeading, "leftRows": leftRows[] { name, description },
+      rightHeading, "rightRows": rightRows[] { name, description }
+    },
+    advice { "items": items[] { title, body }, disclosure },
+    getMeasured { heading, paragraphs, ctaText, ctaHref }
+  }
+`;
+
+type RawTalkToDoctor = {
+  meta?: TalkToDoctorContent['meta'];
+  hero?: { title?: string; subtitle?: string; image?: FetchedImage; imageMobile?: FetchedImage };
+  measurement?: Partial<TalkToDoctorContent['measurement']>;
+  advice?: Partial<TalkToDoctorContent['advice']>;
+  getMeasured?: Partial<TalkToDoctorContent['getMeasured']>;
+};
+
+/** Null-safe: an unfilled object/array in Studio comes back as null. */
+export async function getSanityTalkToDoctor(): Promise<TalkToDoctorContent | null> {
+  const raw = await sanityClient.fetch<RawTalkToDoctor | null>(TALK_TO_DOCTOR_QUERY);
+  if (!raw) return null;
+  const rows = (list?: { name: string; description?: string }[]) =>
+    (list ?? []).map((row) => ({ name: row.name, description: row.description ?? '' }));
+
+  return {
+    meta: { title: raw.meta?.title ?? '', description: raw.meta?.description ?? '' },
+    hero: {
+      title: raw.hero?.title ?? '',
+      subtitle: raw.hero?.subtitle ?? '',
+      image: resolveContentImage(raw.hero?.image),
+      imageMobile: resolveContentImage(raw.hero?.imageMobile),
+    },
+    measurement: {
+      ...raw.measurement,
+      heading: raw.measurement?.heading ?? '',
+      leftHeading: raw.measurement?.leftHeading ?? '',
+      rightHeading: raw.measurement?.rightHeading ?? '',
+      leftRows: rows(raw.measurement?.leftRows),
+      rightRows: rows(raw.measurement?.rightRows),
+    },
+    advice: { ...raw.advice, items: (raw.advice?.items ?? []).map((i) => ({ title: i.title, body: i.body ?? '' })) },
+    getMeasured: {
+      ...raw.getMeasured,
+      heading: raw.getMeasured?.heading ?? '',
+      paragraphs: raw.getMeasured?.paragraphs ?? [],
+    },
+  };
+}
+
+const ABOUT_QUERY = /* groq */ `
+  *[_type == "aboutPage" && _id == "singleton-about"][0] {
+    meta,
+    hero { tagline, title, content, "image": ${homeImage('image')} },
+    movement { eyebrow, heading, lede, body, ctaText, ctaHref },
+    doctor { eyebrow, heading, paragraphs, quote, quoteAuthor },
+    credentials {
+      eyebrow, heading, educationLabel, education, certificationsLabel, certifications,
+      residenciesLabel, "residencies": residencies[] { title, institution }
+    },
+    publications { eyebrow, heading, "items": items[] { count, title, description } },
+    sponsor { eyebrow, heading, disclosureHeading, body, linkText, linkHref }
+  }
+`;
+
+type Nullable<T> = { [K in keyof T]?: T[K] | null };
+const text = (value?: string | null) => value ?? '';
+const list = <T>(value?: T[] | null) => value ?? [];
+
+/** Null-safe: an unfilled object/array in Studio comes back as null. */
+export async function getSanityAbout(): Promise<AboutPageContent | null> {
+  const raw = await sanityClient.fetch<{
+    meta?: Nullable<AboutPageContent['meta']> | null;
+    hero?: (Nullable<Omit<AboutPageContent['hero'], 'image'>> & { image?: FetchedImage }) | null;
+    movement?: Nullable<AboutPageContent['movement']> | null;
+    doctor?: Nullable<AboutPageContent['doctor']> | null;
+    credentials?: Nullable<AboutPageContent['credentials']> | null;
+    publications?: Nullable<AboutPageContent['publications']> | null;
+    sponsor?: Nullable<AboutPageContent['sponsor']> | null;
+  } | null>(ABOUT_QUERY);
+  if (!raw) return null;
+
+  return {
+    meta: { title: text(raw.meta?.title), description: text(raw.meta?.description) },
+    hero: {
+      tagline: text(raw.hero?.tagline),
+      title: text(raw.hero?.title),
+      content: text(raw.hero?.content),
+      image: resolveContentImage(raw.hero?.image),
+    },
+    movement: {
+      eyebrow: text(raw.movement?.eyebrow),
+      heading: text(raw.movement?.heading),
+      lede: text(raw.movement?.lede),
+      body: text(raw.movement?.body),
+      ctaText: text(raw.movement?.ctaText),
+      ctaHref: text(raw.movement?.ctaHref),
+    },
+    doctor: {
+      eyebrow: text(raw.doctor?.eyebrow),
+      heading: text(raw.doctor?.heading),
+      paragraphs: list(raw.doctor?.paragraphs),
+      quote: text(raw.doctor?.quote),
+      quoteAuthor: text(raw.doctor?.quoteAuthor),
+    },
+    credentials: {
+      eyebrow: text(raw.credentials?.eyebrow),
+      heading: text(raw.credentials?.heading),
+      educationLabel: text(raw.credentials?.educationLabel),
+      education: text(raw.credentials?.education),
+      certificationsLabel: text(raw.credentials?.certificationsLabel),
+      certifications: list(raw.credentials?.certifications),
+      residenciesLabel: text(raw.credentials?.residenciesLabel),
+      residencies: list(raw.credentials?.residencies).map((r) => ({
+        title: text(r.title),
+        institution: text(r.institution),
+      })),
+    },
+    publications: {
+      eyebrow: text(raw.publications?.eyebrow),
+      heading: text(raw.publications?.heading),
+      items: list(raw.publications?.items).map((i) => ({
+        count: text(i.count),
+        title: text(i.title),
+        description: text(i.description),
+      })),
+    },
+    sponsor: {
+      eyebrow: text(raw.sponsor?.eyebrow),
+      heading: text(raw.sponsor?.heading),
+      disclosureHeading: text(raw.sponsor?.disclosureHeading),
+      body: text(raw.sponsor?.body),
+      linkText: text(raw.sponsor?.linkText),
+      linkHref: text(raw.sponsor?.linkHref),
+    },
+  };
+}
+
+const OHANA_QUERY = /* groq */ `
+  *[_type == "ohanaPage" && _id == "singleton-ohana"][0] {
+    meta,
+    hero {
+      title,
+      "image": ${homeImage('image')},
+      "imageMobile": ${homeImage('imageMobile')}
+    },
+    intro { heading, body, ctaText, ctaHref, "stats": stats[] { number, label } },
+    loneliness { heading, pullQuote, body, caption, "image": ${homeImage('image')} },
+    blueZones {
+      "cards": cards[] { eyebrow, heading, body, "image": ${homeImage('image')} },
+      footerNote
+    },
+    moai {
+      moaiHeading, moaiBody, adherenceHeading, adherenceBody,
+      "duoCards": duoCards[] { eyebrow, heading, body }
+    },
+    activities {
+      heading, subtitle,
+      "items": items[] { frequency, title, body },
+      "image": ${homeImage('image')}
+    },
+    purpose {
+      "image": ${homeImage('image')},
+      heading, body, noChapterHeading, noChapterBody, noChapterLinkText, noChapterLinkHref
+    },
+    community { testimonialsEyebrow, testimonialsHeading, joinEyebrow, joinHeading, joinDescription },
+    comeHome { heading, body, primaryText, primaryHref, secondaryText, secondaryHref }
+  }
+`;
+
+/** Null-safe: an unfilled object/array in Studio comes back as null. */
+export async function getSanityOhana(): Promise<OhanaPageContent | null> {
+  type Img = { image?: FetchedImage; imageMobile?: FetchedImage };
+  const raw = await sanityClient.fetch<{
+    meta?: Nullable<OhanaPageContent['meta']> | null;
+    hero?: (Nullable<Pick<OhanaPageContent['hero'], 'title'>> & Img) | null;
+    intro?: Nullable<OhanaPageContent['intro']> | null;
+    loneliness?: (Nullable<Omit<OhanaPageContent['loneliness'], 'image'>> & Img) | null;
+    blueZones?: {
+      cards?: (Nullable<Omit<OhanaPageContent['blueZones']['cards'][number], 'image'>> & Img)[] | null;
+      footerNote?: string | null;
+    } | null;
+    moai?: Nullable<OhanaPageContent['moai']> | null;
+    activities?: (Nullable<Omit<OhanaPageContent['activities'], 'image'>> & Img) | null;
+    purpose?: (Nullable<Omit<OhanaPageContent['purpose'], 'image'>> & Img) | null;
+    community?: Nullable<OhanaPageContent['community']> | null;
+    comeHome?: Nullable<OhanaPageContent['comeHome']> | null;
+  } | null>(OHANA_QUERY);
+  if (!raw) return null;
+
+  return {
+    meta: { title: text(raw.meta?.title), description: text(raw.meta?.description) },
+    hero: {
+      title: text(raw.hero?.title),
+      image: resolveContentImage(raw.hero?.image),
+      imageMobile: resolveContentImage(raw.hero?.imageMobile),
+    },
+    intro: {
+      heading: text(raw.intro?.heading),
+      body: text(raw.intro?.body),
+      ctaText: text(raw.intro?.ctaText),
+      ctaHref: text(raw.intro?.ctaHref),
+      stats: list(raw.intro?.stats).map((i) => ({ number: text(i.number), label: text(i.label) })),
+    },
+    loneliness: {
+      heading: text(raw.loneliness?.heading),
+      pullQuote: text(raw.loneliness?.pullQuote),
+      body: list(raw.loneliness?.body),
+      caption: list(raw.loneliness?.caption),
+      image: resolveContentImage(raw.loneliness?.image),
+    },
+    blueZones: {
+      cards: list(raw.blueZones?.cards).map((c) => ({
+        eyebrow: text(c.eyebrow),
+        heading: text(c.heading),
+        body: text(c.body),
+        image: resolveContentImage(c.image),
+      })),
+      footerNote: text(raw.blueZones?.footerNote),
+    },
+    moai: {
+      moaiHeading: text(raw.moai?.moaiHeading),
+      moaiBody: list(raw.moai?.moaiBody),
+      adherenceHeading: text(raw.moai?.adherenceHeading),
+      adherenceBody: list(raw.moai?.adherenceBody),
+      duoCards: list(raw.moai?.duoCards).map((c) => ({
+        eyebrow: text(c.eyebrow),
+        heading: text(c.heading),
+        body: text(c.body),
+      })),
+    },
+    activities: {
+      heading: text(raw.activities?.heading),
+      subtitle: text(raw.activities?.subtitle),
+      items: list(raw.activities?.items).map((i) => ({
+        frequency: text(i.frequency),
+        title: text(i.title),
+        body: text(i.body),
+      })),
+      image: resolveContentImage(raw.activities?.image),
+    },
+    purpose: {
+      image: resolveContentImage(raw.purpose?.image),
+      heading: text(raw.purpose?.heading),
+      body: list(raw.purpose?.body),
+      noChapterHeading: text(raw.purpose?.noChapterHeading),
+      noChapterBody: list(raw.purpose?.noChapterBody),
+      noChapterLinkText: text(raw.purpose?.noChapterLinkText),
+      noChapterLinkHref: text(raw.purpose?.noChapterLinkHref),
+    },
+    community: {
+      testimonialsEyebrow: text(raw.community?.testimonialsEyebrow),
+      testimonialsHeading: text(raw.community?.testimonialsHeading),
+      joinEyebrow: text(raw.community?.joinEyebrow),
+      joinHeading: text(raw.community?.joinHeading),
+      joinDescription: text(raw.community?.joinDescription),
+    },
+    comeHome: {
+      heading: text(raw.comeHome?.heading),
+      body: text(raw.comeHome?.body),
+      primaryText: text(raw.comeHome?.primaryText),
+      primaryHref: text(raw.comeHome?.primaryHref),
+      secondaryText: text(raw.comeHome?.secondaryText),
+      secondaryHref: text(raw.comeHome?.secondaryHref),
+    },
+  };
+}
+
+const DECADE_QUERY = /* groq */ `
+  *[_type == "decadePage" && _id == $id][0] {
+    meta,
+    hero { eyebrow, heading, description, ctaText, ctaHref },
+    whereYouAre { eyebrow, paragraphs, rightEyebrow, "rows": rows[] { name, description } },
+    fillFirst { eyebrow, text, rightEyebrow, "rows": rows[] { name, description }, note },
+    doctorTests { eyebrow, heading, text, rightEyebrow, "rows": rows[] { name, description } },
+    blackSwan { eyebrow, heading, paragraphs, ctaText, ctaHref },
+    stayingHome { heading, lead, body, source, bullets },
+    cta { title, subtitle, primaryText, primaryHref, secondaryText, secondaryHref }
+  }
+`;
+
+/** Null-safe: an unfilled object/array in Studio comes back as null. */
+export async function getSanityDecade(key: DecadeKey): Promise<DecadePageContent | null> {
+  type Row = { name?: string | null; description?: string | null };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const raw = await sanityClient.fetch<Record<string, any> | null>(DECADE_QUERY, { id: `decade-${key}` });
+  if (!raw) return null;
+  const rows = (value?: Row[] | null) => list(value).map((r) => ({ name: text(r.name), description: text(r.description) }));
+
+  const doctor = raw.doctorTests;
+  const swan = raw.blackSwan;
+  const home = raw.stayingHome;
+
+  return {
+    meta: { title: text(raw.meta?.title), description: text(raw.meta?.description) },
+    hero: {
+      eyebrow: text(raw.hero?.eyebrow),
+      heading: text(raw.hero?.heading),
+      description: text(raw.hero?.description),
+      ctaText: text(raw.hero?.ctaText),
+      ctaHref: text(raw.hero?.ctaHref),
+    },
+    whereYouAre: {
+      eyebrow: text(raw.whereYouAre?.eyebrow),
+      paragraphs: list(raw.whereYouAre?.paragraphs),
+      rightEyebrow: text(raw.whereYouAre?.rightEyebrow),
+      rows: rows(raw.whereYouAre?.rows),
+    },
+    fillFirst: {
+      eyebrow: text(raw.fillFirst?.eyebrow),
+      text: text(raw.fillFirst?.text),
+      rightEyebrow: text(raw.fillFirst?.rightEyebrow),
+      rows: rows(raw.fillFirst?.rows),
+      note: text(raw.fillFirst?.note),
+    },
+    doctorTests: doctor?.heading
+      ? {
+          eyebrow: text(doctor.eyebrow),
+          heading: text(doctor.heading),
+          text: text(doctor.text),
+          rightEyebrow: text(doctor.rightEyebrow),
+          rows: rows(doctor.rows),
+        }
+      : undefined,
+    blackSwan: swan?.heading
+      ? {
+          eyebrow: text(swan.eyebrow),
+          heading: text(swan.heading),
+          paragraphs: list(swan.paragraphs),
+          ctaText: text(swan.ctaText),
+          ctaHref: text(swan.ctaHref),
+        }
+      : undefined,
+    stayingHome: home?.heading
+      ? {
+          heading: text(home.heading),
+          lead: text(home.lead),
+          body: text(home.body),
+          source: text(home.source),
+          bullets: list(home.bullets),
+        }
+      : undefined,
+    cta: {
+      title: text(raw.cta?.title),
+      subtitle: text(raw.cta?.subtitle),
+      primaryText: text(raw.cta?.primaryText),
+      primaryHref: text(raw.cta?.primaryHref),
+      secondaryText: text(raw.cta?.secondaryText),
+      secondaryHref: text(raw.cta?.secondaryHref),
+    },
+  };
+}
+
+const FILL_FIRST_BUCKET_QUERY = /* groq */ `
+  *[_type == "fillFirstBucketPage" && _id == "singleton-fill-first-bucket"][0] {
+    meta,
+    hero {
+      title, paragraphs,
+      "image": ${homeImage('image')},
+      "imageMobile": ${homeImage('imageMobile')}
+    },
+    rules { pullQuote, heading, "items": items[] { title, body } },
+    band { "image": ${homeImage('image')} },
+    cta { eyebrow, title, subtitle, ctaText, ctaHref }
+  }
+`;
+
+/** Null-safe: an unfilled object/array in Studio comes back as null. */
+export async function getSanityFillFirstBucket(): Promise<FillFirstBucketContent | null> {
+  const raw = await sanityClient.fetch<{
+    meta?: Nullable<FillFirstBucketContent['meta']> | null;
+    hero?: { title?: string | null; paragraphs?: string[] | null; image?: FetchedImage; imageMobile?: FetchedImage } | null;
+    rules?: {
+      pullQuote?: string[] | null;
+      heading?: string | null;
+      items?: { title?: string | null; body?: string | null }[] | null;
+    } | null;
+    band?: { image?: FetchedImage } | null;
+    cta?: Nullable<FillFirstBucketContent['cta']> | null;
+  } | null>(FILL_FIRST_BUCKET_QUERY);
+  if (!raw) return null;
+
+  return {
+    meta: { title: text(raw.meta?.title), description: text(raw.meta?.description) },
+    hero: {
+      title: text(raw.hero?.title),
+      paragraphs: list(raw.hero?.paragraphs),
+      image: resolveContentImage(raw.hero?.image),
+      imageMobile: resolveContentImage(raw.hero?.imageMobile),
+    },
+    rules: {
+      pullQuote: list(raw.rules?.pullQuote),
+      heading: text(raw.rules?.heading),
+      items: list(raw.rules?.items).map((i) => ({ title: text(i.title), body: text(i.body) })),
+    },
+    band: { image: resolveContentImage(raw.band?.image) },
+    cta: {
+      eyebrow: text(raw.cta?.eyebrow),
+      title: text(raw.cta?.title),
+      subtitle: text(raw.cta?.subtitle),
+      ctaText: text(raw.cta?.ctaText),
+      ctaHref: text(raw.cta?.ctaHref),
+    },
+  };
+}
+
+const FOUR_PILLARS_QUERY = /* groq */ `
+  *[_type == "fourPillarsPage" && _id == "singleton-four-pillars"][0] {
+    meta,
+    hero {
+      title, paragraphs,
+      "image": ${homeImage('image')},
+      "imageMobile": ${homeImage('imageMobile')}
+    },
+    "cards": cards[] { preLabel, label, title, description, linkText, linkHref },
+    leftOut { heading, paragraphs }
+  }
+`;
+
+/** Null-safe: an unfilled object/array in Studio comes back as null. */
+export async function getSanityFourPillars(): Promise<FourPillarsContent | null> {
+  const raw = await sanityClient.fetch<{
+    meta?: Nullable<FourPillarsContent['meta']> | null;
+    hero?: { title?: string | null; paragraphs?: string[] | null; image?: FetchedImage; imageMobile?: FetchedImage } | null;
+    cards?: Nullable<FourPillarsContent['cards'][number]>[] | null;
+    leftOut?: { heading?: string | null; paragraphs?: string[] | null } | null;
+  } | null>(FOUR_PILLARS_QUERY);
+  if (!raw) return null;
+
+  return {
+    meta: { title: text(raw.meta?.title), description: text(raw.meta?.description) },
+    hero: {
+      title: text(raw.hero?.title),
+      paragraphs: list(raw.hero?.paragraphs),
+      image: resolveContentImage(raw.hero?.image),
+      imageMobile: resolveContentImage(raw.hero?.imageMobile),
+    },
+    cards: list(raw.cards).map((c) => ({
+      preLabel: text(c.preLabel),
+      label: text(c.label),
+      title: text(c.title),
+      description: text(c.description),
+      linkText: c.linkText || undefined,
+      linkHref: c.linkHref || undefined,
+    })),
+    leftOut: { heading: text(raw.leftOut?.heading), paragraphs: list(raw.leftOut?.paragraphs) },
+  };
+}
+
+const ATHENA_EVALUATION_QUERY = /* groq */ `
+  *[_type == "athenaEvaluationPage" && _id == "singleton-athena-evaluation"][0] {
+    meta,
+    hero { tagline, title, subtitle, ctaText, ctaHref },
+    overview { eyebrow, heading, intro, itemsEyebrow, "items": items[] { title, body } },
+    pricing {
+      priceEyebrow, price, priceNote, afterEyebrow, afterText,
+      "tiers": tiers[] { label, price }, perLabel
+    },
+    booking {
+      heading, body, listLinkText, listLinkHref, disclosureEyebrow, disclosureText,
+      ctaText, ctaHref, note
     }
   }
 `;
 
-export async function getSanityHomeImages(): Promise<HomePageImages> {
-  const page = await sanityClient.fetch<{
-    hero?: {
-      heroImage?: FetchedImage;
-      heroImageMobile?: FetchedImage;
-    };
-    pageImages?: {
-      whyUrgentGraph?: FetchedImage;
-      acceptChangeImage?: FetchedImage;
-      talkToDoctorImage?: FetchedImage;
-      locationsBackground?: FetchedImage;
-    };
-  } | null>(HOME_IMAGES_QUERY);
+/** Null-safe: an unfilled object/array in Studio comes back as null. */
+export async function getSanityAthenaEvaluation(): Promise<AthenaEvaluationContent | null> {
+  const raw = await sanityClient.fetch<{
+    meta?: Nullable<AthenaEvaluationContent['meta']> | null;
+    hero?: Nullable<AthenaEvaluationContent['hero']> | null;
+    overview?: (Nullable<Omit<AthenaEvaluationContent['overview'], 'items'>> & {
+      items?: Nullable<{ title: string; body: string }>[] | null;
+    }) | null;
+    pricing?: (Nullable<Omit<AthenaEvaluationContent['pricing'], 'tiers'>> & {
+      tiers?: Nullable<{ label: string; price: string }>[] | null;
+    }) | null;
+    booking?: Nullable<AthenaEvaluationContent['booking']> | null;
+  } | null>(ATHENA_EVALUATION_QUERY);
+  if (!raw) return null;
 
   return {
-    heroImage: resolveContentImage(page?.hero?.heroImage),
-    heroImageMobile: resolveContentImage(page?.hero?.heroImageMobile),
-    whyUrgentGraph: resolveContentImage(page?.pageImages?.whyUrgentGraph),
-    acceptChangeImage: resolveContentImage(page?.pageImages?.acceptChangeImage),
-    talkToDoctorImage: resolveContentImage(page?.pageImages?.talkToDoctorImage),
-    locationsBackground: resolveContentImage(page?.pageImages?.locationsBackground),
+    meta: { title: text(raw.meta?.title), description: text(raw.meta?.description) },
+    hero: {
+      tagline: text(raw.hero?.tagline),
+      title: text(raw.hero?.title),
+      subtitle: text(raw.hero?.subtitle),
+      ctaText: text(raw.hero?.ctaText),
+      ctaHref: text(raw.hero?.ctaHref),
+    },
+    overview: {
+      eyebrow: text(raw.overview?.eyebrow),
+      heading: text(raw.overview?.heading),
+      intro: text(raw.overview?.intro),
+      itemsEyebrow: text(raw.overview?.itemsEyebrow),
+      items: list(raw.overview?.items).map((i) => ({ title: text(i.title), body: text(i.body) })),
+    },
+    pricing: {
+      priceEyebrow: text(raw.pricing?.priceEyebrow),
+      price: text(raw.pricing?.price),
+      priceNote: text(raw.pricing?.priceNote),
+      afterEyebrow: text(raw.pricing?.afterEyebrow),
+      afterText: text(raw.pricing?.afterText),
+      tiers: list(raw.pricing?.tiers).map((t) => ({ label: text(t.label), price: text(t.price) })),
+      perLabel: text(raw.pricing?.perLabel),
+    },
+    booking: {
+      heading: text(raw.booking?.heading),
+      body: text(raw.booking?.body),
+      listLinkText: text(raw.booking?.listLinkText),
+      listLinkHref: text(raw.booking?.listLinkHref),
+      disclosureEyebrow: text(raw.booking?.disclosureEyebrow),
+      disclosureText: text(raw.booking?.disclosureText),
+      ctaText: text(raw.booking?.ctaText),
+      ctaHref: text(raw.booking?.ctaHref),
+      note: text(raw.booking?.note),
+    },
+  };
+}
+
+const LEGAL_QUERY = /* groq */ `
+  *[_type == "legalPage" && _id == $id][0] {
+    meta, title,
+    "sections": sections[] {
+      heading,
+      "blocks": blocks[] { _type, text, items }
+    }
+  }
+`;
+
+/** Null-safe: an unfilled object/array in Studio comes back as null. */
+export async function getSanityLegal(slug: 'privacy-policy' | 'terms-of-service'): Promise<LegalPageContent | null> {
+  const raw = await sanityClient.fetch<{
+    meta?: Nullable<LegalPageContent['meta']> | null;
+    title?: string | null;
+    sections?: {
+      heading?: string | null;
+      blocks?: { _type: string; text?: string | null; items?: string[] | null }[] | null;
+    }[] | null;
+  } | null>(LEGAL_QUERY, { id: `legal-${slug}` });
+  if (!raw) return null;
+
+  return {
+    meta: { title: text(raw.meta?.title), description: text(raw.meta?.description) },
+    title: text(raw.title),
+    sections: list(raw.sections).map((section) => ({
+      heading: text(section.heading),
+      blocks: list(section.blocks).flatMap((block): LegalBlock[] => {
+        if (block._type === 'list') return [{ type: 'list', items: list(block.items) }];
+        if (block._type === 'contact') return [{ type: 'contact', text: text(block.text) }];
+        if (block._type === 'paragraph') return [{ type: 'paragraph', text: text(block.text) }];
+        return [];
+      }),
+    })),
   };
 }
 
@@ -218,7 +828,9 @@ const NAVIGATION_QUERY = /* groq */ `
       },
       "secondaryLinks": secondaryLinks[] { text, href },
       "socialLinks": socialLinks[] { ariaLabel, icon, href },
-      footNote
+      footNote,
+      tagline,
+      cta { eyebrow, title, body, buttonLabel, buttonHref }
     }
   }
 `;
@@ -463,7 +1075,7 @@ export async function getSanityReviewsPage(): Promise<ReviewsPageContent> {
     gallerySection: {
       ...page.gallerySection,
       _type: 'splitContentSection',
-      previewImages: (page.gallerySection.previewImages ?? [])
+      previewImages: (page.gallerySection?.previewImages ?? [])
         .map((image) => resolveContentImage(image as FetchedImage))
         .filter((image): image is ContentImage => Boolean(image?.src)),
     },
@@ -1018,4 +1630,119 @@ export function groupEpisodesByPart(episodes: PodcastEpisode[]): PodcastPartGrou
     map.get(ep.part)!.episodes.push(ep);
   }
   return [...map.values()].sort((a, b) => a.part - b.part);
+}
+
+// ─── Books / Podcast / Blog index pages ──────────────────────────────────────
+
+const BOOKS_PAGE_QUERY = /* groq */ `
+  *[_type == "booksPage" && _id == "singleton-books"][0] {
+    meta,
+    hero { title, subtitle, "image": ${homeImage('image')} },
+    tabs { textbook, guidebook, bargaining, podcast },
+    series {
+      textbook { eyebrow, heading, description },
+      guidebook { eyebrow, heading, description },
+      bargaining { eyebrow, heading, description },
+      podcastLinkLabel
+    }
+  }
+`;
+
+type RawSeries = { eyebrow?: string | null; heading?: string | null; description?: string | null } | null | undefined;
+const series = (s: RawSeries) => ({
+  eyebrow: text(s?.eyebrow),
+  heading: text(s?.heading),
+  description: text(s?.description),
+});
+
+export async function getSanityBooksPage(): Promise<BooksPageContent | null> {
+  const raw = await sanityClient.fetch<{
+    meta?: Nullable<BooksPageContent['meta']> | null;
+    hero?: { title?: string | null; subtitle?: string | null; image?: FetchedImage } | null;
+    tabs?: Nullable<BooksPageContent['tabs']> | null;
+    series?: {
+      textbook?: RawSeries;
+      guidebook?: RawSeries;
+      bargaining?: RawSeries;
+      podcastLinkLabel?: string | null;
+    } | null;
+  } | null>(BOOKS_PAGE_QUERY);
+  if (!raw) return null;
+  return {
+    meta: { title: text(raw.meta?.title), description: text(raw.meta?.description) },
+    hero: {
+      title: text(raw.hero?.title),
+      subtitle: text(raw.hero?.subtitle),
+      image: resolveContentImage(raw.hero?.image),
+    },
+    tabs: {
+      textbook: text(raw.tabs?.textbook),
+      guidebook: text(raw.tabs?.guidebook),
+      bargaining: text(raw.tabs?.bargaining),
+      podcast: text(raw.tabs?.podcast),
+    },
+    series: {
+      textbook: series(raw.series?.textbook),
+      guidebook: series(raw.series?.guidebook),
+      bargaining: series(raw.series?.bargaining),
+      podcastLinkLabel: text(raw.series?.podcastLinkLabel),
+    },
+  };
+}
+
+const PODCAST_PAGE_QUERY = /* groq */ `
+  *[_type == "podcastPage" && _id == "singleton-podcast"][0] {
+    meta,
+    hero { title, subtitle, "image": ${homeImage('image')} },
+    roadmap { eyebrow, heading, description, spotifyLabel, youtubeLabel, episodeCtaText }
+  }
+`;
+
+export async function getSanityPodcastPage(): Promise<PodcastPageContent | null> {
+  const raw = await sanityClient.fetch<{
+    meta?: Nullable<PodcastPageContent['meta']> | null;
+    hero?: { title?: string | null; subtitle?: string | null; image?: FetchedImage } | null;
+    roadmap?: Nullable<PodcastPageContent['roadmap']> | null;
+  } | null>(PODCAST_PAGE_QUERY);
+  if (!raw) return null;
+  return {
+    meta: { title: text(raw.meta?.title), description: text(raw.meta?.description) },
+    hero: {
+      title: text(raw.hero?.title),
+      subtitle: text(raw.hero?.subtitle),
+      image: resolveContentImage(raw.hero?.image),
+    },
+    roadmap: {
+      eyebrow: text(raw.roadmap?.eyebrow),
+      heading: text(raw.roadmap?.heading),
+      description: text(raw.roadmap?.description),
+      spotifyLabel: text(raw.roadmap?.spotifyLabel),
+      youtubeLabel: text(raw.roadmap?.youtubeLabel),
+      episodeCtaText: text(raw.roadmap?.episodeCtaText),
+    },
+  };
+}
+
+const BLOG_INDEX_QUERY = /* groq */ `
+  *[_type == "blogIndexPage" && _id == "singleton-blog-index"][0] {
+    meta, heading, emptyMessage, backLabel, cta { title, subtitle, ctaText }
+  }
+`;
+
+export async function getSanityBlogIndex(): Promise<BlogIndexContent | null> {
+  const raw = await sanityClient.fetch<{
+    meta?: Nullable<BlogIndexContent['meta']> | null;
+    heading?: string | null;
+    emptyMessage?: string | null;
+    backLabel?: string | null;
+    cta?: Nullable<BlogIndexContent['cta']> | null;
+  } | null>(BLOG_INDEX_QUERY);
+  if (!raw) return null;
+  return {
+    meta: { title: text(raw.meta?.title), description: text(raw.meta?.description) },
+    heading: text(raw.heading),
+    emptyMessage: text(raw.emptyMessage),
+    backLabel: text(raw.backLabel),
+    cta: { title: text(raw.cta?.title), subtitle: text(raw.cta?.subtitle), ctaText: text(raw.cta?.ctaText) },
+  };
 }

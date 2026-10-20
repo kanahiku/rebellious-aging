@@ -5,9 +5,26 @@
  * Top: pull-quote left + "Four rules that make this work" right.
  * Then: shared BucketGraphic with the animated three-bucket cascade.
  *
- * Used on /fill-the-first-bucket.
+ * Used on /fill-the-first-bucket. Copy comes from Sanity; the bucket graphic stays in code.
  */
 import BucketGraphic from '~/components/ui/BucketGraphic.astro';
+
+export interface Props {
+  /** Pull-quote paragraphs, as safe HTML (use `cmsHeading` so **words** become the accent span). */
+  pullQuote: string[];
+  /** Heading for the rules column; "\n" becomes a line break on wider screens. */
+  rulesHeading: string;
+  rules: { title: string; body: string }[];
+}
+
+const { pullQuote = [], rulesHeading = '', rules = [] } = Astro.props;
+const rulesHtml = rulesHeading
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .split('\n')
+  .join('<br class="hidden sm:block" /> ');
+const rulesHeadingHtml = rulesHtml;
 ---
 
 <section class="not-prose w-full py-12 md:py-16 lg:py-[80px]">
@@ -16,39 +33,20 @@ import BucketGraphic from '~/components/ui/BucketGraphic.astro';
     <div class="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-[120px]">
       {/* Pull quote */}
       <div class="flex min-w-0 flex-1 flex-col gap-[1.3em] font-heading text-h3 font-normal leading-[1.2] text-heading">
-        <p>
-          The price goes up as the evidence goes down. Bucket one is free and it is the one that matters most.{' '}
-          <span class="text-accent">Bucket three costs thousands and may do nothing at all.</span>
-        </p>
-        <p>Almost nobody in this business will tell you that, because most of them sell bucket three.</p>
+        {pullQuote.map((paragraph) => <p set:html={paragraph} />)}
       </div>
 
       {/* Four rules */}
       <div class="flex min-w-0 flex-1 flex-col gap-6">
-        <h2 class="font-heading text-h2 font-normal leading-none text-heading">
-          Four rules that make<br class="hidden sm:block" /> this work.
-        </h2>
+        <h2 class="font-heading text-h2 font-normal leading-none text-heading" set:html={rulesHeadingHtml} />
         <div class="font-sans text-small leading-[1.3] text-muted space-y-[1.3em]">
-          <p>
-            <strong class="font-bold">1. Overflow, not completion.</strong>{' '}
-            You never &ldquo;finish&rdquo; a bucket. You fill it as well as you reasonably can, and what spills over (spare
-            money, spare attention, spare Tuesdays) runs down to the next. Nobody is being told to wait.
-          </p>
-          <p>
-            <strong class="font-bold">2. Inside bucket one there is no order. </strong>
-            The buckets are a sequence; the four basics inside bucket one are not. Show up for any one, stay for all four.
-            Start with whichever you can face on a Tuesday.
-          </p>
-          <p>
-            <strong class="font-bold">3. The buckets refill.</strong>{' '}
-            Bucket one is a permanent habit, not a phase you graduate from. You do not stop walking because you have moved
-            on to blood tests.
-          </p>
-          <p>
-            <strong class="font-bold">4. We are not against bucket three. </strong>
-            Recreational anti-aging is fine. If you enjoy it and can afford it, help yourself, the same as a weekend in Las
-            Vegas. The objection is buying bucket three while bucket one sits empty.
-          </p>
+          {
+            rules.map((rule) => (
+              <p>
+                <strong class="font-bold">{rule.title}</strong> {rule.body}
+              </p>
+            ))
+          }
         </div>
       </div>
     </div>

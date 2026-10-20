@@ -5,22 +5,19 @@ import Header from '~/components/widgets/Header.astro';
 import BooksGrid from '~/components/widgets/BooksGrid.astro';
 import BookSeriesFeature from '~/components/widgets/BookSeriesFeature.astro';
 import GuideBookGrid from '~/components/widgets/GuideBookGrid.astro';
-import { site } from '~/config/site';
-import { navigationData } from '~/data/navigation';
-import { getBooks, getPodcastEpisodes } from '~/lib/content';
+import { getBooks, getPodcastEpisodes, getBooksPageContent, getNavigationContent } from '~/lib/content';
+import { cmsInline } from '~/utils/cmsText';
+
+const [page, nav] = await Promise.all([getBooksPageContent(), getNavigationContent()]);
+const { hero, tabs, series } = page;
 
 const metadata = {
-  title: `Books | ${site.name}`,
-  description:
-    'Books by Dr. Robert Peterson MD, organized across three series: foundational textbooks, the Rebellious Aging Guidebooks, and Bargaining with Aging.',
+  title: page.meta.title,
+  description: page.meta.description,
   ignoreTitleTemplate: true,
 };
 
-const header = navigationData.header;
-const booksHero = {
-  src: 'https://images.unsplash.com/photo-1546350882-6f047ea47789?auto=format&fit=crop&w=2400&q=85',
-  alt: 'An open book and coffee on a white surface',
-};
+const header = nav.header;
 const [books, allEpisodes] = await Promise.all([getBooks(), getPodcastEpisodes()]);
 
 // Build a reverse map: book slug → episode slug.
@@ -93,50 +90,53 @@ const guideBooks = guidebookBooks.map((book) => ({
 ---
 
 <Layout metadata={metadata}>
-  <link slot="head" rel="preload" as="image" href={booksHero.src} fetchpriority="high" />
+  {hero.image?.src && <link slot="head" rel="preload" as="image" href={hero.image.src} fetchpriority="high" />}
   <Fragment slot="header"></Fragment>
 
-  <!-- Hero — image background, "Books by Dr. Robert Peterson MD" -->
+  <!-- Hero — copy and image from Sanity booksPage -->
   <Hero2
     variant="page"
     stacked
     overlapHeader={false}
     withImage
     pageOverlay
-    title="Books by <br />Dr. Robert Peterson MD"
-    subtitle="Organized across three series: foundational textbooks, the Rebellious Aging Guidebooks, and Bargaining with Aging."
-    image={booksHero}
+    title={cmsInline(hero.title)}
+    subtitle={hero.subtitle}
+    image={hero.image}
   >
     <Header slot="nav" embedded isSticky={false} links={header.links} actions={header.actions} />
   </Hero2>
 
   <!-- Books with filter tabs + grid -->
-  <BooksGrid id="books-grid" books={books} />
+  <BooksGrid id="books-grid" books={books} tabLabels={tabs} />
 
   <!-- Textbook Series — dark gradient, featured book -->
   <BookSeriesFeature
     id="textbook-series"
-    eyebrow="Series"
-    heading="Textbook Series"
-    description="Foundational, evidence-based references for clinicians and serious students of longevity medicine."
+    eyebrow={series.textbook.eyebrow}
+    heading={series.textbook.heading}
+    description={series.textbook.description}
+    podcastLinkLabel={series.podcastLinkLabel}
     book={textbookBook}
   />
 
   <!-- Rebellious Aging Guidebook Series — light grid of book cards -->
   <GuideBookGrid
     id="guidebook-series"
-    eyebrow="Series"
-    heading="Rebellious Aging Guidebook Series"
-    description="A twenty-eight-part series, one guidebook per part of the body, offering practical, evidence-based guides for living long and well on your own terms."
+    eyebrow={series.guidebook.eyebrow}
+    heading={series.guidebook.heading}
+    description={series.guidebook.description}
+    podcastLinkLabel={series.podcastLinkLabel}
     books={guideBooks}
   />
 
   <!-- Bargaining with Aging Series — dark gradient, rounded bottom, featured book -->
   <BookSeriesFeature
     id="bargaining-series"
-    eyebrow="Series"
-    heading="Bargaining with Aging Series"
-    description="Honest reckonings with the trade-offs, risks, and unknowns of growing older."
+    eyebrow={series.bargaining.eyebrow}
+    heading={series.bargaining.heading}
+    description={series.bargaining.description}
+    podcastLinkLabel={series.podcastLinkLabel}
     book={bargainingBook}
   />
 </Layout>

@@ -51,6 +51,6 @@ const metadata = {
     title={page?.ctaBanner.title || 'Have a project in mind?'}
     subtitle={page?.ctaBanner.subtitle || `Contact ${CONTACT.businessName} and we will follow up.`}
     ctaText={page?.ctaBanner.ctaText || PRIMARY_CTA_LABEL}
-    ctaHref={page?.ctaBanner.ctaHref}
+    ctaHref={page?.ctaBanner.ctaHref || undefined}
   />
 </Layout>
