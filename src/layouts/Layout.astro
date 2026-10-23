@@ -66,7 +66,13 @@ const fonts = brandFontConfig();
     <Metadata {...metadata} />
     <SiteVerification />
     <Analytics />
-    <JsonLd />
+    <JsonLd description={metadata.description} />
+    <script
+      async
+      src="https://widget.seedinternaldev.xyz/v1/loader.js"
+      data-site-id="site_20903a812c43a64d886f7f2e"
+      data-site-key="vk_RveJjbtS7xc1kMmimJB3pblnHXPnZld5qVH6xqm15wQ"
+    ></script>
 
     <!-- Comment the line below to disable View Transitions -->
     <ClientRouter fallback="swap" />
