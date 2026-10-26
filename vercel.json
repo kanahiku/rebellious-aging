@@ -1,6 +1,13 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/form",
+      "destination": "https://robertpetersonmd.com/checkup",
+      "permanent": false
+    }
+  ],
   "crons": [
     {
       "path": "/api/reviews",

@@ -29,7 +29,7 @@ const metadata = {
 
 const heroActions = [
   ...(page.hero.ctaText
-    ? [{ variant: 'primary' as const, text: page.hero.ctaText, href: page.hero.ctaHref || '/form' }]
+    ? [{ variant: 'primary' as const, text: page.hero.ctaText, href: page.hero.ctaHref || 'https://robertpetersonmd.com/checkup' }]
     : []),
   ...(page.hero.phoneCtaText && page.hero.phoneCtaHref
     ? [{ variant: 'ghost-light' as const, text: page.hero.phoneCtaText, href: page.hero.phoneCtaHref }]

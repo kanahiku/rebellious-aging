@@ -77,5 +77,25 @@ const fonts = brandFontConfig();
     <slot />
 
     <Intersect />
+
+    <script>
+      // Any link to the old /form route (incl. CMS-authored ones) goes to the
+      // external checkup and opens in a new tab.
+      const CHECKUP = 'https://robertpetersonmd.com/checkup';
+      const markCheckupLinks = () => {
+        document.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((a) => {
+          const href = a.getAttribute('href') || '';
+          if (/^(https?:\/\/(www\.)?rebelliousaging\.org)?\/form\/?([?#].*)?$/.test(href)) {
+            a.setAttribute('href', CHECKUP);
+          }
+          if (a.getAttribute('href')?.includes('robertpetersonmd.com/checkup')) {
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+          }
+        });
+      };
+      markCheckupLinks();
+      document.addEventListener('astro:page-load', markCheckupLinks);
+    </script>
   </body>
 </html>
