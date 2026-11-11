@@ -1,0 +1,127 @@
+---
+/**
+ * DirectoryLeadForm — "Add my business". Same form on /directory and every profile page.
+ *
+ * Posts to /api/directory-lead, which emails us through Resend. It is a lead only:
+ * nothing is added to the directory automatically — a person adds it by hand.
+ * Fields: Your name, Business or group name, Email, Phone (optional), Message (optional).
+ */
+import Heading from '~/components/ui/Heading.astro';
+import Text from '~/components/ui/Text.astro';
+
+export interface Props {
+  id?: string;
+  eyebrow?: string;
+  heading?: string;
+  description?: string;
+}
+
+const {
+  id = 'add-my-business',
+  eyebrow = 'Run something like this?',
+  heading = 'Add my business',
+  description = 'Tell us who you are and we will get in touch. A person reads every message, and nothing is listed automatically.',
+} = Astro.props;
+
+const input =
+  'w-full rounded-[10px] border border-primary/15 bg-surface px-4 py-3 font-sans text-[15px] text-heading placeholder:text-muted/40 transition-colors focus:border-primary/40 focus:outline-none';
+const label = 'font-sans text-[13px] font-medium leading-none text-heading';
+---
+
+<section {id} class="not-prose w-full bg-section-grey scroll-mt-[72px]">
+  <div class="mx-auto w-full max-w-container px-5 py-12 sm:px-8 md:px-16 md:py-[64px] lg:px-[120px] lg:py-[120px]">
+    <div class="flex flex-col gap-10">
+      <div class="flex max-w-[60ch] flex-col gap-4">
+        <Heading variant="eyebrow">{eyebrow}</Heading>
+        <Heading variant="h2">{heading}</Heading>
+        <Text variant="body-lg">{description}</Text>
+      </div>
+
+      <div class="flex min-w-0 max-w-[720px] flex-col">
+        <form class="directory-lead-form grid grid-cols-1 gap-5 sm:grid-cols-2" novalidate>
+          <div class="flex flex-col gap-1.5">
+            <label class={label} for={`${id}-name`}>Your name</label>
+            <input class={input} type="text" id={`${id}-name`} name="name" autocomplete="name" required />
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class={label} for={`${id}-business`}>Business or group name</label>
+            <input class={input} type="text" id={`${id}-business`} name="businessName" required />
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class={label} for={`${id}-email`}>Email</label>
+            <input class={input} type="email" id={`${id}-email`} name="email" autocomplete="email" required />
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class={label} for={`${id}-phone`}>Phone <span class="font-normal text-muted">(optional)</span></label
+            >
+            <input class={input} type="tel" id={`${id}-phone`} name="phone" autocomplete="tel" />
+          </div>
+          <div class="flex flex-col gap-1.5 sm:col-span-2">
+            <label class={label} for={`${id}-message`}
+              >Message <span class="font-normal text-muted">(optional)</span></label
+            >
+            <textarea class={`${input} resize-none`} id={`${id}-message`} name="message" rows="4"></textarea>
+          </div>
+
+          {/* Honeypot — people never see it, bots fill it. */}
+          <input
+            type="text"
+            name="website_url"
+            tabindex="-1"
+            autocomplete="off"
+            aria-hidden="true"
+            class="absolute -left-[9999px] h-0 w-0 opacity-0"
+          />
+
+          <div class="flex flex-col items-start gap-3 sm:col-span-2">
+            <button type="submit" class="btn-primary">Send</button>
+            <p class="dlf-success hidden font-sans text-[14px] font-semibold text-heading" role="status">
+              Thank you. A person will read this and be in touch if we need to check anything.
+            </p>
+            <p class="dlf-error hidden font-sans text-[13px] text-red-600" role="alert"></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('form.directory-lead-form').forEach((form) => {
+    const btn = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    const ok = form.querySelector<HTMLElement>('.dlf-success')!;
+    const err = form.querySelector<HTMLElement>('.dlf-error')!;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      err.classList.add('hidden');
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      const data = Object.fromEntries(new FormData(form).entries());
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+
+      try {
+        const res = await fetch('/api/directory-lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...data, page: location.pathname }),
+        });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok || !json.ok) throw new Error(json.error || 'Something went wrong. Please try again.');
+        form.reset();
+        btn.classList.add('hidden');
+        ok.classList.remove('hidden');
+      } catch (e) {
+        err.textContent = e instanceof Error ? e.message : 'Something went wrong. Please try again.';
+        err.classList.remove('hidden');
+        btn.disabled = false;
+        btn.textContent = 'Send';
+      }
+    });
+  });
+</script>

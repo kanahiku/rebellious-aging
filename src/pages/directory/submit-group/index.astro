@@ -1,0 +1,39 @@
+---
+/**
+ * /directory/submit-group — "List a group" (UI only; submission not wired yet).
+ *
+ * SECTION MAP
+ * S1 Hero2 variant="page"     same hero + embedded nav as the other pages
+ * S2 DirectoryListingForm     kind="group"
+ */
+import Layout from '~/layouts/PageLayout.astro';
+import Hero2 from '~/components/widgets/Hero2.astro';
+import Header from '~/components/widgets/Header.astro';
+import DirectoryListingForm from '~/components/widgets/DirectoryListingForm.astro';
+import { getNavigationContent } from '~/lib/content';
+
+export const prerender = false;
+
+const nav = await getNavigationContent();
+
+const metadata = {
+  title: 'List a group | Directory | Rebellious Aging',
+  description: 'Tell us about a group you run or belong to. We check the details and add it to the directory by hand.',
+  ignoreTitleTemplate: true,
+};
+---
+
+<Layout metadata={metadata}>
+  <Fragment slot="header"></Fragment>
+
+  <Hero2
+    variant="page"
+    overlapHeader={false}
+    title="List a group"
+    subtitle="Tell us about a group you run or belong to. We check the details and add it by hand, usually within a week."
+  >
+    <Header slot="nav" embedded isSticky={false} links={nav.header.links} actions={nav.header.actions} />
+  </Hero2>
+
+  <DirectoryListingForm kind="group" />
+</Layout>

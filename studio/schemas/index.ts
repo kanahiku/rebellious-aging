@@ -21,6 +21,7 @@ import { blogPost } from './documents/blogPost';
 import { book } from './documents/book';
 import { podcastEpisode } from './documents/podcastEpisode';
 import { testimonial } from './documents/testimonial';
+import { directoryBusiness } from './documents/directoryBusiness';
 
 // Navigation objects
 import { navLink, navSubLink } from './objects/navLink';
@@ -85,6 +86,7 @@ export const schemaTypes = [
   book,
   podcastEpisode,
   testimonial,
+  directoryBusiness,
   lead,
 
   // Objects — nav

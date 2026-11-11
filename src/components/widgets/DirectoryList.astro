@@ -1,0 +1,214 @@
+---
+/**
+ * DirectoryList — heading + filters + every business in one grid.
+ *
+ * Filters: Type chips (with counts), Location select (with counts), and a name/place search.
+ * Options are built from the businesses themselves — a new type or location typed on a
+ * business in Sanity appears here automatically.
+ * Cards are server-rendered (crawlable, works without JS); JS only shows/hides them.
+ * Initial filters can come from the URL (?type=…&location=…&q=…), which is how the tags on
+ * a profile page link back here.
+ */
+import DirectoryCard from '~/components/ui/DirectoryCard.astro';
+import Heading from '~/components/ui/Heading.astro';
+import Text from '~/components/ui/Text.astro';
+import { collectLocations, collectTypes, type DirectoryBusiness } from '~/lib/content/directory';
+
+export interface Props {
+  id?: string;
+  eyebrow?: string;
+  heading?: string;
+  lede?: string;
+  businesses: DirectoryBusiness[];
+  emptyMessage?: string;
+}
+
+const {
+  id = 'directory-list',
+  eyebrow,
+  heading,
+  lede,
+  businesses,
+  emptyMessage = 'No listings yet. Check back soon.',
+} = Astro.props;
+
+const types = collectTypes(businesses);
+const locations = collectLocations(businesses);
+const total = businesses.length;
+
+const chip =
+  'dir-chip cursor-pointer rounded-full border border-primary/15 bg-page px-[14px] py-[6px] font-sans text-[14px] font-semibold text-muted transition-colors hover:border-accent aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-page';
+const field =
+  'rounded-[12px] border border-primary/15 bg-page px-3 py-2 font-sans text-[15px] text-heading transition-colors focus:border-primary/40 focus:outline-none min-w-0';
+---
+
+<section id={id} class="not-prose w-full bg-page scroll-mt-[72px]">
+  <div class="mx-auto w-full max-w-container px-5 py-12 sm:px-8 md:px-16 md:py-[64px] lg:px-[120px] lg:py-[96px]">
+    {
+      (eyebrow || heading || lede) && (
+        <div class="mb-10 flex max-w-[720px] flex-col gap-4">
+          {eyebrow && <Heading variant="eyebrow">{eyebrow}</Heading>}
+          {heading && <Heading variant="h2">{heading}</Heading>}
+          {lede && <Text variant="body-lg">{lede}</Text>}
+        </div>
+      )
+    }
+
+    {
+      total === 0 ? (
+        <Text variant="body-lg">{emptyMessage}</Text>
+      ) : (
+        <>
+          <div class="flex flex-col gap-4 rounded-[16px] border border-primary/15 bg-surface p-4 md:p-5">
+            <div class="flex flex-wrap items-center gap-2" role="group" aria-label="Filter by type">
+              <span class="w-[84px] flex-none font-sans text-[12px] font-bold uppercase tracking-[0.08em] text-muted">
+                Type
+              </span>
+              <button type="button" class={chip} data-type="" aria-pressed="true">
+                All
+              </button>
+              {types.map((t) => (
+                <button type="button" class={chip} data-type={t.value.toLowerCase()} aria-pressed="false">
+                  {t.value}
+                  <span class="ml-1 font-medium tabular-nums opacity-70">{t.count}</span>
+                </button>
+              ))}
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+              <label
+                for="dir-location"
+                class="w-[84px] flex-none font-sans text-[12px] font-bold uppercase tracking-[0.08em] text-muted"
+              >
+                Location
+              </label>
+              <select id="dir-location" class={field}>
+                <option value="">All locations</option>
+                {locations.map((l) => (
+                  <option value={l.value.toLowerCase()}>
+                    {l.value} ({l.count})
+                  </option>
+                ))}
+              </select>
+              <input
+                id="dir-search"
+                type="search"
+                placeholder="Search by name or place"
+                aria-label="Search by name or place"
+                class={`${field} flex-1 basis-[200px]`}
+              />
+            </div>
+          </div>
+
+          <div class="mt-4 flex flex-wrap items-baseline gap-x-4 gap-y-1 font-sans text-[14px] tabular-nums text-muted">
+            <span id="dir-count" aria-live="polite" data-total={total}>
+              {total} {total === 1 ? 'listing' : 'listings'}
+            </span>
+            <button type="button" id="dir-clear" class="btn-link" hidden>
+              Clear filters
+            </button>
+          </div>
+
+          <ul id="dir-cards" class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-5">
+            {businesses.map((business) => (
+              <li class="min-w-0 [&[hidden]]:hidden">
+                <DirectoryCard business={business} />
+              </li>
+            ))}
+          </ul>
+
+          <div
+            id="dir-empty"
+            hidden
+            class="mt-5 flex-col items-center gap-2 rounded-[16px] border border-dashed border-primary/30 bg-surface p-8 text-center [&:not([hidden])]:flex"
+          >
+            <Heading variant="h4" as="h3">
+              Nothing matches those filters
+            </Heading>
+            <Text>Try a different type or location.</Text>
+          </div>
+        </>
+      )
+    }
+  </div>
+</section>
+
+<script>
+  (() => {
+    const list = document.getElementById('dir-cards');
+    if (!list) return;
+
+    const items = Array.from(list.querySelectorAll<HTMLLIElement>(':scope > li'));
+    const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('.dir-chip'));
+    const locSel = document.getElementById('dir-location') as HTMLSelectElement;
+    const search = document.getElementById('dir-search') as HTMLInputElement;
+    const count = document.getElementById('dir-count')!;
+    const clear = document.getElementById('dir-clear') as HTMLButtonElement;
+    const empty = document.getElementById('dir-empty')!;
+    const total = items.length;
+
+    const state = { type: '', loc: '', q: '' };
+
+    function apply(updateUrl = true) {
+      const q = state.q.toLowerCase();
+      let n = 0;
+      for (const li of items) {
+        const card = li.firstElementChild as HTMLElement;
+        const show =
+          (!state.type || (card.dataset.types ?? '').split('|').includes(state.type)) &&
+          (!state.loc || (card.dataset.locations ?? '').split('|').includes(state.loc)) &&
+          (!q || (card.dataset.search ?? '').includes(q));
+        li.hidden = !show;
+        if (show) n++;
+      }
+      count.textContent = `${n} ${n === 1 ? 'listing' : 'listings'}${n === total ? '' : ` of ${total}`}`;
+      clear.hidden = !(state.type || state.loc || state.q);
+      empty.hidden = n > 0;
+      chips.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.type === state.type)));
+
+      if (updateUrl) {
+        const url = new URL(location.href);
+        const set = (k: string, v: string) => (v ? url.searchParams.set(k, v) : url.searchParams.delete(k));
+        set('type', state.type);
+        set('location', state.loc);
+        set('q', state.q);
+        history.replaceState(null, '', url);
+      }
+    }
+
+    // Initial state from the URL (profile-page tags link here). Values match option/chip values.
+    const params = new URLSearchParams(location.search);
+    const wanted = (k: string) => (params.get(k) ?? '').trim().toLowerCase();
+    const type = wanted('type');
+    const loc = wanted('location');
+    if (chips.some((c) => c.dataset.type === type)) state.type = type;
+    if (Array.from(locSel.options).some((o) => o.value === loc)) {
+      state.loc = loc;
+      locSel.value = loc;
+    }
+    state.q = (params.get('q') ?? '').trim();
+    search.value = state.q;
+
+    chips.forEach((c) =>
+      c.addEventListener('click', () => {
+        state.type = c.dataset.type ?? '';
+        apply();
+      })
+    );
+    locSel.addEventListener('change', () => {
+      state.loc = locSel.value;
+      apply();
+    });
+    search.addEventListener('input', () => {
+      state.q = search.value.trim();
+      apply();
+    });
+    clear.addEventListener('click', () => {
+      state.type = state.loc = state.q = '';
+      locSel.value = '';
+      search.value = '';
+      apply();
+    });
+
+    apply(false);
+  })();
+</script>

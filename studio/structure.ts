@@ -142,6 +142,18 @@ export const structure = (S: StructureBuilder) => {
           ])
         ),
 
+      S.listItem()
+        .title('Directory')
+        .schemaType('directoryBusiness')
+        .child(
+          S.documentTypeList('directoryBusiness')
+            .title('Directory businesses')
+            .defaultOrdering([
+              { field: 'order', direction: 'asc' },
+              { field: 'name', direction: 'asc' },
+            ])
+        ),
+
       S.divider(),
 
       singleton('siteNavigation', 'Navigation'),

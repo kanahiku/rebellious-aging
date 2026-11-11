@@ -53,6 +53,7 @@ import {
   getSanityServicePage,
   getSanityServicePageSlugs,
 } from './sanity';
+import { getDirectorySitemapEntries } from './directory';
 import { ATHENA_CONTACT_HREF } from '~/config/cta';
 import { getSchemaPaths } from '~/config/schema';
 import { blogPosts as localBlogPosts } from '../../data/pages/blogPosts';
@@ -316,9 +317,10 @@ const toDate = (value?: string) => (value && !Number.isNaN(Date.parse(value)) ? 
  * CMS service pages, and blog posts with a real `lastmod` from Sanity.
  */
 export async function getSitemapEntries(): Promise<SitemapEntry[]> {
-  const [pageSlugs, sanityPosts] = await Promise.all([
+  const [pageSlugs, sanityPosts, directory] = await Promise.all([
     getServicePageSlugs(),
     getSanityBlogPostSitemapEntries().catch(() => [] as { slug: string; updatedAt?: string }[]),
+    getDirectorySitemapEntries(),
   ]);
 
   const posts = new Map<string, SitemapEntry>();
@@ -333,6 +335,7 @@ export async function getSitemapEntries(): Promise<SitemapEntry[]> {
     ...STATIC_PATHS.map((path) => ({ path })),
     ...pageSlugs.map((slug) => ({ path: `/${slug.replace(/^\/+/, '')}` })),
     ...posts.values(),
+    ...directory.map(({ slug, updatedAt }) => ({ path: `/directory/${slug}`, lastmod: toDate(updatedAt) })),
   ];
 
   const seen = new Set<string>();

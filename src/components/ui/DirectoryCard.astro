@@ -1,0 +1,67 @@
+---
+/**
+ * DirectoryCard — one business on the list page and in "More like this".
+ * Whole card links to the profile. Shows: Type, Name, Short description, When, Location.
+ * data-* attributes feed the client-side filters + search.
+ */
+import Heading from '~/components/ui/Heading.astro';
+import Text from '~/components/ui/Text.astro';
+import { directoryPermalink, type DirectoryBusiness } from '~/lib/content/directory';
+
+export interface Props {
+  business: DirectoryBusiness;
+  class?: string;
+}
+
+const { business, class: className = '' } = Astro.props;
+const search = [business.name, business.shortDescription, business.where, ...business.locations]
+  .join(' ')
+  .toLowerCase();
+---
+
+<a
+  href={directoryPermalink(business.slug)}
+  class:list={[
+    'directory-card group flex h-full min-w-0 flex-col gap-3 rounded-[16px] border border-primary/15 bg-surface p-5 shadow-[4px_4px_30px_rgb(0_0_0/0.05)] transition-colors hover:border-primary/40 md:p-6',
+    className,
+  ]}
+  data-types={business.types.map((t) => t.toLowerCase()).join('|')}
+  data-locations={business.locations.map((l) => l.toLowerCase()).join('|')}
+  data-search={search}
+>
+  {
+    business.types.length > 0 && (
+      <ul class="flex flex-wrap gap-2" aria-label="Type">
+        {business.types.map((type) => (
+          <li class="rounded-full bg-accent px-3 py-[3px] font-sans text-[11px] font-bold uppercase tracking-[0.1em] text-page">
+            {type}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+  <Heading variant="h4" as="h3" class="group-hover:text-primary">{business.name}</Heading>
+  <Text class="leading-[1.45]">{business.shortDescription}</Text>
+  <dl
+    class="mt-auto grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 border-t border-primary/15 pt-3 font-sans text-[14px] leading-[1.4]"
+  >
+    {
+      business.when && (
+        <>
+          <dt class="font-semibold text-muted">When</dt>
+          <dd class="text-heading">{business.when}</dd>
+        </>
+      )
+    }
+    {
+      business.locations.length > 0 && (
+        <>
+          <dt class="font-semibold text-muted">Location</dt>
+          <dd class="text-heading">{business.locations.join(', ')}</dd>
+        </>
+      )
+    }
+  </dl>
+  <span class="font-sans text-body font-bold text-primary group-hover:underline underline-offset-4">View details →</span
+  >
+</a>

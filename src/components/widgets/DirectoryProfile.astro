@@ -1,0 +1,239 @@
+---
+/**
+ * DirectoryProfile — one business's page (`/directory/[slug]`).
+ *
+ * Above the columns: back link + Type / Location tags (each links back to the list pre-filtered).
+ * Name (h1) and short description lead the page; no separate hero.
+ * Two columns: story (photo, About, Who it is for, Good to know) and an "At a glance" card
+ * (When, Where + map, Phone, Email, Website, Google Maps / website buttons, call-ahead line).
+ * Empty optional fields hide.
+ */
+import Image from '~/components/common/Image.astro';
+import Button from '~/components/ui/Button.astro';
+import Heading from '~/components/ui/Heading.astro';
+import Text from '~/components/ui/Text.astro';
+import { telHref, type DirectoryBusiness } from '~/lib/content/directory';
+
+export interface Props {
+  id?: string;
+  business: DirectoryBusiness;
+  callAheadNote?: string;
+}
+
+const {
+  id = 'directory-profile',
+  business: b,
+  callAheadNote = 'Days and times change. Call ahead before you make a trip.',
+} = Astro.props;
+
+const showAbout = b.fullDescription.join(' ').trim() !== b.shortDescription.trim();
+const mapQuery = [b.where, b.locations[0], 'Hawaii'].filter(Boolean).join(', ');
+const mapEmbed =
+  b.mapsUrl && b.where ? `https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&z=15&output=embed` : '';
+const websiteLabel = b.website ? b.website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/.*$/, '') : '';
+
+const tagBase =
+  'rounded-full px-3 py-[3px] font-sans text-[12px] font-bold uppercase tracking-[0.1em] transition-colors';
+const typeTag = `${tagBase} bg-accent text-page hover:bg-primary`;
+const locTag = `${tagBase} border border-primary/20 text-primary hover:border-primary`;
+const dt = 'font-sans text-[12px] font-bold uppercase tracking-[0.1em] text-muted';
+const dd = 'mt-0.5 font-sans text-body-lg font-medium text-heading [overflow-wrap:anywhere]';
+---
+
+<section {id} class="not-prose w-full bg-page">
+  <div class="mx-auto w-full max-w-container px-5 py-12 sm:px-8 md:px-16 md:py-[64px] lg:px-[120px] lg:py-[96px]">
+    <a href="/directory" class="mb-8 inline-block font-sans text-body font-semibold text-muted hover:text-primary">
+      ← Back to all listings
+    </a>
+
+    <div class="flex flex-col gap-12 lg:flex-row lg:items-start lg:gap-[64px]">
+      {/* Left: tags, name, description, story */}
+      <div class="flex min-w-0 flex-[3] flex-col gap-8">
+        <div class="flex flex-col gap-4">
+          <ul class="flex flex-wrap gap-2">
+            {
+              b.types.map((type) => (
+                <li>
+                  <a
+                    href={`/directory?type=${encodeURIComponent(type.toLowerCase())}`}
+                    class={typeTag}
+                    title={`See all ${type} listings`}
+                  >
+                    {type}
+                  </a>
+                </li>
+              ))
+            }
+            {
+              b.locations.map((loc) => (
+                <li>
+                  <a
+                    href={`/directory?location=${encodeURIComponent(loc.toLowerCase())}`}
+                    class={locTag}
+                    title={`See all listings in ${loc}`}
+                  >
+                    {loc}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+          <Heading variant="h1" class="text-h2">{b.name}</Heading>
+          {
+            b.shortDescription && (
+              <Text variant="body-lg" class="max-w-[60ch] leading-[1.5]">
+                {b.shortDescription}
+              </Text>
+            )
+          }
+        </div>
+
+        {
+          b.image?.src && (
+            <Image
+              src={b.image.src}
+              alt={b.image.alt || b.name}
+              class="w-full rounded-[16px] object-cover"
+              style="aspect-ratio: 16 / 9;"
+              layout="none"
+              widths={[480, 720, 1024]}
+              sizes="(max-width: 1024px) 100vw, 640px"
+              format="webp"
+              quality={82}
+              loading="eager"
+            />
+          )
+        }
+
+        {
+          showAbout && (
+            <div class="flex flex-col gap-3">
+              <Heading variant="eyebrow">About</Heading>
+              {b.fullDescription.map((p) => (
+                <Text variant="body-lg" class="leading-[1.5]">
+                  {p}
+                </Text>
+              ))}
+            </div>
+          )
+        }
+
+        {
+          b.whoFor && (
+            <div class="flex flex-col gap-3">
+              <Heading variant="eyebrow">Who it is for</Heading>
+              <Text variant="body-lg">{b.whoFor}</Text>
+            </div>
+          )
+        }
+
+        {
+          b.notes.length > 0 && (
+            <div class="flex flex-col gap-3">
+              <Heading variant="eyebrow">Good to know</Heading>
+              <ul class="flex flex-wrap gap-2">
+                {b.notes.map((note) => (
+                  <li class="rounded-full border border-primary/20 px-3 py-[3px] font-sans text-[12px] font-bold uppercase tracking-[0.07em] text-muted">
+                    {note}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+      </div>
+
+      {/* Right: map card with all the details */}
+      <aside
+        aria-label="At a glance"
+        class="flex min-w-0 flex-[2] flex-col gap-6 overflow-hidden rounded-[16px] border border-primary/15 bg-surface shadow-[4px_4px_30px_rgb(0_0_0/0.05)] lg:sticky lg:top-24"
+      >
+        {
+          mapEmbed && (
+            <iframe
+              src={mapEmbed}
+              title={`Map showing ${b.where}`}
+              class="h-[260px] w-full border-0"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            />
+          )
+        }
+
+        <div class:list={['flex flex-col gap-6 px-6 pb-6', !mapEmbed && 'pt-6']}>
+          <dl class="flex flex-col gap-4">
+            {
+              b.when && (
+                <div>
+                  <dt class={dt}>When</dt>
+                  <dd class={dd}>{b.when}</dd>
+                </div>
+              )
+            }
+            {
+              b.where && (
+                <div>
+                  <dt class={dt}>Where</dt>
+                  <dd class={dd}>{b.where}</dd>
+                </div>
+              )
+            }
+            {
+              b.phone && (
+                <div>
+                  <dt class={dt}>Phone</dt>
+                  <dd class={dd}>
+                    <a href={telHref(b.phone)} class="tabular-nums text-primary hover:underline">
+                      {b.phone}
+                    </a>
+                  </dd>
+                </div>
+              )
+            }
+            {
+              b.email && (
+                <div>
+                  <dt class={dt}>Email</dt>
+                  <dd class={dd}>
+                    <a href={`mailto:${b.email}`} class="text-primary hover:underline">
+                      {b.email}
+                    </a>
+                  </dd>
+                </div>
+              )
+            }
+            {
+              b.website && (
+                <div>
+                  <dt class={dt}>Website</dt>
+                  <dd class={dd}>
+                    <a href={b.website} target="_blank" rel="noopener" class="text-primary hover:underline">
+                      {websiteLabel}
+                    </a>
+                  </dd>
+                </div>
+              )
+            }
+          </dl>
+
+          {
+            (b.mapsUrl || b.website) && (
+              <div class="flex flex-wrap gap-3">
+                {b.mapsUrl && (
+                  <Button variant="primary" text="Open in Google Maps" href={b.mapsUrl} target="_blank" hideNote />
+                )}
+                {b.website && (
+                  <Button variant="ghost" tone="light" text="Visit website" href={b.website} target="_blank" hideNote />
+                )}
+              </div>
+            )
+          }
+
+          <p class="border-l-[3px] border-accent pl-3 font-sans text-[14px] leading-[1.45] text-muted">
+            {callAheadNote}
+          </p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>

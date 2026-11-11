@@ -877,6 +877,81 @@
         "vars": "legalVars() — values for {{tokens}} (dba, host, legalName, entity, analytics, governingState, governingCounty)"
       },
       "notes": "Copy lives in Sanity (legal-privacy-policy, legal-terms-of-service). Markup: **bold**, [label](href), {{tokens}}."
+    },
+    {
+      "id": "P-44",
+      "name": "Directory list",
+      "figmaNames": ["Rebellious Aging Directory Prototype.html (client)", "Directory / list"],
+      "shape": "eyebrow + h1 + lede, filter panel (Type chips with counts, Location select with counts, search), result count, 3-col grid of DirectoryCard, empty state",
+      "component": "DirectoryList",
+      "import": "~/components/widgets/DirectoryList.astro",
+      "props": {
+        "businesses": "DirectoryBusiness[] from getDirectoryBusinesses()"
+      },
+      "notes": "Filter options and counts are built from the data — nothing hardcoded. Filters also read ?type=&location=&q= from the URL (profile tags link here). Cards come from ui/DirectoryCard.astro (also used by DirectoryRelated). Source: Sanity directoryBusiness."
+    },
+    {
+      "id": "P-45",
+      "name": "Directory profile",
+      "figmaNames": ["Directory / business profile"],
+      "shape": "Header (clickable type/location tags + name), 2-col: photo, About, Who it is for, Good to know | At-a-glance card: when, where, phone, email, website, map, Maps/website buttons, call-ahead line",
+      "component": "DirectoryProfile",
+      "import": "~/components/widgets/DirectoryProfile.astro",
+      "props": {
+        "business": "DirectoryBusiness from getDirectoryBusinesses()"
+      },
+      "notes": "Route /directory/[slug]. Empty optional fields (photo, phone, website, email, who for, good to know, maps link) hide. Map embed shows only when a Google Maps link exists."
+    },
+    {
+      "id": "P-46",
+      "name": "Directory related",
+      "figmaNames": ["Directory / More like this"],
+      "shape": "Heading + up to 3 DirectoryCards + back link",
+      "component": "DirectoryRelated",
+      "import": "~/components/widgets/DirectoryRelated.astro",
+      "props": {
+        "businesses": "getRelatedBusinesses(current, all, 3) — shared type (2 pts each), shared location (1 pt each)"
+      },
+      "notes": "Renders nothing when no business shares a type or location."
+    },
+    {
+      "id": "P-47",
+      "name": "Directory lead form",
+      "figmaNames": ["Add my business"],
+      "shape": "Section-grey band: eyebrow + h2 + copy, then 2-col field grid (name, business, email, phone?, message?)",
+      "component": "DirectoryLeadForm",
+      "import": "~/components/widgets/DirectoryLeadForm.astro",
+      "props": {
+        "id": "anchor — defaults to 'add-my-business'",
+        "eyebrow / heading / description": "optional copy overrides"
+      },
+      "notes": "Same on /directory and every profile. POSTs to /api/directory-lead (Resend email; honeypot field). Lead only — nothing is listed automatically."
+    },
+    {
+      "id": "P-48",
+      "name": "Directory listing form (group / business)",
+      "figmaNames": ["Rebellious Aging Directory.html: List a group", "Rebellious Aging Directory.html: List a business"],
+      "shape": "Back link, eyebrow + h2 + lede (+ free-listing note for business), single-column config-driven field list, Send it in button",
+      "component": "DirectoryListingForm",
+      "import": "~/components/widgets/DirectoryListingForm.astro",
+      "props": {
+        "kind": "group | business",
+        "categoryOptions": "business select options; defaults to the mockup's six lists + Not sure"
+      },
+      "notes": "UI only — submit is inert until the handling is confirmed. Routes /directory/submit-group and /directory/submit-business. Fields mirror the mockup's GROUP_FIELDS / BIZ_FIELDS."
+    },
+    {
+      "id": "P-49",
+      "name": "Directory add CTA",
+      "figmaNames": ["Rebellious Aging Directory.html: Run something? strip"],
+      "shape": "Section-grey band: eyebrow + h2 + copy left, two buttons (List a group, List a business) right",
+      "component": "DirectoryAddCta",
+      "import": "~/components/widgets/DirectoryAddCta.astro",
+      "props": {
+        "groupHref / businessHref": "default /directory/submit-group and /directory/submit-business",
+        "eyebrow / heading / description": "optional copy overrides"
+      },
+      "notes": "Closes /directory and every profile page. Replaces the inline DirectoryLeadForm (P-47), which is no longer used on those pages."
     }
   ]
 }

@@ -58,6 +58,35 @@ export const pages: PageSchema[] = [
     breadcrumb: crumb('The Ohana', '/ohana'),
   },
   {
+    name: 'Directory',
+    path: '/directory',
+    schemaType: 'CollectionPage',
+    faq: [],
+    breadcrumb: crumb('Directory', '/directory'),
+  },
+  {
+    name: 'List a group',
+    path: '/directory/submit-group',
+    schemaType: 'WebPage',
+    faq: [],
+    breadcrumb: [
+      HOME,
+      { name: 'Directory', path: '/directory' },
+      { name: 'List a group', path: '/directory/submit-group' },
+    ],
+  },
+  {
+    name: 'List a business',
+    path: '/directory/submit-business',
+    schemaType: 'WebPage',
+    faq: [],
+    breadcrumb: [
+      HOME,
+      { name: 'Directory', path: '/directory' },
+      { name: 'List a business', path: '/directory/submit-business' },
+    ],
+  },
+  {
     name: 'In your 30s',
     path: '/in-your-30s',
     schemaType: 'WebPage',

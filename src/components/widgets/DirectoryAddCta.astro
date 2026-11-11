@@ -1,0 +1,44 @@
+---
+/**
+ * DirectoryAddCta — closing band on the directory pages: two links to the listing forms
+ * ("List a group" and "List a business"), from the client's directory mockup.
+ * Replaces the inline "Add my business" form (DirectoryLeadForm) on /directory and profiles.
+ */
+import Button from '~/components/ui/Button.astro';
+import Heading from '~/components/ui/Heading.astro';
+import Text from '~/components/ui/Text.astro';
+
+export interface Props {
+  id?: string;
+  eyebrow?: string;
+  heading?: string;
+  description?: string;
+  groupHref?: string;
+  businessHref?: string;
+}
+
+const {
+  id = 'add-to-directory',
+  eyebrow = 'Run something?',
+  heading = 'Add it to the directory',
+  description = 'If you run a group, a class or a business that helps people do the basics, tell us and we will take a look. A person reads every submission. There is no automatic listing.',
+  groupHref = '/directory/submit-group',
+  businessHref = '/directory/submit-business',
+} = Astro.props;
+---
+
+<section {id} class="not-prose w-full bg-section-grey scroll-mt-[72px]">
+  <div class="mx-auto w-full max-w-container px-5 py-12 sm:px-8 md:px-16 md:py-[64px] lg:px-[120px] lg:py-[96px]">
+    <div class="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-[120px]">
+      <div class="flex min-w-0 max-w-[60ch] flex-col gap-4">
+        <Heading variant="eyebrow">{eyebrow}</Heading>
+        <Heading variant="h2">{heading}</Heading>
+        <Text variant="body-lg">{description}</Text>
+      </div>
+      <div class="flex flex-wrap gap-4">
+        <Button variant="primary" text="List a group" href={groupHref} hideNote />
+        <Button variant="ghost" tone="light" text="List a business" href={businessHref} hideNote />
+      </div>
+    </div>
+  </div>
+</section>

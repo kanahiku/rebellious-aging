@@ -1,0 +1,40 @@
+---
+/**
+ * DirectoryRelated — "More like this" row on a profile page.
+ * Fills itself from businesses sharing a type or location (see getRelatedBusinesses).
+ * Renders nothing when there is nothing related.
+ */
+import DirectoryCard from '~/components/ui/DirectoryCard.astro';
+import Heading from '~/components/ui/Heading.astro';
+import type { DirectoryBusiness } from '~/lib/content/directory';
+
+export interface Props {
+  id?: string;
+  heading?: string;
+  businesses: DirectoryBusiness[];
+}
+
+const { id = 'more-like-this', heading = 'More like this', businesses } = Astro.props;
+---
+
+{
+  businesses.length > 0 && (
+    <section id={id} class="not-prose w-full bg-page">
+      <div class="mx-auto w-full max-w-container px-5 pb-12 sm:px-8 md:px-16 md:pb-[64px] lg:px-[120px] lg:pb-[96px]">
+        <Heading variant="h3" class="mb-6">
+          {heading}
+        </Heading>
+        <ul class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-5">
+          {businesses.map((business) => (
+            <li class="min-w-0">
+              <DirectoryCard business={business} />
+            </li>
+          ))}
+        </ul>
+        <a href="/directory" class="mt-10 inline-block font-sans text-body font-semibold text-muted hover:text-primary">
+          ← Back to all listings
+        </a>
+      </div>
+    </section>
+  )
+}

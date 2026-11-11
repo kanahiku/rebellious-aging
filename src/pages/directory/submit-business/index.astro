@@ -1,0 +1,42 @@
+---
+/**
+ * /directory/submit-business — "List a business" (UI only; submission not wired yet).
+ *
+ * SECTION MAP
+ * S1 Hero2 variant="page"     same hero + embedded nav as the other pages
+ * S2 DirectoryListingForm     kind="business" (category options come from the directory's types)
+ */
+import Layout from '~/layouts/PageLayout.astro';
+import Hero2 from '~/components/widgets/Hero2.astro';
+import Header from '~/components/widgets/Header.astro';
+import DirectoryListingForm from '~/components/widgets/DirectoryListingForm.astro';
+import { getNavigationContent } from '~/lib/content';
+import { collectTypes, getDirectoryBusinesses } from '~/lib/content/directory';
+
+export const prerender = false;
+
+const [nav, businesses] = await Promise.all([getNavigationContent(), getDirectoryBusinesses()]);
+const categoryOptions = collectTypes(businesses).map((t) => t.value);
+
+const metadata = {
+  title: 'List a business | Directory | Rebellious Aging',
+  description:
+    'Tell us what you offer. We check every submission and only list things we would send our own family to.',
+  ignoreTitleTemplate: true,
+};
+---
+
+<Layout metadata={metadata}>
+  <Fragment slot="header"></Fragment>
+
+  <Hero2
+    variant="page"
+    overlapHeader={false}
+    title="List a business"
+    subtitle="Tell us what you offer. We check every submission and we only list things we would send our own family to."
+  >
+    <Header slot="nav" embedded isSticky={false} links={nav.header.links} actions={nav.header.actions} />
+  </Hero2>
+
+  <DirectoryListingForm kind="business" categoryOptions={categoryOptions} />
+</Layout>

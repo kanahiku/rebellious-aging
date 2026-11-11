@@ -1,0 +1,160 @@
+---
+/**
+ * DirectoryListingForm — the two "list it" forms from the client's directory mockup.
+ *   kind="group"     → "List a group"     (11 fields)
+ *   kind="business"  → "List a business"  (12 fields, category select, free-listing note)
+ *
+ * The page hero (Hero2) carries the title and lede, so this widget has none.
+ * UI ONLY for now: no submission logic is wired. The submit button is inert until the
+ * form handling is confirmed (see the script at the bottom).
+ * Fields are config-driven (same shape as the mockup's GROUP_FIELDS / BIZ_FIELDS).
+ */
+
+interface Field {
+  n: string;
+  l: string;
+  req?: boolean;
+  ta?: boolean;
+  type?: 'text' | 'email' | 'tel';
+  hint?: string;
+  sel?: string[];
+}
+
+export interface Props {
+  id?: string;
+  kind: 'group' | 'business';
+  /** Options for the business "Which list does it belong in?" select. Falls back to the mockup's list. */
+  categoryOptions?: string[];
+}
+
+const { id = 'listing-form', kind, categoryOptions } = Astro.props;
+const isGroup = kind === 'group';
+
+const GROUP_FIELDS: Field[] = [
+  { n: 'groupName', l: 'What is the group called?', req: true },
+  {
+    n: 'what',
+    l: 'What do you do together?',
+    ta: true,
+    req: true,
+    hint: 'A sentence or two. Plain words are better than a mission statement.',
+  },
+  {
+    n: 'when',
+    l: 'When do you meet?',
+    req: true,
+    hint: 'A standing day and time, like "Tuesdays, 9am". We do not list one-off events.',
+  },
+  { n: 'where', l: 'Where do you meet?', req: true },
+  { n: 'who', l: 'Who is it for?', hint: 'Any age limits, fitness level, or who tends to come.' },
+  { n: 'cost', l: 'What does it cost?', hint: 'Free, dues, or a per-session price.' },
+  { n: 'link', l: 'Website or Meetup link', hint: 'Optional.' },
+  { n: 'contactName', l: 'Your name', req: true },
+  { n: 'email', l: 'Your email', req: true, type: 'email', hint: 'So we can check details before listing you.' },
+  { n: 'phone', l: 'Your phone', type: 'tel', hint: 'Optional, but it makes verification much faster.' },
+  { n: 'notes', l: 'Anything else we should know?', ta: true },
+];
+
+const BIZ_FIELDS: Field[] = [
+  { n: 'bizName', l: 'Business or organisation name', req: true },
+  {
+    n: 'category',
+    l: 'Which list does it belong in?',
+    req: true,
+    sel: categoryOptions?.length
+      ? [...categoryOptions, 'Not sure']
+      : ['Groups & Ohana', 'Exercise', 'Diet', 'Sleep', 'Ask your doctor', 'Service', 'Not sure'],
+  },
+  {
+    n: 'what',
+    l: 'What do you offer?',
+    ta: true,
+    req: true,
+    hint: 'What someone over 50 would actually come to you for.',
+  },
+  { n: 'where', l: 'Address', req: true },
+  { n: 'hours', l: 'Hours or how to book' },
+  {
+    n: 'cost',
+    l: 'Typical price',
+    hint: 'A range is fine. We list prices where we can. People want to know before they call.',
+  },
+  { n: 'link', l: 'Website', req: true },
+  { n: 'contactName', l: 'Your name', req: true },
+  { n: 'role', l: 'Your role' },
+  { n: 'email', l: 'Your email', req: true, type: 'email' },
+  { n: 'phone', l: 'Your phone', type: 'tel' },
+  { n: 'notes', l: 'Anything else?', ta: true },
+];
+
+const fields = isGroup ? GROUP_FIELDS : BIZ_FIELDS;
+
+const businessNote =
+  'Listings are free and we choose them ourselves. Submitting does not buy you a place, and we do not list anything we cannot verify. If you want to sponsor a page, say so in the notes and we will send you the rates separately.';
+
+const control =
+  'w-full rounded-[10px] border border-primary/15 bg-surface px-4 py-3 font-sans text-[15px] text-heading placeholder:text-muted/40 transition-colors focus:border-primary/40 focus:outline-none';
+---
+
+<section {id} class="not-prose w-full bg-page scroll-mt-[72px]">
+  <div class="mx-auto w-full max-w-container px-5 py-12 sm:px-8 md:px-16 md:py-[64px] lg:px-[120px] lg:py-[96px]">
+    <a href="/directory" class="mb-8 inline-block font-sans text-body font-semibold text-muted hover:text-primary">
+      ← All directories
+    </a>
+
+    {
+      !isGroup && (
+        <p class="max-w-[720px] rounded-[12px] border-l-[3px] border-accent bg-surface p-4 font-sans text-body leading-[1.45] text-muted">
+          {businessNote}
+        </p>
+      )
+    }
+
+    <form class="listing-form mt-10 flex max-w-[720px] flex-col gap-6" data-kind={kind} novalidate>
+      {
+        fields.map((f) => {
+          const fid = `${id}-${f.n}`;
+          return (
+            <div class="flex flex-col gap-1.5">
+              <label for={fid} class="font-sans text-[14px] font-semibold leading-[1.3] text-heading">
+                {f.l}
+                {f.req && (
+                  <span class="text-accent" aria-hidden="true">
+                    {' '}
+                    *
+                  </span>
+                )}
+              </label>
+              {f.hint && <span class="font-sans text-[13px] leading-[1.4] text-muted">{f.hint}</span>}
+              {f.sel ? (
+                <select id={fid} name={f.n} required={f.req} class={control}>
+                  <option value="">Choose one</option>
+                  {f.sel.map((o) => (
+                    <option>{o}</option>
+                  ))}
+                </select>
+              ) : f.ta ? (
+                <textarea id={fid} name={f.n} required={f.req} rows="4" class={`${control} resize-y`} />
+              ) : (
+                <input id={fid} name={f.n} type={f.type ?? 'text'} required={f.req} class={control} />
+              )}
+            </div>
+          );
+        })
+      }
+
+      <p class="listing-form-error hidden font-sans text-[14px] font-semibold text-red-600" role="alert"></p>
+
+      <div>
+        <button type="submit" class="btn-primary">Send it in</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script>
+  // UI only: the real submission logic is added once the form handling is confirmed.
+  document.querySelectorAll<HTMLFormElement>('form.listing-form').forEach((form) => {
+    form.addEventListener('submit', (e) => e.preventDefault());
+  });
+</script>
