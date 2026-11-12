@@ -5,23 +5,28 @@
  * SECTION MAP
  * S1 Hero2 variant="page"     same hero + embedded nav as the other pages
  * S2 DirectoryList          filters + cards (Sanity `directoryBusiness`)
- * S3 DirectoryAddCta          links to the group + business forms
+ * S3 DirectoryAddCta          links to the business form
  */
 import Layout from '~/layouts/PageLayout.astro';
 import Hero2 from '~/components/widgets/Hero2.astro';
 import Header from '~/components/widgets/Header.astro';
 import DirectoryList from '~/components/widgets/DirectoryList.astro';
 import DirectoryAddCta from '~/components/widgets/DirectoryAddCta.astro';
-import { getNavigationContent } from '~/lib/content';
+import { getDirectoryPageContent, getNavigationContent } from '~/lib/content';
 import { getDirectoryBusinesses } from '~/lib/content/directory';
 
 export const prerender = false;
 
-const [businesses, nav] = await Promise.all([getDirectoryBusinesses(), getNavigationContent()]);
+const [businesses, nav, page] = await Promise.all([
+  getDirectoryBusinesses(),
+  getNavigationContent(),
+  getDirectoryPageContent(),
+]);
+const { hero, intro } = page;
 
 const metadata = {
-  title: 'Directory: places to show up on Oʻahu | Rebellious Aging',
-  description: 'Groups, classes, markets and clinics that help you do the basics. Pick one, check the day, and go.',
+  title: page.meta.title,
+  description: page.meta.description,
   ignoreTitleTemplate: true,
 };
 ---
@@ -32,15 +37,15 @@ const metadata = {
   <Hero2
     variant="page"
     overlapHeader={false}
-    title="Places to show up on Oʻahu"
-    subtitle="Groups, classes, markets and clinics that help you do the basics. Pick one, check the day, and go."
+    withImage
+    pageOverlay
+    image={hero.image}
+    title={hero.title}
+    subtitle={hero.subtitle}
   >
     <Header slot="nav" embedded isSticky={false} links={nav.header.links} actions={nav.header.actions} />
   </Hero2>
 
-  <DirectoryList
-    businesses={businesses}
-    lede="Rebellious Aging is a movement started by Dr. Robert Peterson, sponsored by Athena Clinic. Nobody on this page paid to be here."
-  />
+  <DirectoryList businesses={businesses} lede={intro.lede} />
   <DirectoryAddCta />
 </Layout>

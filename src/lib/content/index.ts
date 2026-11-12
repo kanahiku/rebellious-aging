@@ -18,6 +18,7 @@ import type {
   BooksPageContent,
   PodcastPageContent,
   BlogIndexContent,
+  DirectoryPageContent,
   NavLink,
   PodcastEpisode,
   PodcastPartGroup,
@@ -48,6 +49,7 @@ import {
   getSanityBooksPage,
   getSanityPodcastPage,
   getSanityBlogIndex,
+  getSanityDirectoryPage,
   getSanityNavigationContent,
   getSanityReviewsPage,
   getSanityServicePage,
@@ -122,6 +124,12 @@ export async function getBooksPageContent(): Promise<BooksPageContent> {
   return page;
 }
 
+export async function getDirectoryPageContent(): Promise<DirectoryPageContent> {
+  const page = await getSanityDirectoryPage();
+  if (!page) throw new Error('Sanity directoryPage document is missing (singleton-directory).');
+  return page;
+}
+
 export async function getPodcastPageContent(): Promise<PodcastPageContent> {
   const page = await getSanityPodcastPage();
   if (!page) throw new Error('Sanity podcastPage document is missing (singleton-podcast).');
@@ -187,10 +195,7 @@ const HIDDEN_NAV_HREFS = new Set(['/chapters', '/guidebooks', '/accessibility'])
 const HIDDEN_NAV_LABELS = new Set(['chapters', 'guidebooks', 'guidebook series']);
 
 function isHiddenNavLink(link: { text: string; href?: string }): boolean {
-  return (
-    (link.href != null && HIDDEN_NAV_HREFS.has(link.href)) ||
-    HIDDEN_NAV_LABELS.has(link.text.toLowerCase())
-  );
+  return (link.href != null && HIDDEN_NAV_HREFS.has(link.href)) || HIDDEN_NAV_LABELS.has(link.text.toLowerCase());
 }
 
 function isInternalContactHref(href?: string): boolean {

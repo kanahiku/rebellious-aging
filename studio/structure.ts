@@ -24,6 +24,7 @@ const SINGLETONS: Record<string, string> = {
   booksPage: 'singleton-books',
   podcastPage: 'singleton-podcast',
   blogIndexPage: 'singleton-blog-index',
+  directoryPage: 'singleton-directory',
 };
 
 /** Legal pages share one schema; each has its own fixed document. */
@@ -97,6 +98,7 @@ export const structure = (S: StructureBuilder) => {
               singleton('podcastPage', 'Podcast  ( /podcast )'),
               singleton('blogIndexPage', 'Blog  ( /blog )'),
               singleton('reviewsPage', 'Reviews  ( /reviews )'),
+              singleton('directoryPage', 'Directory  ( /directory )'),
               S.listItem()
                 .title('Service pages')
                 .schemaType('servicePage')
@@ -110,36 +112,42 @@ export const structure = (S: StructureBuilder) => {
         .title('Blog')
         .schemaType('blogPost')
         .child(
-          S.documentTypeList('blogPost').title('Blog posts').defaultOrdering([{ field: 'publishDate', direction: 'desc' }])
+          S.documentTypeList('blogPost')
+            .title('Blog posts')
+            .defaultOrdering([{ field: 'publishDate', direction: 'desc' }])
         ),
 
       S.listItem()
         .title('Books')
         .schemaType('book')
         .child(
-          S.documentTypeList('book').title('Books').defaultOrdering([
-            { field: 'order', direction: 'asc' },
-            { field: 'title', direction: 'asc' },
-          ])
+          S.documentTypeList('book')
+            .title('Books')
+            .defaultOrdering([
+              { field: 'order', direction: 'asc' },
+              { field: 'title', direction: 'asc' },
+            ])
         ),
 
       S.listItem()
         .title('Podcast Episodes')
         .schemaType('podcastEpisode')
         .child(
-          S.documentTypeList('podcastEpisode').title('Podcast Episodes').defaultOrdering([
-            { field: 'order', direction: 'asc' },
-          ])
+          S.documentTypeList('podcastEpisode')
+            .title('Podcast Episodes')
+            .defaultOrdering([{ field: 'order', direction: 'asc' }])
         ),
 
       S.listItem()
         .title('Testimonials')
         .schemaType('testimonial')
         .child(
-          S.documentTypeList('testimonial').title('Testimonials').defaultOrdering([
-            { field: 'order', direction: 'asc' },
-            { field: 'name', direction: 'asc' },
-          ])
+          S.documentTypeList('testimonial')
+            .title('Testimonials')
+            .defaultOrdering([
+              { field: 'order', direction: 'asc' },
+              { field: 'name', direction: 'asc' },
+            ])
         ),
 
       S.listItem()
@@ -163,7 +171,11 @@ export const structure = (S: StructureBuilder) => {
 
       S.listItem()
         .title('Leads')
-        .child(S.documentTypeList('lead').title('Leads').defaultOrdering([{ field: 'submittedAt', direction: 'desc' }])),
+        .child(
+          S.documentTypeList('lead')
+            .title('Leads')
+            .defaultOrdering([{ field: 'submittedAt', direction: 'desc' }])
+        ),
     ]);
 };
 

@@ -333,7 +333,14 @@ export interface DecadePageContent {
   blackSwan?: { eyebrow: string; heading: string; paragraphs: string[]; ctaText: string; ctaHref: string };
   /** 70+ only */
   stayingHome?: { heading: string; lead: string; body: string; source: string; bullets: string[] };
-  cta: { title: string; subtitle: string; primaryText: string; primaryHref: string; secondaryText: string; secondaryHref: string };
+  cta: {
+    title: string;
+    subtitle: string;
+    primaryText: string;
+    primaryHref: string;
+    secondaryText: string;
+    secondaryHref: string;
+  };
 }
 
 export interface FillFirstBucketContent {
@@ -391,9 +398,7 @@ export interface AthenaEvaluationContent {
 }
 
 export type LegalBlock =
-  | { type: 'paragraph'; text: string }
-  | { type: 'list'; items: string[] }
-  | { type: 'contact'; text: string };
+  { type: 'paragraph'; text: string } | { type: 'list'; items: string[] } | { type: 'contact'; text: string };
 
 export interface LegalPageContent {
   meta: { title: string; description: string };
@@ -820,6 +825,12 @@ export interface BooksPageContent {
   hero: { title: string; subtitle: string; image?: ContentImage };
   tabs: { textbook: string; guidebook: string; bargaining: string; podcast: string };
   series: { textbook: SeriesIntro; guidebook: SeriesIntro; bargaining: SeriesIntro; podcastLinkLabel: string };
+}
+
+export interface DirectoryPageContent {
+  meta: { title: string; description: string };
+  hero: { title: string; subtitle: string; image?: ContentImage };
+  intro: { lede: string };
 }
 
 export interface PodcastPageContent {

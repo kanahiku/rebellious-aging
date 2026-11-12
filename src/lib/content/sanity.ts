@@ -1,8 +1,5 @@
 import { sanityClient } from '../sanity/client';
-import {
-  resolveContentImage,
-  type SanityImageFields,
-} from '../sanity/image';
+import { resolveContentImage, type SanityImageFields } from '../sanity/image';
 import type {
   BlogContentBlock,
   BlogPost,
@@ -32,6 +29,7 @@ import type {
   BooksPageContent,
   PodcastPageContent,
   BlogIndexContent,
+  DirectoryPageContent,
   ReviewsPageContent,
   ServicePageContent,
   ServiceSection,
@@ -537,7 +535,8 @@ export async function getSanityDecade(key: DecadeKey): Promise<DecadePageContent
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const raw = await sanityClient.fetch<Record<string, any> | null>(DECADE_QUERY, { id: `decade-${key}` });
   if (!raw) return null;
-  const rows = (value?: Row[] | null) => list(value).map((r) => ({ name: text(r.name), description: text(r.description) }));
+  const rows = (value?: Row[] | null) =>
+    list(value).map((r) => ({ name: text(r.name), description: text(r.description) }));
 
   const doctor = raw.doctorTests;
   const swan = raw.blackSwan;
@@ -621,7 +620,12 @@ const FILL_FIRST_BUCKET_QUERY = /* groq */ `
 export async function getSanityFillFirstBucket(): Promise<FillFirstBucketContent | null> {
   const raw = await sanityClient.fetch<{
     meta?: Nullable<FillFirstBucketContent['meta']> | null;
-    hero?: { title?: string | null; paragraphs?: string[] | null; image?: FetchedImage; imageMobile?: FetchedImage } | null;
+    hero?: {
+      title?: string | null;
+      paragraphs?: string[] | null;
+      image?: FetchedImage;
+      imageMobile?: FetchedImage;
+    } | null;
     rules?: {
       pullQuote?: string[] | null;
       heading?: string | null;
@@ -673,7 +677,12 @@ const FOUR_PILLARS_QUERY = /* groq */ `
 export async function getSanityFourPillars(): Promise<FourPillarsContent | null> {
   const raw = await sanityClient.fetch<{
     meta?: Nullable<FourPillarsContent['meta']> | null;
-    hero?: { title?: string | null; paragraphs?: string[] | null; image?: FetchedImage; imageMobile?: FetchedImage } | null;
+    hero?: {
+      title?: string | null;
+      paragraphs?: string[] | null;
+      image?: FetchedImage;
+      imageMobile?: FetchedImage;
+    } | null;
     cards?: Nullable<FourPillarsContent['cards'][number]>[] | null;
     leftOut?: { heading?: string | null; paragraphs?: string[] | null } | null;
   } | null>(FOUR_PILLARS_QUERY);
@@ -720,12 +729,16 @@ export async function getSanityAthenaEvaluation(): Promise<AthenaEvaluationConte
   const raw = await sanityClient.fetch<{
     meta?: Nullable<AthenaEvaluationContent['meta']> | null;
     hero?: Nullable<AthenaEvaluationContent['hero']> | null;
-    overview?: (Nullable<Omit<AthenaEvaluationContent['overview'], 'items'>> & {
-      items?: Nullable<{ title: string; body: string }>[] | null;
-    }) | null;
-    pricing?: (Nullable<Omit<AthenaEvaluationContent['pricing'], 'tiers'>> & {
-      tiers?: Nullable<{ label: string; price: string }>[] | null;
-    }) | null;
+    overview?:
+      | (Nullable<Omit<AthenaEvaluationContent['overview'], 'items'>> & {
+          items?: Nullable<{ title: string; body: string }>[] | null;
+        })
+      | null;
+    pricing?:
+      | (Nullable<Omit<AthenaEvaluationContent['pricing'], 'tiers'>> & {
+          tiers?: Nullable<{ label: string; price: string }>[] | null;
+        })
+      | null;
     booking?: Nullable<AthenaEvaluationContent['booking']> | null;
   } | null>(ATHENA_EVALUATION_QUERY);
   if (!raw) return null;
@@ -784,10 +797,12 @@ export async function getSanityLegal(slug: 'privacy-policy' | 'terms-of-service'
   const raw = await sanityClient.fetch<{
     meta?: Nullable<LegalPageContent['meta']> | null;
     title?: string | null;
-    sections?: {
-      heading?: string | null;
-      blocks?: { _type: string; text?: string | null; items?: string[] | null }[] | null;
-    }[] | null;
+    sections?:
+      | {
+          heading?: string | null;
+          blocks?: { _type: string; text?: string | null; items?: string[] | null }[] | null;
+        }[]
+      | null;
   } | null>(LEGAL_QUERY, { id: `legal-${slug}` });
   if (!raw) return null;
 
@@ -911,9 +926,9 @@ const SERVICE_PAGE_QUERY = /* groq */ `
   }
 `;
 
-function normalizeHeroImage<T extends { image?: FetchedImage | ContentImage; imageMobile?: FetchedImage | ContentImage }>(
-  hero: T
-): T {
+function normalizeHeroImage<
+  T extends { image?: FetchedImage | ContentImage; imageMobile?: FetchedImage | ContentImage },
+>(hero: T): T {
   return {
     ...hero,
     image: resolveContentImage(hero.image as FetchedImage | undefined),
@@ -1128,17 +1143,10 @@ function portableBlockText(block: SanityPortableBlock): string {
 }
 
 function escapeHtml(str: string): string {
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-function spansToHtml(
-  children: SanitySpan[] | undefined,
-  markDefs: SanityMarkDef[] | undefined
-): string {
+function spansToHtml(children: SanitySpan[] | undefined, markDefs: SanityMarkDef[] | undefined): string {
   if (!Array.isArray(children)) return '';
   const defsMap = new Map((markDefs ?? []).map((d) => [d._key, d]));
 
@@ -1569,9 +1577,7 @@ function normalizePodcastEpisode(doc: SanityPodcastEpisode): PodcastEpisode | nu
 
 export async function getSanityPodcastEpisodes(): Promise<PodcastEpisode[]> {
   const docs = await sanityClient.fetch<SanityPodcastEpisode[]>(PODCAST_EPISODES_QUERY);
-  return (docs ?? [])
-    .map(normalizePodcastEpisode)
-    .filter((ep): ep is PodcastEpisode => Boolean(ep));
+  return (docs ?? []).map(normalizePodcastEpisode).filter((ep): ep is PodcastEpisode => Boolean(ep));
 }
 
 // ─── Testimonials ─────────────────────────────────────────────────────────────
@@ -1688,6 +1694,32 @@ export async function getSanityBooksPage(): Promise<BooksPageContent | null> {
       bargaining: series(raw.series?.bargaining),
       podcastLinkLabel: text(raw.series?.podcastLinkLabel),
     },
+  };
+}
+
+const DIRECTORY_PAGE_QUERY = /* groq */ `
+  *[_type == "directoryPage" && _id == "singleton-directory"][0] {
+    meta,
+    hero { title, subtitle, "image": ${homeImage('image')} },
+    intro { lede }
+  }
+`;
+
+export async function getSanityDirectoryPage(): Promise<DirectoryPageContent | null> {
+  const raw = await sanityClient.fetch<{
+    meta?: Nullable<DirectoryPageContent['meta']> | null;
+    hero?: { title?: string | null; subtitle?: string | null; image?: FetchedImage } | null;
+    intro?: { lede?: string | null } | null;
+  } | null>(DIRECTORY_PAGE_QUERY);
+  if (!raw) return null;
+  return {
+    meta: { title: text(raw.meta?.title), description: text(raw.meta?.description) },
+    hero: {
+      title: text(raw.hero?.title),
+      subtitle: text(raw.hero?.subtitle),
+      image: resolveContentImage(raw.hero?.image),
+    },
+    intro: { lede: text(raw.intro?.lede) },
   };
 }
 

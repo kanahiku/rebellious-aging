@@ -15,6 +15,7 @@ import { booksPage } from './singletons/booksPage';
 import { podcastPage } from './singletons/podcastPage';
 import { blogIndexPage } from './singletons/blogIndexPage';
 import { reviewsPage } from './singletons/reviewsPage';
+import { directoryPage } from './singletons/directoryPage';
 import { lead } from './documents/lead';
 import { servicePage } from './documents/servicePage';
 import { blogPost } from './documents/blogPost';
@@ -28,13 +29,7 @@ import { navLink, navSubLink } from './objects/navLink';
 import { footerColumn, footerLink, socialLink } from './objects/footerColumn';
 
 // Shared item objects
-import {
-  statItem,
-  infoCardItem,
-  serviceItem,
-  timelineStep,
-  faqItem,
-} from './objects/homeObjects';
+import { statItem, infoCardItem, serviceItem, timelineStep, faqItem } from './objects/homeObjects';
 
 // Shared section objects (reused across page templates)
 import {
@@ -81,6 +76,7 @@ export const schemaTypes = [
   booksPage,
   podcastPage,
   blogIndexPage,
+  directoryPage,
   servicePage,
   blogPost,
   book,
