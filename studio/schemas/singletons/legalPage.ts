@@ -1,5 +1,5 @@
 import { defineArrayMember, defineField, defineType } from 'sanity';
-import { seoFields, str } from './_fields';
+import { str } from './_fields';
 
 /**
  * Legal pages: /privacy-policy and /terms-of-service.
@@ -30,10 +30,9 @@ export const legalPage = defineType({
     defineField({
       name: 'meta',
       title: 'SEO',
-      type: 'object',
+      type: 'seo',
       group: 'meta',
       description: 'You can use {{dba}} (site name) and {{host}} (domain) here.',
-      fields: seoFields('Used as-is in the browser tab, include the site name.'),
     }),
 
     str('title', 'Page title (shown big at the top)'),

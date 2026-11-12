@@ -1,5 +1,5 @@
 import { defineArrayMember, defineField, defineType } from 'sanity';
-import { seoFields, str, txt } from './_fields';
+import { str, txt } from './_fields';
 
 /** /athena-evaluation: every editable string on the page (no images on this page). */
 const pairList = (name: string, title: string, memberName: string, first: [string, string], second: [string, string], max?: number) =>
@@ -39,9 +39,8 @@ export const athenaEvaluationPage = defineType({
     defineField({
       name: 'meta',
       title: 'SEO',
-      type: 'object',
+      type: 'seo',
       group: 'meta',
-      fields: seoFields('Used as-is in the browser tab, include the site name.'),
     }),
 
     defineField({

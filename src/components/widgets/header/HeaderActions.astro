@@ -1,0 +1,56 @@
+---
+import { Icon } from 'astro-icon/components';
+import Button from '~/components/ui/Button.astro';
+import { getAsset } from '~/utils/permalinks';
+
+export interface Props {
+  showRssFeed: boolean;
+  phoneAction?: any;
+  extraActions: any[];
+}
+
+const { showRssFeed, phoneAction, extraActions } = Astro.props;
+---
+
+<div
+  class:list={[
+    'hidden md:self-center md:flex items-center md:mb-0 md:static justify-end',
+    'fixed w-full md:w-auto left-0 rtl:left-auto rtl:right-0 bottom-0 p-3 md:p-0',
+  ]}
+>
+  <div class="items-center flex justify-between w-full md:w-auto">
+    <div class="flex">
+      {
+        showRssFeed && (
+          <a
+            class="text-muted dark:text-gray-400 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 inline-flex items-center"
+            aria-label="RSS Feed"
+            href={getAsset('/rss.xml')}
+          >
+            <Icon name="tabler:rss" class="w-5 h-5" />
+          </a>
+        )
+      }
+    </div>
+    {
+      (phoneAction || extraActions.length) && (
+        <span class:list={['flex items-center', 'ml-4 rtl:ml-0 rtl:mr-4']}>
+          {phoneAction && (
+            <Button
+              {...phoneAction}
+              hideNote
+              class="ml-2 shadow-none w-auto whitespace-nowrap"
+            />
+          )}
+          {extraActions.map((btnProps) => (
+            <Button
+              {...btnProps}
+              hideNote
+              class="ml-2 shadow-none w-auto whitespace-nowrap"
+            />
+          ))}
+        </span>
+      )
+    }
+  </div>
+</div>

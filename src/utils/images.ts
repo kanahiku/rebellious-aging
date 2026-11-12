@@ -58,6 +58,11 @@ export const adaptOpenGraphImages = async (
     openGraph.images.map(async (image) => {
       if (!image?.url) return { url: '' };
 
+      // Sanity CDN: crop to the OG card size server-side, no local processing needed.
+      if (/^https:\/\/cdn\.sanity\.io\//.test(image.url)) {
+        return { url: `${image.url.split('?')[0]}?w=${OG_WIDTH}&h=${OG_HEIGHT}&fit=crop&fm=jpg&q=85`, width: OG_WIDTH, height: OG_HEIGHT };
+      }
+
       const resolved = await findImage(image.url);
       if (!resolved) return { url: '' };
 

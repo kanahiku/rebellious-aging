@@ -59,6 +59,10 @@ export interface BusinessSchema {
   areaServed?: AreaServed | null;
   /** Absolute path (from site root) to a square logo in /public. */
   logoPath?: string;
+  /** Absolute logo URL (from Site Settings). Wins over `logoPath`. */
+  logoUrl?: string;
+  /** Map location. */
+  geo?: { latitude: number; longitude: number };
   founder?: FounderSchema | null;
   /** Organization that sponsors / operates alongside this entity. */
   sponsor?: { name: string; url: string } | null;

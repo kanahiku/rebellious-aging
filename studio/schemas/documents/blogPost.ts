@@ -1,3 +1,4 @@
+import { requiredAlt, requiredSlug, requiredTitle } from '../../lib/validation';
 import { defineArrayMember, defineField, defineType } from 'sanity';
 import { ComposeIcon } from '@sanity/icons';
 import { relatedPageOptions } from '../objects/relatedPageOptions';
@@ -17,7 +18,7 @@ export const blogPost = defineType({
       title: 'Title',
       type: 'string',
       group: 'content',
-      validation: (r) => r.required(),
+      validation: requiredTitle,
     }),
     defineField({
       name: 'slug',
@@ -26,8 +27,9 @@ export const blogPost = defineType({
       group: 'content',
       description: 'Used in the URL: /blog/your-slug. Publish to make the article live, no code deploy needed.',
       options: { source: 'title' },
-      validation: (r) => r.required(),
+      validation: requiredSlug,
     }),
+    defineField({ name: 'seo', title: 'SEO', type: 'seo', group: 'content', description: 'Optional. Overrides the title and excerpt used for search and sharing.' }),
     defineField({
       name: 'excerpt',
       title: 'Excerpt',
@@ -58,7 +60,7 @@ export const blogPost = defineType({
       group: 'content',
       description: 'Listing card and the photo at the top of the article. Extra photos go in the article body below.',
       options: { hotspot: true },
-      fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string' })],
+      fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string', validation: requiredAlt })],
     }),
     defineField({
       name: 'imageUrl',
@@ -133,7 +135,7 @@ export const blogPost = defineType({
               name: 'alt',
               title: 'Alt text',
               type: 'string',
-              validation: (r) => r.required().warning('Describe the photo for accessibility and SEO.'),
+              validation: requiredAlt,
             }),
             defineField({
               name: 'caption',

@@ -1,5 +1,5 @@
 import { defineField, defineType } from 'sanity';
-import { imageField, seoFields, str, txt } from './_fields';
+import { imageField, str, txt } from './_fields';
 
 /**
  * /podcast: page text around the episode list. Episodes are separate "Podcast Episodes" documents;
@@ -21,9 +21,8 @@ export const podcastPage = defineType({
     defineField({
       name: 'meta',
       title: 'SEO',
-      type: 'object',
+      type: 'seo',
       group: 'meta',
-      fields: seoFields('Used as-is in the browser tab, include the site name.'),
     }),
     defineField({
       name: 'hero',

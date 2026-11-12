@@ -1,15 +1,21 @@
 ---
 import { getJsonLdGraph } from '~/config/schema';
+import type { BusinessSchema, JsonLdContext } from '~/config/schema';
 
 export interface Props {
   /** The page's meta description, so schema mirrors the page. */
   description?: string;
+  /** Business entity with Site Settings applied. */
+  business?: BusinessSchema;
+  schemaOverride?: JsonLdContext['schemaOverride'];
 }
 
-const { description } = Astro.props;
+const { description, business, schemaOverride } = Astro.props;
 // Dynamic routes (e.g. blog posts) push their own nodes onto locals before the layout renders.
 const graph = getJsonLdGraph(Astro.url.pathname, {
   description,
+  business,
+  schemaOverride,
   extraNodes: Astro.locals.jsonLdNodes,
 });
 ---

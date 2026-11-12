@@ -1,5 +1,5 @@
 import { defineArrayMember, defineField, defineType } from 'sanity';
-import { imageField, paragraphs, seoFields, str, txt } from './_fields';
+import { imageField, paragraphs, str, txt } from './_fields';
 
 /**
  * /fill-the-first-bucket: every editable string and image on the page.
@@ -24,9 +24,8 @@ export const fillFirstBucketPage = defineType({
     defineField({
       name: 'meta',
       title: 'SEO',
-      type: 'object',
+      type: 'seo',
       group: 'meta',
-      fields: seoFields('Used as-is in the browser tab, include the site name.'),
     }),
 
     defineField({

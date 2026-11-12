@@ -9,11 +9,15 @@
  *
  * Atoms used: Heading, Text, CTAActions.
  */
-import Image from '~/components/common/Image.astro';
 import { Image as AstroImage } from 'astro:assets';
-import ArtDirectedImage from '~/components/ui/ArtDirectedImage.astro';
-import CTAActions from '~/components/ui/CTAActions.astro';
-import Text from '~/components/ui/Text.astro';
+import HeroBgImage from './hero/HeroBgImage.astro';
+import HeroWords from './hero/HeroWords.astro';
+import HeroTitle from './hero/HeroTitle.astro';
+import HeroDarkPage from './hero/HeroDarkPage.astro';
+import HeroPage from './hero/HeroPage.astro';
+import HeroSplitDark from './hero/HeroSplitDark.astro';
+import HeroOverlayContent from './hero/HeroOverlayContent.astro';
+import HeroSplitLight from './hero/HeroSplitLight.astro';
 import Heading from '~/components/ui/Heading.astro';
 import type { ContentImage } from '~/lib/content/types';
 import type { ImageMetadata } from 'astro';
@@ -51,12 +55,6 @@ const hasStats = variant === 'overlay' && Astro.slots.has('stats');
 const hasNav = Astro.slots.has('nav');
 const hasImage = Boolean(image && (typeof image !== 'string' || image.trim()));
 const isSplitImage = !isOverlay && !isSplitDark && hasImage;
-
-const wordAlignClass = {
-  start: 'self-start md:justify-start',
-  center: 'self-center md:justify-center',
-  end: 'self-end md:justify-end',
-} as const;
 
 const asContentImage = (value: unknown): ContentImage | undefined => {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return undefined;
@@ -112,34 +110,8 @@ const isLocalPageImage =
       {isOverlay && (
         <div class="absolute inset-0 pointer-events-none z-0" aria-hidden="true">
           <slot name="bg">{bg ? <Fragment set:html={bg} /> : null}</slot>
-          {isLocalOverlayImage ? (
-            <AstroImage
-              src={image as ImageMetadata}
-              alt={'alt' in (image as object) && typeof (image as any).alt === 'string' ? (image as any).alt : ''}
-              class="absolute inset-0 h-full w-full object-cover object-center"
-              widths={[640, 828, 1200, 1440, 1920, 2160]}
-              sizes="100vw"
-              format="webp"
-              quality={85}
-              loading="eager"
-              fetchpriority="high"
-              decoding="async"
-            />
-          ) : hasOverlayPhoto ? (
-            <ArtDirectedImage
-              desktop={overlayDesktop}
-              mobile={overlayMobile}
-              class="absolute inset-0 h-full w-full object-cover object-center"
-              widths={[768, 1200, 1600, 1920]}
-              mobileWidths={[400, 640, 828, 1080]}
-              sizes="100vw"
-              mobileSizes="100vw"
-              loading="eager"
-              fetchpriority="high"
-              width={1920}
-              layout="cover"
-              format="webp"
-            />
+          {isLocalOverlayImage || hasOverlayPhoto ? (
+            <HeroBgImage image={image} desktop={overlayDesktop} mobile={overlayMobile} isLocal={isLocalOverlayImage} hasPhoto={hasOverlayPhoto} />
           ) : isWords || isTitle ? (
             /* TODO: replace with <Image> when asset is ready */
             <div
@@ -168,34 +140,8 @@ const isLocalPageImage =
 
       {isPageOverlay && (
         <div class="absolute inset-0 pointer-events-none z-0" aria-hidden="true">
-          {isLocalPageImage ? (
-            <AstroImage
-              src={image as ImageMetadata}
-              alt={'alt' in (image as object) && typeof (image as any).alt === 'string' ? (image as any).alt : ''}
-              class="absolute inset-0 h-full w-full object-cover object-center"
-              widths={[640, 828, 1200, 1440, 1920, 2160]}
-              sizes="100vw"
-              format="webp"
-              quality={85}
-              loading="eager"
-              fetchpriority="high"
-              decoding="async"
-            />
-          ) : hasPageOverlayPhoto ? (
-            <ArtDirectedImage
-              desktop={pageOverlayDesktop}
-              mobile={pageOverlayMobile}
-              class="absolute inset-0 h-full w-full object-cover object-center"
-              widths={[768, 1200, 1600, 1920]}
-              mobileWidths={[400, 640, 828, 1080]}
-              sizes="100vw"
-              mobileSizes="100vw"
-              loading="eager"
-              fetchpriority="high"
-              width={1920}
-              layout="cover"
-              format="webp"
-            />
+          {isLocalPageImage || hasPageOverlayPhoto ? (
+            <HeroBgImage image={image} desktop={pageOverlayDesktop} mobile={pageOverlayMobile} isLocal={isLocalPageImage} hasPhoto={hasPageOverlayPhoto} />
           ) : (
             <div class="absolute inset-0 bg-section-grey" aria-hidden="true" />
           )}
@@ -214,187 +160,17 @@ const isLocalPageImage =
         {overlapHeader && !hasNav && <div class="pt-0 md:pt-[76px] pointer-events-none" />}
 
         {isWords ? (
-          <Heading
-            variant="h1"
-            color="white"
-            class="flex min-h-[280px] w-full flex-1 flex-col justify-between py-12 md:h-[428px] md:min-h-0 md:flex-none md:flex-row md:items-stretch md:py-16"
-          >
-            {words.map((word) => (
-              <span
-                class:list={[
-                  'flex md:h-full md:flex-col',
-                  word.italic && 'italic',
-                  wordAlignClass[word.align ?? 'start'],
-                ]}
-              >
-                {word.text}
-              </span>
-            ))}
-          </Heading>
+          <HeroWords words={words} />
         ) : isTitle ? (
-          <div class="flex w-full flex-1 flex-col items-center justify-center gap-8 md:gap-10">
-            {title && (
-              <Heading
-                variant="h1"
-                color="white"
-                class="flex w-full items-center justify-center text-center"
-                html={title}
-              />
-            )}
-            {actions && !Array.isArray(actions) && (
-              <div class="flex w-full flex-wrap items-center justify-center gap-4">
-                <Fragment set:html={actions} />
-              </div>
-            )}
-          </div>
+          <HeroTitle title={title} actions={actions} />
         ) : isDarkPage ? (
-          <div class="flex w-full flex-1 flex-col items-start justify-center gap-8 py-16 md:py-[120px] lg:max-w-[720px]">
-            {tagline && <Heading variant="eyebrow" color="white" class="opacity-60" html={tagline} />}
-            {title && <h1 class="font-heading text-h1 font-normal leading-none text-white" set:html={title} />}
-            {subtitle && (
-              <Text
-                variant="body-lg"
-                as="div"
-                color="white"
-                class="!font-light leading-[1.3] text-white/85 [&_p+p]:mt-[1lh]"
-                html={subtitle}
-              />
-            )}
-            {actions &&
-              (Array.isArray(actions) ? (
-                <CTAActions actions={actions} noteTone="onDark" />
-              ) : (
-                <Fragment set:html={actions} />
-              ))}
-          </div>
+          <HeroDarkPage tagline={tagline} title={title} subtitle={subtitle} actions={actions} />
         ) : isPage ? (
-          <div
-            class:list={[
-              'flex w-full flex-1 flex-col',
-              isPageOverlay
-                ? 'items-start justify-center py-16 md:py-[120px]'
-                : withImage
-                  ? 'items-stretch pt-16 pb-[72px] md:pt-[120px]'
-                  : 'items-start py-16 md:py-[120px]',
-            ]}
-          >
-            <div class:list={['flex w-full flex-1 flex-col items-start gap-8 md:gap-10']}>
-              {title && (
-                <h1
-                  class:list={[
-                    'font-heading text-h1 shrink-0 overflow-visible font-normal leading-none [text-box-edge:cap_leading] [text-box-trim:trim-both]',
-                    isPageOverlay
-                      ? 'text-white'
-                      : 'bg-[linear-gradient(98deg,var(--aw-color-bg-section-dark)_5%,var(--aw-color-primary)_97%)] bg-clip-text text-transparent',
-                    'w-full',
-                  ]}
-                  set:html={title}
-                />
-              )}
-              {subtitle && (
-                <div
-                  class:list={[
-                    'font-sans text-body leading-[1.3] [&_p+p]:mt-[1lh]',
-                    isPageOverlay ? 'text-white/85' : 'text-muted',
-                    'w-full lg:w-1/2',
-                  ]}
-                  set:html={subtitle}
-                />
-              )}
-            </div>
-          </div>
+          <HeroPage title={title} subtitle={subtitle} withImage={withImage} isPageOverlay={isPageOverlay} />
         ) : isSplitDark ? (
-          <div class="flex flex-1 flex-col lg:flex-row lg:items-center lg:justify-between gap-0 lg:gap-[48px] pb-0">
-            {/* left: text column */}
-            <div class="flex flex-col items-start gap-6 lg:gap-[32px] shrink-0 lg:max-w-[628px] pb-8 pt-4 lg:py-0">
-              {tagline && <Heading variant="eyebrow" color="white" class="opacity-60" html={tagline} />}
-              {title && <h1 class="font-heading text-h1 font-normal leading-none text-white" set:html={title} />}
-              {content && (
-                <div class="font-sans text-body leading-[1.3] text-white/60 max-w-[520px]" set:html={content} />
-              )}
-            </div>
-            {/* right: image column — visible on all screen sizes */}
-            <div class="w-full h-[280px] sm:h-[360px] lg:h-[620px] lg:flex-[0_1_42%] lg:min-w-0 lg:self-end">
-              {hasImage ? (
-                <div class="relative w-full h-full overflow-hidden rounded-tl-[32px] rounded-tr-[32px]">
-                  {typeof image === 'string' ? (
-                    <Fragment set:html={image} />
-                  ) : image && typeof image === 'object' && 'src' in image && 'width' in image ? (
-                    <AstroImage
-                      src={image as ImageMetadata}
-                      alt={(image as any).alt ?? ''}
-                      class="w-full h-full object-cover object-top"
-                      widths={[400, 640, 828, 1080]}
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                      format="webp"
-                      quality={85}
-                      loading="eager"
-                      decoding="async"
-                    />
-                  ) : image &&
-                    typeof image === 'object' &&
-                    'src' in image &&
-                    typeof image.src === 'string' &&
-                    image.src ? (
-                    <Image
-                      src={image.src}
-                      alt={'alt' in image && typeof image.alt === 'string' ? image.alt : ''}
-                      class="w-full h-full object-cover object-top"
-                      layout="none"
-                      widths={[400, 640, 828, 1080]}
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                      format="webp"
-                      quality={85}
-                      loading="eager"
-                      decoding="async"
-                    />
-                  ) : null}
-                  <div class="absolute inset-0 bg-gradient-to-b from-transparent from-[62%] to-section-dark" />
-                </div>
-              ) : (
-                /* TODO: replace with <Image> when asset is ready */
-                <div
-                  class="w-full h-full min-h-[400px] rounded-tl-[32px] rounded-tr-[32px] bg-section-grey"
-                  aria-hidden="true"
-                />
-              )}
-            </div>
-          </div>
+          <HeroSplitDark tagline={tagline} title={title} content={content} image={image} hasImage={hasImage} />
         ) : (
-          <div class="flex min-h-0 flex-1 flex-col items-start justify-center gap-12 pb-12 md:pb-16">
-            <div class="flex w-full flex-col items-start gap-8">
-              {tagline && (
-                <Heading
-                  variant="h4"
-                  as="p"
-                  color="inherit"
-                  style="font-size: clamp(1.375rem, 0.94vw + 1.155rem, 2rem); line-height: 1;"
-                  class="text-page mix-blend-overlay"
-                  html={tagline}
-                />
-              )}
-              {title && <h1 class="font-heading text-h1 font-normal leading-none text-page" set:html={title} />}
-              {subtitle && (
-                <Text
-                  variant="body-lg"
-                  as="div"
-                  color="white"
-                  class="max-w-[620px] !font-light leading-[1.3] [&_p+p]:mt-[1lh]"
-                  html={subtitle}
-                />
-              )}
-            </div>
-
-            <div class="flex w-full max-w-[434px] flex-col items-start gap-8">
-              {actions &&
-                (Array.isArray(actions) ? (
-                  <CTAActions actions={actions} noteTone="onDark" />
-                ) : (
-                  <Fragment set:html={actions} />
-                ))}
-              {content && <Text variant="body-lg" color="white" class="!font-light leading-[1.3]" html={content} />}
-            </div>
-          </div>
+          <HeroOverlayContent tagline={tagline} title={title} subtitle={subtitle} content={content} actions={actions} />
         )}
       </div>
 
@@ -431,80 +207,7 @@ const isLocalPageImage =
       <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
         <slot name="bg">{bg ? <Fragment set:html={bg} /> : null}</slot>
       </div>
-      <div class:list={['relative max-w-container mx-auto', !isSplitImage && 'px-4 sm:px-6']}>
-        {!isSplitImage && overlapHeader && <div class="pt-0 md:pt-[76px] pointer-events-none" />}
-        <div
-          class:list={[
-            isSplitImage && 'md:flex md:items-stretch md:min-h-[640px] lg:min-h-[760px]',
-            isSplitImage && isReversed && 'md:flex-row-reverse',
-            !hasImage && 'py-12 md:py-[100px]',
-          ]}
-        >
-          <div
-            class:list={[
-              hasImage ? 'md:basis-1/2 self-center text-left' : 'w-full max-w-3xl text-left',
-              isSplitImage && [
-                'px-4 sm:px-6 py-12 md:pb-20 lg:pb-[100px]',
-                overlapHeader ? 'md:pt-[calc(76px+5rem)]' : 'md:pt-20',
-                isReversed ? 'md:pl-16 lg:pl-24' : 'md:pr-16 lg:pr-24',
-              ],
-            ]}
-          >
-            {tagline && (
-              <p
-                class="type-eyebrow text-eyebrow font-sans intersect-once motion-safe:md:intersect:animate-fade motion-safe:md:opacity-0 intersect-quarter"
-                set:html={tagline}
-              />
-            )}
-            {title && (
-              <h1
-                class="text-h1 font-normal leading-[105%] mb-5 font-heading text-heading dark:text-gray-200 intersect-once motion-safe:md:intersect:animate-fade motion-safe:md:opacity-0 intersect-quarter"
-                set:html={title}
-              />
-            )}
-            <div class="max-w-3xl lg:max-w-none">
-              {subtitle && (
-                <p
-                  class="text-body mb-[30px] text-muted dark:text-slate-300 intersect-once motion-safe:md:intersect:animate-fade motion-safe:md:opacity-0 intersect-quarter"
-                  set:html={subtitle}
-                />
-              )}
-              {actions &&
-                (Array.isArray(actions) ? (
-                  <CTAActions
-                    actions={actions}
-                    noteTone="light"
-                    class="intersect-once motion-safe:md:intersect:animate-fade motion-safe:md:opacity-0 intersect-quarter"
-                  />
-                ) : (
-                  <Fragment set:html={actions} />
-                ))}
-            </div>
-            {content && <Fragment set:html={content} />}
-          </div>
-          {isSplitImage && (
-            <div class="relative mt-8 md:mt-0 md:basis-1/2 aspect-[4/3] md:aspect-auto">
-              <div class="absolute inset-0 overflow-hidden [&>*]:!h-full [&>*]:!w-full [&>*]:!max-w-none [&>*]:!rounded-none [&>*]:!aspect-auto [&_img]:h-full [&_img]:w-full [&_img]:object-cover [&_img]:rounded-none">
-                {typeof image === 'string' ? (
-                  <Fragment set:html={image} />
-                ) : (
-                  <Image
-                    {...(image as Record<string, any>)}
-                    class="w-full h-full object-cover"
-                    widths={[400, 768, 1200]}
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    loading="eager"
-                    width={700}
-                    height={700}
-                    layout="cover"
-                    format="webp"
-                  />
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
+      <HeroSplitLight {tagline} {title} {subtitle} {content} {actions} {image} {hasImage} {isSplitImage} {isReversed} {overlapHeader} />
     </section>
   )
 }

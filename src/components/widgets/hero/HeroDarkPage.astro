@@ -1,0 +1,34 @@
+---
+import Heading from '~/components/ui/Heading.astro';
+import Text from '~/components/ui/Text.astro';
+import CTAActions from '~/components/ui/CTAActions.astro';
+
+export interface Props {
+  tagline?: string;
+  title?: string;
+  subtitle?: string;
+  actions?: any;
+}
+
+const { tagline, title, subtitle, actions } = Astro.props;
+---
+
+<div class="flex w-full flex-1 flex-col items-start justify-center gap-8 py-16 md:py-[120px] lg:max-w-[720px]">
+  {tagline && <Heading variant="eyebrow" color="white" class="opacity-60" html={tagline} />}
+  {title && <h1 class="font-heading text-h1 font-normal leading-none text-white" set:html={title} />}
+  {subtitle && (
+    <Text
+      variant="body-lg"
+      as="div"
+      color="white"
+      class="!font-light leading-[1.3] text-white/85 [&_p+p]:mt-[1lh]"
+      html={subtitle}
+    />
+  )}
+  {actions &&
+    (Array.isArray(actions) ? (
+      <CTAActions actions={actions} noteTone="onDark" />
+    ) : (
+      <Fragment set:html={actions} />
+    ))}
+</div>

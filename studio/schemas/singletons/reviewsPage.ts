@@ -19,18 +19,8 @@ export const reviewsPage = defineType({
     defineField({
       name: 'meta',
       title: 'SEO',
-      type: 'object',
+      type: 'seo',
       group: 'meta',
-      fields: [
-        defineField({ name: 'title', title: 'Page title', type: 'string', validation: (r) => r.required() }),
-        defineField({
-          name: 'description',
-          title: 'Meta description',
-          type: 'text',
-          rows: 3,
-          validation: (r) => r.required(),
-        }),
-      ],
     }),
     defineField({
       name: 'hero',

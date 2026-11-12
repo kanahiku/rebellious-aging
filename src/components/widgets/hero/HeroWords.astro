@@ -1,0 +1,33 @@
+---
+import Heading from '~/components/ui/Heading.astro';
+
+export interface Props {
+  words: Array<{ text: string; italic?: boolean; align?: 'start' | 'center' | 'end' }>;
+}
+
+const { words } = Astro.props;
+
+const wordAlignClass = {
+  start: 'self-start md:justify-start',
+  center: 'self-center md:justify-center',
+  end: 'self-end md:justify-end',
+} as const;
+---
+
+<Heading
+  variant="h1"
+  color="white"
+  class="flex min-h-[280px] w-full flex-1 flex-col justify-between py-12 md:h-[428px] md:min-h-0 md:flex-none md:flex-row md:items-stretch md:py-16"
+>
+  {words.map((word) => (
+    <span
+      class:list={[
+        'flex md:h-full md:flex-col',
+        word.italic && 'italic',
+        wordAlignClass[word.align ?? 'start'],
+      ]}
+    >
+      {word.text}
+    </span>
+  ))}
+</Heading>

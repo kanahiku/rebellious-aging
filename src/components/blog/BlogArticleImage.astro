@@ -15,7 +15,7 @@ const { image, caption, eager = false, class: className = 'my-8' } = Astro.props
 {
   image?.src && (
     <figure class={className}>
-      <div class="relative w-full aspect-[16/9] overflow-hidden rounded-md bg-[#EFEFEF]">
+      <div class="relative w-full aspect-[16/9] overflow-hidden rounded-md bg-placeholder">
         <Image
           src={image.src}
           alt={image.alt}

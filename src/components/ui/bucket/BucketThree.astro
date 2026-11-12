@@ -1,0 +1,39 @@
+---
+const fancyItems = ['IV drips', 'Peptides', 'Whole-body MRI', 'Cancer blood panels', 'Supplements'];
+---
+
+<div class="bucket-graphic__col bucket-graphic__col--three">
+  <a
+    class="bucket-graphic__bucket bucket-graphic__bucket--three"
+    href="/how-aging-works#bucket-3"
+    aria-label="Bucket 3: The fancy stuff"
+  >
+    <div class="bucket-graphic__rim"><span>Bucket 3</span></div>
+    <div class="bucket-graphic__body">
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <path
+          d="M3 0 L97 0 L89 100 L11 100 Z"
+          fill="var(--aw-color-bg-card)"
+          stroke="var(--aw-color-text-tan)"
+          stroke-width="2"
+          stroke-dasharray="6 5"
+          stroke-linejoin="round"
+          vector-effect="non-scaling-stroke"></path>
+      </svg>
+      <div class="bucket-graphic__top">
+        <h3>The fancy stuff</h3>
+        <div class="bucket-graphic__fancy">
+          {fancyItems.map((item) => <span>{item}</span>)}
+        </div>
+      </div>
+      <div class="bucket-graphic__spacer"></div>
+      <div class="bucket-graphic__note">
+        Optional. Recreational anti-aging.<br />Nothing for us to sell you here.
+      </div>
+    </div>
+  </a>
+  <div class="bucket-graphic__caption">
+    <p class="bucket-graphic__caption-strong">Thin evidence · Highest cost</p>
+    <p class="bucket-graphic__caption-sub">Only with whatever spills over</p>
+  </div>
+</div>

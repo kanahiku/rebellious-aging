@@ -16,6 +16,11 @@ import { podcastPage } from './singletons/podcastPage';
 import { blogIndexPage } from './singletons/blogIndexPage';
 import { reviewsPage } from './singletons/reviewsPage';
 import { directoryPage } from './singletons/directoryPage';
+import { siteSettings } from './singletons/siteSettings';
+import { seo } from './objects/shared/seo';
+import { imageWithAlt } from './objects/shared/imageWithAlt';
+import { portableText } from './objects/shared/portableText';
+import { cta } from './objects/shared/cta';
 import { lead } from './documents/lead';
 import { servicePage } from './documents/servicePage';
 import { blogPost } from './documents/blogPost';
@@ -59,7 +64,14 @@ import {
 } from './objects/sectionObjects';
 
 export const schemaTypes = [
+  // Shared objects (reuse these everywhere)
+  seo,
+  imageWithAlt,
+  portableText,
+  cta,
+
   // Documents
+  siteSettings,
   siteNavigation,
   siteFooter,
   homePage,

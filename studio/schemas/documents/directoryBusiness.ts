@@ -1,3 +1,4 @@
+import { requiredAlt, requiredSlug } from '../../lib/validation';
 import { defineField, defineType } from 'sanity';
 import { PinIcon } from '@sanity/icons';
 
@@ -21,7 +22,7 @@ export const directoryBusiness = defineType({
       type: 'slug',
       options: { source: 'name', maxLength: 96 },
       description: 'Becomes /directory/<slug>. Do not change after publishing.',
-      validation: (r) => r.required(),
+      validation: requiredSlug,
     }),
     defineField({
       name: 'shortDescription',
@@ -116,7 +117,7 @@ export const directoryBusiness = defineType({
       type: 'image',
       options: { hotspot: true },
       description: 'Optional. Profile page only.',
-      fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string' })],
+      fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string', validation: requiredAlt })],
     }),
   ],
   orderings: [

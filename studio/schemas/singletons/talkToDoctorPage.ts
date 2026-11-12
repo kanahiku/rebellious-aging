@@ -1,3 +1,4 @@
+import { requiredAlt } from '../../lib/validation';
 import { defineArrayMember, defineField, defineType } from 'sanity';
 
 /**
@@ -25,7 +26,7 @@ const imageField = (name: string, title: string, description?: string) =>
         name: 'alt',
         title: 'Alt Text',
         type: 'string',
-        validation: (r) => r.required().warning('Alt text helps accessibility and SEO.'),
+        validation: requiredAlt,
       }),
     ],
   });
@@ -66,24 +67,8 @@ export const talkToDoctorPage = defineType({
     defineField({
       name: 'meta',
       title: 'SEO',
-      type: 'object',
+      type: 'seo',
       group: 'meta',
-      fields: [
-        defineField({
-          name: 'title',
-          title: 'Page title',
-          type: 'string',
-          description: 'Used as-is in the browser tab, include the site name.',
-          validation: (r) => r.required(),
-        }),
-        defineField({
-          name: 'description',
-          title: 'Meta description',
-          type: 'text',
-          rows: 3,
-          validation: (r) => r.required().max(200),
-        }),
-      ],
     }),
 
     defineField({

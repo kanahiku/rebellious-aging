@@ -1,0 +1,61 @@
+---
+import Button from '~/components/ui/Button.astro';
+import { mobileLinkClass, mobilePanelClass, type NavLink } from './types';
+
+export interface Props {
+  links: NavLink[];
+  currentPath: string;
+  phoneAction?: any;
+  extraActions: any[];
+}
+
+const { links, currentPath, phoneAction, extraActions } = Astro.props;
+---
+
+<div class:list={[mobilePanelClass, 'mx-3']} data-mobile-panel>
+  <nav aria-label="Mobile navigation">
+    <ul class="flex flex-col">
+      {
+        links.map(({ text, href, links: childLinks, columns }) => {
+          const isDropdown = Boolean(childLinks?.length || columns?.length);
+          const nested = columns?.length
+            ? columns.flatMap((col) => col.links)
+            : (childLinks ?? []);
+          return (
+            <li>
+              {isDropdown ? (
+                <details>
+                  <summary class:list={[mobileLinkClass, 'cursor-pointer list-none']}>{text}</summary>
+                  <ul class="mb-1 ml-2 flex flex-col border-l border-white/10 pl-2">
+                    {nested.map(({ text: nestedText, href: nestedHref }) => (
+                      <li>
+                        <a
+                          class:list={[mobileLinkClass, 'py-2.5 text-[15px]', { 'aw-link-active': nestedHref === currentPath }]}
+                          href={nestedHref}
+                        >
+                          {nestedText}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              ) : (
+                <a class:list={[mobileLinkClass, { 'aw-link-active': href === currentPath }]} href={href}>
+                  {text}
+                </a>
+              )}
+            </li>
+          );
+        })
+      }
+    </ul>
+  </nav>
+  {(phoneAction || extraActions.length > 0) && (
+    <div class="mt-2 flex flex-col gap-2 border-t border-white/10 pt-3">
+      {phoneAction && <Button {...phoneAction} hideNote class="w-full justify-center" />}
+      {extraActions.map((btnProps) => (
+        <Button {...btnProps} hideNote class="w-full justify-center" />
+      ))}
+    </div>
+  )}
+</div>

@@ -1,5 +1,5 @@
 import { defineArrayMember, defineField, defineType } from 'sanity';
-import { imageField, paragraphs, seoFields, str, txt } from './_fields';
+import { imageField, paragraphs, str, txt } from './_fields';
 
 /**
  * /ohana — every editable string and image on the page.
@@ -51,9 +51,8 @@ export const ohanaPage = defineType({
     defineField({
       name: 'meta',
       title: 'SEO',
-      type: 'object',
+      type: 'seo',
       group: 'meta',
-      fields: seoFields('The site name is appended automatically.'),
     }),
 
     defineField({

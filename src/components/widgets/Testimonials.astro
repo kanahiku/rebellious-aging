@@ -68,12 +68,12 @@ const doubled = [...capped, ...capped];
 
 {isLight ? (
   /* ── LIGHT TONE: px-[120px] outer, gradient inner block ── */
-  /* Figma 310:1562 — white cards, gradient bg from transparent → #d2e1ea, rounded-tl/tr-[64px] */
+  /* Figma 310:1562 — white cards, gradient bg from transparent → section-grey, rounded-tl/tr-[64px] */
   <section {...id ? { id } : {}} class="not-prose relative w-full overflow-hidden pt-8 md:pt-[64px]">
     <div class="mx-auto w-full max-w-container px-5 sm:px-8 md:px-16 lg:px-[120px]">
       <div
         class="flex flex-col gap-[48px] rounded-tl-[64px] rounded-tr-[64px] p-8 md:gap-[64px] md:p-[64px]"
-        style="background: linear-gradient(180deg, #d2e1ea 0%, rgba(210,225,234,0) 100%);"
+        style="background: linear-gradient(180deg, var(--aw-color-bg-section-grey) 0%, var(--aw-color-bg-section-grey-clear) 100%);"
       >
         {/* Header */}
         <div class="flex flex-col items-start gap-4">
