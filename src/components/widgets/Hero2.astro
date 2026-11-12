@@ -232,14 +232,21 @@ const isLocalPageImage =
             ))}
           </Heading>
         ) : isTitle ? (
-          title && (
-            <Heading
-              variant="h1"
-              color="white"
-              class="flex w-full flex-1 items-center justify-center text-center"
-              html={title}
-            />
-          )
+          <div class="flex w-full flex-1 flex-col items-center justify-center gap-8 md:gap-10">
+            {title && (
+              <Heading
+                variant="h1"
+                color="white"
+                class="flex w-full items-center justify-center text-center"
+                html={title}
+              />
+            )}
+            {actions && !Array.isArray(actions) && (
+              <div class="flex w-full flex-wrap items-center justify-center gap-4">
+                <Fragment set:html={actions} />
+              </div>
+            )}
+          </div>
         ) : isDarkPage ? (
           <div class="flex w-full flex-1 flex-col items-start justify-center gap-8 py-16 md:py-[120px] lg:max-w-[720px]">
             {tagline && <Heading variant="eyebrow" color="white" class="opacity-60" html={tagline} />}
@@ -324,7 +331,11 @@ const isLocalPageImage =
                       loading="eager"
                       decoding="async"
                     />
-                  ) : image && typeof image === 'object' && 'src' in image && typeof image.src === 'string' && image.src ? (
+                  ) : image &&
+                    typeof image === 'object' &&
+                    'src' in image &&
+                    typeof image.src === 'string' &&
+                    image.src ? (
                     <Image
                       src={image.src}
                       alt={'alt' in image && typeof image.alt === 'string' ? image.alt : ''}

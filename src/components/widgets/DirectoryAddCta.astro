@@ -1,7 +1,6 @@
 ---
 /**
- * DirectoryAddCta — closing band on the directory pages: two links to the listing forms
- * ("List a group" and "List a business"), from the client's directory mockup.
+ * DirectoryAddCta — closing band on the directory pages: one link to the "List a business" form.
  * Replaces the inline "Add my business" form (DirectoryLeadForm) on /directory and profiles.
  */
 import Button from '~/components/ui/Button.astro';
@@ -13,7 +12,6 @@ export interface Props {
   eyebrow?: string;
   heading?: string;
   description?: string;
-  groupHref?: string;
   businessHref?: string;
 }
 
@@ -22,7 +20,6 @@ const {
   eyebrow = 'Run something?',
   heading = 'Add it to the directory',
   description = 'If you run a group, a class or a business that helps people do the basics, tell us and we will take a look. A person reads every submission. There is no automatic listing.',
-  groupHref = '/directory/submit-group',
   businessHref = '/directory/submit-business',
 } = Astro.props;
 ---
@@ -36,8 +33,7 @@ const {
         <Text variant="body-lg">{description}</Text>
       </div>
       <div class="flex flex-wrap gap-4">
-        <Button variant="primary" text="List a group" href={groupHref} hideNote />
-        <Button variant="ghost" tone="light" text="List a business" href={businessHref} hideNote />
+        <Button variant="primary" text="List a business" href={businessHref} hideNote />
       </div>
     </div>
   </div>

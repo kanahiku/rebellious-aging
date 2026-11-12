@@ -929,26 +929,26 @@
     },
     {
       "id": "P-48",
-      "name": "Directory listing form (group / business)",
-      "figmaNames": ["Rebellious Aging Directory.html: List a group", "Rebellious Aging Directory.html: List a business"],
+      "name": "Directory listing form",
+      "figmaNames": ["Rebellious Aging Directory.html: List a business"],
       "shape": "Back link, eyebrow + h2 + lede (+ free-listing note for business), single-column config-driven field list, Send it in button",
       "component": "DirectoryListingForm",
       "import": "~/components/widgets/DirectoryListingForm.astro",
       "props": {
-        "kind": "group | business",
+        "kind": "business",
         "categoryOptions": "business select options; defaults to the mockup's six lists + Not sure"
       },
-      "notes": "UI only — submit is inert until the handling is confirmed. Routes /directory/submit-group and /directory/submit-business. Fields mirror the mockup's GROUP_FIELDS / BIZ_FIELDS."
+      "notes": "Submits to the shared forms Worker (Turnstile + honeypot), which emails the client; nothing goes to Sanity. Route /directory/submit-business. Fields mirror the mockup's BIZ_FIELDS."
     },
     {
       "id": "P-49",
       "name": "Directory add CTA",
       "figmaNames": ["Rebellious Aging Directory.html: Run something? strip"],
-      "shape": "Section-grey band: eyebrow + h2 + copy left, two buttons (List a group, List a business) right",
+      "shape": "Section-grey band: eyebrow + h2 + copy left, one button (List a business) right",
       "component": "DirectoryAddCta",
       "import": "~/components/widgets/DirectoryAddCta.astro",
       "props": {
-        "groupHref / businessHref": "default /directory/submit-group and /directory/submit-business",
+        "businessHref": "default /directory/submit-business",
         "eyebrow / heading / description": "optional copy overrides"
       },
       "notes": "Closes /directory and every profile page. Replaces the inline DirectoryLeadForm (P-47), which is no longer used on those pages."

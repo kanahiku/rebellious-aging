@@ -65,17 +65,6 @@ export const pages: PageSchema[] = [
     breadcrumb: crumb('Directory', '/directory'),
   },
   {
-    name: 'List a group',
-    path: '/directory/submit-group',
-    schemaType: 'WebPage',
-    faq: [],
-    breadcrumb: [
-      HOME,
-      { name: 'Directory', path: '/directory' },
-      { name: 'List a group', path: '/directory/submit-group' },
-    ],
-  },
-  {
     name: 'List a business',
     path: '/directory/submit-business',
     schemaType: 'WebPage',

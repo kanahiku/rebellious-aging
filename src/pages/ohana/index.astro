@@ -38,12 +38,7 @@ import OhanaJoinForm from '~/components/widgets/OhanaJoinForm.astro';
 import Button from '~/components/ui/Button.astro';
 import Text from '~/components/ui/Text.astro';
 import Image from '~/components/common/Image.astro';
-import {
-  formatTestimonialAttribution,
-  getNavigationContent,
-  getOhanaContent,
-  getTestimonials,
-} from '~/lib/content';
+import { formatTestimonialAttribution, getNavigationContent, getOhanaContent, getTestimonials } from '~/lib/content';
 import { cmsHeading } from '~/utils/cmsText';
 
 const [page, nav, testimonials] = await Promise.all([getOhanaContent(), getNavigationContent(), getTestimonials()]);
@@ -84,6 +79,9 @@ const blueZonesCards = blueZones.cards.map((card) => ({
     imageMobile={hero.imageMobile}
   >
     <Header slot="nav" embedded isSticky={false} links={nav.header.links} actions={nav.header.actions} />
+    <Fragment slot="actions">
+      <Button variant="primary" text="Explore Directory" href="/directory" hideNote />
+    </Fragment>
   </Hero2>
 
   {/* S2 — Intro text split: heading left, body + CTA right */}
@@ -176,12 +174,14 @@ const blueZonesCards = blueZones.cards.map((card) => ({
 
   {/* S8 — Purpose banner + No chapter near you */}
   <PurposeBanner id="purpose" purposeHeading={purpose.heading} noChapterHeading={purpose.noChapterHeading}>
-    <a
-      slot="no-chapter-cta"
-      href={purpose.noChapterLinkHref}
-      class="font-sans font-semibold text-[14px] md:text-[15px] underline-offset-2 transition-colors duration-200 hover:underline"
-      style="color: var(--aw-color-bg-page);">{purpose.noChapterLinkText}</a
-    >
+    <div slot="no-chapter-cta" class="flex flex-col items-start gap-5">
+      <Button variant="primary" text="Explore Directory" href="/directory" hideNote />
+      <a
+        href={purpose.noChapterLinkHref}
+        class="font-sans font-semibold text-[14px] md:text-[15px] underline-offset-2 transition-colors duration-200 hover:underline"
+        style="color: var(--aw-color-bg-page);">{purpose.noChapterLinkText}</a
+      >
+    </div>
     {
       purpose.image?.src && (
         <Image
