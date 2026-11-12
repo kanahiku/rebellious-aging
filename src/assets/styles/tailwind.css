@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import './components.css';
 
 @plugin "@tailwindcss/typography";
 
@@ -28,6 +29,10 @@
   --color-section-dark: var(--aw-color-bg-section-dark);
   --color-cta: var(--aw-color-bg-cta);
   --color-cta-end: var(--aw-color-bg-cta-end);
+  --color-cta-sand: var(--aw-color-bg-cta-sand);
+  --color-placeholder: var(--aw-color-bg-placeholder);
+  --color-spotify: var(--aw-color-brand-spotify);
+  --color-youtube: var(--aw-color-brand-youtube);
   --color-tan: var(--aw-color-text-tan);
   --color-tan-body: var(--aw-color-text-tan-body);
   --max-width-container: 1440px;

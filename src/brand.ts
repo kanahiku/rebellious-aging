@@ -60,6 +60,15 @@ export const brand = {
     cream: '#F5F4EF',
     nav: '#1D1D1D',
     black: '#1E2A30',
+    /** Warm sand band behind Ohana sections (slightly lighter than ctaBg). */
+    ctaSand: '#E7DFD1',
+    /** Icon tile fill in the home pillars (cream-tan). */
+    iconTile: '#E5DDCF',
+    /** Neutral grey behind image slots / placeholders. */
+    placeholder: '#EFEFEF',
+    /** Third-party brand colors (Spotify / YouTube buttons). */
+    spotify: '#1DB954',
+    youtube: '#FF0000',
   },
 
   type: {
@@ -213,6 +222,7 @@ function rootVars(b: Brand): string {
     --aw-color-bg-page-end: ${rgb(c.white)};
     --aw-color-bg-section-white: ${rgb(c.page)};
     --aw-color-bg-section-grey: ${rgb(c.sectionGrey)};
+    --aw-color-bg-section-grey-clear: ${rgb(c.sectionGrey, 0)};
     --aw-color-bg-section-dark: ${rgb(c.sectionDark)};
     --aw-color-bg-card: ${rgb(c.card)};
     --aw-color-bg-card-dark: ${rgb(c.cardDark)};
@@ -220,6 +230,10 @@ function rootVars(b: Brand): string {
     --aw-color-bg-feature-card: ${rgb(c.featureCard)};
     --aw-color-bg-cta: ${rgb(c.ctaBg)};
     --aw-color-bg-cta-end: ${rgb(c.ctaEnd)};
+    --aw-color-bg-cta-sand: ${rgb(c.ctaSand)};
+    --aw-color-bg-placeholder: ${rgb(c.placeholder)};
+    --aw-color-brand-spotify: ${rgb(c.spotify)};
+    --aw-color-brand-youtube: ${rgb(c.youtube)};
     --aw-color-text-tan: ${rgb(c.tanText)};
     --aw-color-text-tan-body: ${rgb(c.tanBody)};
     --aw-color-bg-cta-pink: ${rgb(c.ctaPink)};

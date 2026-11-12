@@ -39,6 +39,8 @@ export default defineConfig({
 
   redirects: {
     '/contact': 'https://www.athenaclinic.com/contact/',
+    // Self-assessment lives on the doctor's site. Mirrors the vercel.json redirect so dev behaves like production.
+    '/form': { status: 307, destination: 'https://robertpetersonmd.com/checkup' },
     // Hidden until those pages are published. Kept out of the sitemap.
     '/chapters': { status: 302, destination: '/' },
     '/guidebooks': { status: 302, destination: '/' },

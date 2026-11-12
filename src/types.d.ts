@@ -63,6 +63,10 @@ export interface MetaDataImage {
 }
 
 export interface MetaDataOpenGraph {
+  /** Social share title (defaults to the page title). */
+  title?: string;
+  /** Social share text (defaults to the meta description). */
+  description?: string;
   url?: string;
   siteName?: string;
   images?: Array<MetaDataImage>;

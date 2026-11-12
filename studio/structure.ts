@@ -12,6 +12,7 @@ import type { StructureBuilder } from 'sanity/structure';
 const SINGLETONS: Record<string, string> = {
   siteNavigation: 'singleton-navigation',
   siteFooter: 'singleton-footer',
+  siteSettings: 'singleton-site-settings',
   homePage: 'singleton-home',
   howAgingWorksPage: 'singleton-how-aging-works',
   talkToDoctorPage: 'singleton-talk-to-doctor',
@@ -166,6 +167,7 @@ export const structure = (S: StructureBuilder) => {
 
       singleton('siteNavigation', 'Navigation'),
       singleton('siteFooter', 'Footer'),
+      singleton('siteSettings', 'Site Settings (business info for SEO)'),
 
       S.divider(),
 

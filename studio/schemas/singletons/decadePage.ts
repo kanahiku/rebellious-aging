@@ -1,5 +1,5 @@
 import { defineArrayMember, defineField, defineType } from 'sanity';
-import { paragraphs, seoFields, str, txt } from './_fields';
+import { paragraphs, str, txt } from './_fields';
 
 /**
  * Decade pages: /in-your-30s, /in-your-40s, /in-your-50s, /in-your-60s, /70-plus.
@@ -49,9 +49,8 @@ export const decadePage = defineType({
     defineField({
       name: 'meta',
       title: 'SEO',
-      type: 'object',
+      type: 'seo',
       group: 'meta',
-      fields: seoFields('Used as-is in the browser tab, include the site name.'),
     }),
 
     defineField({

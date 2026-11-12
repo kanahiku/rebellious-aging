@@ -1,0 +1,27 @@
+---
+import { calendarSvg } from './icons';
+
+export interface Props {
+  cls: string;
+  label?: string;
+}
+
+const { cls, label } = Astro.props;
+---
+
+  <div class={cls}>
+
+    {/* ── Header band: calendar icon + day label ── */}
+    <div class="bg-card-light flex w-full shrink-0 items-center gap-2 p-4">
+      <span class="text-secondary" set:html={calendarSvg} />
+      {label && (
+        <span class="font-sans text-[12px] uppercase tracking-[0.06em] text-secondary">
+          {label}
+        </span>
+      )}
+    </div>
+
+    {/* ── Event rows ── */}
+    <slot />
+
+  </div>

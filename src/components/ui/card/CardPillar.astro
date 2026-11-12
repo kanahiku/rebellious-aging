@@ -1,0 +1,50 @@
+---
+import type { CardProps } from './types';
+import { pillarIconTile, iconBgGlyph } from './variants';
+
+export interface Props extends Pick<CardProps, 'preLabel' | 'label' | 'iconBg' | 'iconBgClass'> {
+  cls: string;
+  hasPillarIcon: boolean;
+}
+
+const { cls, preLabel, label, iconBg = false, iconBgClass = 'bg-cta', hasPillarIcon } = Astro.props;
+---
+
+  <div class={cls}>
+
+    {/* ── Header row: label stack (left) + icon (right, top-corner) ── */}
+    <div class="flex min-h-9 w-full shrink-0 items-center gap-4 pl-4 sm:min-h-[50px]">
+      {(preLabel || label) && (
+        <div class="flex flex-1 flex-col gap-1 py-2">
+          {preLabel && (
+            <span class="font-sans text-[11px] uppercase tracking-[0.06em] text-eyebrow">
+              {preLabel}
+            </span>
+          )}
+          {label && (
+            <span class="font-sans text-[12px] uppercase tracking-[0.06em] text-accent">
+              {label}
+            </span>
+          )}
+        </div>
+      )}
+
+      {hasPillarIcon && (
+        iconBg ? (
+          <div class:list={['flex items-center justify-center rounded-bl-[8px] sm:rounded-bl-[12px]', iconBgClass, pillarIconTile, iconBgGlyph]}>
+            <slot name="icon" />
+          </div>
+        ) : (
+          <div class:list={['overflow-clip [&>svg]:size-full', pillarIconTile]}>
+            <slot name="icon" />
+          </div>
+        )
+      )}
+    </div>
+
+    {/* ── Body ── */}
+    <div class="flex w-full flex-1 flex-col gap-4 px-4 pb-4">
+      <slot />
+    </div>
+
+  </div>

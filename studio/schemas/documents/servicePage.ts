@@ -1,3 +1,4 @@
+import { requiredSlug } from '../../lib/validation';
 import { defineField, defineType } from 'sanity';
 
 export const servicePage = defineType({
@@ -26,25 +27,10 @@ export const servicePage = defineType({
       description:
         'Path without a leading slash, e.g. services/consulting. A new published slug goes live on the website without a developer deploy. Do not use reserved paths like contact, blog, reviews, privacy-policy, terms-of-service, or accessibility.',
       options: { source: 'title' },
-      validation: (r) => r.required(),
+      validation: requiredSlug,
       group: 'meta',
     }),
-    defineField({
-      name: 'meta',
-      title: 'SEO',
-      type: 'object',
-      group: 'meta',
-      fields: [
-        defineField({ name: 'title', title: 'Page title', type: 'string', validation: (r) => r.required() }),
-        defineField({
-          name: 'description',
-          title: 'Meta description',
-          type: 'text',
-          rows: 3,
-          validation: (r) => r.required(),
-        }),
-      ],
-    }),
+    defineField({ name: 'meta', title: 'SEO', type: 'seo', group: 'meta' }),
     defineField({
       name: 'hero',
       title: 'Hero',

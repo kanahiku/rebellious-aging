@@ -1,3 +1,4 @@
+import { requiredSlug, requiredTitle } from '../../lib/validation';
 import { defineArrayMember, defineField, defineType } from 'sanity';
 import { PlayIcon } from '@sanity/icons';
 
@@ -20,7 +21,7 @@ export const podcastEpisode = defineType({
       title: 'Title',
       type: 'string',
       group: 'meta',
-      validation: (r) => r.required(),
+      validation: requiredTitle,
     }),
     defineField({
       name: 'slug',
@@ -29,7 +30,7 @@ export const podcastEpisode = defineType({
       group: 'meta',
       description: 'Used as the page anchor: e.g. slug "hair-scalp" → /podcast#hair-scalp. Books link here using this exact value.',
       options: { source: 'title' },
-      validation: (r) => r.required(),
+      validation: requiredSlug,
     }),
     defineField({
       name: 'status',

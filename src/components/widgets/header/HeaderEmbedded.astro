@@ -1,0 +1,72 @@
+---
+import Logo from '~/components/Logo.astro';
+import ToggleMenu from '~/components/common/ToggleMenu.astro';
+import Button from '~/components/ui/Button.astro';
+import { getHomePermalink } from '~/utils/permalinks';
+import { mobileLinkClass, mobilePanelClass, type NavLink } from './types';
+
+export interface Props {
+  id?: string;
+  links: NavLink[];
+  extraActions: any[];
+  currentPath: string;
+}
+
+const { id, links, extraActions, currentPath } = Astro.props;
+---
+
+<header class="relative z-40 w-full" data-nav="embedded" {...id ? { id } : {}}>
+  <div class="flex h-14 w-full items-center justify-between box-border rounded-[var(--aw-radius-lg)] bg-[rgba(29,29,29,0.35)] py-2 pl-4 pr-2 backdrop-blur-[20px] md:h-[77px] md:py-3 md:pl-6 md:pr-3">
+    <div class="flex shrink-0 items-center justify-between w-full md:w-auto">
+      <a class="flex items-center shrink-0" href={getHomePermalink()}>
+        <Logo class="h-5 w-auto max-w-none mix-blend-soft-light md:h-[31px] md:w-[43px]" />
+      </a>
+      <ToggleMenu class="flex size-10 flex-col items-center justify-center rounded-lg bg-white/10 cursor-pointer group md:hidden" />
+    </div>
+    <nav class="hidden md:flex items-center shrink-0 w-full md:w-auto" data-desktop-nav aria-label="Main navigation">
+      <ul class="flex flex-col md:flex-row md:items-center gap-6 font-sans font-medium text-[16px] leading-normal text-white">
+        {links.map(({ text, href }) => (
+          <li class="shrink-0">
+            <a
+              class:list={[
+                'whitespace-nowrap text-white hover:text-white/80',
+                { 'aw-link-active': href === currentPath },
+              ]}
+              href={href}
+            >
+              {text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    {extraActions.length > 0 && (
+      <div class="hidden md:flex items-center shrink-0">
+        {extraActions.map((btnProps) => (
+          <Button {...btnProps} hideNote class="whitespace-nowrap" />
+        ))}
+      </div>
+    )}
+  </div>
+
+  <div class={mobilePanelClass} data-mobile-panel>
+    <nav aria-label="Mobile navigation">
+      <ul class="flex flex-col">
+        {links.map(({ text, href }) => (
+          <li>
+            <a class:list={[mobileLinkClass, { 'aw-link-active': href === currentPath }]} href={href}>
+              {text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    {extraActions.length > 0 && (
+      <div class="mt-2 flex flex-col gap-2 border-t border-white/10 pt-3">
+        {extraActions.map((btnProps) => (
+          <Button {...btnProps} hideNote class="w-full justify-center" />
+        ))}
+      </div>
+    )}
+  </div>
+</header>

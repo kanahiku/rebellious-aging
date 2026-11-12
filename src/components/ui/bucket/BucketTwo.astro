@@ -1,0 +1,58 @@
+---
+const homeItems = ['Blood pressure', 'Grip strength', '5× sit-to-stand', 'Balance', 'Weight & waist'];
+const doctorItems = [
+  'A1c (blood sugar)',
+  'Cholesterol',
+  'Kidney & liver',
+  'Bone density',
+  'Coronary calcium',
+  'Hearing',
+  'Medication review',
+];
+---
+
+<div class="bucket-graphic__col bucket-graphic__col--two">
+  <a
+    class="bucket-graphic__bucket bucket-graphic__bucket--two"
+    href="/talk-to-your-doctor"
+    aria-label="Bucket 2: Ask your doctor"
+  >
+    <div class="bucket-graphic__rim"><span>Bucket 2</span></div>
+    <div class="bucket-graphic__body">
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M3 0 L97 0 L89 100 L11 100 Z" fill="var(--aw-color-bg-card)"></path>
+        <path
+          class="bucket-graphic__water"
+          data-level="0.4"
+          d="M7.8 60 L92.2 60 L89 100 L11 100 Z"
+          fill="var(--aw-color-bg-section-grey)"></path>
+        <path
+          d="M3 0 L97 0 L89 100 L11 100 Z"
+          fill="none"
+          stroke="var(--aw-color-primary)"
+          stroke-width="2"
+          stroke-linejoin="round"
+          vector-effect="non-scaling-stroke"></path>
+      </svg>
+      <div class="bucket-graphic__top">
+        <h3>Ask your doctor</h3>
+        <div class="bucket-graphic__lists">
+          <div>
+            <span class="bucket-graphic__label">Check at home</span>
+            {homeItems.map((item) => <span>{item}</span>)}
+          </div>
+          <div>
+            <span class="bucket-graphic__label">Doctor orders</span>
+            {doctorItems.map((item) => <span>{item}</span>)}
+          </div>
+        </div>
+      </div>
+      <div class="bucket-graphic__spacer"></div>
+      <div class="bucket-graphic__note">You don&apos;t know what you don&apos;t know.</div>
+    </div>
+  </a>
+  <div class="bucket-graphic__caption">
+    <p class="bucket-graphic__caption-strong">Strong evidence · Moderate cost</p>
+    <p class="bucket-graphic__caption-sub">Fill once bucket 1 is on its way</p>
+  </div>
+</div>

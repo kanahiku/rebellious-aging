@@ -48,13 +48,13 @@ function buildOpenGraph(og: MetaDataOpenGraph): SEOProps['openGraph'] | undefine
 
   return {
     basic: {
-      title: title || METADATA?.title?.default || '',
+      title: og.title || title || METADATA?.title?.default || '',
       type: og.type || 'website',
       image: imageUrl,
       url: og.url,
     },
     optional: {
-      description: description || METADATA?.description,
+      description: og.description || description || METADATA?.description,
       locale: og.locale,
       siteName: og.siteName,
     },

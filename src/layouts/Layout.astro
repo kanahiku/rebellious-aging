@@ -21,14 +21,38 @@ import { ClientRouter } from 'astro:transitions';
 
 import type { MetaData as MetaDataType } from '~/types';
 import { brandFontConfig } from '~/brand';
+import { getSanitySeoData } from '~/lib/content/sanity';
+import { applySiteSettings } from '~/config/schema/settings';
+import { business } from '~/config/schema';
 
 export interface Props {
   metadata?: MetaDataType;
 }
 
-const { metadata = {} } = Astro.props;
+const { metadata: pageMetadata = {} } = Astro.props;
 const { language, textDirection } = I18N;
 const fonts = brandFontConfig();
+
+// Editor-controlled SEO (canonical, noindex, social card, custom schema) + Site Settings.
+const seoData = await getSanitySeoData();
+const seoPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const seo = seoData.byPath.get(seoPath);
+const metadata: MetaDataType = {
+  ...pageMetadata,
+  ...(seo?.canonical ? { canonical: seo.canonical } : {}),
+  ...(seo?.noIndex ? { robots: { index: false, follow: true } } : {}),
+  ...(seo?.ogTitle || seo?.ogDescription || seo?.ogImageUrl
+    ? {
+        openGraph: {
+          ...pageMetadata.openGraph,
+          ...(seo.ogTitle ? { title: seo.ogTitle } : {}),
+          ...(seo.ogDescription ? { description: seo.ogDescription } : {}),
+          ...(seo.ogImageUrl ? { images: [{ url: seo.ogImageUrl }] } : {}),
+        },
+      }
+    : {}),
+};
+const schemaBusiness = applySiteSettings(business, seoData.settings);
 ---
 
 <!doctype html>
@@ -66,7 +90,11 @@ const fonts = brandFontConfig();
     <Metadata {...metadata} />
     <SiteVerification />
     <Analytics />
-    <JsonLd description={metadata.description} />
+    <JsonLd
+      description={metadata.description}
+      business={schemaBusiness}
+      schemaOverride={seo?.schemaMode ? { mode: seo.schemaMode, json: seo.schemaJson } : undefined}
+    />
 
     <!-- Comment the line below to disable View Transitions -->
     <ClientRouter fallback="swap" />

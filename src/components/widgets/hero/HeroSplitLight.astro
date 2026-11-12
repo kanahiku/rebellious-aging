@@ -1,0 +1,94 @@
+---
+import Image from '~/components/common/Image.astro';
+import CTAActions from '~/components/ui/CTAActions.astro';
+
+export interface Props {
+  tagline?: string;
+  title?: string;
+  subtitle?: string;
+  content?: string;
+  actions?: any;
+  image?: any;
+  hasImage: boolean;
+  isSplitImage: boolean;
+  isReversed: boolean;
+  overlapHeader: boolean;
+}
+
+const { tagline, title, subtitle, content, actions, image, hasImage, isSplitImage, isReversed, overlapHeader } = Astro.props;
+---
+
+<div class:list={['relative max-w-container mx-auto', !isSplitImage && 'px-4 sm:px-6']}>
+  {!isSplitImage && overlapHeader && <div class="pt-0 md:pt-[76px] pointer-events-none" />}
+  <div
+    class:list={[
+      isSplitImage && 'md:flex md:items-stretch md:min-h-[640px] lg:min-h-[760px]',
+      isSplitImage && isReversed && 'md:flex-row-reverse',
+      !hasImage && 'py-12 md:py-[100px]',
+    ]}
+  >
+    <div
+      class:list={[
+        hasImage ? 'md:basis-1/2 self-center text-left' : 'w-full max-w-3xl text-left',
+        isSplitImage && [
+          'px-4 sm:px-6 py-12 md:pb-20 lg:pb-[100px]',
+          overlapHeader ? 'md:pt-[calc(76px+5rem)]' : 'md:pt-20',
+          isReversed ? 'md:pl-16 lg:pl-24' : 'md:pr-16 lg:pr-24',
+        ],
+      ]}
+    >
+      {tagline && (
+        <p
+          class="type-eyebrow text-eyebrow font-sans intersect-once motion-safe:md:intersect:animate-fade motion-safe:md:opacity-0 intersect-quarter"
+          set:html={tagline}
+        />
+      )}
+      {title && (
+        <h1
+          class="text-h1 font-normal leading-[105%] mb-5 font-heading text-heading dark:text-gray-200 intersect-once motion-safe:md:intersect:animate-fade motion-safe:md:opacity-0 intersect-quarter"
+          set:html={title}
+        />
+      )}
+      <div class="max-w-3xl lg:max-w-none">
+        {subtitle && (
+          <p
+            class="text-body mb-[30px] text-muted dark:text-slate-300 intersect-once motion-safe:md:intersect:animate-fade motion-safe:md:opacity-0 intersect-quarter"
+            set:html={subtitle}
+          />
+        )}
+        {actions &&
+          (Array.isArray(actions) ? (
+            <CTAActions
+              actions={actions}
+              noteTone="light"
+              class="intersect-once motion-safe:md:intersect:animate-fade motion-safe:md:opacity-0 intersect-quarter"
+            />
+          ) : (
+            <Fragment set:html={actions} />
+          ))}
+      </div>
+      {content && <Fragment set:html={content} />}
+    </div>
+    {isSplitImage && (
+      <div class="relative mt-8 md:mt-0 md:basis-1/2 aspect-[4/3] md:aspect-auto">
+        <div class="absolute inset-0 overflow-hidden [&>*]:!h-full [&>*]:!w-full [&>*]:!max-w-none [&>*]:!rounded-none [&>*]:!aspect-auto [&_img]:h-full [&_img]:w-full [&_img]:object-cover [&_img]:rounded-none">
+          {typeof image === 'string' ? (
+            <Fragment set:html={image} />
+          ) : (
+            <Image
+              {...(image as Record<string, any>)}
+              class="w-full h-full object-cover"
+              widths={[400, 768, 1200]}
+              sizes="(max-width: 768px) 100vw, 50vw"
+              loading="eager"
+              width={700}
+              height={700}
+              layout="cover"
+              format="webp"
+            />
+          )}
+        </div>
+      </div>
+    )}
+  </div>
+</div>

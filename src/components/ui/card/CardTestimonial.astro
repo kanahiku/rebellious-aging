@@ -1,0 +1,32 @@
+---
+import { quoteSvg } from './icons';
+
+export interface Props {
+  cls: string;
+  quote?: string;
+  label?: string;
+}
+
+const { cls, quote, label } = Astro.props;
+---
+
+  <div class={cls}>
+
+    {/* Quote mark (mix-blend-overlay) */}
+    <span set:html={quoteSvg} />
+
+    {/* ── Quote text — Fraunces italic, 22px, light cream ── */}
+    {quote && (
+      <p class="font-heading italic text-[18px] leading-[1.2] text-page flex-1 md:text-[22px]">
+        {quote}
+      </p>
+    )}
+
+    {/* ── Attribution — small uppercase sans, muted ── */}
+    {label && (
+      <p class="font-sans text-[14px] uppercase tracking-[0.06em] text-eyebrow">
+        {label}
+      </p>
+    )}
+
+  </div>

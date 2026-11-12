@@ -1,3 +1,4 @@
+import { requiredAlt, requiredSlug, requiredTitle } from '../../lib/validation';
 import { defineArrayMember, defineField, defineType } from 'sanity';
 import { DocumentsIcon } from '@sanity/icons';
 
@@ -11,7 +12,7 @@ export const book = defineType({
       name: 'title',
       title: 'Title',
       type: 'string',
-      validation: (r) => r.required(),
+      validation: requiredTitle,
     }),
     defineField({
       name: 'slug',
@@ -19,7 +20,7 @@ export const book = defineType({
       type: 'slug',
       description: 'Used as the in-page anchor on /books (e.g. /books#book-hair).',
       options: { source: 'title' },
-      validation: (r) => r.required(),
+      validation: requiredSlug,
     }),
     defineField({
       name: 'subtitle',
@@ -44,7 +45,7 @@ export const book = defineType({
           name: 'alt',
           title: 'Alt text',
           type: 'string',
-          validation: (r) => r.required().warning('Describe the cover for accessibility.'),
+          validation: requiredAlt,
         }),
       ],
     }),

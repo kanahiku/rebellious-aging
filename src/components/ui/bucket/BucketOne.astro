@@ -1,0 +1,42 @@
+---
+const pillars = ['Diet', 'Exercise', 'Sleep', 'Social connection'];
+---
+
+<div class="bucket-graphic__col bucket-graphic__col--one">
+  <a
+    class="bucket-graphic__bucket bucket-graphic__bucket--one"
+    href="/four-pillars"
+    aria-label="Bucket 1: The basics, four pillars"
+  >
+    <div class="bucket-graphic__rim"><span>Bucket 1</span></div>
+    <div class="bucket-graphic__body">
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M3 0 L97 0 L89 100 L11 100 Z" fill="var(--aw-color-bg-card)"></path>
+        <path
+          class="bucket-graphic__water"
+          data-level="1"
+          d="M3 0 L97 0 L89 100 L11 100 Z"
+          fill="var(--aw-color-bg-section-grey)"></path>
+        <path
+          d="M3 0 L97 0 L89 100 L11 100 Z"
+          fill="none"
+          stroke="var(--aw-color-bg-section-dark)"
+          stroke-width="2"
+          stroke-linejoin="round"
+          vector-effect="non-scaling-stroke"></path>
+      </svg>
+      <div class="bucket-graphic__top">
+        <h3>The basics</h3>
+        <div class="bucket-graphic__tiles">
+          {pillars.map((item) => <div class="bucket-graphic__tile">{item}</div>)}
+        </div>
+      </div>
+      <div class="bucket-graphic__spacer"></div>
+      <div class="bucket-graphic__note">No order inside. All four count.<br />Social connection → the Ohana</div>
+    </div>
+  </a>
+  <div class="bucket-graphic__caption">
+    <p class="bucket-graphic__caption-strong">Strongest evidence · Lowest cost</p>
+    <p class="bucket-graphic__caption-sub">Fill first</p>
+  </div>
+</div>

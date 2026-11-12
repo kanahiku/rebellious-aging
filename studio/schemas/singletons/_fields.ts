@@ -1,3 +1,4 @@
+import { requiredAlt } from '../../lib/validation';
 import { defineArrayMember, defineField } from 'sanity';
 
 /** Small field builders shared by the page singletons. */
@@ -29,18 +30,7 @@ export const imageField = (name: string, title: string, description?: string) =>
         name: 'alt',
         title: 'Alt Text',
         type: 'string',
-        validation: (r) => r.required().warning('Alt text helps accessibility and SEO.'),
+        validation: requiredAlt,
       }),
     ],
   });
-
-export const seoFields = (titleHelp: string) => [
-  defineField({ name: 'title', title: 'Page title', type: 'string', description: titleHelp, validation: (r) => r.required() }),
-  defineField({
-    name: 'description',
-    title: 'Meta description',
-    type: 'text',
-    rows: 3,
-    validation: (r) => r.required().max(200),
-  }),
-];

@@ -1,4 +1,5 @@
-import { business } from './business';
+import { business as defaultBusiness } from './business';
+import { logoSrc, parseCustomSchema } from './settings';
 import { pages } from './pages';
 import type { BusinessSchema, JsonLdNode, PageSchema } from './types';
 import { absoluteUrl, businessId, normalizePath, siteOrigin } from './urls';
@@ -35,10 +36,12 @@ function buildOrganization(entity: BusinessSchema): JsonLdNode {
   };
 
   if (entity.telephone) out.telephone = entity.telephone;
-  if (entity.logoPath) {
-    out.logo = { '@type': 'ImageObject', url: absoluteUrl(entity.logoPath), width: 180, height: 180 };
-    out.image = absoluteUrl(entity.logoPath);
+  const logo = logoSrc(entity);
+  if (logo) {
+    out.logo = { '@type': 'ImageObject', url: logo, width: 180, height: 180 };
+    out.image = logo;
   }
+  if (entity.geo) out.geo = { '@type': 'GeoCoordinates', ...entity.geo };
   // LocalBusiness-only fields — emitted only when the entity defines them.
   if (entity.priceRange) out.priceRange = entity.priceRange;
   if (entity.openingHoursSpecification?.length) {
@@ -141,6 +144,10 @@ export interface JsonLdContext {
   description?: string;
   /** Extra nodes a dynamic route adds (e.g. a BlogPosting). */
   extraNodes?: JsonLdNode[];
+  /** Business entity with Site Settings applied. Defaults to the code values. */
+  business?: BusinessSchema;
+  /** Editor's custom JSON-LD from the page's SEO panel. */
+  schemaOverride?: { mode?: 'auto' | 'add' | 'replace'; json?: string };
 }
 
 /**
@@ -151,7 +158,10 @@ export interface JsonLdContext {
 export function getJsonLdGraph(pathname: string, ctx: JsonLdContext = {}): JsonLdNode | null {
   if (!siteOrigin()) return null;
 
+  const business = ctx.business ?? defaultBusiness;
   const path = normalizePath(pathname);
+  const custom = ctx.schemaOverride?.mode && ctx.schemaOverride.mode !== 'auto' ? parseCustomSchema(ctx.schemaOverride.json) : null;
+  if (custom && ctx.schemaOverride?.mode === 'replace') return { '@context': 'https://schema.org', '@graph': custom };
   const page = pagesByPath.get(path);
   const graph: JsonLdNode[] = [buildWebsite(business), buildOrganization(business)];
 
@@ -163,6 +173,7 @@ export function getJsonLdGraph(pathname: string, ctx: JsonLdContext = {}): JsonL
 
   if (page) graph.push(...buildPageNodes(page, business, ctx.description));
   if (ctx.extraNodes?.length) graph.push(...ctx.extraNodes);
+  if (custom) graph.push(...custom);
 
   return { '@context': 'https://schema.org', '@graph': graph };
 }
@@ -194,8 +205,8 @@ export function getArticleNodes(post: ArticleSchemaInput): JsonLdNode[] {
     dateModified: post.updatedAt || post.publishDate,
     inLanguage: LANGUAGE,
     isPartOf: { '@id': websiteId() },
-    author: post.author ? { '@type': 'Person', name: post.author } : { '@id': businessId(business.idFragment) },
-    publisher: { '@id': businessId(business.idFragment) },
+    author: post.author ? { '@type': 'Person', name: post.author } : { '@id': businessId(defaultBusiness.idFragment) },
+    publisher: { '@id': businessId(defaultBusiness.idFragment) },
     breadcrumb: { '@id': breadcrumbId(path) },
   };
   if (post.imageUrl) article.image = post.imageUrl;

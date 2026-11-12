@@ -1,0 +1,110 @@
+---
+import Button from '~/components/ui/Button.astro';
+import type { CardProps } from './types';
+import { featureIconTile } from './variants';
+import { bookTileSvg, calendarTile14Svg, peopleSvg } from './icons';
+
+export interface Props
+  extends Pick<CardProps, 'label' | 'title' | 'description' | 'ctaText' | 'ctaHref' | 'iconType' | 'featured' | 'speaker'> {
+  cls: string;
+}
+
+const { cls, label, title, description, ctaText = 'Explore', ctaHref = '#', iconType = 'book', featured = false, speaker } =
+  Astro.props;
+---
+
+  <div class={cls}>
+
+    {/* ── Header: icon tile + category label ── */}
+    <div class="flex w-full shrink-0 items-center gap-3 pb-4">
+      {iconType === 'calendar' ? (
+        <div class:list={['flex items-center justify-center rounded-br-[8px] bg-card-light text-accent sm:rounded-br-[12px]', featureIconTile]}>
+          <span class="[&>svg]:size-3.5" set:html={calendarTile14Svg} />
+        </div>
+      ) : (
+        <span class:list={['overflow-clip [&_svg]:size-full', featureIconTile]} set:html={bookTileSvg} />
+      )}
+      {label && (
+        <span class="font-sans text-[12px] uppercase tracking-[0.06em] text-accent">
+          {label}
+        </span>
+      )}
+    </div>
+
+    {featured ? (
+      /* ── TALL / FEATURED layout: image placeholder + footer row ── */
+      <div class="flex w-full flex-1 flex-col gap-6 px-4 pb-4">
+        {/* TODO: replace with <Image> when asset is ready */}
+        <div
+          class="min-h-[160px] w-full flex-1 rounded-[16px] bg-page"
+          aria-hidden="true"
+        />
+        <div class="flex flex-col items-stretch gap-4 sm:flex-row sm:items-start">
+          <div class="flex min-w-0 flex-1 flex-col gap-4">
+            {title && (
+              <p class="font-heading text-h4 text-primary">{title}</p>
+            )}
+            {description && (
+              <p class="font-sans text-[14px] leading-[1.45] text-default">{description}</p>
+            )}
+          </div>
+          <Button
+            variant="primary"
+            text={ctaText}
+            href={ctaHref}
+            hideNote={true}
+            class="shrink-0 whitespace-nowrap"
+          />
+        </div>
+      </div>
+    ) : speaker ? (
+      /* ── SESSION layout: title + speaker + description, ghost CTA bottom-right ── */
+      <div class="flex w-full flex-1 flex-col gap-4 px-4 pb-4">
+        {title && (
+          <p class="font-heading text-h4 text-primary">{title}</p>
+        )}
+        <div class="flex w-full flex-1 flex-col items-end gap-6">
+          <div class="flex w-full flex-col items-start gap-3">
+            <div class="flex items-center gap-1.5 text-muted">
+              <span class="opacity-60" set:html={peopleSvg} />
+              <span class="font-sans text-[12px] uppercase tracking-[0.06em] text-muted opacity-60">
+                {speaker}
+              </span>
+            </div>
+            {description && (
+              <p class="font-sans text-[14px] leading-[1.45] text-muted">{description}</p>
+            )}
+          </div>
+          <Button
+            variant="ghost"
+            tone="light"
+            text={ctaText}
+            href={ctaHref}
+            hideNote={true}
+            class="mt-auto self-end shrink-0 whitespace-nowrap"
+          />
+        </div>
+      </div>
+    ) : (
+      /* ── COMPACT layout: title + description row + ghost CTA ── */
+      <div class="flex w-full flex-col gap-4 px-4 pb-4">
+        {title && (
+          <p class="font-heading text-h4 text-primary">{title}</p>
+        )}
+        <div class="flex flex-col items-stretch gap-4 sm:flex-row sm:items-center sm:gap-6">
+          {description && (
+            <p class="flex-1 font-sans text-[14px] leading-[1.45] text-default">{description}</p>
+          )}
+          <Button
+            variant="ghost"
+            tone="light"
+            text={ctaText}
+            href={ctaHref}
+            hideNote={true}
+            class="shrink-0 whitespace-nowrap"
+          />
+        </div>
+      </div>
+    )}
+
+  </div>

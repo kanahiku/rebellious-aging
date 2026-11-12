@@ -1,5 +1,5 @@
 import { defineField, defineType } from 'sanity';
-import { imageField, seoFields, str, txt } from './_fields';
+import { imageField, str, txt } from './_fields';
 
 /**
  * /directory: page text and hero image around the business list.
@@ -21,9 +21,8 @@ export const directoryPage = defineType({
     defineField({
       name: 'meta',
       title: 'SEO',
-      type: 'object',
+      type: 'seo',
       group: 'meta',
-      fields: seoFields('Used as-is in the browser tab, include the site name.'),
     }),
     defineField({
       name: 'hero',

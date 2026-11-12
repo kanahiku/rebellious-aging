@@ -1,0 +1,91 @@
+---
+import Button from '~/components/ui/Button.astro';
+import type { CardProps } from './types';
+
+export interface Props
+  extends Pick<CardProps, 'label' | 'title' | 'description' | 'ctaText' | 'ctaHref' | 'status' | 'spotifyUrl' | 'youtubeUrl'> {
+  cls: string;
+}
+
+const { cls, label, title, description, ctaText = 'Explore', ctaHref = '#', status, spotifyUrl, youtubeUrl } = Astro.props;
+---
+
+  <div class={cls}>
+    <div class="flex w-full flex-col gap-3">
+      <div class="flex w-full items-start justify-between gap-3">
+        {title && (
+          <p class="font-heading text-h4 font-normal leading-none text-heading">
+            {title}
+          </p>
+        )}
+        {status && (
+          <span class:list={[
+            'shrink-0 rounded-full px-3 py-1.5 font-sans text-[10px] uppercase tracking-[0.08em] leading-none whitespace-nowrap',
+            status === 'live'
+              ? 'bg-accent/15 text-accent font-semibold'
+              : 'bg-primary/10 text-primary/50',
+          ]}>
+            {status === 'live' ? 'Live Now' : 'Coming Soon'}
+          </span>
+        )}
+        {!status && label && (
+          <span class="shrink-0 rounded-full bg-cta px-4 py-2 font-sans text-[11px] uppercase tracking-[0.06em] text-eyebrow shadow-[4px_4px_2px_rgba(0,0,0,0.05)]">
+            {label}
+          </span>
+        )}
+      </div>
+      {/* Show part category label when no status badge already consumed it */}
+      {label && status && (
+        <span class="font-sans text-[11px] uppercase tracking-[0.06em] text-eyebrow">
+          {label}
+        </span>
+      )}
+      {description && (
+        <p class="font-sans text-body leading-[1.3] text-primary/60">
+          {description}
+        </p>
+      )}
+    </div>
+
+    <div class="mt-auto flex w-full flex-wrap items-center gap-3">
+      {status === 'live' && spotifyUrl && (
+        <a
+          href={spotifyUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Listen on Spotify"
+          class="flex size-10 shrink-0 items-center justify-center rounded-full bg-spotify transition-opacity hover:opacity-80"
+        >
+          {/* Spotify "S" glyph */}
+          <svg viewBox="0 0 24 24" fill="white" class="size-5" aria-hidden="true"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.623.623 0 01-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 11-.277-1.215c3.809-.87 7.076-.496 9.712 1.115a.622.622 0 01.207.857zm1.223-2.722a.78.78 0 01-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 01-.973-.518.781.781 0 01.518-.973c3.632-1.102 8.147-.568 11.234 1.328a.78.78 0 01.258 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.937.937 0 11-.543-1.794c3.548-1.076 9.45-.868 13.18 1.336a.937.937 0 01-.32 1.615z"/></svg>
+        </a>
+      )}
+      {status === 'live' && youtubeUrl && (
+        <a
+          href={youtubeUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Watch on YouTube"
+          class="flex size-10 shrink-0 items-center justify-center rounded-full bg-youtube transition-opacity hover:opacity-80"
+        >
+          {/* YouTube play triangle */}
+          <svg viewBox="0 0 24 24" fill="white" class="size-5" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </a>
+      )}
+      {status === 'coming-soon' && (
+        <span class="flex h-10 shrink-0 items-center gap-1.5 font-sans text-[12px] text-primary/40 italic">
+          Episode drops soon
+        </span>
+      )}
+      {ctaHref && ctaHref !== '#' && (
+        <Button
+          variant="ghost"
+          tone="light"
+          text={ctaText}
+          href={ctaHref}
+          hideNote={true}
+          class="ml-auto h-10 shrink-0 whitespace-nowrap rounded-[12px] px-5 py-3 text-[12px]"
+        />
+      )}
+    </div>
+  </div>

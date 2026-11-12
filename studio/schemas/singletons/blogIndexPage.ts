@@ -1,5 +1,5 @@
 import { defineField, defineType } from 'sanity';
-import { seoFields, str, txt } from './_fields';
+import { str, txt } from './_fields';
 
 /** /blog and the blog article chrome. Posts themselves are separate "Blog posts" documents. */
 export const blogIndexPage = defineType({
@@ -12,8 +12,7 @@ export const blogIndexPage = defineType({
     defineField({
       name: 'meta',
       title: 'SEO',
-      type: 'object',
-      fields: seoFields('Used as-is in the browser tab, include the site name.'),
+      type: 'seo',
     }),
     str('heading', 'Page heading'),
     txt('emptyMessage', 'Message shown while there are no posts', undefined, 2),
