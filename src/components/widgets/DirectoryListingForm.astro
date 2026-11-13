@@ -124,7 +124,7 @@ const control =
               </label>
               {f.hint && <span class="font-sans text-[13px] leading-[1.4] text-muted">{f.hint}</span>}
               {f.sel ? (
-                <select id={fid} name={f.n} required={f.req} class={control}>
+                <select id={fid} name={f.n} required={f.req} class={`${control} select-arrow`}>
                   <option value="">Choose one</option>
                   {f.sel.map((o) => (
                     <option>{o}</option>

@@ -81,7 +81,7 @@ const field =
               >
                 Location
               </label>
-              <select id="dir-location" class={field}>
+              <select id="dir-location" class={`${field} select-arrow [background-position:right_10px_center]!`}>
                 <option value="">All locations</option>
                 {locations.map((l) => (
                   <option value={l.value.toLowerCase()}>
@@ -133,7 +133,8 @@ const field =
 </section>
 
 <script>
-  (() => {
+  // <ClientRouter /> swaps the DOM without re-running module scripts, so bind on every page-load.
+  function initDirectory() {
     const list = document.getElementById('dir-cards');
     if (!list) return;
 
@@ -210,5 +211,6 @@ const field =
     });
 
     apply(false);
-  })();
+  }
+  document.addEventListener('astro:page-load', initDirectory);
 </script>
