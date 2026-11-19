@@ -114,6 +114,15 @@ const schemaBusiness = applySiteSettings(business, seoData.settings);
     <Intersect />
 
     <script>
+      // ClientRouter swaps <body> on navigation, which would drop the chatbot
+      // widget (appended to <body> by its loader). Carry it into the new body.
+      document.addEventListener('astro:before-swap', (event) => {
+        const widget = document.querySelector('massic-widget');
+        if (widget) event.newDocument.body.append(widget);
+      });
+    </script>
+
+    <script>
       // Any link to the old /form route (incl. CMS-authored ones) goes to the
       // external checkup and opens in a new tab.
       const CHECKUP = 'https://robertpetersonmd.com/checkup';
