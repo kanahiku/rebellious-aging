@@ -24,6 +24,7 @@ import { brandFontConfig } from '~/brand';
 import { getSanitySeoData } from '~/lib/content/sanity';
 import { applySiteSettings } from '~/config/schema/settings';
 import { business } from '~/config/schema';
+import { site } from '~/config/site';
 
 export interface Props {
   metadata?: MetaDataType;
@@ -90,6 +91,12 @@ const schemaBusiness = applySiteSettings(business, seoData.settings);
     <Metadata {...metadata} />
     <SiteVerification />
     <Analytics />
+    <script
+      is:inline
+      async
+      src={site.chatbot.loaderUrl}
+      data-site-id={site.chatbot.siteId}
+      data-site-key={site.chatbot.siteKey}></script>
     <JsonLd
       description={metadata.description}
       business={schemaBusiness}

@@ -22,6 +22,13 @@ export const site = {
   /** Cloudflare Worker `sites.slug`. `PUBLIC_SITE_SLUG` in env overrides this. */
   formSlug: 'rebellious-aging',
 
+  /** Chatbot widget (public loader credentials, safe for the frontend). */
+  chatbot: {
+    loaderUrl: 'https://widget.seedinternaldev.xyz/v1/loader.js',
+    siteId: 'site_20903a812c43a64d886f7f2e',
+    siteKey: 'vk_RveJjbtS7xc1kMmimJB3pblnHXPnZld5qVH6xqm15wQ',
+  },
+
   analytics: {
     /** Google Tag Manager container. Empty until the client GTM is created. */
     googleTagManagerId: 'GTM-N4CGNX9G',
