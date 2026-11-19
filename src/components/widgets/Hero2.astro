@@ -68,6 +68,19 @@ const overlayDesktop = isOverlay ? asContentImage(image) : undefined;
 const overlayMobile = isOverlay ? asContentImage(imageMobile) : undefined;
 const pageOverlayDesktop = isPageOverlay ? asContentImage(image) : undefined;
 const pageOverlayMobile = isPageOverlay ? asContentImage(imageMobile) : undefined;
+// Figma progressive blur: 20px → 0 across the first 63.69% of the width, in 5 steps.
+const BLUR_MAX = 20;
+const BLUR_END = 63.69;
+const BLUR_STEPS = 5;
+const progressiveBlur = Array.from({ length: BLUR_STEPS }, (_, i) => {
+  const k = i + 1;
+  const stepWidth = BLUR_END / BLUR_STEPS;
+  return {
+    radius: (BLUR_MAX / BLUR_STEPS) * k,
+    solid: +(BLUR_END - stepWidth * k).toFixed(2),
+    fade: +(BLUR_END - stepWidth * (k - 1)).toFixed(2),
+  };
+});
 const hasOverlayPhoto = Boolean(overlayDesktop || overlayMobile);
 const hasPageOverlayPhoto = Boolean(pageOverlayDesktop || pageOverlayMobile);
 const isLocalOverlayImage =
@@ -129,8 +142,21 @@ const isLocalPageImage =
             <>
               {/* Mobile: full scrim so stacked text is always readable */}
               <div class="absolute inset-0 z-[1] bg-black/50 md:hidden" />
-              {/* Desktop: Figma 309:528 — left-to-right: black/60 at left edge → fully transparent at 60% */}
-              <div class="absolute inset-0 z-[1] hidden md:block bg-[linear-gradient(to_right,rgba(0,0,0,0.60)_0%,transparent_60%)]" />
+              {/* Desktop: Figma "Background blur (progressive)" — 20px at x 0.43% → 0 at 63.69%, horizontal.
+                  Stepped blurred copies of the photo (same size, pixel-aligned), each masked to the band where the
+                  ramp is at least its radius. backdrop-filter + mask is unreliable, so copies are used instead. */}
+              {(isLocalOverlayImage || hasOverlayPhoto) &&
+                progressiveBlur.map(({ radius, solid, fade }) => (
+                  <div
+                    class="absolute inset-0 z-[1] hidden md:block overflow-hidden [&_img]:[filter:var(--hero-blur)]"
+                    style={`--hero-blur: blur(${radius}px); mask-image: linear-gradient(to right, #000 ${solid}%, transparent ${fade}%);`}
+                    aria-hidden="true"
+                  >
+                    <HeroBgImage image={image} desktop={overlayDesktop} mobile={overlayMobile} isLocal={isLocalOverlayImage} hasPhoto={hasOverlayPhoto} />
+                  </div>
+                ))}
+              {/* Desktop: Figma linear gradient, black 80% → 30% → 5% left-to-right */}
+              <div class="absolute inset-0 z-[1] hidden md:block bg-[linear-gradient(to_right,rgba(0,0,0,0.8)_0%,rgba(0,0,0,0.3)_55%,rgba(0,0,0,0.05)_100%)]" />
               {/* Bottom cream fade — transitions into the next section */}
               <div class="absolute inset-0 z-[1] bg-[linear-gradient(to_bottom,transparent_88%,rgba(245,244,239,0.35)_100%)]" />
             </>
